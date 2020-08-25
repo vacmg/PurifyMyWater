@@ -1,0 +1,11 @@
+TEST SCREEN
+timeout auto kill (screen off)
+hall sw start (screen on)
+calibration screen
+AC charger mode
+Statics screen
+Settings screen
+Safe poweroff bool (to trigger recovery/first boot screen)
+ERROR screen
+status rgb light
+intelligent temp control
