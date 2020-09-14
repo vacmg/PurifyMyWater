@@ -50,19 +50,11 @@ void serialEvent()
       sw = 1;
       delay(10);
       while (!Serial.available()){}
-      bool mode;
+      bool mode = 0;
       data = Serial.read();
-      if (data == '1') // encender
-      {
-        mode = 0;
-      }
-      else if (data == '0')
+      if (data == '0')
       {
         mode = 1;
-      }
-      else
-      {
-        Serial.println(F("1/0"));
       }
       for (int i = 39;i<=53;i+=2)
       {
