@@ -8,4 +8,4 @@ Settings screen
 Safe poweroff bool (to trigger recovery/first boot screen)
 ERROR screen
 status rgb light
-intelligent temp control
+smart temp control
