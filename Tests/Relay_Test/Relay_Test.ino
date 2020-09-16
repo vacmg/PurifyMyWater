@@ -2,14 +2,14 @@ bool sw = 1;
 byte rl;
 void setup()
 {
-  for (int i = 39;i<=53;i+=2)
+  for (int i = 37;i<=53;i+=2)
   {
     pinMode(i,OUTPUT);
     digitalWrite(i,1);
   }
   pinMode(13,OUTPUT);
   Serial.begin(115200);
-  Serial.println(F("Selecciona un rele y enciendelo o apagalo\nt - rele de voltaje\np - pantalla\ni - inversor\no - bomba pozo\nf - bomba fin\nu - bomba UV\nv - rele de UV\nl - rele de filtro\na - todos los reles"));
+  Serial.println(F("Selecciona un rele y enciendelo o apagalo\ns - SSR rele de voltaje\nt - rele de voltaje\np - pantalla\ni - inversor\no - bomba pozo\nf - bomba fin\nu - bomba UV\nv - rele de UV\nl - rele de filtro\na - todos los reles"));
 }
 
 void loop(){}
@@ -22,6 +22,9 @@ void serialEvent()
     sw = 0;
     switch (data)
     {
+      case 's':
+      rl = 37; // rele voltaje SSR
+      break;
       case 't':
       rl = 39; // rele voltaje
       break;
@@ -56,7 +59,7 @@ void serialEvent()
       {
         mode = 1;
       }
-      for (int i = 39;i<=53;i+=2)
+      for (int i = 37;i<=53;i+=2)
       {
         digitalWrite(i,mode);
         delay(300);
