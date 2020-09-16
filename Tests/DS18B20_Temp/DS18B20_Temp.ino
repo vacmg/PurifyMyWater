@@ -4,7 +4,7 @@
 #include <DallasTemperature.h>
 
 // Data wire is plugged into digital pin 2 on the Arduino
-#define ONE_WIRE_BUS 2
+#define ONE_WIRE_BUS 52
 
 // Setup a oneWire instance to communicate with any OneWire device
 OneWire oneWire(ONE_WIRE_BUS);  
@@ -15,12 +15,10 @@ DallasTemperature sensors(&oneWire);
 int deviceCount = 0;
 float tempC;
 
-byte Thermometer[8];
-
 void setup(void)
 {
   sensors.begin();  // Start up the library
-  Serial.begin(9600);
+  Serial.begin(115200);
   
   // locate devices on the bus
   Serial.print("Locating devices...");
@@ -31,6 +29,7 @@ void setup(void)
   Serial.println("");
   
   Serial.println("Printing addresses...");
+  byte Thermometer[8];
   for (int i = 0;  i < deviceCount;  i++)
   {
     Serial.print("Sensor ");
@@ -67,11 +66,9 @@ void loop(void)
     Serial.print(" : ");
     tempC = sensors.getTempCByIndex(i);
     Serial.print(tempC);
-    Serial.print((char)176);//shows degrees character
-    Serial.print("C  |  ");
+    Serial.print(" C  |  ");
     Serial.print(DallasTemperature::toFahrenheit(tempC));
-    Serial.print((char)176);//shows degrees character
-    Serial.println("F");
+    Serial.println(" F");
   }
   
   Serial.println("");
