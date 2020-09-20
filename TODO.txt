@@ -9,3 +9,4 @@ Safe poweroff bool (to trigger recovery/first boot screen)
 ERROR screen
 status rgb light
 smart temp control
+Water flow meter and water flow limit per day
