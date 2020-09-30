@@ -4,9 +4,9 @@ PINOUT: (Work in progress...)
 
 A0: Voltage sensor
 
-A1: Main current sensor
+A1: Main current sensor (20A)
 
-A2: UV current sensor
+A2: UV current sensor (5A)
 
 2-9: Buoy sensors
 
