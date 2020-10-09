@@ -1,37 +1,7 @@
-## Welcome to GitHub Pages
+# Welcome to PurifyMyWater
+Here you can read about the hardware & software used to bring to the world the first DIY water purifying system which can be assembled without spending lots of resources in expensive components.
 
-You can use the [editor on GitHub](https://github.com/vacmg/PurifyMyWater/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
+## About us
+This project is being developed by [**@vacmg**](https://github.com/vacmg) with the support of the [**ALUMNOS SOLIDARIOS**](https://www.joyfe.es/gente-joyfe/alumnos-solidarios/) initiative of JOYFE's school in Madrid.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/vacmg/PurifyMyWater/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Currently, we are developing and testing a prototype which will be deployed in the Kanhankro school and will supply arround **1500L** of clean water per day to the school and the surrounding area.
