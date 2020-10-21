@@ -17,6 +17,7 @@ The main idea of this project is to use cheap items to create a robust machine t
 `Under development... please be patient`
 
 - #### Energy management
+
 This system gets all its energy from a **solar panel**. for better performance, its rated power should be at least 50% higher than the periphral that needs more power. This is to ensure that if the day is not sunny, the system will work as well.
 
 Instead of accumulating the energy in a battery, which lifespan is around 2 years, we use supercapacitors, which accumulate less energy (still enough to drive high loads for a short period of time), but last millions of charge and discharge cycles. With that hardware configuration, our system will not work at night, but even though, our reference design which cleans 180L per hour is capable of cleaning 1500L in a day if it just works 8-9 hours a day.
