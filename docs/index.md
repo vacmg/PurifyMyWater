@@ -14,6 +14,8 @@ The main idea of this project is to use cheap items to create a robust machine t
 
 - #### How it works?
 
+![System scheme](https://github.com/vacmg/PurifyMyWater/blob/master/Schematics/Scan.jpg)
+
 `Under development... please be patient`
 
 - #### Energy management
