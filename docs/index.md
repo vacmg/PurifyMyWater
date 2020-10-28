@@ -16,7 +16,9 @@ The main idea of this project is to use cheap items to create a robust machine t
 
 ![System scheme](https://raw.githubusercontent.com/vacmg/PurifyMyWater/master/Schematics/Scan.jpg)
 
-`Under development... please be patient`
+Firstly, a pump gets water from the well and puts it in a surface tank. Then, the sand filter separates the clean water from the soil, and sends it to an UV tank.
+The next step is to destroy any organism using an UV lamp and then pump the water to a tank which is higher than the rest of the installation.
+From that tank, the water is distributed to where it is needed.
 
 - #### Energy management
 
@@ -25,3 +27,9 @@ This system gets all its energy from a **solar panel**. for better performance, 
 Instead of accumulating the energy in a battery, which lifespan is around 2 years, we use supercapacitors, which accumulate less energy (still enough to drive high loads for a short period of time), but last millions of charge and discharge cycles. With that hardware configuration, our system will not work at night, but even though, our reference design which cleans 180L per hour is capable of cleaning 1500L in a day if it just works 8-9 hours a day.
 
 Our components use direct current but also alternative current, so we need to have a transformer to give the correct DC voltage (12V) and an inverter to provide us AC energy at the european standard voltage (230V). To carefully manage the electricity used in the system, we have an overvoltage control board for the capacitors and a few voltage and ampere meters in addition to a solid state relay that manages the energy input.
+
+- #### Control unit
+
+`Under development... please be patient`
+
+`w/wout tscreen, i/o, other planned features, json config`
