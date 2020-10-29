@@ -40,11 +40,11 @@ byte CRC8(const byte *data, size_t dataLength)
   {
     byte extract = *data++;
     for (byte tempI = 8; tempI; tempI--)
-   {
+    {
       byte sum = (crc ^ extract) & 0x01;
       crc >>= 1;
       if (sum)
-     {
+      {
         crc ^= 0x8C;
       }
       extract >>= 1;
