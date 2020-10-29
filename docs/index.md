@@ -8,6 +8,8 @@ Currently, we are developing and testing a prototype which will be deployed in t
 
 Our project was included in an UNICEF [video](http://www.youtube.com/watch?v=UPMDZqc1k5A&t=4m5s) about solidarity and was selected by [Juan José Marquez's foundation](https://fundacionjjmarquez.org/) to bring water to a school located in Kahankro, in Ivory Coast.
 
+Deprecated documentation of the first **prototype** (currently we are developing the second hardware revision) including the manual can be found [**HERE**](https://drive.google.com/drive/u/1/folders/1oBQqVKW_CtPYmneLX6VQYX_fBKi4t3Yf)
+
 ![Prototype](https://github.com/vacmg/PurifyMyWater/raw/master/docs/media/20180611_103633_HDR.jpg) | ![Control Unit](https://github.com/vacmg/PurifyMyWater/raw/master/docs/media/20180802_202004.jpg)
 ------------ | -------------
 This is an image of the protoytpe | This is the inside of the control unit
