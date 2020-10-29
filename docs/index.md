@@ -40,4 +40,4 @@ To use some of the additional features included in the touchscreen version, it w
 ## Software
 Currently, our development team is developing and testing a rework of the code which will work with the hardware revision that it is also being developed now. This rework will include the support of the touchscreen and lots of extra funcionalities.
 
-The code is being developed in Arduino language, a slightly modified version of c++ which emulates processing main methods: setup and loop.
+The code is being developed in Arduino language, a slightly modified version of C++ which emulates processing main methods: setup and loop.
