@@ -6,6 +6,13 @@ This project is being developed by [**@vacmg**](https://github.com/vacmg) with t
 
 Currently, we are developing and testing a prototype which will be deployed in the Kanhankro school and will supply arround **1500L** of clean water per day to the school and the surrounding area.
 
+`Under development... please be patient`
+
+First Header | Second Header
+------------ | -------------
+Content from cell 1 | Content from cell 2
+Content in the first column | Content in the second column
+
 ## Hardware
 The main idea of this project is to use cheap items to create a robust machine that is almost self-sufficient and easily scalable. To achieve that, we have split the system into the control unit, and some peripherals. With little or no change to the control unit and the code, our solution can be expanded to purify more water if required.
 
@@ -27,6 +34,6 @@ Our components use direct current but also alternative current, so we need to ha
 
 - #### Control unit
 
-`Under development... please be patient`
+Our control unit packages all the electronics needed to control and supply energy to all pumps and components used in the system. In adition, we are developing 2 versions of the control unit: one with a touchscreen and another one which doesn´t have one. The touchscreen will be used to monitor the system, check for errors and tune its parameters to adapt to your necesities. Moreover, it will be used to toggle additional features such as an AC power supply, an USB phone charger and more!
 
-`w/wout tscreen, i/o, other planned features, json config`
+To use some of the additional features included in the touchscreen version, it will be possible to edit the configuration file, which is placed inside a microSD card in JSON format.
