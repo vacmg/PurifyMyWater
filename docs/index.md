@@ -33,9 +33,11 @@ Our components use direct current but also alternative current, so we need to ha
 
 - #### Control unit
 
-Our control unit packages all the electronics needed to control and supply energy to all pumps and components used in the system. In adition, we are developing 2 versions of the control unit: one with a touchscreen and another one which doesn´t have one. The touchscreen will be used to monitor the system, check for errors and tune its parameters to adapt to your necesities. Moreover, it will be used to toggle additional features such as an AC power supply, an USB phone charger and more!
+Our control unit packages all the electronics needed to control and supply energy to all pumps and components used in the system. It has an arduino MEGA 2560 inside which is the main controller. In adition, we are developing 2 versions of the control unit: one with a touchscreen module and another one which doesn´t. The touchscreen will be used to monitor the system, check for errors and tune its parameters to adapt to your necesities. Moreover, it will be used to toggle additional features such as an AC power supply, an USB phone charger and more!
 
 To use some of the additional features included in the touchscreen version, it will be possible to edit the configuration file, which is placed inside a microSD card in JSON format.
 
 ## Software
 Currently, our development team is developing and testing a rework of the code which will work with the hardware revision that it is also being developed now. This rework will include the support of the touchscreen and lots of extra funcionalities.
+
+The code is being developed in Arduino language, a slightly modified version of c++ which emulates processing main methods: setup and loop.
