@@ -6,7 +6,7 @@ This project is being developed by [**@vacmg**](https://github.com/vacmg) with t
 
 Currently, we are developing and testing a prototype which will be deployed in the Kanhankro school and will supply arround **1500L** of clean water per day to the school and the surrounding area.
 
-Our project was included in an UNICEF [video](http://www.youtube.com/watch?v=UPMDZqc1k5A&t=4m5s) about solidarity and was selected by [Juan José Marquez's foundation](https://fundacionjjmarquez.org/) to bring water to a school located in Kahankro, in Ivory Coast.
+Our project was included in an [**UNICEF video**](http://www.youtube.com/watch?v=UPMDZqc1k5A&t=4m5s) about solidarity and was selected by [**Juan José Marquez's foundation**](https://fundacionjjmarquez.org/) to bring water to a school located in Kahankro, in Ivory Coast.
 
 Deprecated documentation of the first **prototype** (currently we are developing the second hardware revision) including the manual can be found [**HERE**](https://drive.google.com/drive/u/1/folders/1oBQqVKW_CtPYmneLX6VQYX_fBKi4t3Yf)
 
