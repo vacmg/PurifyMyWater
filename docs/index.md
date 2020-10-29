@@ -17,6 +17,7 @@ This is an image of the protoytpe | This is the inside of the control unit
 ## Hardware
 The main idea of this project is to use cheap items to create a robust machine that is almost self-sufficient and easily scalable. To achieve that, we have split the system into the control unit, and some peripherals. With little or no change to the control unit and the code, our solution can be expanded to purify more water if required.
 
+Currently, we are developing the second revision of the water purifying system. As mentioned before, all the information of the first version is stored [**HERE**](https://drive.google.com/drive/u/1/folders/1oBQqVKW_CtPYmneLX6VQYX_fBKi4t3Yf)
 - #### How it works?
 
 ![System scheme](https://raw.githubusercontent.com/vacmg/PurifyMyWater/master/Schematics/Scan.jpg)
