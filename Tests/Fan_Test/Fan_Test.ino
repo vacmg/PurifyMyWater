@@ -9,6 +9,7 @@ void loop() {
    volt = analogRead(voltPin);          // realizar la lectura
    fvolt = floatmap(volt, 0, 1023, 0.0, 25.0);   // cambiar escala a 0.0 - 25.0
    Serial.println(fvolt);                     // mostrar el valor por serial
+   Serial.println(F("Selecciona un ventilador y enciendelo o apagalo\n1 - fan 1\n2 - fan 2\n3 fan 3\na - todos los ventiladores"));
    if (cargar == 0)
    {
     fvolt = 20;
@@ -40,7 +41,6 @@ void setup()
   pinMode(13,OUTPUT);
   pinMode(53,OUTPUT);
   Serial.begin(115200);
-  Serial.println(F("Selecciona un ventilador y enciendelo o apagalo\n1 - fan 1\n2 - fan 2\n3 fan 3\na - todos los ventiladores"));
 }
 
 void serialEvent()
@@ -52,13 +52,13 @@ void serialEvent()
     switch (data)
     {
       case '1':
-      rl = 22; // bomba UV
+      rl = 22; // ventilador 1
       break; 
       case '2':
-      rl = 24; // rele UV
+      rl = 24; // ventilador 2
       break;
       case '3':
-      rl = 26; // rele filtro
+      rl = 26; // ventilador 3
       break;
       case 'a': // todos on
       sw = 1;
@@ -76,6 +76,7 @@ void serialEvent()
       rl = 13; // fallo
       Serial.println(F("Eso no es un rele"));
     }
+    delay(1000);
   }
   else
   {
@@ -91,6 +92,7 @@ void serialEvent()
     else
     {
       Serial.println(F("Dude wtf!!!"));
+      delay(1000);
     }
   }
 }
