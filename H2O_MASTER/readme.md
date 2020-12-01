@@ -10,11 +10,13 @@ A2: UV current sensor (5A)
 
 2-9: Buoy sensors
 
+N.D: Case open sensor
+
 22, 24, 26: Fan control
 
 52: Temperature sensors
 
-37: voltage solid state relay
+37: Voltage solid state relay
 
 39: Filter relay
 
@@ -31,5 +33,3 @@ A2: UV current sensor (5A)
 51: Screen module relay
 
 53: Voltage relay
-
-N.D: Case open sensor

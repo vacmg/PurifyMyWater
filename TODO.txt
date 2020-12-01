@@ -1,4 +1,4 @@
-TEST SCREEN
+TEST SCREEN (start/stop any relay... like a dev mode (maybe with a photo... depending on resoures used))
 timeout auto kill (screen off)
 hall sw start (screen on)
 calibration screen
@@ -6,7 +6,11 @@ AC charger mode
 Statics screen
 Settings screen
 Safe poweroff bool (to trigger recovery/first boot screen)
-ERROR screen
+ERROR screen w/ thoubleshotting
 status rgb light
 smart temp control
 Water flow meter and water flow limit per day
+Update Instructions showed in screen (Screen not connected to Master) (maybe a photo to save resources...)
+settings in both SD and Flash and update settings method (maybe inside the file a boolean called update that is set to true by the user and once updated returns to false)
+Log screen (for events or something like that...)
+Redirect from screen to mega all messages that start with '_' untill a '\n' is reached
