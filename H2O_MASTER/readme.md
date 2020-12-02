@@ -10,7 +10,7 @@ A2: UV current sensor (5A)
 
 2-9: Buoy sensors
 
-N.D: Case open sensor
+10: Case open sensor
 
 22, 24, 26: Fan control
 
