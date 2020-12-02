@@ -2,7 +2,7 @@ const int voltPin = A0;   // seleccionar la entrada para el sensor
 int volt;         // variable que almacena el valor raw (0 a 1023)
 float fvolt;            // variable que almacena el voltaje (0.0 a 25.0)
 const int rele = 53;
-const bool cargar = 0;
+const bool cargar = 1;
  
 void setup() {
   Serial.begin(115200);
@@ -17,7 +17,7 @@ void loop() {
    {
     fvolt = 20;
    }
-   if (fvolt <= 15)
+   if (fvolt <= 14.5)
    {
     digitalWrite(rele,1); //invertido
    }

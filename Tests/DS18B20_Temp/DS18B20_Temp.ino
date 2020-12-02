@@ -15,10 +15,12 @@ DallasTemperature sensors(&oneWire);
 int deviceCount = 0;
 float tempC;
 
+byte Thermometer[8];
+
 void setup(void)
 {
   sensors.begin();  // Start up the library
-  Serial.begin(115200);
+  Serial.begin(9600);
   
   // locate devices on the bus
   Serial.print("Locating devices...");
@@ -29,7 +31,6 @@ void setup(void)
   Serial.println("");
   
   Serial.println("Printing addresses...");
-  byte Thermometer[8];
   for (int i = 0;  i < deviceCount;  i++)
   {
     Serial.print("Sensor ");
@@ -66,8 +67,10 @@ void loop(void)
     Serial.print(" : ");
     tempC = sensors.getTempCByIndex(i);
     Serial.print(tempC);
+    //Serial.print((char)176);//shows degrees character
     Serial.print(" C  |  ");
     Serial.print(DallasTemperature::toFahrenheit(tempC));
+    //Serial.print((char)176);//shows degrees character
     Serial.println(" F");
   }
   
