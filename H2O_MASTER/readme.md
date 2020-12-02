@@ -10,26 +10,28 @@ A2: UV current sensor (5A)
 
 2-9: Buoy sensors
 
-10: Case open sensor
+23: Case open sensor
 
 22, 24, 26: Fan control
 
-52: Temperature sensors
+48: Temperature sensors
 
-37: Voltage solid state relay
+33: Voltage solid state relay
 
-39: Filter relay
+35: Filter relay
 
-41: UV lamp relay
+37: UV lamp relay
 
-43: UV pump relay
+39: UV pump relay
 
-45: End pump
+41: End pump
 
-47: Well pump
+43: Well pump
 
-49: Static inverter realy
+45: Static inverter realy
 
-51: Screen module relay
+47: Screen module relay
 
-53: Voltage relay
+49: Voltage relay
+
+10, 11, 12: R, G, B LED

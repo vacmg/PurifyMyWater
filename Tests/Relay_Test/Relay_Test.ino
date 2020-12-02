@@ -23,31 +23,31 @@ void serialEvent()
     switch (data)
     {
       case 's':
-      rl = 37; // rele voltaje SSR
+      rl = 33; // rele voltaje SSR
       break;
       case 't':
-      rl = 53; // rele voltaje
+      rl = 49; // rele voltaje
       break;
       case 'p':
-      rl = 51; // rele pantalla
+      rl = 47; // rele pantalla
       break;
       case 'i':
-      rl = 49; // rele inversor
+      rl = 45; // rele inversor
       break;
       case 'o':
-      rl = 47; // bomba pozo
+      rl = 43; // bomba pozo
       break;
       case 'f':
-      rl = 45; // bomba fin
+      rl = 41; // bomba fin
       break;
       case 'u':
-      rl = 43; // bomba UV
+      rl = 39; // bomba UV
       break; 
       case 'v':
-      rl = 41; // rele UV
+      rl = 37; // rele UV
       break;
       case 'l':
-      rl = 39; // rele filtro
+      rl = 35; // rele filtro
       break;
       case 'a': // todos on
       sw = 1;

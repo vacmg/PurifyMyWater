@@ -9,7 +9,7 @@ Safe poweroff bool (to trigger recovery/first boot screen)
 ERROR screen w/ thoubleshotting
 status rgb light
 smart temp control
-Water flow meter and water flow limit per day
+Water flow meter and water flow limit per time unit (overridable)
 Update Instructions showed in screen (Screen not connected to Master) (maybe a photo to save resources...)
 settings in both SD and Flash and update settings method (maybe inside the file a boolean called update that is set to true by the user and once updated returns to false)
 Log screen (for events or something like that...)

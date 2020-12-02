@@ -4,7 +4,7 @@
 #include <DallasTemperature.h>
 
 // Data wire is plugged into digital pin 2 on the Arduino
-#define ONE_WIRE_BUS 52
+#define ONE_WIRE_BUS 48
 
 // Setup a oneWire instance to communicate with any OneWire device
 OneWire oneWire(ONE_WIRE_BUS);  

@@ -9,7 +9,7 @@ void loop() {
    volt = analogRead(voltPin);          // realizar la lectura
    fvolt = floatmap(volt, 0, 1023, 0.0, 25.0);   // cambiar escala a 0.0 - 25.0
    Serial.println(fvolt);                     // mostrar el valor por serial
-   Serial.println(F("Selecciona un ventilador y enciendelo o apagalo\n1 - fan 1\n2 - fan 2\n3 fan 3\na - todos los ventiladores"));
+   Serial.println(F("Selecciona un ventilador y enciendelo o apagalo\n1 - out\n2 - psu\n3 in\na - todos los ventiladores"));
    if (cargar == 0)
    {
     fvolt = 20;
@@ -52,13 +52,13 @@ void serialEvent()
     switch (data)
     {
       case '1':
-      rl = 22; // ventilador 1
+      rl = 22; // ventilador 1 // out
       break; 
       case '2':
-      rl = 24; // ventilador 2
+      rl = 24; // ventilador 2 // PSU
       break;
       case '3':
-      rl = 26; // ventilador 3
+      rl = 26; // ventilador 3 // in
       break;
       case 'a': // todos on
       sw = 1;
