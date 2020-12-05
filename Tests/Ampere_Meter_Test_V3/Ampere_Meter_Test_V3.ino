@@ -1,4 +1,5 @@
 float Sensibilidad=0.122; //sensibilidad en V/A para nuestro sensor
+float zeroVolts = 2.527;
 float offset=0.154; // Equivale a la amplitud del ruido
 void setup() {
   
@@ -7,7 +8,7 @@ void setup() {
 
 void loop() {
   
-  float Ip=get_corriente();//obtenemos la corriente pico
+  float Ip=get_corriente(500);//obtenemos la corriente pico
   float Irms=Ip*0.707; //Intensidad RMS = Ipico/(2^1/2)
   float P=Irms*230.0; // P=IV watts
   Serial.print("Ip: ");
@@ -20,17 +21,17 @@ void loop() {
   delay(500);     
 }
 
-float get_corriente()
+float get_corriente(int measureTime)
 {
   float voltajeSensor;
   float corriente=0;
   long tiempo=millis();
   float Imax=0;
   float Imin=0;
-  while(millis()-tiempo<500)//realizamos mediciones durante 0.5 segundos
+  while(millis()-tiempo<measureTime)//realizamos mediciones durante 0.5 segundos
   { 
     voltajeSensor = analogRead(A0) * (5.0 / 1023.0);//lectura del sensor
-    corriente=0.9*corriente+0.1*((voltajeSensor-2.527)/Sensibilidad); //Ecuación  para obtener la corriente
+    corriente=0.9*corriente+0.1*((voltajeSensor-zeroVolts)/Sensibilidad); //Ecuación  para obtener la corriente
     if(corriente>Imax)Imax=corriente;
     if(corriente<Imin)Imin=corriente;
   }
