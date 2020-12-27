@@ -34,7 +34,7 @@ void setup(void)
   for (int i = 0;  i < deviceCount;  i++)
   {
     Serial.print("Sensor ");
-    Serial.print(i+1);
+    Serial.print(i);
     Serial.print(" : ");
     sensors.getAddress(Thermometer, i);
     printAddress(Thermometer);
@@ -63,7 +63,7 @@ void loop(void)
   for (int i = 0;  i < deviceCount;  i++)
   {
     Serial.print("Sensor ");
-    Serial.print(i+1);
+    Serial.print(i);
     Serial.print(" : ");
     tempC = sensors.getTempCByIndex(i);
     Serial.print(tempC);

@@ -14,11 +14,24 @@
 
 // Define User Types below here or use a .h file
 //
+
 /*------------Config----------------*/
-#define GUI true
+#define GUI false
 #define STARTCHARGINGVOLTAGE 13.5
 #define STOPCHARGINGVOLTAGE 15.75
+
+#define TEMPCHECKTIME 1000
+#define STOPWORKINGTEMP 65
+#define MAXCASETEMP 40
+#define MINCASETEMP 38
+#define MAXPSUTEMP 40
+#define MINPSUTEMP 38
 /*------------Config----------------*/
+
+/*------------Errors----------------*/
+#define TEMPSENSORSAMOUNTERROR 10 // some temp sensors are not properly connected to the onewire bus // error code 10
+#define EXTREMEHOTTEMPERROR 11 // Control system temperatures are extremely high and it is dangerous to operate // error code 11
+/*------------Errors----------------*/
 
 /*------------Const&vars------------*/
 
@@ -72,14 +85,17 @@ const byte blueLed = 11;
 
     /*------------Temperature-----------*/
 
+unsigned long tempMillis = 0;
+
 // Setup a oneWire instance to communicate with any OneWire device
 OneWire oneWire(tempPin);
 
 // Pass oneWire reference to DallasTemperature library
 DallasTemperature sensors(&oneWire);
 
-int deviceCount = 0;
-float temp[3];
+#define INSENSOR 2
+#define OUTSENSOR 0
+#define PSUSENSOR 1
 
     /*------------Temperature-----------*/
 
@@ -93,6 +109,63 @@ float temp[3];
 
 // Define Functions below here or use other .ino or cpp files
 //
+
+/*------------Temp Control--------------*/
+
+// Used to get temperature in celsius of the 3 temperature sensors
+// It modifies the given array that MUST be of length 3
+void getSensorsTemp(float* temp)
+{
+    sensors.requestTemperatures();
+    for (int i = 0; i < 3; i++)
+    {
+        temp[i] = sensors.getTempCByIndex(i);
+    }
+}
+
+// Used to control the temperature of the main control 
+void tempControl()
+{
+    float temp[3];
+    getSensorsTemp(temp);
+    
+    // Start or stop fans according to external and internal temperature
+    if (temp[INSENSOR] > MAXCASETEMP && temp[OUTSENSOR] < temp[INSENSOR])
+    {
+        output(inFan, 1);
+        output(outFan, 1);
+    }
+    else if (temp[INSENSOR] < MINCASETEMP || temp[OUTSENSOR] >= temp[INSENSOR])
+    {
+        output(inFan, 0);
+        output(outFan, 0);
+    }
+
+    if (temp[PSUSENSOR] > MAXPSUTEMP && temp[INSENSOR] < temp[PSUSENSOR])
+    {
+        output(PSUFan, 1);
+    }
+    else if (temp[PSUSENSOR] < MINPSUTEMP || temp[INSENSOR] >= temp[PSUSENSOR])
+    {
+        output(PSUFan, 0);
+    }
+
+    // check for extreme temperatures
+    bool ok = true;
+    for (byte i = 0; i < 3 && ok; i++)
+    {
+        if (temp[i] > STOPWORKINGTEMP)
+        {
+            ok = false;
+        }
+    }
+    if (!ok)
+    {
+        raise(EXTREMEHOTTEMPERROR);
+    }
+}
+
+/*------------Temp Control--------------*/
 
 /*------------Output Control------------*/
 
@@ -212,6 +285,22 @@ void waitForVoltage(int volts)
 
 /*------------Voltage Control-----------*/
 
+/*------------Exceptions Control--------*/
+
+// This function will allow to notify the user about the error
+// and redirect the execution to an "onlyVitalActivities" function
+// This function is not completed yet
+void raise(byte error)
+{
+    setColor(RED);
+    while (true)
+    {
+        voltControl();
+    }
+}
+
+/*------------Exceptions Control--------*/
+
 // The setup() function runs once each time the micro-controller starts
 void setup()
 {
@@ -220,6 +309,12 @@ void setup()
     pinMode(blueLed, OUTPUT);
 
     setColor(YELLOW);
+
+    sensors.begin();
+    if (sensors.getDeviceCount() < 3)
+    {
+        raise(TEMPSENSORSAMOUNTERROR);
+    }
 
     pinMode(secBuoy, INPUT);
     pinMode(lowSurfaceBuoy, INPUT);
@@ -263,15 +358,28 @@ void setup()
     #if GUI
        Serial1.begin(115200);
     #endif
-
     waitForVoltage(STARTCHARGINGVOLTAGE - 1);
     output(voltRelay, 0);
+
+    // put setup code after this line
+
     setColor(CYAN);
 }
 
 // Add the main program code into the continuous loop() function
+
+// temp vars (remove after debug)
+unsigned long prevmillis, perf;
 void loop()
 {
+    prevmillis = millis();
+
     voltControl();
-    
+    if (millis() > tempMillis + TEMPCHECKTIME)
+    {
+        tempControl();
+        tempMillis = millis();
+    }
+
+    perf = millis() - prevmillis;
 }
