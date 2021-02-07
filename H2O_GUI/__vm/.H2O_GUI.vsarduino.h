@@ -17,7 +17,7 @@
 #define __AVR_ATmega2560__
 #define _VMDEBUG 1
 #define F_CPU 16000000L
-#define ARDUINO 108010
+#define ARDUINO 108013
 #define ARDUINO_AVR_MEGA2560
 #define ARDUINO_ARCH_AVR
 #define __cplusplus 201103L
@@ -88,6 +88,6 @@ typedef void *__builtin_va_list;
 #define pgm_read_float(address_short) float()
 #define pgm_read_ptr(address_short)   short()
 
-#include "H2O_MASTER.ino"
+#include "H2O_GUI.ino"
 #endif
 #endif

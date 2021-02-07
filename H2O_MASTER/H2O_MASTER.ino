@@ -50,11 +50,11 @@ const byte highPurifiedBuoy = 8;
 const byte endBuoy = 9;
 const byte tempPin = 48;
 #if GUI
-    const byte screenSensor = 23;
+const byte screenSensor = 23;
 #endif
-    /*------------Input-----------------*/
+/*------------Input-----------------*/
 
-    /*------------Output----------------*/
+/*------------Output----------------*/
 #define BLACK 0
 #define RED 1
 #define GREEN 2
@@ -70,7 +70,7 @@ const byte ACInverter = 45;
 const byte wellPump = 43;
 const byte UVPump = 39;
 const byte endPump = 41;
-const byte UVRelay =37;
+const byte UVRelay = 37;
 const byte filterRelay = 35;
 const byte outFan = 22;
 const byte PSUFan = 24;
@@ -79,11 +79,11 @@ const byte redLed = 10;
 const byte greenLed = 12;
 const byte blueLed = 11;
 #if GUI
-    const byte screenRelay = 47;
+const byte screenRelay = 47;
 #endif
-    /*------------Output----------------*/
+/*------------Output----------------*/
 
-    /*------------Temperature-----------*/
+/*------------Temperature-----------*/
 
 unsigned long tempMillis = 0;
 
@@ -97,7 +97,7 @@ DallasTemperature sensors(&oneWire);
 #define OUTSENSOR 0
 #define PSUSENSOR 1
 
-    /*------------Temperature-----------*/
+/*------------Temperature-----------*/
 
 /*------------Const&vars------------*/
 
@@ -128,7 +128,7 @@ void tempControl()
 {
     float temp[3];
     getSensorsTemp(temp);
-    
+
     // Start or stop fans according to external and internal temperature
     if (temp[INSENSOR] > MAXCASETEMP && temp[OUTSENSOR] < temp[INSENSOR])
     {
@@ -249,7 +249,9 @@ float fmap(float x, float in_min, float in_max, float out_min, float out_max)
 
 // This function reads from a 0-25V DC sensor and returns its voltage
 float voltRead(byte vSensor)
-{   float f = fmap(analogRead(vSensor), 0, 1023, 0.0, 25.0);   // read from sensor and ajust the scale to 0-25V
+{
+    float f = fmap(analogRead(vSensor), 0, 1023, 0.0, 25.0);   // read from sensor and ajust the scale to 0-25V
+    Serial.println(f);
     return f;
 }
 
@@ -304,6 +306,8 @@ void raise(byte error)
 // The setup() function runs once each time the micro-controller starts
 void setup()
 {
+  Serial.begin(115200);
+  
     pinMode(redLed, OUTPUT);
     pinMode(greenLed, OUTPUT);
     pinMode(blueLed, OUTPUT);
@@ -325,7 +329,7 @@ void setup()
     pinMode(highPurifiedBuoy, INPUT);
     pinMode(endBuoy, INPUT);
     pinMode(tempPin, INPUT);
-    
+
     pinMode(voltSSRelay, OUTPUT);
     pinMode(voltRelay, OUTPUT);
     pinMode(ACInverter, OUTPUT);
@@ -348,16 +352,16 @@ void setup()
     output(filterRelay, 0);
     output(outFan, 1);
     output(PSUFan, 1);
-    output(inFan,  1);
+    output(inFan, 1);
 
-    #if GUI
-        pinMode(screenSensor, INPUT);
-        pinMode(screenRelay, OUTPUT);
-        output(screenRelay, 0);
-    #endif
-    #if GUI
-       Serial1.begin(115200);
-    #endif
+#if GUI
+    pinMode(screenSensor, INPUT);
+    pinMode(screenRelay, OUTPUT);
+    output(screenRelay, 0);
+#endif
+#if GUI
+    Serial1.begin(115200);
+#endif
     waitForVoltage(STARTCHARGINGVOLTAGE - 1);
     output(voltRelay, 0);
 

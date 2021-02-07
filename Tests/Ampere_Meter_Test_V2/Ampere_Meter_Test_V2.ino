@@ -13,7 +13,7 @@ float windowLength = 40.0/testFrequency;     // how long to average the signal, 
 const int voltPin = A0;   // seleccionar la entrada para el sensor
 int volt;         // variable que almacena el valor raw (0 a 1023)
 float fvolt;            // variable que almacena el voltaje (0.0 a 25.0)
-const int rele = 53;
+const int rele = 49;
 const bool cargar = 1;
 
 float intercept = 0; // to be adjusted based on calibration testing
@@ -32,12 +32,18 @@ void setup() {
   pinMode(A0, INPUT);
   pinMode(A1, INPUT);
   pinMode(A2, INPUT);
-  pinMode(49,OUTPUT);
-  digitalWrite(49,0);
-  pinMode(41,OUTPUT);
-  digitalWrite(41,0);
-  pinMode(39,OUTPUT);
-  digitalWrite(39,0);
+  pinMode(37,OUTPUT);
+  digitalWrite(37,0);
+  pinMode(35,OUTPUT);
+  digitalWrite(35,0);
+  pinMode(45,OUTPUT);
+  digitalWrite(45,0);
+  pinMode(22,OUTPUT);
+  digitalWrite(22,0);
+  pinMode(24,OUTPUT);
+  digitalWrite(24,0);
+  pinMode(26,OUTPUT);
+  digitalWrite(26,0);
   pinMode(rele,OUTPUT); 
   inputStats.setWindowSecs( windowLength );     //Set the window length
 }
@@ -53,7 +59,7 @@ void loop() {
     {
      fvolt = 20;
     }
-    if (fvolt <= 14.5)
+    if (fvolt <= 14)
     {
      digitalWrite(rele,1); //invertido
     }
