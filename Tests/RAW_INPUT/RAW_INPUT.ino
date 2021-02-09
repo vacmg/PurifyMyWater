@@ -15,10 +15,7 @@ const bool cargar = 1;
 
 void setup() {
 
-Serial.begin(9600);
-pinMode(A0, INPUT);
-  //pinMode(A1, INPUT);
-  pinMode(A2, INPUT);
+Serial.begin(115200);
   pinMode(37,OUTPUT);
   digitalWrite(37,0);
   pinMode(35,OUTPUT);
@@ -45,7 +42,7 @@ void loop() {
      fvolt = 20;
     }
     //Serial.println(fvolt);
-    if (fvolt <= 14.5)
+    if (fvolt <= 14)
     {
      digitalWrite(rele,1); //invertido
     }

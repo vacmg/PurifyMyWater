@@ -1,4 +1,4 @@
-float Sensibilidad=0.105; //sensibilidad en Voltios/Amperio para sensor
+float Sensibilidad=0.105; //sensibilidad en Voltios/Amperio para sensor // 5.4A for 60w test load
 float Medio = 2.469; // voltage del sensor para una corriente de 0A
 const int voltPin = A0;   // seleccionar la entrada para el sensor
 int volt;         // variable que almacena el valor raw (0 a 1023)
