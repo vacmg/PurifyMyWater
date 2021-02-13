@@ -43,9 +43,17 @@ void setup()
     Serial.begin(9600);
     mylcd.Init_LCD(); //initialize lcd
     Serial.println(mylcd.Read_ID(), HEX);
-    mylcd.Fill_Screen(0xFFFF); //display white
+    mylcd.Fill_Screen(255,60,0); //display white
 }
 
+void loop()
+{
+  for (int i = 255; i>0;i-=5)
+  {
+    mylcd.Fill_Screen(255,i,i);
+  }
+}
+/*
 void loop() 
 { 
     //Sequential display black,white,red,green,blue
@@ -65,4 +73,4 @@ void loop()
    delay(1000);
    mylcd.Fill_Screen(0x001F);
    delay(1000);
-}
+}*/

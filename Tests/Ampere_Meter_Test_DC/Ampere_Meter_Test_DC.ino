@@ -22,15 +22,18 @@ void setup() {
   digitalWrite(24,0);
   pinMode(26,OUTPUT);
   digitalWrite(26,0);
-  pinMode(rele,OUTPUT); 
+  pinMode(rele,OUTPUT);
+
+  pinMode(43,OUTPUT);
+  digitalWrite(43,1);
   Serial.begin(115200);
 }
 
 void loop() {
   volt = analogRead(voltPin);          // realizar la lectura
    fvolt = floatmap(volt, 0, 1023, 0.0, 25.0);   // cambiar escala a 0.0 - 25.0
-   Serial.println(fvolt);                     // mostrar el valor por serial
-   Serial.println(analogRead(A1));
+   //Serial.println(fvolt);                     // mostrar el valor por serial
+   //Serial.println(analogRead(A1));
    if (cargar == 0)
    {
     fvolt = 20;
@@ -48,7 +51,7 @@ void loop() {
   float I=get_corriente(200);//obtenemos la corriente promedio de 500 muestras 
   Serial.print("Corriente: ");
   Serial.println(I,3); 
-  delay(1000);     
+  delay(10);     
 }
 
 float get_corriente(int n_muestras)
