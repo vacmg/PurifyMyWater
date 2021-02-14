@@ -277,9 +277,9 @@ float fmap(float x, float in_min, float in_max, float out_min, float out_max)
 }
 
 // This function reads from a 0-25V DC sensor and returns its voltage
-float voltRead(byte vSensor)
+float voltRead()
 {
-    float f = fmap(analogRead(vSensor), 0, 1023, 0.0, 25.0);   // read from sensor and ajust the scale to 0-25V
+    float f = fmap(analogRead(voltSensor), 0, 1023, 0.0, 25.0);   // read from sensor and ajust the scale to 0-25V
     return f;
 }
 
@@ -287,7 +287,7 @@ float voltRead(byte vSensor)
 // It MUST be called at least one time each 2 seconds
 void voltControl()
 {
-    float voltage = voltRead(voltSensor);
+    float voltage = voltRead();
     if (voltage < STARTCHARGINGVOLTAGE)
     {
         output(voltSSRelay, 1);
@@ -301,13 +301,13 @@ void voltControl()
 // This functions blocks the code execution until a certain voltage is reached inside the supercapacitors
 void waitForVoltage(int volts)
 {
-    float voltage = voltRead(voltSensor);
+    float voltage = voltRead();
     if (voltage < volts)
     {
         output(voltSSRelay, 1);
         while (voltage < volts)
         {
-            voltage = voltRead(voltSensor);
+            voltage = voltRead();
         }
         output(voltSSRelay, 0);
     }
@@ -429,13 +429,16 @@ void setup()
 
     inputStats.setWindowSecs(40.0 / ACFrequency);     //Set AC Amperemeter frequency
 
-    setColor(CYAN);
+    mode = 0;
 }
 
 // Add the main program code into the continuous loop() function
 
 // temp vars (remove after debug)
 unsigned long prevmillis, perf;
+
+bool sw[3] = { false, false, false }; // Used to store the status of each pump where true is on and false is off
+
 void loop()
 {
     prevmillis = millis();
@@ -451,14 +454,107 @@ void loop()
 
     switch (mode)
     {
-    case 0: // OFF
+    case 0: // Transition to OFF
+        output(wellPump, 0);
+        output(endPump, 0);
+        output(UVPump, 0);
+        output(filterRelay, 0);
+        output(ACInverter, 0);
+        delay(1000);
+        output(UVRelay, 0);
+        output(voltSSRelay, 1);
+        setColor(PURPLE);
+        mode = 1;
+        break;
+    case 1: // OFF
+        if (voltRead() > STARTWORKINGVOLTAGE)
+            setColor(CYAN);
+            mode = 2;
+        break;
+    case 2: // Transition to Pumps Working
+        output(ACInverter, 0);
+        mode = 3;
+        break;
+    case 3: // Pumps Working
+        if (voltRead() < STOPWORKINGVOLTAGE)
+            mode = 0;
+
+        if (!sw[0] && !digitalRead(highSurfaceBuoy) && digitalRead(secBuoy))
+        {
+            output(wellPump, 1);
+            sw[0] = true;
+        }
+            
+
+        if (sw[0] && (digitalRead(highSurfaceBuoy) || !digitalRead(secBuoy)))
+        {
+            output(wellPump, 0);
+            sw[0] = false;
+        }
+            
+
+        if (!digitalRead(highFilteredBuoy) && digitalRead(highSurfaceBuoy))
+            mode = 4;
+
+        if (!sw[1] && !digitalRead(highPurifiedBuoy) && digitalRead(lowFilteredBuoy))
+        {
+            output(ACInverter, 1);
+            delay(250);
+            output(UVRelay, 1);
+            delay(1000);
+            output(UVPump, 1);
+            sw[1] = true;
+        }
+
+        if (sw[1] && (!digitalRead(lowFilteredBuoy) || digitalRead(highPurifiedBuoy)))
+        {
+            output(UVPump, 0);
+            delay(1000);
+            output(UVRelay, 0);
+            delay(250);
+            output(ACInverter, 0);
+            sw[1] = false;
+        }
+
+        if (!sw[2] && !digitalRead(endBuoy) && digitalRead(lowPurifiedBuoy))
+        {
+            output(endPump, 1);
+            sw[2] = true;
+        }
+
+        if (sw[2] && (!digitalRead(lowPurifiedBuoy) || digitalRead(endBuoy)))
+        {
+            output(endPump, 0);
+            sw[2] = false;
+        }
 
         break;
-    case 1: // Pumps Working
+    case 4: // Transition to filter working
+        output(wellPump, 0);
+        output(endPump, 0);
+        output(UVPump, 0);
 
+        output(ACInverter, 1);
+        delay(1000);
+        output(UVRelay, 0);
+
+        if (voltRead() < STOPWORKINGVOLTAGE)
+            mode = 0;
+
+        waitForVoltage(STARTWORKINGVOLTAGE);
+        output(filterRelay, 1);
+
+        mode = 5;
         break;
-    case 2: // Filter Working
+    case 5: // Filter Working
+        if (voltRead() < STOPWORKINGVOLTAGE) // quizas haya que quitar esto o poner un while...
+            mode = 0;
 
+        if (digitalRead(highFilteredBuoy) || !digitalRead(lowFilteredBuoy))
+        {
+            output(filterRelay, 0);
+            mode = 2;
+        }
         break;
     }
 
