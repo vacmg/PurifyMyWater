@@ -7,8 +7,8 @@
 #define ACS_Pin A2                        //Sensor data pin on A0 analog input
 
 //Please check the ACS712 Tutorial video by SurtrTech to see how to get them because it depends on your sensor, or look below
-float intercept = -0.0741; // to be adjusted based on calibration testing
-float slope = 0.0327; // to be adjusted based on calibration testing // 0.25A for 60w test load
+float intercept = -0.07157; // to be adjusted based on calibration testing
+float slope = 0.033; // to be adjusted based on calibration testing // 0.25A for 60w test load
 
 float ACS_Value;                              //Here we keep the raw data valuess
 float testFrequency = 50;                    // test signal frequency (Hz)

@@ -8,11 +8,29 @@ A1: Main current sensor (20A)
 
 A2: UV current sensor (5A)
 
-2-9: Buoy sensors
+2: Security well buoy
+
+3: Surface low buoy
+
+4: Surface high buoy
+
+5: Filtered low buoy
+
+6: Filtered high buoy
+
+7: Purified low buoy
+
+8: Purified high buoy
+
+9: End buoy
 
 23: Case open sensor
 
-22, 24, 26: Fan control
+22: Output fan
+
+24: PSU fan
+
+26: Input fan
 
 48: Temperature sensors
 
@@ -34,4 +52,8 @@ A2: UV current sensor (5A)
 
 49: Voltage relay
 
-10, 11, 12: R, G, B LED
+10: Red LED
+
+11: Green LED
+
+12: Blue LED

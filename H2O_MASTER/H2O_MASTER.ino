@@ -19,25 +19,29 @@
 /*------------Config----------------*/
 
 #define GUI false
+#define ONLYVITALACTIVITYALLOWED false
+#define TEMPERATURE true
 
-#define STARTCHARGINGVOLTAGE 13.5
+#define STARTCHARGINGVOLTAGE 13
 #define STOPCHARGINGVOLTAGE 15.75
 #define STARTWORKINGVOLTAGE 15
-#define STOPWORKINGVOLTAGE 11
+#define STOPWORKINGVOLTAGE 12
 
-#define DCAmpSensivity 0.105 //sensor sensivity en Volts/Amps // 5.4A for 60w test load
-#define DCAmpZero 2.469 // sensor voltage for 0 Amps current
+#define DCAmpSensivity 0.1135 //sensor sensivity en Volts/Amps // 5.4A for 60w test load
+#define DCAmpZero 2.4956 // sensor voltage for 0 Amps current
 
-#define ACAmpZero -0.0741 // sensor calibration correction value
-#define ACAmpSensivity 0.0327 // sensor sensivity en Volts/Amps // 0.25A for 60w test load
+#define ACAmpZero -0.07157 // sensor calibration correction value
+#define ACAmpSensivity 0.033 // sensor sensivity en Volts/Amps // 0.25A for 60w test load
 #define ACFrequency 50 // test signal frequency (Hz)
 
-#define TEMPCHECKTIME 1000
-#define STOPWORKINGTEMP 65
-#define MAXCASETEMP 40
-#define MINCASETEMP 38
-#define MAXPSUTEMP 40
-#define MINPSUTEMP 38
+#if TEMPERATURE
+    #define TEMPCHECKTIME 10000
+    #define STOPWORKINGTEMP 65
+    #define MAXCASETEMP 40
+    #define MINCASETEMP 38
+    #define MAXPSUTEMP 40
+    #define MINPSUTEMP 38
+#endif
 
 /*------------Config----------------*/
 
@@ -45,7 +49,10 @@
 
 #define UNEXPECTEDBEHAVIORERROR 00 // The code is being executed in an unwanted way (a bug is being detected) // error code 00
 #define TEMPSENSORSAMOUNTERROR 10 // Some temp sensors are not properly connected to the onewire bus // error code 10
-#define EXTREMEHOTTEMPERROR 11 // Control system temperatures are extremely high and it is dangerous to operate // error code 11
+
+#if TEMPERATURE
+    #define EXTREMEHOTTEMPERROR 11 // Control system temperatures are extremely high and it is dangerous to operate // error code 11endif
+#endif
 
 /*------------Errors----------------*/
 
@@ -54,8 +61,8 @@
     /*------------Input-----------------*/
 
 const byte voltSensor = A0;
-const byte UVAmpSensor = A1;
-const byte mainAmpSensor = A2;
+const byte mainAmpSensor = A1;
+const byte UVAmpSensor = A2;
 
 const byte secBuoy = 2;
 const byte lowSurfaceBuoy = 3;
@@ -140,7 +147,7 @@ byte mode = 0; // working mode is changed using this variable
 //
 
 /*------------Temp Control--------------*/
-
+#if TEMPERATURE
 // Used to get temperature in celsius of the 3 temperature sensors
 // It modifies the given array that MUST be of length 3
 void getSensorsTemp(float* temp)
@@ -192,8 +199,12 @@ void tempControl()
     {
         raise(EXTREMEHOTTEMPERROR, String(F("Current temps are: ")) + String(temp[0]) + String(F(", ")) + String(temp[1]) + String(F(", ")) + String(temp[2]));
     }
-}
 
+    /*output(inFan, 1);
+    output(outFan, 1);
+    output(PSUFan, 1);//*/
+}
+#endif
 /*------------Temp Control--------------*/
 
 /*------------Output Control------------*/
@@ -280,7 +291,25 @@ float fmap(float x, float in_min, float in_max, float out_min, float out_max)
 float voltRead()
 {
     float f = fmap(analogRead(voltSensor), 0, 1023, 0.0, 25.0);   // read from sensor and ajust the scale to 0-25V
-    return f;
+    return f - loadOffset();
+}
+
+// This function generates an offset to correctly measure real voltage under heavy loads
+float loadOffset()
+{
+    float load = getDCAmps(200); // get current load
+    //float formula = load * -0.65; // one big pump // 1.5A
+    //float formula = load * -0.375; // two big pumps // 3A
+    //float formula = load * -0.50; // 1 pump + UV // 2.5A
+    //float formula = load * -0.80; // UV // 1A
+    //float formula = load * -0.3; // 2 big pumps + UV // 4A
+    //float formula = load * -0.20; // Filter // 5.4A
+    //float formula = load * 0.00 - 1.00; // no load // 0A
+
+    // Using some known pairs of current and difference from real to arduino measured voltage, here we used least square roots to approximate to the ecuation of a straight line
+    float formula = -0.9487 - 0.0453 * load; // f(I)=-0.9487-0.0453*I
+    //Serial.println(load);
+    return formula;
 }
 
 // This function maintains the voltage in the supercapacitors between STARTCHARGINGVOLTAGE and STOPCHARGINGVOLTAGE
@@ -288,6 +317,7 @@ float voltRead()
 void voltControl()
 {
     float voltage = voltRead();
+    Serial.println(voltage);
     if (voltage < STARTCHARGINGVOLTAGE)
     {
         output(voltSSRelay, 1);
@@ -422,7 +452,12 @@ void setup()
 
     Serial1.begin(115200);
 #endif
+#if !ONLYVITALACTIVITYALLOWED
+    #if TEMPERATURE
+        tempControl();
+    #endif
     waitForVoltage(STARTCHARGINGVOLTAGE - 1);
+#endif
     output(voltRelay, 0);
 
     // put setup code after this line
@@ -437,7 +472,7 @@ void setup()
 // temp vars (remove after debug)
 unsigned long prevmillis, perf;
 
-bool sw[3] = { false, false, false }; // Used to store the status of each pump where true is on and false is off
+bool pumpSt[3] = { false, false, false }; // Used to store the status of each pump where true is on and false is off
 
 void loop()
 {
@@ -446,12 +481,18 @@ void loop()
     voltControl();
     logACAmps();
 
-    if (millis() > tempMillis + TEMPCHECKTIME)
-    {
-        tempControl();
-        tempMillis = millis();
-    }
+    #if TEMPERATURE
+        if (millis() > tempMillis + TEMPCHECKTIME)
+        {
+            tempControl();
+            tempMillis = millis();
+        }
+    #endif
+    // readAllSensors(); // temporal debug function
 
+    #if ONLYVITALACTIVITYALLOWED
+    setColor(WHITE);
+    #else
     switch (mode)
     {
     case 0: // Transition to OFF
@@ -468,64 +509,68 @@ void loop()
         break;
     case 1: // OFF
         if (voltRead() > STARTWORKINGVOLTAGE)
-            setColor(CYAN);
             mode = 2;
         break;
     case 2: // Transition to Pumps Working
         output(ACInverter, 0);
+        setColor(CYAN);
+        for (byte i = 0; i < 3; i++)
+        {
+            pumpSt[i] = false;
+        }
         mode = 3;
         break;
     case 3: // Pumps Working
         if (voltRead() < STOPWORKINGVOLTAGE)
             mode = 0;
 
-        if (!sw[0] && !digitalRead(highSurfaceBuoy) && digitalRead(secBuoy))
+        if (!pumpSt[0] && !digitalRead(highSurfaceBuoy) && digitalRead(secBuoy))
         {
             output(wellPump, 1);
-            sw[0] = true;
+            pumpSt[0] = true;
         }
             
 
-        if (sw[0] && (digitalRead(highSurfaceBuoy) || !digitalRead(secBuoy)))
+        if (pumpSt[0] && (digitalRead(highSurfaceBuoy) || !digitalRead(secBuoy)))
         {
             output(wellPump, 0);
-            sw[0] = false;
+            pumpSt[0] = false;
         }
             
 
-        if (!digitalRead(highFilteredBuoy) && digitalRead(highSurfaceBuoy))
+        if (!digitalRead(lowFilteredBuoy) && digitalRead(highSurfaceBuoy))
             mode = 4;
 
-        if (!sw[1] && !digitalRead(highPurifiedBuoy) && digitalRead(lowFilteredBuoy))
+        if (!pumpSt[1] && !digitalRead(highPurifiedBuoy) && digitalRead(lowFilteredBuoy))
         {
             output(ACInverter, 1);
             delay(250);
             output(UVRelay, 1);
             delay(1000);
             output(UVPump, 1);
-            sw[1] = true;
+            pumpSt[1] = true;
         }
 
-        if (sw[1] && (!digitalRead(lowFilteredBuoy) || digitalRead(highPurifiedBuoy)))
+        if (pumpSt[1] && (!digitalRead(lowFilteredBuoy) || digitalRead(highPurifiedBuoy)))
         {
             output(UVPump, 0);
             delay(1000);
             output(UVRelay, 0);
             delay(250);
             output(ACInverter, 0);
-            sw[1] = false;
+            pumpSt[1] = false;
         }
 
-        if (!sw[2] && !digitalRead(endBuoy) && digitalRead(lowPurifiedBuoy))
+        if (!pumpSt[2] && !digitalRead(endBuoy) && digitalRead(lowPurifiedBuoy))
         {
             output(endPump, 1);
-            sw[2] = true;
+            pumpSt[2] = true;
         }
 
-        if (sw[2] && (!digitalRead(lowPurifiedBuoy) || digitalRead(endBuoy)))
+        if (pumpSt[2] && (!digitalRead(lowPurifiedBuoy) || digitalRead(endBuoy)))
         {
             output(endPump, 0);
-            sw[2] = false;
+            pumpSt[2] = false;
         }
 
         break;
@@ -550,13 +595,38 @@ void loop()
         if (voltRead() < STOPWORKINGVOLTAGE) // quizas haya que quitar esto o poner un while...
             mode = 0;
 
-        if (digitalRead(highFilteredBuoy) || !digitalRead(lowFilteredBuoy))
+        if (digitalRead(highFilteredBuoy) || !digitalRead(lowSurfaceBuoy))
         {
             output(filterRelay, 0);
             mode = 2;
         }
         break;
     }
-
+    #endif
+    
     perf = millis() - prevmillis;
 }
+
+/*********Debug*************
+void readAllSensors()
+{
+    bool esecBuoy, elowSurfaceBuoy, ehighSurfaceBuoy, elowFilteredBuoy, ehighFilteredBuoy, elowPurifiedBuoy, ehighPurifiedBuoy, eendBuoy;
+    esecBuoy = digitalRead(secBuoy);
+    elowSurfaceBuoy = digitalRead(lowSurfaceBuoy);
+    ehighSurfaceBuoy = digitalRead(highSurfaceBuoy);
+    elowFilteredBuoy = digitalRead(lowFilteredBuoy);
+    ehighFilteredBuoy = digitalRead(highFilteredBuoy);
+    elowPurifiedBuoy = digitalRead(lowPurifiedBuoy);
+    ehighPurifiedBuoy = digitalRead(highPurifiedBuoy);
+    eendBuoy = digitalRead(endBuoy);
+#if TEMPERATURE
+    float temp[3];
+    getSensorsTemp(temp);
+#endif
+#if GUI
+    bool escreenSensor;
+    escreenSensor = digitalRead(screenSensor);
+#endif
+    1 + 1;
+}
+/*********Debug*************/

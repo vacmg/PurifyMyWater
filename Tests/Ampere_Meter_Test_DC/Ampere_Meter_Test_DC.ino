@@ -1,5 +1,5 @@
-float Sensibilidad=0.105; //sensibilidad en Voltios/Amperio para sensor // 5.4A for 60w test load
-float Medio = 2.469; // voltage del sensor para una corriente de 0A
+float Sensibilidad=0.1135; //sensibilidad en Voltios/Amperio para sensor // 5.4A for 60w test load
+float Medio = 2.4956; // voltage del sensor para una corriente de 0A
 const int voltPin = A0;   // seleccionar la entrada para el sensor
 int volt;         // variable que almacena el valor raw (0 a 1023)
 float fvolt;            // variable que almacena el voltaje (0.0 a 25.0)
@@ -11,7 +11,7 @@ void setup() {
   pinMode(A1, INPUT);
   pinMode(A2, INPUT);
   pinMode(37,OUTPUT);
-  digitalWrite(37,0);
+  digitalWrite(37,1);
   pinMode(35,OUTPUT);
   digitalWrite(35,0);
   pinMode(45,OUTPUT);
@@ -24,15 +24,19 @@ void setup() {
   digitalWrite(26,0);
   pinMode(rele,OUTPUT);
 
-  pinMode(43,OUTPUT);
-  digitalWrite(43,1);
+  /*pinMode(43,OUTPUT);
+  digitalWrite(43,1);*/
   Serial.begin(115200);
 }
 
 void loop() {
+  float I=get_corriente(200);//obtenemos la corriente promedio de 500 muestras 
+  Serial.print("Corriente: ");
+  Serial.println(I,3);
+  
   volt = analogRead(voltPin);          // realizar la lectura
    fvolt = floatmap(volt, 0, 1023, 0.0, 25.0);   // cambiar escala a 0.0 - 25.0
-   //Serial.println(fvolt);                     // mostrar el valor por serial
+   Serial.println(fvolt - I*-0.15);                     // mostrar el valor por serial
    //Serial.println(analogRead(A1));
    if (cargar == 0)
    {
@@ -48,9 +52,7 @@ void loop() {
    }
 
   
-  float I=get_corriente(200);//obtenemos la corriente promedio de 500 muestras 
-  Serial.print("Corriente: ");
-  Serial.println(I,3); 
+   
   delay(10);     
 }
 
