@@ -111,6 +111,20 @@ const byte blueLed = 11;
 const byte screenRelay = 47;
 #endif
 
+typedef struct ledAnimation
+{
+    int frameDelay; // Delay between frames (in ms)
+    byte animationSize; // Number of used frames
+    byte currentFrame; // Current frame
+    byte animation[16][3]; // Up to 16 frames per animation
+};
+
+ledAnimation* currentAnimation; // Pointer to current animation
+bool doAnimation = false; // Animation switch
+unsigned long prevAnimationMillis = 0;
+
+ledAnimation testAnimation = { 1500,5,0,{{255,0,0},{0,255,0},{0,0,255},{255,255,255},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0}} };
+
     /*------------Output----------------*/
 
     /*------------Temperature-----------*/
@@ -222,11 +236,11 @@ void output(byte pin, bool value)
 }
 
 // Used to set a color on the rgb status led by setting the amount of each color from 0 to 255
-void setColor(byte r, byte g, byte b)
+void setColor(byte color[3])
 {
-    analogWrite(redLed, r);
-    analogWrite(greenLed, g);
-    analogWrite(blueLed, b);
+    analogWrite(redLed, color[0]);
+    analogWrite(greenLed, color[1]);
+    analogWrite(blueLed, color[2]);
 }
 
 // Used to set a color on the rgb status led using a predefined color
@@ -274,6 +288,19 @@ void setColor(byte color)
         output(redLed, 0);
         output(greenLed, 0);
         output(blueLed, 0);
+    }
+}
+
+void updateAnimation()
+{
+    setColor(currentAnimation->animation[currentAnimation->currentFrame]);
+    if (currentAnimation->currentFrame + 1 >= currentAnimation->animationSize)
+    {
+        currentAnimation->currentFrame = 0;
+    }
+    else
+    {
+        currentAnimation->currentFrame++;
     }
 }
 
@@ -452,7 +479,10 @@ void setup()
 
     Serial1.begin(115200);
 #endif
-#if !ONLYVITALACTIVITYALLOWED
+#if ONLYVITALACTIVITYALLOWED
+    currentAnimation = &testAnimation;
+    doAnimation = true;
+#else
     #if TEMPERATURE
         tempControl();
     #endif
@@ -467,19 +497,24 @@ void setup()
     mode = 0;
 }
 
-// Add the main program code into the continuous loop() function
-
 // temp vars (remove after debug)
 unsigned long prevmillis, perf;
 
 bool pumpSt[3] = { false, false, false }; // Used to store the status of each pump where true is on and false is off
 
+// Add the main program code into the continuous loop() function
 void loop()
 {
     prevmillis = millis();
 
     voltControl();
     logACAmps();
+    
+    if (doAnimation && millis() > prevAnimationMillis + currentAnimation->frameDelay)
+    {
+        updateAnimation();
+        prevAnimationMillis = millis();
+    }
 
     #if TEMPERATURE
         if (millis() > tempMillis + TEMPCHECKTIME)
@@ -488,11 +523,9 @@ void loop()
             tempMillis = millis();
         }
     #endif
-    // readAllSensors(); // temporal debug function
+     //readAllSensors(); // temporal debug function
 
-    #if ONLYVITALACTIVITYALLOWED
-    setColor(WHITE);
-    #else
+    #if !ONLYVITALACTIVITYALLOWED
     switch (mode)
     {
     case 0: // Transition to OFF
