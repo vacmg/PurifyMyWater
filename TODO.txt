@@ -14,3 +14,4 @@ Update Instructions showed in screen (Screen not connected to Master) (maybe a p
 settings in both SD and Flash and update settings method (maybe inside the file a boolean called update that is set to true by the user and once updated returns to false)
 Log screen (for events or something like that...)
 Redirect from screen to mega all messages that start with '_' untill a '\n' is reached
+Overview screen with system map (photo) (to easily see what is the system doing anytime)

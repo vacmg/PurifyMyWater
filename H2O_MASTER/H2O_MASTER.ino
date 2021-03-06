@@ -18,6 +18,7 @@
 
 /*------------Config----------------*/
 
+#define DEBUG true
 #define GUI false
 #define ONLYVITALACTIVITYALLOWED false
 #define TEMPERATURE true
@@ -33,6 +34,14 @@
 #define ACAmpZero -0.07157 // sensor calibration correction value
 #define ACAmpSensivity 0.033 // sensor sensivity en Volts/Amps // 0.25A for 60w test load
 #define ACFrequency 50 // test signal frequency (Hz)
+
+#define UVPUMPFLOW 171 // UV pump flow in L/H
+
+// If any of this pumps work for more than the specified milliseconds, raise PUMPTIMEOUTERROR
+#define WELLPUMPTIMEOUT 60000
+#define UVPUMPTIMEOUT 60000
+#define ENDPUMPTIMEOUT 60000
+#define FILTERTIMEOUT 60000
 
 #if TEMPERATURE
     #define TEMPCHECKTIME 10000
@@ -51,9 +60,11 @@
 #define TEMPSENSORSAMOUNTERROR 10 // Some temp sensors are not properly connected to the onewire bus // error code 10
 
 #if TEMPERATURE
-    #define EXTREMEHOTTEMPERROR 11 // Control system temperatures are extremely high and it is dangerous to operate // error code 11endif
+    #define EXTREMEHOTTEMPERROR 11 // Control system temperatures are extremely high and it is dangerous to operate // error code 11
 #endif
 
+#define BUOYINCONGRUENCEERROR 21 // The system has detected an incongruence with the readings of the buoy sensors (often caused by a non connected or malfunctioning buoy) // error code 21
+#define PUMPTIMEOUTERROR 22 // The system has spent so much time with a pump working. Probably the circuit has a leak or a pump is not working properly
 /*------------Errors----------------*/
 
 /*------------Const&vars------------*/
@@ -93,6 +104,11 @@ bool ACAmpsDoMeasurement = false; // boolean value used as a switch to begin mea
 #define CYAN 6
 #define PURPLE 7
 
+// Tie an action to a specific color
+#define UNDERVOLTAGE PURPLE 
+#define WORKING CYAN   
+#define BOOTING YELLOW
+
 const byte voltSSRelay = 33;
 const byte voltRelay = 49;
 const byte ACInverter = 45;
@@ -111,6 +127,9 @@ const byte blueLed = 11;
 const byte screenRelay = 47;
 #endif
 
+bool pumpSt[3] = { false, false, false }; // Used to store the status of each pump where true is on and false is off
+unsigned long pumpPrevMillis[4] = { 0,0,0 }; // Used to check for PUMPTIMEOUTERROR // pumpPrevMillis[1] also stores UV working start time // { well, UV, end, filter }
+
 typedef struct ledAnimation
 {
     int frameDelay; // Delay between frames (in ms)
@@ -123,7 +142,7 @@ ledAnimation* currentAnimation; // Pointer to current animation
 bool doAnimation = false; // Animation switch
 unsigned long prevAnimationMillis = 0;
 
-ledAnimation testAnimation = { 1500,5,0,{{255,0,0},{0,255,0},{0,0,255},{255,255,255},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0}} };
+ledAnimation testAnimation = { 1500,5,0,{{255,0,0},{0,255,0},{0,0,255},{255,255,255},{0,0,0}} };
 
     /*------------Output----------------*/
 
@@ -145,7 +164,9 @@ DallasTemperature sensors(&oneWire);
 
     /*------------Other-----------------*/
 
-byte mode = 0; // working mode is changed using this variable
+byte mode = 0; // Working mode is changed using this variable
+unsigned long workingTime = 0; // Time that UV pump is working (in ms) // Used to calculate the amount of purified water
+double purifiedWater = 0.00; // Amount of water purified since the start of the machine (in L)
 
     /*------------Other-----------------*/
 
@@ -401,7 +422,7 @@ void logACAmps()
 
 /*------------Amperage Control----------*/
 
-/*------------Exceptions Control--------*/
+/*------------Error Control-------------*/
 
 // This function will allow to notify the user about the error
 // and redirect the execution to an "onlyVitalActivities" function
@@ -419,18 +440,59 @@ void raise(byte error, String possibleExplanation)
     }
 }
 
-/*------------Exceptions Control--------*/
+// This function will check for hardware errors on the system
+void errorCheck()
+{
+    // Check for buoy incongruences
+    if (!digitalRead(lowSurfaceBuoy) && digitalRead(highSurfaceBuoy))
+    {
+        raise(BUOYINCONGRUENCEERROR, F("An incongruence has been detected with either lowSurfaceBuoy or highSurfaceBuoy. Please check the connections to those sensors"));
+    }
+    if (!digitalRead(lowFilteredBuoy) && digitalRead(highFilteredBuoy))
+    {
+        raise(BUOYINCONGRUENCEERROR, F("An incongruence has been detected with either lowFilteredBuoy or highFilteredBuoy. Please check the connections to those sensors"));
+    }
+    if (!digitalRead(lowPurifiedBuoy) && digitalRead(highPurifiedBuoy))
+    {
+        raise(BUOYINCONGRUENCEERROR, F("An incongruence has been detected with either lowPurifiedBuoy or highPurifiedBuoy. Please check the connections to those sensors"));
+    }
+    
+    // Check for pumps timeout
+    if (millis() > pumpPrevMillis[0] + WELLPUMPTIMEOUT)
+    {
+        raise(PUMPTIMEOUTERROR, String(F("Well pump has been working for more than ")) + String((int)WELLPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the well pump's circuit")));
+    }
+    if (millis() > pumpPrevMillis[0] + UVPUMPTIMEOUT)
+    {
+        raise(PUMPTIMEOUTERROR, String(F("UV pump has been working for more than ")) + String((int)UVPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in UV the pump's circuit")));
+    }
+    if (millis() > pumpPrevMillis[0] + ENDPUMPTIMEOUT)
+    {
+        raise(PUMPTIMEOUTERROR, String(F("Well pump has been working for more than ")) + String((int)ENDPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the end pump's circuit")));
+    }
+    if (millis() > pumpPrevMillis[0] + FILTERTIMEOUT)
+    {
+        raise(PUMPTIMEOUTERROR, String(F("Well pump has been working for more than ")) + String((int)FILTERTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the filter's circuit")));
+    }
+    // Check for weird amperage readings
+    
+    
+}
+
+/*------------Error Control-------------*/
 
 // The setup() function runs once each time the micro-controller starts
 void setup()
 {
-  Serial.begin(115200);
+#if DEBUG
+    Serial.begin(115200);
+#endif
   
     pinMode(redLed, OUTPUT);
     pinMode(greenLed, OUTPUT);
     pinMode(blueLed, OUTPUT);
 
-    setColor(YELLOW);
+    setColor(BOOTING);
 
     sensors.begin();
     if (sensors.getDeviceCount() < 3)
@@ -497,18 +559,27 @@ void setup()
     mode = 0;
 }
 
+#if DEBUG
+
 // temp vars (remove after debug)
 unsigned long prevmillis, perf;
 
-bool pumpSt[3] = { false, false, false }; // Used to store the status of each pump where true is on and false is off
+#endif
 
 // Add the main program code into the continuous loop() function
 void loop()
 {
-    prevmillis = millis();
+    #if DEBUG
+        prevmillis = millis();
+        readAllSensors(); // temporal debug function
+    #endif // DEBUG
 
     voltControl();
     logACAmps();
+
+    #if !ONLYVITALACTIVITYALLOWED
+        errorCheck();
+    #endif
     
     if (doAnimation && millis() > prevAnimationMillis + currentAnimation->frameDelay)
     {
@@ -523,124 +594,134 @@ void loop()
             tempMillis = millis();
         }
     #endif
-     //readAllSensors(); // temporal debug function
 
     #if !ONLYVITALACTIVITYALLOWED
-    switch (mode)
-    {
-    case 0: // Transition to OFF
-        output(wellPump, 0);
-        output(endPump, 0);
-        output(UVPump, 0);
-        output(filterRelay, 0);
-        output(ACInverter, 0);
-        delay(1000);
-        output(UVRelay, 0);
-        output(voltSSRelay, 1);
-        setColor(PURPLE);
-        mode = 1;
-        break;
-    case 1: // OFF
-        if (voltRead() > STARTWORKINGVOLTAGE)
-            mode = 2;
-        break;
-    case 2: // Transition to Pumps Working
-        output(ACInverter, 0);
-        setColor(CYAN);
-        for (byte i = 0; i < 3; i++)
+        switch (mode)
         {
-            pumpSt[i] = false;
-        }
-        mode = 3;
-        break;
-    case 3: // Pumps Working
-        if (voltRead() < STOPWORKINGVOLTAGE)
-            mode = 0;
-
-        if (!pumpSt[0] && !digitalRead(highSurfaceBuoy) && digitalRead(secBuoy))
-        {
-            output(wellPump, 1);
-            pumpSt[0] = true;
-        }
-            
-
-        if (pumpSt[0] && (digitalRead(highSurfaceBuoy) || !digitalRead(secBuoy)))
-        {
+        case 0: // Transition to OFF
             output(wellPump, 0);
-            pumpSt[0] = false;
-        }
-            
-
-        if (!digitalRead(lowFilteredBuoy) && digitalRead(highSurfaceBuoy))
-            mode = 4;
-
-        if (!pumpSt[1] && !digitalRead(highPurifiedBuoy) && digitalRead(lowFilteredBuoy))
-        {
-            output(ACInverter, 1);
-            delay(250);
-            output(UVRelay, 1);
-            delay(1000);
-            output(UVPump, 1);
-            pumpSt[1] = true;
-        }
-
-        if (pumpSt[1] && (!digitalRead(lowFilteredBuoy) || digitalRead(highPurifiedBuoy)))
-        {
+            output(endPump, 0);
             output(UVPump, 0);
+            output(filterRelay, 0);
+            output(ACInverter, 0);
             delay(1000);
             output(UVRelay, 0);
-            delay(250);
+            output(voltSSRelay, 1);
+            setColor(UNDERVOLTAGE);
+            for (byte i = 0; i < 3; i++)
+            {
+                pumpSt[i] = false;
+            }
+            mode = 1;
+            break;
+        case 1: // OFF
+            if (voltRead() > STARTWORKINGVOLTAGE)
+                mode = 2;
+            break;
+        case 2: // Transition to Pumps Working
             output(ACInverter, 0);
-            pumpSt[1] = false;
-        }
+            setColor(CYAN);
+            for (byte i = 0; i < 3; i++)
+            {
+                pumpSt[i] = false;
+            }
+            mode = 3;
+            break;
+        case 3: // Pumps Working
+            if (voltRead() < STOPWORKINGVOLTAGE)
+                mode = 0;
 
-        if (!pumpSt[2] && !digitalRead(endBuoy) && digitalRead(lowPurifiedBuoy))
-        {
-            output(endPump, 1);
-            pumpSt[2] = true;
-        }
+            if (!pumpSt[0] && !digitalRead(highSurfaceBuoy) && digitalRead(secBuoy))
+            {
+                output(wellPump, 1);
+                pumpPrevMillis[0] = millis();
+                pumpSt[0] = true;
+            }
+            
 
-        if (pumpSt[2] && (!digitalRead(lowPurifiedBuoy) || digitalRead(endBuoy)))
-        {
+            if (pumpSt[0] && (digitalRead(highSurfaceBuoy) || !digitalRead(secBuoy)))
+            {
+                output(wellPump, 0);
+                pumpSt[0] = false;
+            }
+            
+
+            if (!digitalRead(lowFilteredBuoy) && digitalRead(highSurfaceBuoy))
+                mode = 4;
+
+            if (!pumpSt[1] && !digitalRead(highPurifiedBuoy) && digitalRead(lowFilteredBuoy))
+            {
+                output(ACInverter, 1);
+                delay(250);
+                output(UVRelay, 1);
+                delay(1000);
+                pumpPrevMillis[1] = millis();
+                output(UVPump, 1);
+                pumpSt[1] = true;
+            }
+
+            if (pumpSt[1] && (!digitalRead(lowFilteredBuoy) || digitalRead(highPurifiedBuoy)))
+            {
+                output(UVPump, 0);
+                workingTime += millis() - pumpPrevMillis[1]; // Add this on/off cycle to workingTime
+                purifiedWater = (workingTime * UVPUMPFLOW) / 3600000.00; // calculate the amount of purified water
+                delay(1000);
+                output(UVRelay, 0);
+                delay(250);
+                output(ACInverter, 0);
+                pumpSt[1] = false;
+            }
+
+            if (!pumpSt[2] && !digitalRead(endBuoy) && digitalRead(lowPurifiedBuoy))
+            {
+                output(endPump, 1);
+                pumpPrevMillis[2] = millis();
+                pumpSt[2] = true;
+            }
+
+            if (pumpSt[2] && (!digitalRead(lowPurifiedBuoy) || digitalRead(endBuoy)))
+            {
+                output(endPump, 0);
+                pumpSt[2] = false;
+            }
+
+            break;
+        case 4: // Transition to filter working
+            output(wellPump, 0);
             output(endPump, 0);
-            pumpSt[2] = false;
+            output(UVPump, 0);
+
+            output(ACInverter, 1);
+            delay(1000);
+            output(UVRelay, 0);
+
+            if (voltRead() < STOPWORKINGVOLTAGE)
+                mode = 0;
+
+            waitForVoltage(STARTWORKINGVOLTAGE);
+            pumpPrevMillis[3] = millis();
+            output(filterRelay, 1);
+
+            mode = 5;
+            break;
+        case 5: // Filter Working
+            if (voltRead() < STOPWORKINGVOLTAGE) // quizas haya que quitar esto o poner un while...
+                mode = 0;
+
+            if (digitalRead(highFilteredBuoy) || !digitalRead(lowSurfaceBuoy))
+            {
+                output(filterRelay, 0);
+                mode = 2;
+            }
+            break;
         }
-
-        break;
-    case 4: // Transition to filter working
-        output(wellPump, 0);
-        output(endPump, 0);
-        output(UVPump, 0);
-
-        output(ACInverter, 1);
-        delay(1000);
-        output(UVRelay, 0);
-
-        if (voltRead() < STOPWORKINGVOLTAGE)
-            mode = 0;
-
-        waitForVoltage(STARTWORKINGVOLTAGE);
-        output(filterRelay, 1);
-
-        mode = 5;
-        break;
-    case 5: // Filter Working
-        if (voltRead() < STOPWORKINGVOLTAGE) // quizas haya que quitar esto o poner un while...
-            mode = 0;
-
-        if (digitalRead(highFilteredBuoy) || !digitalRead(lowSurfaceBuoy))
-        {
-            output(filterRelay, 0);
-            mode = 2;
-        }
-        break;
-    }
     #endif
-    
-    perf = millis() - prevmillis;
+    #if DEBUG
+        perf = millis() - prevmillis;
+    #endif
 }
 
-/*********Debug*************
+#if DEBUG
 void readAllSensors()
 {
     bool esecBuoy, elowSurfaceBuoy, ehighSurfaceBuoy, elowFilteredBuoy, ehighFilteredBuoy, elowPurifiedBuoy, ehighPurifiedBuoy, eendBuoy;
@@ -662,4 +743,4 @@ void readAllSensors()
 #endif
     1 + 1;
 }
-/*********Debug*************/
+#endif
