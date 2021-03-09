@@ -6,16 +6,6 @@
     Author:     vacmg
 */
 
-// Define used Libraries below here or use a .h file
-//
-
-#include <OneWire.h>
-#include <DallasTemperature.h>
-#include <Filters.h>
-
-// Define User Types below here or use a .h file
-//
-
 /*------------Config----------------*/
 
 #define DEBUG true
@@ -28,11 +18,11 @@
 #define STARTWORKINGVOLTAGE 15
 #define STOPWORKINGVOLTAGE 12
 
-#define DCAmpSensivity 0.1135 //sensor sensivity en Volts/Amps // 5.4A for 60w test load
+#define DCAmpSensivity 0.1135 //sensor sensivity in Volts/Amps // 5.4A for 60w test load
 #define DCAmpZero 2.4956 // sensor voltage for 0 Amps current
 
 #define ACAmpZero -0.07157 // sensor calibration correction value
-#define ACAmpSensivity 0.033 // sensor sensivity en Volts/Amps // 0.25A for 60w test load
+#define ACAmpSensivity 0.033 // sensor sensivity in Volts/Amps // 0.25A for 60w test load
 #define ACFrequency 50 // test signal frequency (Hz)
 
 #define UVPUMPFLOW 171 // UV pump flow in L/H
@@ -44,15 +34,25 @@
 #define FILTERTIMEOUT 60000
 
 #if TEMPERATURE
-    #define TEMPCHECKTIME 10000
-    #define STOPWORKINGTEMP 65
-    #define MAXCASETEMP 40
-    #define MINCASETEMP 38
-    #define MAXPSUTEMP 40
-    #define MINPSUTEMP 38
+#define TEMPCHECKTIME 10000
+#define STOPWORKINGTEMP 65
+#define MAXCASETEMP 40
+#define MINCASETEMP 38
+#define MAXPSUTEMP 40
+#define MINPSUTEMP 38
 #endif
 
 /*------------Config----------------*/
+
+// Define used Libraries below here or use a .h file
+//
+
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <Filters.h>
+
+// Define User Types below here or use a .h file
+//
 
 /*------------Errors----------------*/
 
@@ -127,8 +127,8 @@ const byte blueLed = 11;
 const byte screenRelay = 47;
 #endif
 
-bool pumpSt[3] = { false, false, false }; // Used to store the status of each pump where true is on and false is off
-unsigned long pumpPrevMillis[4] = { 0,0,0 }; // Used to check for PUMPTIMEOUTERROR // pumpPrevMillis[1] also stores UV working start time // { well, UV, end, filter }
+bool pumpSt[4] = { false, false, false, false }; // Used to store the status of each pump and also the filter where true is on and false is off // { well, UV, end, filter }
+unsigned long pumpPrevMillis[4] = { 0,0,0,0 }; // Used to check for PUMPTIMEOUTERROR // pumpPrevMillis[1] also stores UV working start time // { well, UV, end, filter }
 
 typedef struct ledAnimation
 {
@@ -458,23 +458,23 @@ void errorCheck()
     }
     
     // Check for pumps timeout
-    if (millis() > pumpPrevMillis[0] + WELLPUMPTIMEOUT)
+    if (pumpSt[0] && millis() > pumpPrevMillis[0] + WELLPUMPTIMEOUT)
     {
         raise(PUMPTIMEOUTERROR, String(F("Well pump has been working for more than ")) + String((int)WELLPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the well pump's circuit")));
     }
-    if (millis() > pumpPrevMillis[0] + UVPUMPTIMEOUT)
+    if (pumpSt[1] && millis() > pumpPrevMillis[1] + UVPUMPTIMEOUT)
     {
         raise(PUMPTIMEOUTERROR, String(F("UV pump has been working for more than ")) + String((int)UVPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in UV the pump's circuit")));
     }
-    if (millis() > pumpPrevMillis[0] + ENDPUMPTIMEOUT)
+    if (pumpSt[2] && millis() > pumpPrevMillis[2] + ENDPUMPTIMEOUT)
     {
         raise(PUMPTIMEOUTERROR, String(F("Well pump has been working for more than ")) + String((int)ENDPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the end pump's circuit")));
     }
-    if (millis() > pumpPrevMillis[0] + FILTERTIMEOUT)
+    if (pumpSt[3] && millis() > pumpPrevMillis[3] + FILTERTIMEOUT)
     {
-        raise(PUMPTIMEOUTERROR, String(F("Well pump has been working for more than ")) + String((int)FILTERTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the filter's circuit")));
+        raise(PUMPTIMEOUTERROR, String(F("Filter has been working for more than ")) + String((int)FILTERTIMEOUT) + String(F("ms. Either the filter doesn't work or there is a leakage in the filter's circuit")));
     }
-    // Check for weird amperage readings
+    // Check for weird amperage readings // FOR UV MAYBE IS BETTER TO CHECK FOR AMPS AFTER THE START OF THE UV AND PRIOR TO START THE PUMP
     
     
 }
@@ -699,6 +699,7 @@ void loop()
                 mode = 0;
 
             waitForVoltage(STARTWORKINGVOLTAGE);
+            pumpSt[3] = true;
             pumpPrevMillis[3] = millis();
             output(filterRelay, 1);
 
@@ -711,6 +712,7 @@ void loop()
             if (digitalRead(highFilteredBuoy) || !digitalRead(lowSurfaceBuoy))
             {
                 output(filterRelay, 0);
+                pumpSt[3] = false;
                 mode = 2;
             }
             break;
