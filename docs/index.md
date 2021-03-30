@@ -23,7 +23,7 @@ Currently, we are working on a new and revised version of the water purifying sy
 ![System scheme](https://raw.githubusercontent.com/vacmg/PurifyMyWater/master/Schematics/Scan.jpg)
 
 Firstly, a pump gets water from the well and puts it in a surface tank. Then, the sand filter separates the clean water from the soil, and sends it to a UV tank.
-The next step is to destroy any organism using a UV lamp and then pump the water to a tank at a higher elevation than the rest of the installation.
+The next step is to destroy any organism using a UV radiation light and then pump the water to a tank at a higher elevation than the rest of the installation.
 From that tank, the water can distributed as necessary.
 
 - #### Energy management
