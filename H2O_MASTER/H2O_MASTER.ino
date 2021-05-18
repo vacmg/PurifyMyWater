@@ -6,6 +6,8 @@
     Author:     vacmg
 */
 
+#include <Arduino.h>
+
 /*------------Config----------------*/
 
 #define DEBUG true
