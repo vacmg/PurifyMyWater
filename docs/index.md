@@ -4,9 +4,9 @@ Here you can read about the hardware & software being used to bring to the world
 ## About us
 This project is being developed by [**@vacmg**](https://github.com/vacmg) with the support of the [**ALUMNOS SOLIDARIOS**](https://www.joyfe.es/gente-joyfe/alumnos-solidarios/) initiative of JOYFE's school in Madrid.
 
-Currently, we are developing and testing a prototype which will be deployed in the Kanhankro school and will supply around **1500L** of clean water per day to the school and the surrounding area.
+Currently, we are developing and testing a prototype which will be deployed in the Kanhakro school and will supply around **1500L** of clean water per day to the school and the surrounding area.
 
-Our project was included in a [**UNICEF video**](http://www.youtube.com/watch?v=UPMDZqc1k5A&t=4m5s) about solidarity and was selected by the [**Juan José Marquez foundation**](https://fundacionjjmarquez.org/) to bring water to a school located in Kahankro, in Ivory Coast.
+Our project was included in a [**UNICEF video**](http://www.youtube.com/watch?v=UPMDZqc1k5A&t=4m5s) about solidarity and was selected by the [**Juan José Marquez foundation**](https://fundacionjjmarquez.org/) to bring water to a school located in Kanhakro, in Ivory Coast.
 
 Deprecated documentation of the first **prototype** (currently we are developing the second hardware revision) including the manual can be found [**HERE**](https://drive.google.com/drive/u/1/folders/1oBQqVKW_CtPYmneLX6VQYX_fBKi4t3Yf)
 
@@ -24,7 +24,7 @@ Currently, we are working on a new and revised version of the water purifying sy
 
 Firstly, a pump gets water from the well and puts it in a surface tank. Then, the sand filter separates the clean water from the soil, and sends it to a UV tank.
 The next step is to destroy any organism using a UV radiation light and then pump the water to a tank at a higher elevation than the rest of the installation.
-From that tank, the water can distributed as necessary.
+From that tank, the water can be distributed as necessary.
 
 - #### Energy management
 
