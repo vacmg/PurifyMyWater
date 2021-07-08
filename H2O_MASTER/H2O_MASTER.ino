@@ -14,6 +14,7 @@
 #define GUI false
 #define ONLYVITALACTIVITYALLOWED false
 #define TEMPERATURE true
+#define OVERRRIDEMAXVOLTAGE false // useful to check some functions without powering all the system
 
 #define STARTCHARGINGVOLTAGE 13
 #define STOPCHARGINGVOLTAGE 15.75
@@ -25,9 +26,10 @@
 
 #define ACAmpZero -0.07157 // sensor calibration correction value
 #define ACAmpSensivity 0.033 // sensor sensivity in Volts/Amps // 0.25A for 60w test load
-#define ACFrequency 50 // test signal frequency (Hz)
+#define ACFrequency 50 // AC signal frequency (Hz)
 
 #define UVPUMPFLOW 171 // UV pump flow in L/H
+#define ESTIMATEDUVAMPERAGE 1.0 // Minimum estimated current that the UV light uses // todo place real value
 
 // If any of this pumps work for more than the specified milliseconds, raise PUMPTIMEOUTERROR
 #define WELLPUMPTIMEOUT 60000
@@ -36,12 +38,12 @@
 #define FILTERTIMEOUT 60000
 
 #if TEMPERATURE
-#define TEMPCHECKTIME 10000
-#define STOPWORKINGTEMP 65
-#define MAXCASETEMP 40
-#define MINCASETEMP 38
-#define MAXPSUTEMP 40
-#define MINPSUTEMP 38
+    #define TEMPCHECKTIME 10000
+    #define STOPWORKINGTEMP 65
+    #define MAXCASETEMP 40
+    #define MINCASETEMP 38
+    #define MAXPSUTEMP 40
+    #define MINPSUTEMP 38
 #endif
 
 /*------------Config----------------*/
@@ -59,14 +61,15 @@
 /*------------Errors----------------*/
 
 #define UNEXPECTEDBEHAVIORERROR 00 // The code is being executed in an unwanted way (a bug is being detected) // error code 00
-#define TEMPSENSORSAMOUNTERROR 10 // Some temp sensors are not properly connected to the onewire bus // error code 10
 
 #if TEMPERATURE
+    #define TEMPSENSORSAMOUNTERROR 10 // Some temp sensors are not properly connected to the onewire bus // error code 10
     #define EXTREMEHOTTEMPERROR 11 // Control system temperatures are extremely high and it is dangerous to operate // error code 11
 #endif
 
-#define BUOYINCONGRUENCEERROR 21 // The system has detected an incongruence with the readings of the buoy sensors (often caused by a non connected or malfunctioning buoy) // error code 21
-#define PUMPTIMEOUTERROR 22 // The system has spent so much time with a pump working. Probably the circuit has a leak or a pump is not working properly
+#define BUOYINCONGRUENCEERROR 20 // The system has detected an incongruence with the readings of the buoy sensors (often caused by a non connected or malfunctioning buoy) // error code 21
+#define PUMPTIMEOUTERROR 21 // The system has spent so much time with a pump working. Probably the circuit has a leak or a pump is not working properly
+#define UVLIGHTNOTWORKINGERROR 22 // The UV amperage sensor didn't detect enough current. The UV light must be either broken or disconnected (check and replace the UV light)
 /*------------Errors----------------*/
 
 /*------------Const&vars------------*/
@@ -87,7 +90,7 @@ const byte highPurifiedBuoy = 8;
 const byte endBuoy = 9;
 const byte tempPin = 48;
 #if GUI
-const byte screenSensor = 23;
+    const byte screenSensor = 23;
 #endif
 
 RunningStatistics inputStats;                 // create statistics to look at the raw test signal
@@ -141,7 +144,6 @@ typedef struct ledAnimation
 };
 
 ledAnimation* currentAnimation; // Pointer to current animation
-bool doAnimation = false; // Animation switch
 unsigned long prevAnimationMillis = 0;
 
 ledAnimation testAnimation = { 1500,5,0,{{255,0,0},{0,255,0},{0,0,255},{255,255,255},{0,0,0}} };
@@ -168,7 +170,7 @@ DallasTemperature sensors(&oneWire);
 
 byte mode = 0; // Working mode is changed using this variable
 unsigned long workingTime = 0; // Time that UV pump is working (in ms) // Used to calculate the amount of purified water
-double purifiedWater = 0.00; // Amount of water purified since the start of the machine (in L)
+double purifiedWater = 0.00; // Amount of water purified since the start of the machine (in L) // TODO check if it works
 
     /*------------Other-----------------*/
 
@@ -236,10 +238,6 @@ void tempControl()
     {
         raise(EXTREMEHOTTEMPERROR, String(F("Current temps are: ")) + String(temp[0]) + String(F(", ")) + String(temp[1]) + String(F(", ")) + String(temp[2]));
     }
-
-    /*output(inFan, 1);
-    output(outFan, 1);
-    output(PSUFan, 1);//*/
 }
 #endif
 /*------------Temp Control--------------*/
@@ -347,7 +345,7 @@ float voltRead()
 // This function generates an offset to correctly measure real voltage under heavy loads
 float loadOffset()
 {
-    float load = getDCAmps(200); // get current load
+    float load = getDCAmps(mainAmpSensor, 200); // get current load
     //float formula = load * -0.65; // one big pump // 1.5A
     //float formula = load * -0.375; // two big pumps // 3A
     //float formula = load * -0.50; // 1 pump + UV // 2.5A
@@ -379,9 +377,12 @@ void voltControl()
 }
 
 // This functions blocks the code execution until a certain voltage is reached inside the supercapacitors
-void waitForVoltage(int volts)
+void waitForVoltage(float volts)
 {
     float voltage = voltRead();
+#if OVERRRIDEMAXVOLTAGE
+    voltage = volts + 1;
+#endif
     if (voltage < volts)
     {
         output(voltSSRelay, 1);
@@ -397,13 +398,13 @@ void waitForVoltage(int volts)
 
 /*------------Amperage Control----------*/
 
-float getDCAmps(int samples)
+float getDCAmps(int sensor, int samples)
 {
     float sensorVolts;
     float corriente = 0;
     for (int i = 0; i < samples; i++)
     {
-        sensorVolts = analogRead(mainAmpSensor) * (5.0 / 1023.0); // sensor reading
+        sensorVolts = analogRead(sensor) * (5.0 / 1023.0); // sensor reading
         corriente = corriente + (sensorVolts - DCAmpZero) / DCAmpSensivity; // Proccess input to get Amperage
     }
     corriente = corriente / samples;
@@ -462,23 +463,20 @@ void errorCheck()
     // Check for pumps timeout
     if (pumpSt[0] && millis() > pumpPrevMillis[0] + WELLPUMPTIMEOUT)
     {
-        raise(PUMPTIMEOUTERROR, String(F("Well pump has been working for more than ")) + String((int)WELLPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the well pump's circuit")));
+        raise(PUMPTIMEOUTERROR, String(F("Well pump has been working for more than ")) + String(WELLPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the well pump's circuit")));
     }
     if (pumpSt[1] && millis() > pumpPrevMillis[1] + UVPUMPTIMEOUT)
     {
-        raise(PUMPTIMEOUTERROR, String(F("UV pump has been working for more than ")) + String((int)UVPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in UV the pump's circuit")));
+        raise(PUMPTIMEOUTERROR, String(F("UV pump has been working for more than ")) + String(UVPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in UV the pump's circuit")));
     }
     if (pumpSt[2] && millis() > pumpPrevMillis[2] + ENDPUMPTIMEOUT)
     {
-        raise(PUMPTIMEOUTERROR, String(F("Well pump has been working for more than ")) + String((int)ENDPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the end pump's circuit")));
+        raise(PUMPTIMEOUTERROR, String(F("Well pump has been working for more than ")) + String(ENDPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the end pump's circuit")));
     }
     if (pumpSt[3] && millis() > pumpPrevMillis[3] + FILTERTIMEOUT)
     {
-        raise(PUMPTIMEOUTERROR, String(F("Filter has been working for more than ")) + String((int)FILTERTIMEOUT) + String(F("ms. Either the filter doesn't work or there is a leakage in the filter's circuit")));
+        raise(PUMPTIMEOUTERROR, String(F("Filter has been working for more than ")) + String(FILTERTIMEOUT) + String(F("ms. Either the filter doesn't work or there is a leakage in the filter's circuit")));
     }
-    // Check for weird amperage readings // FOR UV MAYBE IS BETTER TO CHECK FOR AMPS AFTER THE START OF THE UV AND PRIOR TO START THE PUMP
-    
-    
 }
 
 /*------------Error Control-------------*/
@@ -488,19 +486,22 @@ void setup()
 {
 #if DEBUG
     Serial.begin(115200);
+    delay(500);
+    Serial.println(F("Setup - Booting..."));
 #endif
   
     pinMode(redLed, OUTPUT);
     pinMode(greenLed, OUTPUT);
     pinMode(blueLed, OUTPUT);
-
     setColor(BOOTING);
 
+#if TEMPERATURE
     sensors.begin();
     if (sensors.getDeviceCount() < 3)
     {
-        raise(TEMPSENSORSAMOUNTERROR, String(F("Less than 3 sensors were connected.\nNumber of sensors detected: "))+String(sensors.getDeviceCount()));
+        raise(TEMPSENSORSAMOUNTERROR, String(F("Setup - Less than 3 sensors were connected.\nNumber of sensors detected: "))+String(sensors.getDeviceCount()));
     }
+#endif
 
     pinMode(secBuoy, INPUT);
     pinMode(lowSurfaceBuoy, INPUT);
@@ -510,7 +511,7 @@ void setup()
     pinMode(lowPurifiedBuoy, INPUT);
     pinMode(highPurifiedBuoy, INPUT);
     pinMode(endBuoy, INPUT);
-    pinMode(tempPin, INPUT);
+    // pinMode(tempPin, INPUT);
 
     pinMode(voltSSRelay, OUTPUT);
     pinMode(voltRelay, OUTPUT);
@@ -520,9 +521,6 @@ void setup()
     pinMode(endPump, OUTPUT);
     pinMode(UVRelay, OUTPUT);
     pinMode(filterRelay, OUTPUT);
-    pinMode(outFan, OUTPUT);
-    pinMode(PSUFan, OUTPUT);
-    pinMode(inFan, OUTPUT);
 
     output(voltSSRelay, 0);
     output(voltRelay, 1);
@@ -532,9 +530,15 @@ void setup()
     output(endPump, 0);
     output(UVRelay, 0);
     output(filterRelay, 0);
+
+#if TEMPERATURE
+    pinMode(outFan, OUTPUT);
+    pinMode(PSUFan, OUTPUT);
+    pinMode(inFan, OUTPUT);
     output(outFan, 1);
     output(PSUFan, 1);
     output(inFan, 1);
+#endif
 
 #if GUI
     pinMode(screenSensor, INPUT);
@@ -545,11 +549,13 @@ void setup()
 #endif
 #if ONLYVITALACTIVITYALLOWED
     currentAnimation = &testAnimation;
-    doAnimation = true;
 #else
     #if TEMPERATURE
         tempControl();
     #endif
+    Serial.print(F("Setup - Waiting for "));
+    Serial.print(STARTCHARGINGVOLTAGE - 1);
+    Serial.println(F(" V"));
     waitForVoltage(STARTCHARGINGVOLTAGE - 1);
 #endif
     output(voltRelay, 0);
@@ -559,6 +565,9 @@ void setup()
     inputStats.setWindowSecs(40.0 / ACFrequency);     //Set AC Amperemeter frequency
 
     mode = 0;
+#if DEBUG
+    Serial.println(F("Setup - Ready"));
+#endif
 }
 
 #if DEBUG
@@ -583,7 +592,7 @@ void loop()
         errorCheck();
     #endif
     
-    if (doAnimation && millis() > prevAnimationMillis + currentAnimation->frameDelay)
+    if (currentAnimation != NULL && millis() > prevAnimationMillis + currentAnimation->frameDelay)
     {
         updateAnimation();
         prevAnimationMillis = millis();
@@ -617,7 +626,9 @@ void loop()
             mode = 1;
             break;
         case 1: // OFF
+        #if !OVERRRIDEMAXVOLTAGE
             if (voltRead() > STARTWORKINGVOLTAGE)
+        #endif
                 mode = 2;
             break;
         case 2: // Transition to Pumps Working
@@ -630,8 +641,10 @@ void loop()
             mode = 3;
             break;
         case 3: // Pumps Working
-            if (voltRead() < STOPWORKINGVOLTAGE)
-                mode = 0;
+            #if !OVERRRIDEMAXVOLTAGE
+                if (voltRead() < STOPWORKINGVOLTAGE)
+                    mode = 0;
+            #endif
 
             if (!pumpSt[0] && !digitalRead(highSurfaceBuoy) && digitalRead(secBuoy))
             {
@@ -656,7 +669,21 @@ void loop()
                 output(ACInverter, 1);
                 delay(250);
                 output(UVRelay, 1);
-                delay(1000);
+
+                // check if UV is working
+                float averageAmps = 0;
+                for (int i = 0; i < 1000; i++)
+                {
+                    averageAmps += getDCAmps(UVAmpSensor, 200);
+                    delay(1);
+                }
+                averageAmps /= 1000;
+
+                if (averageAmps < ESTIMATEDUVAMPERAGE)
+                {
+                    raise(UVLIGHTNOTWORKINGERROR, String(F("The UV amperage sensor detected "))+String(averageAmps)+String(F("A. The UV light must be either broken or disconnected. Check the connections and if it persists, replace the UV light")));
+                }
+
                 pumpPrevMillis[1] = millis();
                 output(UVPump, 1);
                 pumpSt[1] = true;
@@ -696,9 +723,10 @@ void loop()
             output(ACInverter, 1);
             delay(1000);
             output(UVRelay, 0);
-
-            if (voltRead() < STOPWORKINGVOLTAGE)
-                mode = 0;
+            #if !OVERRRIDEMAXVOLTAGE
+                if (voltRead() < STOPWORKINGVOLTAGE)
+                    mode = 0;
+            #endif
 
             waitForVoltage(STARTWORKINGVOLTAGE);
             pumpSt[3] = true;
@@ -708,8 +736,10 @@ void loop()
             mode = 5;
             break;
         case 5: // Filter Working
-            if (voltRead() < STOPWORKINGVOLTAGE) // quizas haya que quitar esto o poner un while...
-                mode = 0;
+            #if !OVERRRIDEMAXVOLTAGE
+                if (voltRead() < STOPWORKINGVOLTAGE)
+                    mode = 0;
+            #endif
 
             if (digitalRead(highFilteredBuoy) || !digitalRead(lowSurfaceBuoy))
             {
@@ -720,6 +750,14 @@ void loop()
             break;
         }
     #endif
+
+    #if GUI
+        if (Serial1.available())
+        {
+            // TODO server side communication
+        }
+    #endif
+
     #if DEBUG
         perf = millis() - prevmillis;
     #endif
