@@ -6,6 +6,8 @@
     Author:     vacmg
 */
 
+//todo add eeprom config
+
 #include <Arduino.h>
 
 /*------------Config----------------*/
@@ -28,8 +30,8 @@
 #define ACAmpSensivity 0.033 // sensor sensivity in Volts/Amps // 0.25A for 60w test load
 #define ACFrequency 50 // AC signal frequency (Hz)
 
-#define UVPUMPFLOW 171 // UV pump flow in L/H
-#define ESTIMATEDUVAMPERAGE 1.0 // Minimum estimated current that the UV light uses // todo place real value
+#define UVPUMPFLOW 55 // 171 // UV pump flow in L/H
+#define ESTIMATEDUVAMPERAGE -1.0 // Minimum estimated current that the UV light uses // todo place real value
 
 // If any of this pumps work for more than the specified milliseconds, raise PUMPTIMEOUTERROR
 #define WELLPUMPTIMEOUT 60000
@@ -147,6 +149,7 @@ ledAnimation* currentAnimation; // Pointer to current animation
 unsigned long prevAnimationMillis = 0;
 
 ledAnimation testAnimation = { 1500,5,0,{{255,0,0},{0,255,0},{0,0,255},{255,255,255},{0,0,0}} };
+ledAnimation defaultErrorAnimation = { 500,2,0,{{255,0,0},{0,0,0}} };
 
     /*------------Output----------------*/
 
@@ -169,8 +172,9 @@ DallasTemperature sensors(&oneWire);
     /*------------Other-----------------*/
 
 byte mode = 0; // Working mode is changed using this variable
+unsigned long UVMillis = 0;
 unsigned long workingTime = 0; // Time that UV pump is working (in ms) // Used to calculate the amount of purified water
-double purifiedWater = 0.00; // Amount of water purified since the start of the machine (in L) // TODO check if it works
+double purifiedWater = 0.00; // Amount of water purified since the start of the machine (in L)
 
     /*------------Other-----------------*/
 
@@ -314,14 +318,18 @@ void setColor(byte color)
 
 void updateAnimation()
 {
-    setColor(currentAnimation->animation[currentAnimation->currentFrame]);
-    if (currentAnimation->currentFrame + 1 >= currentAnimation->animationSize)
+    if (currentAnimation != NULL && millis() > prevAnimationMillis + currentAnimation->frameDelay)
     {
-        currentAnimation->currentFrame = 0;
-    }
-    else
-    {
-        currentAnimation->currentFrame++;
+        setColor(currentAnimation->animation[currentAnimation->currentFrame]);
+        if (currentAnimation->currentFrame + 1 >= currentAnimation->animationSize)
+        {
+            currentAnimation->currentFrame = 0;
+        }
+        else
+        {
+            currentAnimation->currentFrame++;
+        }
+        prevAnimationMillis = millis();
     }
 }
 
@@ -345,7 +353,7 @@ float voltRead()
 // This function generates an offset to correctly measure real voltage under heavy loads
 float loadOffset()
 {
-    float load = getDCAmps(mainAmpSensor, 200); // get current load
+    float load = getDCAmps(200); // get current load
     //float formula = load * -0.65; // one big pump // 1.5A
     //float formula = load * -0.375; // two big pumps // 3A
     //float formula = load * -0.50; // 1 pump + UV // 2.5A
@@ -398,23 +406,24 @@ void waitForVoltage(float volts)
 
 /*------------Amperage Control----------*/
 
-float getDCAmps(int sensor, int samples)
+float getDCAmps(int samples)
 {
     float sensorVolts;
     float corriente = 0;
     for (int i = 0; i < samples; i++)
     {
-        sensorVolts = analogRead(sensor) * (5.0 / 1023.0); // sensor reading
+        sensorVolts = analogRead(mainAmpSensor) * (5.0 / 1023.0); // sensor reading
         corriente = corriente + (sensorVolts - DCAmpZero) / DCAmpSensivity; // Proccess input to get Amperage
     }
     corriente = corriente / samples;
-    return(corriente);
+    return(corriente >=0 ? corriente : 0);
 }
 
 // This function uses all the data logged by logACAmps() and calculates an RMS Amperage value
 float getACAmps()
 {
-    return(ACAmpZero + ACAmpSensivity * inputStats.sigma()); // calculate RMS Amperage
+    float amps = ACAmpZero + ACAmpSensivity * inputStats.sigma();
+    return(amps >= 0 ? amps : 0); // calculate RMS Amperage
 }
 
 // To measure AC current, arduino must log sensor data all the time. This function read and log one value per call
@@ -433,13 +442,34 @@ void logACAmps()
 void raise(byte error, String possibleExplanation)
 {
     setColor(RED);
-    Serial.print(F("Error "));
-    Serial.print(error);
-    Serial.print(F(": "));
-    Serial.println(possibleExplanation);
+    disconnectEverything();
+    delay(1000);
+    voltControl();
+    #if DEBUG
+        Serial.print(F("Error "));
+        Serial.print(error);
+        Serial.print(F(": "));
+        Serial.println(possibleExplanation);
+        delay(2000);
+    #endif
+    
+    switch (error)
+    {
+    default:
+        currentAnimation = &defaultErrorAnimation;
+        break;
+    }
+
+
+    long pm = millis();
     while (true)
     {
-        voltControl();
+        if (pm + 1000 < millis())
+        {
+            voltControl();
+            pm = millis();
+        }
+        updateAnimation();
     }
 }
 
@@ -477,6 +507,21 @@ void errorCheck()
     {
         raise(PUMPTIMEOUTERROR, String(F("Filter has been working for more than ")) + String(FILTERTIMEOUT) + String(F("ms. Either the filter doesn't work or there is a leakage in the filter's circuit")));
     }
+}
+
+void disconnectEverything()
+{
+    output(voltSSRelay, 0);
+    output(voltRelay, 0);
+    output(ACInverter, 0);
+    output(wellPump, 0);
+    output(UVPump, 0);
+    output(endPump, 0);
+    output(UVRelay, 0);
+    output(filterRelay, 0);
+    #if DEBUG
+        Serial.println(F("DisconenctEverything - Done"));
+    #endif
 }
 
 /*------------Error Control-------------*/
@@ -592,11 +637,7 @@ void loop()
         errorCheck();
     #endif
     
-    if (currentAnimation != NULL && millis() > prevAnimationMillis + currentAnimation->frameDelay)
-    {
-        updateAnimation();
-        prevAnimationMillis = millis();
-    }
+    updateAnimation();
 
     #if TEMPERATURE
         if (millis() > tempMillis + TEMPCHECKTIME)
@@ -671,28 +712,34 @@ void loop()
                 output(UVRelay, 1);
 
                 // check if UV is working
-                float averageAmps = 0;
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 100; i++)
                 {
-                    averageAmps += getDCAmps(UVAmpSensor, 200);
-                    delay(1);
+                    logACAmps();
+                    delay(10);
                 }
-                averageAmps /= 1000;
+                float amps = getACAmps();
 
-                if (averageAmps < ESTIMATEDUVAMPERAGE)
+                if (amps < ESTIMATEDUVAMPERAGE)
                 {
-                    raise(UVLIGHTNOTWORKINGERROR, String(F("The UV amperage sensor detected "))+String(averageAmps)+String(F("A. The UV light must be either broken or disconnected. Check the connections and if it persists, replace the UV light")));
+                    raise(UVLIGHTNOTWORKINGERROR, String(F("The UV amperage sensor detected "))+String(amps)+String(F("A. The UV light must be either broken or disconnected. Check the connections and if it persists, replace the UV light")));
                 }
 
                 pumpPrevMillis[1] = millis();
+                UVMillis = pumpPrevMillis[1];
                 output(UVPump, 1);
                 pumpSt[1] = true;
+            }
+            if (pumpSt[1]) // if UV is on and each 800ms
+            {
+                workingTime += millis() - UVMillis; // Add this time to workingTime
+                purifiedWater = (workingTime * UVPUMPFLOW) / 3600000.00; // calculate the amount of purified water
+                UVMillis = millis();
             }
 
             if (pumpSt[1] && (!digitalRead(lowFilteredBuoy) || digitalRead(highPurifiedBuoy)))
             {
                 output(UVPump, 0);
-                workingTime += millis() - pumpPrevMillis[1]; // Add this on/off cycle to workingTime
+                workingTime += millis() - UVMillis; // Add this time to workingTime
                 purifiedWater = (workingTime * UVPUMPFLOW) / 3600000.00; // calculate the amount of purified water
                 delay(1000);
                 output(UVRelay, 0);
@@ -775,14 +822,18 @@ void readAllSensors()
     elowPurifiedBuoy = digitalRead(lowPurifiedBuoy);
     ehighPurifiedBuoy = digitalRead(highPurifiedBuoy);
     eendBuoy = digitalRead(endBuoy);
-#if TEMPERATURE
+
+    float ACAmps;
+    ACAmps = getACAmps();
+
     float temp[3];
+#if TEMPERATURE
     getSensorsTemp(temp);
 #endif
-#if GUI
     bool escreenSensor;
+#if GUI
     escreenSensor = digitalRead(screenSensor);
 #endif
-    1 + 1;
+    1 + 1; //todo remove this :D
 }
 #endif
