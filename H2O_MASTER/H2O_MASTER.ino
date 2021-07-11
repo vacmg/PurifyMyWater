@@ -13,8 +13,8 @@
 /*------------Config----------------*/
 
 #define DEBUG true
-#define GUI false
-#define ONLYVITALACTIVITYALLOWED false
+#define GUI true
+#define ONLYVITALACTIVITYALLOWED true
 #define TEMPERATURE true
 #define OVERRRIDEMAXVOLTAGE false // useful to check some functions without powering all the system
 
@@ -48,6 +48,15 @@
     #define MINPSUTEMP 38
 #endif
 
+#if GUI
+    #define SCREENBAUDRATE 115200
+    #define SCREENALWAYSON 1 // TODO auto on/off
+    #define MAXRETRIES 3
+    #define HANDSHAKETIMEOUT 2500
+    #define SENDMSGTIMEOUT 2500
+    #define SCREENTIMEOUT 120000
+#endif
+
 /*------------Config----------------*/
 
 // Define used Libraries below here or use a .h file
@@ -70,8 +79,14 @@
 #endif
 
 #define BUOYINCONGRUENCEERROR 20 // The system has detected an incongruence with the readings of the buoy sensors (often caused by a non connected or malfunctioning buoy) // error code 21
-#define PUMPTIMEOUTERROR 21 // The system has spent so much time with a pump working. Probably the circuit has a leak or a pump is not working properly
-#define UVLIGHTNOTWORKINGERROR 22 // The UV amperage sensor didn't detect enough current. The UV light must be either broken or disconnected (check and replace the UV light)
+#define PUMPTIMEOUTERROR 21 // The system has spent so much time with a pump working. Probably the circuit has a leak or a pump is not working properly // error code 22
+#define UVLIGHTNOTWORKINGERROR 22 // The UV amperage sensor didn't detect enough current. The UV light must be either broken or disconnected (check and replace the UV light) // error code 23
+
+#if GUI
+    #define SCREENNOTCONNECTEDERROR 30 // Cannot handsake with the screen. Probably a broken or bad connected cable or the screen didn't have the correct firmware // error code 30
+    #define MAXMESSAGESIZEEXCEEDEDERROR 31 // The message that is being sent exceed the max size of 32 bytes w/out header & CRC // error code 31
+#endif 
+
 /*------------Errors----------------*/
 
 /*------------Const&vars------------*/
@@ -92,7 +107,7 @@ const byte highPurifiedBuoy = 8;
 const byte endBuoy = 9;
 const byte tempPin = 48;
 #if GUI
-    const byte screenSensor = 23;
+    const byte screenSensor = 23; // 1 = case open, 2 = case closed
 #endif
 
 RunningStatistics inputStats;                 // create statistics to look at the raw test signal
@@ -102,19 +117,19 @@ bool ACAmpsDoMeasurement = false; // boolean value used as a switch to begin mea
 
     /*------------Output----------------*/
 
-#define BLACK 0
-#define RED 1
-#define GREEN 2
-#define BLUE 3
-#define WHITE 4
-#define YELLOW 5
-#define CYAN 6
-#define PURPLE 7
+#define BLACK 0, 0, 0
+#define RED 255, 0 ,0
+#define GREEN 0, 255, 0
+#define BLUE 0, 0, 255
+#define WHITE 255, 255, 255
+#define YELLOW 255, 255, 0
+#define CYAN 0, 255, 255
+#define PURPLE 255, 0, 255
 
 // Tie an action to a specific color
-#define UNDERVOLTAGE PURPLE 
-#define WORKING CYAN   
-#define BOOTING YELLOW
+#define UNDERVOLTAGECOLOR PURPLE 
+#define WORKINGCOLOR CYAN   
+#define BOOTINGCOLOR YELLOW
 
 const byte voltSSRelay = 33;
 const byte voltRelay = 49;
@@ -171,12 +186,40 @@ DallasTemperature sensors(&oneWire);
 
     /*------------Other-----------------*/
 
-byte mode = 0; // Working mode is changed using this variable
+#define TRANSITIONTOIDLE 0
+#define IDLE 1
+#define TRANSITIONTOPUMPSWORKING 2
+#define PUMPSWORKING 3
+#define TRANSITIONTOFILTERWORKING 4
+#define FILTERWORKING 5
+
+byte mode = TRANSITIONTOIDLE; // Working mode is changed using this variable
 unsigned long UVMillis = 0;
 unsigned long workingTime = 0; // Time that UV pump is working (in ms) // Used to calculate the amount of purified water
 double purifiedWater = 0.00; // Amount of water purified since the start of the machine (in L)
 
     /*------------Other-----------------*/
+
+    /*---------------GUI----------------*/
+#if GUI
+    #define SCREENOFF 0
+    #define SCREENSTARTING 1
+    #define SCREENON 2
+    #define SCREENCONNECTING 3
+    #define SCREENNOTCONNECTED 4
+    #define SCREENSHUTTINGDOWN 5
+
+    // types of messages sent from/to the screen
+    #define PINGMSG 'A'
+    #define PONGMSG 'Z'
+    #define DATAMSG 'D'
+    #define DEBUGMSG '_'
+    #define PROCCESSINGMSG '-'
+
+    byte screenStatus = SCREENOFF; // 0 = OFF, 1 = ON, 2 = Establishing connection, 3 = Unable to stablish connection
+    byte handshakeRetries = 0; // stores nº of handshake attempts // max nº of attempts before raising SCREENNOTCONNECTEDERROR = 3
+#endif
+    /*---------------GUI----------------*/
 
 /*------------Const&vars------------*/
 
@@ -191,6 +234,7 @@ double purifiedWater = 0.00; // Amount of water purified since the start of the 
 
 /*------------Temp Control--------------*/
 #if TEMPERATURE
+
 // Used to get temperature in celsius of the 3 temperature sensors
 // It modifies the given array that MUST be of length 3
 void getSensorsTemp(float* temp)
@@ -202,7 +246,7 @@ void getSensorsTemp(float* temp)
     }
 }
 
-// Used to control the temperature of the main control 
+// Used to control the temperature of the main control unit
 void tempControl()
 {
     float temp[3];
@@ -268,54 +312,16 @@ void setColor(byte color[3])
     analogWrite(blueLed, color[2]);
 }
 
-// Used to set a color on the rgb status led using a predefined color
-void setColor(byte color)
+// Used to set a color on the rgb status led by setting the amount of each color from 0 to 255
+void setColor(byte r, byte g, byte b)
 {
-    switch (color)
-    {
-    case RED:
-        output(redLed, 1);
-        output(greenLed, 0);
-        output(blueLed, 0);
-        break;
-    case GREEN:
-        output(redLed, 0);
-        output(greenLed, 1);
-        output(blueLed, 0);
-        break;
-    case BLUE:
-        output(redLed, 0);
-        output(greenLed, 0);
-        output(blueLed, 1);
-        break;
-    case WHITE:
-        output(redLed, 1);
-        output(greenLed, 1);
-        output(blueLed, 1);
-        break;
-    case YELLOW:
-        output(redLed, 1);
-        output(greenLed, 1);
-        output(blueLed, 0);
-        break;
-    case CYAN:
-        output(redLed, 0);
-        output(greenLed, 1);
-        output(blueLed, 1);
-        break;
-    case PURPLE:
-        output(redLed, 1);
-        output(greenLed, 0);
-        output(blueLed, 1);
-        break;
-    case BLACK:
-    default:
-        output(redLed, 0);
-        output(greenLed, 0);
-        output(blueLed, 0);
-    }
+    analogWrite(redLed, r);
+    analogWrite(greenLed, g);
+    analogWrite(blueLed, b);
 }
 
+// This function is used to perform animations on the RGB status led.
+// If an animation is loaded in currentAnimation and this function is called everytime, the animation will be displayed on the led
 void updateAnimation()
 {
     if (currentAnimation != NULL && millis() > prevAnimationMillis + currentAnimation->frameDelay)
@@ -406,6 +412,7 @@ void waitForVoltage(float volts)
 
 /*------------Amperage Control----------*/
 
+// This function returns the amperage of the main sensor
 float getDCAmps(int samples)
 {
     float sensorVolts;
@@ -419,7 +426,7 @@ float getDCAmps(int samples)
     return(corriente >=0 ? corriente : 0);
 }
 
-// This function uses all the data logged by logACAmps() and calculates an RMS Amperage value
+// This function uses all the data logged by logACAmps() and calculates an RMS Amperage value for the UV sensor
 float getACAmps()
 {
     float amps = ACAmpZero + ACAmpSensivity * inputStats.sigma();
@@ -437,39 +444,64 @@ void logACAmps()
 /*------------Error Control-------------*/
 
 // This function will allow to notify the user about the error
-// and redirect the execution to an "onlyVitalActivities" function
+// and redirect the execution to an "onlyVitalActivities" function if it is critical
+// or resume the program if it is not
 // This function is not completed yet
 void raise(byte error, String possibleExplanation)
 {
+    bool critical = true;
     setColor(RED);
-    disconnectEverything();
-    delay(1000);
-    voltControl();
-    #if DEBUG
-        Serial.print(F("Error "));
-        Serial.print(error);
-        Serial.print(F(": "));
-        Serial.println(possibleExplanation);
-        delay(2000);
-    #endif
-    
+        
     switch (error)
     {
+    #if GUI
+        case SCREENNOTCONNECTEDERROR:
+            critical = false;
+            setColor(255, 30, 0); // orange
+            break;
+    #endif
     default:
         currentAnimation = &defaultErrorAnimation;
         break;
     }
 
-
-    long pm = millis();
-    while (true)
+    if (critical)
     {
-        if (pm + 1000 < millis())
+        disconnectEverything();
+        delay(1000);
+        voltControl();
+        #if DEBUG
+            Serial.print(F("RAISE --- Error "));
+            Serial.print(error);
+            Serial.println(F(": "));
+            Serial.println(possibleExplanation);
+            delay(2000);
+        #endif
+
+        long pm = millis();
+        while (true)
         {
-            voltControl();
-            pm = millis();
+            if (pm + 1000 < millis())
+            {
+                voltControl();
+                pm = millis();
+            }
+            updateAnimation();
         }
-        updateAnimation();
+    }
+    else
+    {
+        delay(3000);
+        switch (mode) // set back normal color
+        {
+        case TRANSITIONTOIDLE:
+        case IDLE:
+            setColor(UNDERVOLTAGECOLOR);
+            break;
+        default:
+            setColor(WORKINGCOLOR);
+        }
+        voltControl();
     }
 }
 
@@ -509,6 +541,7 @@ void errorCheck()
     }
 }
 
+// Quick shortcut to disconnect every pump or relay
 void disconnectEverything()
 {
     output(voltSSRelay, 0);
@@ -526,7 +559,206 @@ void disconnectEverything()
 
 /*------------Error Control-------------*/
 
+/*-----------------GUI------------------*/
+
+#if GUI
+
+// This function checks and answers any request from the screen client if it is conencted
+void updateServer()
+{
+    switch (screenStatus)
+    {
+    case SCREENSHUTTINGDOWN:
+        Serial1.end();
+        screenStatus = SCREENOFF;
+        break;
+    case SCREENSTARTING:
+        Serial1.begin(SCREENBAUDRATE);
+        screenStatus = SCREENCONNECTING;
+        break;
+    case SCREENCONNECTING:
+        if (doHandshake())
+        {
+            screenStatus = SCREENON;
+        }
+        else if (++handshakeRetries >= 3) // TODO test this
+        {
+            screenStatus = SCREENNOTCONNECTED;
+            raise(SCREENNOTCONNECTEDERROR, F("Unable to communicate to the screen, double check the connections to it"));
+        }
+
+        break;
+    case SCREENON:
+        if (Serial1.available())
+        {
+            // TODO Server side stuff
+        }
+        break;
+    }
+}
+
+// The handshake consists of:
+// The screen sends each 500ms an 'A'
+// The server answers with a 'Z' once it discovers it
+// The screen sends another 'Z' to end handshake
+// All of this must be done in less than HANDSHAKETIMEOUT ms
+
+// TODO handshake with CRC8
+bool doHandshake()
+{
+    unsigned long pm = millis();
+    bool sw = 0;
+    while (pm + HANDSHAKETIMEOUT < millis())
+    {
+        if (!sw && Serial1.available() && Serial1.read() == 'A')
+        {
+            delay(50);
+            Serial1.print('Z');
+            delay(50);
+            sw = 1;
+        }
+        else if (sw && Serial1.available() && Serial1.read() == 'Z')
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+//TODO getMessage, verifyMessage, CRC8, processMessage(withRetryOption), sendMessage(withRetryOption), messageConstructor
+
+bool getMessage(char* message, char* type) // handles timeout and retry
+{
+
+}
+
+bool getMessageHelper(char* message, char* type) // gets message form buffer, decodes and verifies it
+{
+    byte size = Serial1.readBytesUntil('\n', message, 38); // get raw message without /n or NULL
+    message[size] = '\0'; // add string NULL
+    bool res = verifyMessage(message);
+    if (!res)
+    {
+        message = NULL;
+        type = NULL;
+        #if DEBUG
+            Serial.println(F("getMessageHelper - Message corrupted"));
+        #endif
+        return false;
+    }
+    *type = message[0];
+
+    for (byte i = 0; i < size; i++) // remove message type from the string
+    {
+        message[i] = message[i + 1];
+    }
+    #if DEBUG
+        Serial.println(String(F("getMessageHelper - Got a message from type "))+type+String(F(" and message "))+message);
+    #endif
+    return true;
+}
+
+// This function sends a message from the type type and ensures it is received properly.
+// If its resoult is false, the message couldn't be delivered properly
+// TODO timeout and retry system (needs getMessage for it to work)
+bool sendMessage(char type, char* message)
+{
+    bool ok = false;
+    for (byte i = 1; !ok && i <= MAXRETRIES; i++)
+    {
+        char sendMe[39];
+        messageConstructor(type, message, sendMe);
+        char temp[39];
+        strcpy(temp, sendMe);
+        if (verifyMessage(temp))
+        {
+            Serial1.println(sendMe);
+            #if DEBUG
+                Serial.println(String(F("sendMessage - Sending this message: ")) + sendMe);
+            #endif
+            
+            ok = true;
+            /*unsigned long pm = millis();
+            while (!Serial1.available() && pm + SENDMSGTIMEOUT > millis()); // wait for message or timeout
+            if (Serial1.available())
+            todotimeoutandretry*/
+        }
+        #if DEBUG
+            else
+            {
+                Serial.print(F("Verification failed for message: "));
+                Serial.println(sendMe);
+                Serial.print(F("Retrying for "));
+                Serial.print(i);
+                Serial.println(F(" time"));
+            }
+        #endif
+    }
+    return ok;
+}
+
+// This function verifies the CRC8 of the message and returns true if it matches
+// CAUTION: This function modifies rawMessage so after it, rawMessage only contains the message without ,C(crc8)
+bool verifyMessage(char* rawMessage)
+{
+    if (strlen(rawMessage) > 38)
+        raise(MAXMESSAGESIZEEXCEEDEDERROR, String(F("verifyMessage - The message that exceeded it is: ")) + rawMessage);
+    char* message = strtok(rawMessage, ",C");
+    bool res = (byte)atoi(strtok(NULL, ",C")) == CRC8((byte*)message, strlen(message));
+
+#if DEBUG
+    Serial.println(String(F("verifyMessage - Result: "))+res);
+#endif
+
+    return res;
+}
+
+// This function build a message appending the type and the CRC8 checksum
+// The dest string MUST be of length >= 39
+void messageConstructor(char type, char* message, char* dest)
+{
+    if (strlen(message) > 32) // 33 with null
+        raise(MAXMESSAGESIZEEXCEEDEDERROR, String(F("messageConstructor - The message that exceeded it is: ")) + message);
+
+    sprintf(dest, "%c", type); // size 2
+    strcat(dest, message); // max size 2 - 1 + 33 = 34
+    char tmp[6];
+    sprintf(tmp, ",C%d", CRC8((byte*)dest, strlen(dest)));
+    strcat(dest, tmp); // max size 34 - 1 + 6 = 39
+
+#if DEBUG
+    Serial.println(String(F("messageConstructor - MessageReady is: ")) + dest);
+#endif
+}
+
+//CRC-8 Checksum - based on the CRC8 formulas by Dallas/Maxim
+//code released under the terms of the GNU GPL 3.0 license
+byte CRC8(const byte* data, size_t dataLength)
+{
+    byte crc = 0x00;
+    while (dataLength--)
+    {
+        byte extract = *data++;
+        for (byte tempI = 8; tempI; tempI--)
+        {
+            byte sum = (crc ^ extract) & 0x01;
+            crc >>= 1;
+            if (sum)
+            {
+                crc ^= 0x8C;
+            }
+            extract >>= 1;
+        }
+    }
+    return crc;
+}
+
+#endif
+
+/*-----------------GUI------------------*/
+
 // The setup() function runs once each time the micro-controller starts
+// This function starts serial communication if defined, configures every input and output, set any other variable that needs to and waits for enough voltage in the capacitors to start operating
 void setup()
 {
 #if DEBUG
@@ -538,7 +770,7 @@ void setup()
     pinMode(redLed, OUTPUT);
     pinMode(greenLed, OUTPUT);
     pinMode(blueLed, OUTPUT);
-    setColor(BOOTING);
+    setColor(BOOTINGCOLOR);
 
 #if TEMPERATURE
     sensors.begin();
@@ -556,7 +788,6 @@ void setup()
     pinMode(lowPurifiedBuoy, INPUT);
     pinMode(highPurifiedBuoy, INPUT);
     pinMode(endBuoy, INPUT);
-    // pinMode(tempPin, INPUT);
 
     pinMode(voltSSRelay, OUTPUT);
     pinMode(voltRelay, OUTPUT);
@@ -586,11 +817,24 @@ void setup()
 #endif
 
 #if GUI
-    pinMode(screenSensor, INPUT);
+    pinMode(screenSensor, INPUT_PULLUP);
     pinMode(screenRelay, OUTPUT);
-    output(screenRelay, 0);
+    #if SCREENALWAYSON
+        output(screenRelay, 1);
+    #else
+        output(screenRelay, 0);
+    #endif
 
-    Serial1.begin(115200);
+    /**/
+    Serial1.begin(115200); // TODO remove all these lines
+    delay(1000);
+    while (Serial1.available())
+    {
+        Serial1.read();
+    }
+    Serial1.println("Hello world"); 
+    delay(1000);
+    /**/
 #endif
 #if ONLYVITALACTIVITYALLOWED
     currentAnimation = &testAnimation;
@@ -598,14 +842,32 @@ void setup()
     #if TEMPERATURE
         tempControl();
     #endif
-    Serial.print(F("Setup - Waiting for "));
-    Serial.print(STARTCHARGINGVOLTAGE - 1);
-    Serial.println(F(" V"));
+    #if DEBUG
+        Serial.print(F("Setup - Waiting for "));
+        Serial.print(STARTCHARGINGVOLTAGE - 1);
+        Serial.println(F(" V"));
+    #endif
     waitForVoltage(STARTCHARGINGVOLTAGE - 1);
 #endif
     output(voltRelay, 0);
 
     // put setup code after this line
+
+
+
+    char msg[39];
+    char type;
+    //sendMessage(DEBUGMSG, "Waiting for message...");
+    //messageConstructor(DATAMSG, "Alo polisia", msg);
+    while (!Serial1.available());
+    Serial.println(getMessageHelper(msg, &type)); // A,C24
+    Serial.println(type);
+    Serial.println(msg);
+    Serial.println("Done");
+    
+    delay(60000);
+
+
 
     inputStats.setWindowSecs(40.0 / ACFrequency);     //Set AC Amperemeter frequency
 
@@ -623,6 +885,7 @@ unsigned long prevmillis, perf;
 #endif
 
 // Add the main program code into the continuous loop() function
+// This function does things :D TODO make description
 void loop()
 {
     #if DEBUG
@@ -650,7 +913,7 @@ void loop()
     #if !ONLYVITALACTIVITYALLOWED
         switch (mode)
         {
-        case 0: // Transition to OFF
+        case TRANSITIONTOIDLE: // Transition to OFF
             output(wellPump, 0);
             output(endPump, 0);
             output(UVPump, 0);
@@ -659,32 +922,32 @@ void loop()
             delay(1000);
             output(UVRelay, 0);
             output(voltSSRelay, 1);
-            setColor(UNDERVOLTAGE);
+            setColor(UNDERVOLTAGECOLOR);
             for (byte i = 0; i < 3; i++)
             {
                 pumpSt[i] = false;
             }
-            mode = 1;
+            mode = IDLE;
             break;
-        case 1: // OFF
+        case IDLE: // OFF
         #if !OVERRRIDEMAXVOLTAGE
             if (voltRead() > STARTWORKINGVOLTAGE)
         #endif
-                mode = 2;
+                mode = TRANSITIONTOPUMPSWORKING;
             break;
-        case 2: // Transition to Pumps Working
+        case TRANSITIONTOPUMPSWORKING: // Transition to Pumps Working
             output(ACInverter, 0);
-            setColor(CYAN);
+            setColor(WORKINGCOLOR);
             for (byte i = 0; i < 3; i++)
             {
                 pumpSt[i] = false;
             }
-            mode = 3;
+            mode = PUMPSWORKING;
             break;
-        case 3: // Pumps Working
+        case PUMPSWORKING: // Pumps Working
             #if !OVERRRIDEMAXVOLTAGE
                 if (voltRead() < STOPWORKINGVOLTAGE)
-                    mode = 0;
+                    mode = TRANSITIONTOIDLE;
             #endif
 
             if (!pumpSt[0] && !digitalRead(highSurfaceBuoy) && digitalRead(secBuoy))
@@ -703,7 +966,7 @@ void loop()
             
 
             if (!digitalRead(lowFilteredBuoy) && digitalRead(highSurfaceBuoy))
-                mode = 4;
+                mode = TRANSITIONTOFILTERWORKING;
 
             if (!pumpSt[1] && !digitalRead(highPurifiedBuoy) && digitalRead(lowFilteredBuoy))
             {
@@ -762,7 +1025,7 @@ void loop()
             }
 
             break;
-        case 4: // Transition to filter working
+        case TRANSITIONTOFILTERWORKING: // Transition to filter working
             output(wellPump, 0);
             output(endPump, 0);
             output(UVPump, 0);
@@ -772,7 +1035,7 @@ void loop()
             output(UVRelay, 0);
             #if !OVERRRIDEMAXVOLTAGE
                 if (voltRead() < STOPWORKINGVOLTAGE)
-                    mode = 0;
+                    mode = TRANSITIONTOIDLE;
             #endif
 
             waitForVoltage(STARTWORKINGVOLTAGE);
@@ -780,29 +1043,26 @@ void loop()
             pumpPrevMillis[3] = millis();
             output(filterRelay, 1);
 
-            mode = 5;
+            mode = FILTERWORKING;
             break;
-        case 5: // Filter Working
+        case FILTERWORKING: // Filter Working
             #if !OVERRRIDEMAXVOLTAGE
                 if (voltRead() < STOPWORKINGVOLTAGE)
-                    mode = 0;
+                    mode = TRANSITIONTOIDLE;
             #endif
 
             if (digitalRead(highFilteredBuoy) || !digitalRead(lowSurfaceBuoy))
             {
                 output(filterRelay, 0);
                 pumpSt[3] = false;
-                mode = 2;
+                mode = TRANSITIONTOPUMPSWORKING;
             }
             break;
         }
     #endif
 
     #if GUI
-        if (Serial1.available())
-        {
-            // TODO server side communication
-        }
+        updateServer();
     #endif
 
     #if DEBUG
