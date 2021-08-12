@@ -1,5 +1,5 @@
 // Visual Micro
-// 
+
 /*
     Name:       H2O_MASTER.ino
     Created:	24/08/2020 14:11:50
@@ -51,9 +51,10 @@
 #if GUI
     #define SCREENBAUDRATE 115200
     #define SCREENALWAYSON 1 // TODO auto on/off
-    #define MAXRETRIES 3
+    #define MAXMESSAGERETRIES 3
+    #define MAXHANDSHAKERETRIES 3
     #define HANDSHAKETIMEOUT 2500
-    #define SENDMSGTIMEOUT 2500
+    #define MSGTIMEOUT 2500
     #define SCREENTIMEOUT 120000
 #endif
 
@@ -186,6 +187,8 @@ DallasTemperature sensors(&oneWire);
 
     /*------------Other-----------------*/
 
+#define Message(data) String(F(data)).c_str()
+
 #define TRANSITIONTOIDLE 0
 #define IDLE 1
 #define TRANSITIONTOPUMPSWORKING 2
@@ -214,10 +217,10 @@ double purifiedWater = 0.00; // Amount of water purified since the start of the 
     #define PONGMSG 'Z'
     #define DATAMSG 'D'
     #define DEBUGMSG '_'
-    #define PROCCESSINGMSG '-'
+    #define COMMSG '-'
 
     byte screenStatus = SCREENOFF; // 0 = OFF, 1 = ON, 2 = Establishing connection, 3 = Unable to stablish connection
-    byte handshakeRetries = 0; // stores nº of handshake attempts // max nº of attempts before raising SCREENNOTCONNECTEDERROR = 3
+    byte handshakeRetries = 0; // stores nº of handshake attempts // max nº of attempts is stored in MAXHANDSHAKERETRIES
 #endif
     /*---------------GUI----------------*/
 
@@ -471,7 +474,7 @@ void raise(byte error, String possibleExplanation)
         delay(1000);
         voltControl();
         #if DEBUG
-            Serial.print(F("RAISE --- Error "));
+            Serial.print(F("RAISE --- CRITICAL Error "));
             Serial.print(error);
             Serial.println(F(": "));
             Serial.println(possibleExplanation);
@@ -491,6 +494,12 @@ void raise(byte error, String possibleExplanation)
     }
     else
     {
+        #if DEBUG
+            Serial.print(F("RAISE --- Error "));
+            Serial.print(error);
+            Serial.println(F(": "));
+            Serial.println(possibleExplanation);
+        #endif
         delay(3000);
         switch (mode) // set back normal color
         {
@@ -575,13 +584,14 @@ void updateServer()
     case SCREENSTARTING:
         Serial1.begin(SCREENBAUDRATE);
         screenStatus = SCREENCONNECTING;
+        handshakeRetries = 0;
         break;
     case SCREENCONNECTING:
-        if (doHandshake())
+        if (doServerHandshake())
         {
             screenStatus = SCREENON;
         }
-        else if (++handshakeRetries >= 3) // TODO test this
+        else if (++handshakeRetries >= MAXHANDSHAKERETRIES) // TODO test this
         {
             screenStatus = SCREENNOTCONNECTED;
             raise(SCREENNOTCONNECTEDERROR, F("Unable to communicate to the screen, double check the connections to it"));
@@ -591,7 +601,13 @@ void updateServer()
     case SCREENON:
         if (Serial1.available())
         {
-            // TODO Server side stuff
+            // TODO server side stuff and delete this
+            /**/
+            while (Serial1.available())
+            {
+                Serial.write(Serial1.read());
+            }
+            /**/
         }
         break;
     }
@@ -604,7 +620,8 @@ void updateServer()
 // All of this must be done in less than HANDSHAKETIMEOUT ms
 
 // TODO handshake with CRC8
-bool doHandshake()
+// TODO client side handshake (in H2O_GUI)
+bool doServerHandshake()
 {
     unsigned long pm = millis();
     bool sw = 0;
@@ -625,16 +642,29 @@ bool doHandshake()
     return false;
 }
 
-//TODO getMessage, verifyMessage, CRC8, processMessage(withRetryOption), sendMessage(withRetryOption), messageConstructor
+//TODO processMessage(withRetryOption) 
 
+// possible errors crc mismatch or message invalid???? (this is outside this function, if the message is valid, but contains unexpected data)
 bool getMessage(char* message, char* type) // handles timeout and retry
 {
-
+    
+    if (getMessageHelper(message, type)) // send resend last message
+    {
+        #if DEBUG
+            Serial.println(F("getMessage - Failure receiving a message, retrying..."));
+        #endif
+        sendMessageHelper(Message("R"), COMMSG);
+    }
 }
 
-bool getMessageHelper(char* message, char* type) // gets message form buffer, decodes and verifies it
+// This function get a message from the Serial1 buffer, then it decodes and verifies it returning the message itself and its type
+bool getMessageHelper(char* message, char* type) 
 {
     byte size = Serial1.readBytesUntil('\n', message, 38); // get raw message without /n or NULL
+    if (size <= 0)
+    {
+        return false;
+    }
     message[size] = '\0'; // add string NULL
     bool res = verifyMessage(message);
     if (!res)
@@ -653,48 +683,83 @@ bool getMessageHelper(char* message, char* type) // gets message form buffer, de
         message[i] = message[i + 1];
     }
     #if DEBUG
-        Serial.println(String(F("getMessageHelper - Got a message from type "))+type+String(F(" and message "))+message);
+        Serial.println(String(F("getMessageHelper - Got a message from type ")) + type + String(F(" and message ")) + message);
     #endif
     return true;
 }
 
 // This function sends a message from the type type and ensures it is received properly.
 // If its resoult is false, the message couldn't be delivered properly
+// To proper exit this function in case of failure, anon critical raise error is called, which will disconnect the screen,
+// and a false is returned to proper handle the failure in hte function that called sendMessage
 // TODO timeout and retry system (needs getMessage for it to work)
-bool sendMessage(char type, char* message)
+
+// possible errors crc mismatch on client or server or message invalid???
+bool sendMessage(const char* message, const char type)
 {
     bool ok = false;
-    for (byte i = 1; !ok && i <= MAXRETRIES; i++)
+    
+    for (byte i = 1; !ok && i <= MAXMESSAGERETRIES; i++)
     {
-        char sendMe[39];
-        messageConstructor(type, message, sendMe);
-        char temp[39];
-        strcpy(temp, sendMe);
-        if (verifyMessage(temp))
+        if (sendMessageHelper(message, type))
         {
-            Serial1.println(sendMe);
-            #if DEBUG
-                Serial.println(String(F("sendMessage - Sending this message: ")) + sendMe);
-            #endif
-            
-            ok = true;
-            /*unsigned long pm = millis();
-            while (!Serial1.available() && pm + SENDMSGTIMEOUT > millis()); // wait for message or timeout
-            if (Serial1.available())
-            todotimeoutandretry*/
-        }
-        #if DEBUG
-            else
+            unsigned long before = millis();
+            while (!Serial1.available() && before + MSGTIMEOUT > millis());
+            if (Serial.available())
             {
-                Serial.print(F("Verification failed for message: "));
-                Serial.println(sendMe);
-                Serial.print(F("Retrying for "));
-                Serial.print(i);
-                Serial.println(F(" time"));
+                char typ = 0;
+                char msg[39] = "";
+                if (getMessageHelper(msg, &typ) && typ == COMMSG && strcmp(msg, Message("OK")))
+                {
+                    ok = true;
+                }
             }
+        }
+        if (!ok)
+        {
+            #if DEBUG
+                Serial.print(String(F("sendMessage - Failure sending this message: ")) + message + String(F(".\tAttempt ")) + i + String(F(" out of ")) + MAXMESSAGERETRIES);
+            #endif
+        }
+        
+    }
+    if (!ok)
+    {
+        #if DEBUG
+        Serial.print(String(F("sendMessage - Failure sending this message: ")) + message + String(F(".\tNo more attempts left")));
         #endif
+        // TODO reboot screen
     }
     return ok;
+}
+
+bool sendMessage(char* message)
+{
+    return(sendMessage(message, DATAMSG));
+}
+
+bool sendMessageHelper(const char* message, const char type)
+{
+    char sendMe[39];
+    messageConstructor(type, message, sendMe);
+    char temp[39];
+    strcpy(temp, sendMe);
+    if (verifyMessage(temp))
+    {
+        #if DEBUG
+            Serial.println(String(F("sendMessageHelper - Sending this message: '")) + sendMe + String(F("'")));
+        #endif
+        Serial1.println(sendMe);
+        return true;
+    }
+#if DEBUG
+    else
+    {
+        Serial.print(F("sendMessageHelper - Verification failed for message: "));
+        Serial.println(sendMe);
+    }
+#endif
+    return false;
 }
 
 // This function verifies the CRC8 of the message and returns true if it matches
@@ -715,7 +780,7 @@ bool verifyMessage(char* rawMessage)
 
 // This function build a message appending the type and the CRC8 checksum
 // The dest string MUST be of length >= 39
-void messageConstructor(char type, char* message, char* dest)
+void messageConstructor(const char type, const char* message, char* dest)
 {
     if (strlen(message) > 32) // 33 with null
         raise(MAXMESSAGESIZEEXCEEDEDERROR, String(F("messageConstructor - The message that exceeded it is: ")) + message);
@@ -756,6 +821,26 @@ byte CRC8(const byte* data, size_t dataLength)
 #endif
 
 /*-----------------GUI------------------*/
+
+/*------------COMMUNICATION-------------*/
+
+#if GUI || DEBUG
+
+// This function flushes an input HardwareSerial and discards all data on the input buffer
+void flush(HardwareSerial ser)
+{
+    #if DEBUG
+    Serial.println(F("Flushing serial"));
+    #endif
+    while (ser.available())
+    {
+        ser.read();
+    }
+}
+
+#endif
+
+/*------------COMMUNICATION-------------*/
 
 // The setup() function runs once each time the micro-controller starts
 // This function starts serial communication if defined, configures every input and output, set any other variable that needs to and waits for enough voltage in the capacitors to start operating

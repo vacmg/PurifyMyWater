@@ -1,0 +1,17 @@
+Message must not exceed 32 bytes and message with Header and CRC must not exceed 38 + 1 (NULL) bytes
+Each message finish with a \n (it is sended with Serial.println(msg))
+
+package begin 'A' --> ping command (followed by crc)
+package begin 'Z' --> pong command (followed by crc)
+package begin 'D' --> begin of a message (which may include or not some data)
+package begin '_' --> begin of a debug message. if debug == 1, mirror the message up to the first '\n' to Serial0 (aka USB Serial port). Else clean the serial buffer up to the first '\n'
+package begin '-' --> processing the message (communication internal message) (followed by command OK , R (resend) , C (Corrupted) or F (failure)) (followed by crc)
+
+followed by: X,Y* where X is a command, and Y* is some data
+Y* data may follow this scheme: Y','Y2','... i.e: h,67,2045
+
+followed by ',C' and the CRC8 of the begin and body of the message
+
+Full example: "Df,45039,hello,2,C27"
+That message sends the command 'f' with the data "45039", "hello", "2" and its CRC8 is 27
+The crc8 code was calculated using "Df,45,hello,2" as input
