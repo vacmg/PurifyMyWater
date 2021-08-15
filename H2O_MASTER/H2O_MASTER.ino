@@ -15,7 +15,7 @@
 #define DEBUG true
 #define GUI true
 #define ONLYVITALACTIVITYALLOWED true
-#define TEMPERATURE true
+#define TEMPERATURE false
 #define OVERRRIDEMAXVOLTAGE false // useful to check some functions without powering all the system
 
 #define STARTCHARGINGVOLTAGE 13
@@ -49,11 +49,12 @@
 #endif
 
 #if GUI
+    #define SCREENBRIDGEMODE true
+    #define SCREENALWAYSON false
     #define SCREENBAUDRATE 115200
-    #define SCREENALWAYSON 1 // TODO auto on/off
     #define MAXMESSAGERETRIES 3
     #define MAXHANDSHAKERETRIES 3
-    #define HANDSHAKETIMEOUT 2500
+    #define HANDSHAKETIMEOUT 10000
     #define MSGTIMEOUT 2500
     #define SCREENTIMEOUT 120000
 #endif
@@ -108,7 +109,7 @@ const byte highPurifiedBuoy = 8;
 const byte endBuoy = 9;
 const byte tempPin = 48;
 #if GUI
-    const byte screenSensor = 23; // 1 = case open, 2 = case closed
+    const byte screenSensor = 23; // 1 = case open, 0 = case closed
 #endif
 
 RunningStatistics inputStats;                 // create statistics to look at the raw test signal
@@ -186,8 +187,11 @@ DallasTemperature sensors(&oneWire);
     /*------------Temperature-----------*/
 
     /*------------Other-----------------*/
-
-#define Message(data) String(F(data)).c_str()
+#if DEBUG
+    #define debug(data) Serial.println(data)
+#else
+    #define debug(data) ;
+#endif
 
 #define TRANSITIONTOIDLE 0
 #define IDLE 1
@@ -205,6 +209,7 @@ double purifiedWater = 0.00; // Amount of water purified since the start of the 
 
     /*---------------GUI----------------*/
 #if GUI
+    #define Message(data) String(data).c_str()
     #define SCREENOFF 0
     #define SCREENSTARTING 1
     #define SCREENON 2
@@ -373,7 +378,6 @@ float loadOffset()
 
     // Using some known pairs of current and difference from real to arduino measured voltage, here we used least square roots to approximate to the ecuation of a straight line
     float formula = -0.9487 - 0.0453 * load; // f(I)=-0.9487-0.0453*I
-    //Serial.println(load);
     return formula;
 }
 
@@ -382,7 +386,7 @@ float loadOffset()
 void voltControl()
 {
     float voltage = voltRead();
-    Serial.println(voltage);
+    //debug(voltage);
     if (voltage < STARTCHARGINGVOLTAGE)
     {
         output(voltSSRelay, 1);
@@ -453,6 +457,7 @@ void logACAmps()
 void raise(byte error, String possibleExplanation)
 {
     bool critical = true;
+    ledAnimation* prevAnimation = currentAnimation;
     setColor(RED);
         
     switch (error)
@@ -474,10 +479,7 @@ void raise(byte error, String possibleExplanation)
         delay(1000);
         voltControl();
         #if DEBUG
-            Serial.print(F("RAISE --- CRITICAL Error "));
-            Serial.print(error);
-            Serial.println(F(": "));
-            Serial.println(possibleExplanation);
+            debug(String(F("RAISE --- CRITICAL Error ")) + error + String(F(": ")) + possibleExplanation);
             delay(2000);
         #endif
 
@@ -494,12 +496,7 @@ void raise(byte error, String possibleExplanation)
     }
     else
     {
-        #if DEBUG
-            Serial.print(F("RAISE --- Error "));
-            Serial.print(error);
-            Serial.println(F(": "));
-            Serial.println(possibleExplanation);
-        #endif
+        debug(String(F("RAISE --- Error ")) + error + String(F(": ")) + possibleExplanation);
         delay(3000);
         switch (mode) // set back normal color
         {
@@ -510,6 +507,7 @@ void raise(byte error, String possibleExplanation)
         default:
             setColor(WORKINGCOLOR);
         }
+        currentAnimation = prevAnimation;
         voltControl();
     }
 }
@@ -561,9 +559,7 @@ void disconnectEverything()
     output(endPump, 0);
     output(UVRelay, 0);
     output(filterRelay, 0);
-    #if DEBUG
-        Serial.println(F("DisconenctEverything - Done"));
-    #endif
+    debug(F("DisconenctEverything - Done"));
 }
 
 /*------------Error Control-------------*/
@@ -572,28 +568,42 @@ void disconnectEverything()
 
 #if GUI
 
-// This function checks and answers any request from the screen client if it is conencted
+// This function handles the screen system: communication, on/off, errors.
+// It also check and answer any request from the screen client if it is conencted
 void updateServer()
 {
     switch (screenStatus)
     {
+    case SCREENNOTCONNECTED:
     case SCREENSHUTTINGDOWN:
+        debug(F("UpdateServer - Screen shutting down"));
+        //TODO send shutdown command, wait for answer and disconenct the screen
         Serial1.end();
         screenStatus = SCREENOFF;
+
+        delay(5000); // TODO adjust time
+
+        output(screenRelay, 0);
+        delay(1000);
         break;
     case SCREENSTARTING:
+        debug(F("UpdateServer - Screen starting..."));
+        output(screenRelay, 1);
+        delay(1000);
         Serial1.begin(SCREENBAUDRATE);
+        debug(F("UpdateServer - Conencting to screen..."));
         screenStatus = SCREENCONNECTING;
         handshakeRetries = 0;
         break;
     case SCREENCONNECTING:
         if (doServerHandshake())
         {
+            debug(F("UpdateServer - Screen ready"));
             screenStatus = SCREENON;
         }
-        else if (++handshakeRetries >= MAXHANDSHAKERETRIES) // TODO test this
+        else if (++handshakeRetries >= MAXHANDSHAKERETRIES)
         {
-            screenStatus = SCREENNOTCONNECTED;
+            screenStatus = SCREENNOTCONNECTED; // TODO what happens when the screen cannot conenct?
             raise(SCREENNOTCONNECTEDERROR, F("Unable to communicate to the screen, double check the connections to it"));
         }
 
@@ -602,63 +612,107 @@ void updateServer()
         if (Serial1.available())
         {
             // TODO server side stuff and delete this
-            /**/
-            while (Serial1.available())
-            {
-                Serial.write(Serial1.read());
-            }
-            /**/
+            #if SCREENBRIDGEMODE
+                while (Serial1.available())
+                {
+                    Serial.write(Serial1.read());
+                }
+            #else
+                ;
+            #endif
         }
+
+        #if !SCREENALWAYSON
+            if (!digitalRead(screenSensor))
+            {
+                screenStatus = SCREENSHUTTINGDOWN;
+            }
+        #endif
+        break;
+
+    case SCREENOFF:
+        if (digitalRead(screenSensor))
+        {
+            screenStatus = SCREENSTARTING;
+        }
+        #if SCREENALWAYSON
+            screenStatus = SCREENSTARTING;
+        #endif
         break;
     }
 }
 
+#endif
+
+/*-----------------GUI------------------*/
+
+/*------------COMMUNICATION-------------*/
+
+#if GUI
+
+// This function checks if the screen is properly connected and available for other functions to use it
 // The handshake consists of:
 // The screen sends each 500ms an 'A'
 // The server answers with a 'Z' once it discovers it
 // The screen sends another 'Z' to end handshake
 // All of this must be done in less than HANDSHAKETIMEOUT ms
-
-// TODO handshake with CRC8
-// TODO client side handshake (in H2O_GUI)
+// TODO handshake with CRC8?
 bool doServerHandshake()
 {
     unsigned long pm = millis();
-    bool sw = 0;
-    while (pm + HANDSHAKETIMEOUT < millis())
+    byte sw = 0;
+    debug(F("doServerHandsake - Step 0"));
+    while (sw != 2 && pm + 30000 > millis()) //HANDSHAKETIMEOUT
     {
-        if (!sw && Serial1.available() && Serial1.read() == 'A')
+        if (Serial1.available())
         {
-            delay(50);
-            Serial1.print('Z');
-            delay(50);
-            sw = 1;
-        }
-        else if (sw && Serial1.available() && Serial1.read() == 'Z')
-        {
-            return true;
+            debug(sw);
+            if (sw == 0 && Serial1.read() == 'A')
+            {
+                debug(F("doServerHandsake - Step 1"));
+                delay(50);
+                Serial1.print('Z');
+                flush(Serial1);
+                delay(200);
+                sw = 1;
+            }
+            else if (sw == 1 && Serial1.read() == 'Z')
+            {
+                debug(F("doServerHandsake - Step 2"));
+                sw = 2;
+            }
         }
     }
-    return false;
+    flush(Serial1);
+    if (sw == 2)
+    {
+        debug(F("doServerHandshake - Succesful handshake"));
+    }
+    else
+    {
+        debug(String(F("doServerHandshake - Handshake failed in step "))+ sw);
+    }
+    return sw == 2;
 }
 
 //TODO processMessage(withRetryOption) 
 
-// possible errors crc mismatch or message invalid???? (this is outside this function, if the message is valid, but contains unexpected data)
+// This function get a message from the Serial1 buffer, then it decodes and verifies it returning the message itself and its type
+// If its resoult is false, the message couldn't be received properly
+// and a false is returned to proper handle the failure in the function that called getMessage
 bool getMessage(char* message, char* type) // handles timeout and retry
 {
-    
+
     if (getMessageHelper(message, type)) // send resend last message
     {
-        #if DEBUG
-            Serial.println(F("getMessage - Failure receiving a message, retrying..."));
-        #endif
-        sendMessageHelper(Message("R"), COMMSG);
+        debug(F("getMessage - Failure receiving a message, retrying..."));
+        sendMessageHelper(Message(F("R")), COMMSG);
+        return true;
     }
+    return false;
 }
 
-// This function get a message from the Serial1 buffer, then it decodes and verifies it returning the message itself and its type
-bool getMessageHelper(char* message, char* type) 
+bool getMessageHelper(char* message, char* type)
 {
     byte size = Serial1.readBytesUntil('\n', message, 38); // get raw message without /n or NULL
     if (size <= 0)
@@ -671,9 +725,7 @@ bool getMessageHelper(char* message, char* type)
     {
         message = NULL;
         type = NULL;
-        #if DEBUG
-            Serial.println(F("getMessageHelper - Message corrupted"));
-        #endif
+        debug(F("getMessageHelper - Message corrupted"));
         return false;
     }
     *type = message[0];
@@ -682,23 +734,18 @@ bool getMessageHelper(char* message, char* type)
     {
         message[i] = message[i + 1];
     }
-    #if DEBUG
-        Serial.println(String(F("getMessageHelper - Got a message from type ")) + type + String(F(" and message ")) + message);
-    #endif
+    debug(String(F("getMessageHelper - Got a message from type ")) + type + String(F(" and message ")) + message);
     return true;
 }
 
-// This function sends a message from the type type and ensures it is received properly.
+// This function sends a message from the type 'type' and ensures it is received properly.
 // If its resoult is false, the message couldn't be delivered properly
-// To proper exit this function in case of failure, anon critical raise error is called, which will disconnect the screen,
-// and a false is returned to proper handle the failure in hte function that called sendMessage
-// TODO timeout and retry system (needs getMessage for it to work)
-
-// possible errors crc mismatch on client or server or message invalid???
+// and a false is returned to proper handle the failure in the function that called sendMessage
+// TODO test timeout and retry system (needs getMessage for it to work)
 bool sendMessage(const char* message, const char type)
 {
     bool ok = false;
-    
+
     for (byte i = 1; !ok && i <= MAXMESSAGERETRIES; i++)
     {
         if (sendMessageHelper(message, type))
@@ -709,7 +756,7 @@ bool sendMessage(const char* message, const char type)
             {
                 char typ = 0;
                 char msg[39] = "";
-                if (getMessageHelper(msg, &typ) && typ == COMMSG && strcmp(msg, Message("OK")))
+                if (getMessageHelper(msg, &typ) && typ == COMMSG && strcmp(msg, Message(F("OK"))))
                 {
                     ok = true;
                 }
@@ -717,18 +764,13 @@ bool sendMessage(const char* message, const char type)
         }
         if (!ok)
         {
-            #if DEBUG
-                Serial.print(String(F("sendMessage - Failure sending this message: ")) + message + String(F(".\tAttempt ")) + i + String(F(" out of ")) + MAXMESSAGERETRIES);
-            #endif
+            debug(String(F("sendMessage - Failure sending this message: ")) + message + String(F(".\tAttempt ")) + i + String(F(" out of ")) + MAXMESSAGERETRIES);
         }
-        
+
     }
     if (!ok)
     {
-        #if DEBUG
-        Serial.print(String(F("sendMessage - Failure sending this message: ")) + message + String(F(".\tNo more attempts left")));
-        #endif
-        // TODO reboot screen
+        debug(String(F("sendMessage - Failure sending this message: ")) + message + String(F(".\tNo more attempts left")));
     }
     return ok;
 }
@@ -741,22 +783,19 @@ bool sendMessage(char* message)
 bool sendMessageHelper(const char* message, const char type)
 {
     char sendMe[39];
-    messageConstructor(type, message, sendMe);
+    messageConstructor(type, message, sendMe); // creates message and stores in sendMe
     char temp[39];
-    strcpy(temp, sendMe);
+    strcpy(temp, sendMe); // make a copy of the message and use it to verify it
     if (verifyMessage(temp))
     {
-        #if DEBUG
-            Serial.println(String(F("sendMessageHelper - Sending this message: '")) + sendMe + String(F("'")));
-        #endif
+        debug(String(F("sendMessageHelper - Sending this message: '")) + sendMe + String(F("'")));
         Serial1.println(sendMe);
         return true;
     }
 #if DEBUG
     else
     {
-        Serial.print(F("sendMessageHelper - Verification failed for message: "));
-        Serial.println(sendMe);
+        debug(String(F("sendMessageHelper - Verification failed for message: ")) + sendMe);
     }
 #endif
     return false;
@@ -771,10 +810,7 @@ bool verifyMessage(char* rawMessage)
     char* message = strtok(rawMessage, ",C");
     bool res = (byte)atoi(strtok(NULL, ",C")) == CRC8((byte*)message, strlen(message));
 
-#if DEBUG
-    Serial.println(String(F("verifyMessage - Result: "))+res);
-#endif
-
+    debug(String(F("verifyMessage - Result: ")) + res);
     return res;
 }
 
@@ -791,11 +827,10 @@ void messageConstructor(const char type, const char* message, char* dest)
     sprintf(tmp, ",C%d", CRC8((byte*)dest, strlen(dest)));
     strcat(dest, tmp); // max size 34 - 1 + 6 = 39
 
-#if DEBUG
-    Serial.println(String(F("messageConstructor - MessageReady is: ")) + dest);
-#endif
+    debug(String(F("messageConstructor - MessageReady is: ")) + dest);
 }
 
+//This function returns a CRC8 Checksum code from an array of any size
 //CRC-8 Checksum - based on the CRC8 formulas by Dallas/Maxim
 //code released under the terms of the GNU GPL 3.0 license
 byte CRC8(const byte* data, size_t dataLength)
@@ -820,18 +855,11 @@ byte CRC8(const byte* data, size_t dataLength)
 
 #endif
 
-/*-----------------GUI------------------*/
-
-/*------------COMMUNICATION-------------*/
-
 #if GUI || DEBUG
 
 // This function flushes an input HardwareSerial and discards all data on the input buffer
 void flush(HardwareSerial ser)
 {
-    #if DEBUG
-    Serial.println(F("Flushing serial"));
-    #endif
     while (ser.available())
     {
         ser.read();
@@ -842,6 +870,8 @@ void flush(HardwareSerial ser)
 
 /*------------COMMUNICATION-------------*/
 
+
+
 // The setup() function runs once each time the micro-controller starts
 // This function starts serial communication if defined, configures every input and output, set any other variable that needs to and waits for enough voltage in the capacitors to start operating
 void setup()
@@ -849,7 +879,7 @@ void setup()
 #if DEBUG
     Serial.begin(115200);
     delay(500);
-    Serial.println(F("Setup - Booting..."));
+    debug(F("Setup - Booting..."));
 #endif
   
     pinMode(redLed, OUTPUT);
@@ -859,9 +889,10 @@ void setup()
 
 #if TEMPERATURE
     sensors.begin();
-    if (sensors.getDeviceCount() < 3)
+    byte num = sensors.getDeviceCount();
+    if (num < 3)
     {
-        raise(TEMPSENSORSAMOUNTERROR, String(F("Setup - Less than 3 sensors were connected.\nNumber of sensors detected: "))+String(sensors.getDeviceCount()));
+        raise(TEMPSENSORSAMOUNTERROR, String(F("Setup - Less than 3 sensors were connected.\nNumber of sensors detected: "))+num);
     }
 #endif
 
@@ -904,22 +935,7 @@ void setup()
 #if GUI
     pinMode(screenSensor, INPUT_PULLUP);
     pinMode(screenRelay, OUTPUT);
-    #if SCREENALWAYSON
-        output(screenRelay, 1);
-    #else
-        output(screenRelay, 0);
-    #endif
-
-    /**/
-    Serial1.begin(115200); // TODO remove all these lines
-    delay(1000);
-    while (Serial1.available())
-    {
-        Serial1.read();
-    }
-    Serial1.println("Hello world"); 
-    delay(1000);
-    /**/
+    output(screenRelay, 0);
 #endif
 #if ONLYVITALACTIVITYALLOWED
     currentAnimation = &testAnimation;
@@ -927,39 +943,17 @@ void setup()
     #if TEMPERATURE
         tempControl();
     #endif
-    #if DEBUG
-        Serial.print(F("Setup - Waiting for "));
-        Serial.print(STARTCHARGINGVOLTAGE - 1);
-        Serial.println(F(" V"));
-    #endif
+    debug(String(F("Setup - Waiting for ")) + (STARTCHARGINGVOLTAGE - 1) + String(F(" V")));
     waitForVoltage(STARTCHARGINGVOLTAGE - 1);
 #endif
     output(voltRelay, 0);
 
     // put setup code after this line
 
-
-
-    char msg[39];
-    char type;
-    //sendMessage(DEBUGMSG, "Waiting for message...");
-    //messageConstructor(DATAMSG, "Alo polisia", msg);
-    while (!Serial1.available());
-    Serial.println(getMessageHelper(msg, &type)); // A,C24
-    Serial.println(type);
-    Serial.println(msg);
-    Serial.println("Done");
-    
-    delay(60000);
-
-
-
     inputStats.setWindowSecs(40.0 / ACFrequency);     //Set AC Amperemeter frequency
 
     mode = 0;
-#if DEBUG
-    Serial.println(F("Setup - Ready"));
-#endif
+    debug(F("Setup - Ready"));
 }
 
 #if DEBUG
@@ -1014,12 +1008,14 @@ void loop()
             }
             mode = IDLE;
             break;
+
         case IDLE: // OFF
         #if !OVERRRIDEMAXVOLTAGE
             if (voltRead() > STARTWORKINGVOLTAGE)
         #endif
                 mode = TRANSITIONTOPUMPSWORKING;
             break;
+
         case TRANSITIONTOPUMPSWORKING: // Transition to Pumps Working
             output(ACInverter, 0);
             setColor(WORKINGCOLOR);
@@ -1029,6 +1025,7 @@ void loop()
             }
             mode = PUMPSWORKING;
             break;
+
         case PUMPSWORKING: // Pumps Working
             #if !OVERRRIDEMAXVOLTAGE
                 if (voltRead() < STOPWORKINGVOLTAGE)
@@ -1110,6 +1107,7 @@ void loop()
             }
 
             break;
+
         case TRANSITIONTOFILTERWORKING: // Transition to filter working
             output(wellPump, 0);
             output(endPump, 0);
@@ -1130,6 +1128,7 @@ void loop()
 
             mode = FILTERWORKING;
             break;
+
         case FILTERWORKING: // Filter Working
             #if !OVERRRIDEMAXVOLTAGE
                 if (voltRead() < STOPWORKINGVOLTAGE)
