@@ -1,3 +1,9 @@
 [submodule "H2O_GUI/SimpleLCDTouchScreen"]
 	path = H2O_GUI/SimpleLCDTouchScreen
 	url = https://github.com/vacmg/SimpleLCDTouchScreen.git
+[submodule "H2O_MASTER/OneWire"]
+	path = H2O_MASTER/OneWire
+	url = https://github.com/PaulStoffregen/OneWire.git
+[submodule "H2O_MASTER/Arduino-Temperature-Control-Library"]
+	path = H2O_MASTER/Arduino-Temperature-Control-Library
+	url = https://github.com/milesburton/Arduino-Temperature-Control-Library.git
