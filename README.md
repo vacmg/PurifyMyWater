@@ -5,6 +5,4 @@ Currently this repository is under construction, hope it can be ready in a few w
 Meanwhile, check our project's [web](https://vacmg.github.io/PurifyMyWater)
 
 To clone this repository use:
-git clone https://github.com/vacmg/PurifyMyWater.git
-and then:
-git submodule update --init --recursive
+"git clone https://github.com/vacmg/PurifyMyWater.git" and then "git submodule update --init --recursive"
