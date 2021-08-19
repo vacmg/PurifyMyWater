@@ -1,2 +1,0 @@
-git submodule add --force repolink
-git submodule update --init --recursive

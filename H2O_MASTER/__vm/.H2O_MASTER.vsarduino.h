@@ -15,6 +15,7 @@
 #define _VSARDUINO_H_
 #define __AVR_atmega2560__
 #define __AVR_ATmega2560__
+#define _VMDEBUG 1
 #define F_CPU 16000000L
 #define ARDUINO 108015
 #define ARDUINO_AVR_MEGA2560
