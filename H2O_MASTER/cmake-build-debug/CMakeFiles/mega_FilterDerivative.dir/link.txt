@@ -1,0 +1,2 @@
+C:\PROGRA~2\Arduino\hardware\tools\avr\bin\avr-ar.exe qc libmega_FilterDerivative.a CMakeFiles/mega_FilterDerivative.dir/libs/Filters/FilterDerivative.cpp.obj CMakeFiles/mega_FilterDerivative.dir/libs/Filters/FilterOnePole.cpp.obj CMakeFiles/mega_FilterDerivative.dir/libs/Filters/FilterTwoPole.cpp.obj CMakeFiles/mega_FilterDerivative.dir/libs/Filters/RunningStatistics.cpp.obj
+C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-RA~1.EXE libmega_FilterDerivative.a

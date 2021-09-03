@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+49f36a9c647eb28593c4da550a47e897 CMakeFiles/H2O_MASTER-size
+7ea5ef7dcdfc1cdbe188bc07c8d1172d H2O_MASTER_h2o_master.ino.cpp

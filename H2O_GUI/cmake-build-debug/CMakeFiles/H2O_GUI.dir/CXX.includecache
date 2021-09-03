@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../libs/TouchScreen/TouchScreen.h
+stdint.h
+-
+
+E:/Victor/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/H2O_GUI_h2o_gui.ino.cpp
+Arduino.h
+-
+TouchScreen.h
+-
+Arduino.h
+E:/Victor/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/Arduino.h
+
