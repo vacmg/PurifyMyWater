@@ -20,7 +20,9 @@ set(${PROJECT_NAME}_SKETCH H2O_GUI.ino)
 ### Add project directories into the build
 # add_subdirectory()
 
-include_directories(libs/)
+include_directories(libs/LCDWIKI_KBV)
+include_directories(libs/LCDWIKI_GUI)
+include_directories(libs/TouchScreen)
 
 ### Additional settings to add non-standard or your own Arduino libraries.
 # For this example (libs will contain additional arduino libraries)

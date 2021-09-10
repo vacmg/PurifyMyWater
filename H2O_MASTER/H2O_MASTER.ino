@@ -63,9 +63,10 @@
 
 // Define used Libraries below here or use a .h file
 //
-
-#include <OneWire.h>
-#include <DallasTemperature.h>
+#if TEMPERATURE
+    #include <OneWire.h>
+    #include <DallasTemperature.h>
+#endif
 #include <Filters.h>
 
 // Define User Types below here or use a .h file
@@ -171,7 +172,7 @@ ledAnimation defaultErrorAnimation = { 500,2,0,{{255,0,0},{0,0,0}} };
     /*------------Output----------------*/
 
     /*------------Temperature-----------*/
-
+#if TEMPERATURE
 unsigned long tempMillis = 0;
 
 // Setup a oneWire instance to communicate with any OneWire device
@@ -183,7 +184,7 @@ DallasTemperature sensors(&oneWire);
 #define INSENSOR 2
 #define OUTSENSOR 0
 #define PSUSENSOR 1
-
+#endif
     /*------------Temperature-----------*/
 
     /*------------Other-----------------*/
