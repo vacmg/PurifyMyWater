@@ -23,6 +23,7 @@ set(${PROJECT_NAME}_SKETCH H2O_GUI.ino)
 include_directories(libs/LCDWIKI_KBV)
 include_directories(libs/LCDWIKI_GUI)
 include_directories(libs/TouchScreen)
+include_directories(libs/SimpleLCDTouchScreen)
 
 ### Additional settings to add non-standard or your own Arduino libraries.
 # For this example (libs will contain additional arduino libraries)
