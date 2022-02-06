@@ -26,6 +26,7 @@
 //LCDWIKI_KBV my_lcd(HX8347I,A3,A2,A1,A0,A4); //model,cs,cd,wr,rd,reset
 //LCDWIKI_KBV my_lcd(ILI9486,A3,A2,A1,A0,A4); //model,cs,cd,wr,rd,reset
 //LCDWIKI_KBV my_lcd(ST7735S,A3,A2,A1,A0,A4); //model,cs,cd,wr,rd,reset
+LCDWIKI_KBV my_lcd(ST7796S, A3, A2, A1, A0, A4);
 
 //if the IC model is not known and the modules is readable,you can use this constructed function
 //LCDWIKI_KBV my_lcd(240,320,A3,A2,A1,A0,A4);//width,height,cs,cd,wr,rd,reset 

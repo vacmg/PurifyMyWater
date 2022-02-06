@@ -1,0 +1,55 @@
+#######################################
+# Syntax Coloring Map For SimpleLCDTouchScreen
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+SimpleLCDTouchScreen    KEYWORD1
+TouchScreenObject   KEYWORD1
+ScreenObjectWithXtraCoords  KEYWORD1
+ScreenObjectWithTouch   KEYWORD1
+ScreenObjectWithSecondaryColor  KEYWORD1
+ScreenObjectWithLabel   KEYWORD1
+ScreenObject    KEYWORD1
+Line    KEYWORD1
+Label   KEYWORD1
+Rectangle   KEYWORD1
+RectangleButton KEYWORD1
+Color   KEYWORD1
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+getPoint    KEYWORD2
+draw    KEYWORD2
+getx    KEYWORD2
+gety    KEYWORD2
+setCoords1 KEYWORD2
+getx1    KEYWORD2
+gety1    KEYWORD2
+setTouchScreenObject    KEYWORD2
+isPressed   KEYWORD2
+isAValidSecondaryColor  KEYWORD2
+getSecondaryColor   KEYWORD2
+setSecondaryColor   KEYWORD2
+isAValidLabel   KEYWORD2
+getLabel    KEYWORD2
+setLabel    KEYWORD2
+updateLabelLocation KEYWORD2
+getMargin   KEYWORD2
+setMargin   KEYWORD2
+getMainColor    KEYWORD2
+setCoords   KEYWORD2
+setMainColor    KEYWORD2
+getString   KEYWORD2
+getFontSize KEYWORD2
+setString   KEYWORD2
+setFontSize KEYWORD2
+to565   KEYWORD2
+######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################

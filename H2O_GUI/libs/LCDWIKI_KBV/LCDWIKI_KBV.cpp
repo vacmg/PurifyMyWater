@@ -59,6 +59,9 @@ lcd_info current_lcd_info[] =
 							 0x7796,320,480,
 						 };
 
+// Default Constructor: Caution: ONLY use it to pass this object as a function argument
+//LCDWIKI_KBV::LCDWIKI_KBV(){}
+
 // Constructor for breakout board (configurable LCD control lines).
 // Can still use this w/shield, but parameters are ignored.
 // if modules is unreadable or you don't know the width and height of modules,you can use this constructor.

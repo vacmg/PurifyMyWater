@@ -23,11 +23,11 @@
 #define STARTWORKINGVOLTAGE 15
 #define STOPWORKINGVOLTAGE 12
 
-#define DCAmpSensivity 0.1135 //sensor sensivity in Volts/Amps // 5.4A for 60w test load
+#define DCAmpSensitivity 0.1135 //sensor sensitivity in Volts/Amps // 5.4A for 60w test load
 #define DCAmpZero 2.4956 // sensor voltage for 0 Amps current
 
 #define ACAmpZero -0.07157 // sensor calibration correction value
-#define ACAmpSensivity 0.033 // sensor sensivity in Volts/Amps // 0.25A for 60w test load
+#define ACAmpSensitivity 0.033 // sensor sensitivity in Volts/Amps // 0.25A for 60w test load
 #define ACFrequency 50 // AC signal frequency (Hz)
 
 #define UVPUMPFLOW 55 // 171 // UV pump flow in L/H
@@ -81,12 +81,12 @@
     #define EXTREMEHOTTEMPERROR 11 // Control system temperatures are extremely high and it is dangerous to operate // error code 11
 #endif
 
-#define BUOYINCONGRUENCEERROR 20 // The system has detected an incongruence with the readings of the buoy sensors (often caused by a non connected or malfunctioning buoy) // error code 21
+#define BUOYINCONGRUENCEERROR 20 // The system has detected an incongruence with the readings of the buoy sensors (often caused by a non-connected or malfunctioning buoy) // error code 21
 #define PUMPTIMEOUTERROR 21 // The system has spent so much time with a pump working. Probably the circuit has a leak or a pump is not working properly // error code 22
 #define UVLIGHTNOTWORKINGERROR 22 // The UV amperage sensor didn't detect enough current. The UV light must be either broken or disconnected (check and replace the UV light) // error code 23
 
 #if GUI
-    #define SCREENNOTCONNECTEDERROR 30 // Cannot handsake with the screen. Probably a broken or bad connected cable or the screen didn't have the correct firmware // error code 30
+    #define SCREENNOTCONNECTEDERROR 30 // Cannot handshake with the screen. Probably a broken or bad connected cable or the screen didn't have the correct firmware // error code 30
     #define MAXMESSAGESIZEEXCEEDEDERROR 31 // The message that is being sent exceed the max size of 32 bytes w/out header & CRC // error code 31
 #endif 
 
@@ -225,7 +225,7 @@ double purifiedWater = 0.00; // Amount of water purified since the start of the 
     #define DEBUGMSG '_'
     #define COMMSG '-'
 
-    byte screenStatus = SCREENOFF; // 0 = OFF, 1 = ON, 2 = Establishing connection, 3 = Unable to stablish connection
+    byte screenStatus = SCREENOFF; // 0 = OFF, 1 = ON, 2 = Establishing connection, 3 = Unable to establish connection
     byte handshakeRetries = 0; // stores n� of handshake attempts // max n� of attempts is stored in MAXHANDSHAKERETRIES
 #endif
     /*---------------GUI----------------*/
@@ -330,7 +330,7 @@ void setColor(byte r, byte g, byte b)
 }
 
 // This function is used to perform animations on the RGB status led.
-// If an animation is loaded in currentAnimation and this function is called everytime, the animation will be displayed on the led
+// If an animation is loaded in currentAnimation and this function is called everytime, the animation will be displayed on the LED
 void updateAnimation()
 {
     if (currentAnimation != NULL && millis() > prevAnimationMillis + currentAnimation->frameDelay)
@@ -361,7 +361,7 @@ float fmap(float x, float in_min, float in_max, float out_min, float out_max)
 // This function reads from a 0-25V DC sensor and returns its voltage
 float voltRead()
 {
-    float f = fmap(analogRead(voltSensor), 0, 1023, 0.0, 25.0);   // read from sensor and ajust the scale to 0-25V
+    float f = fmap(analogRead(voltSensor), 0, 1023, 0.0, 25.0);   // read from sensor and adjust the scale to 0-25V
     return f - loadOffset();
 }
 
@@ -377,12 +377,12 @@ float loadOffset()
     //float formula = load * -0.20; // Filter // 5.4A
     //float formula = load * 0.00 - 1.00; // no load // 0A
 
-    // Using some known pairs of current and difference from real to arduino measured voltage, here we used least square roots to approximate to the ecuation of a straight line
+    // Using some known pairs of current and difference from real to arduino measured voltage, here we used least square roots to approximate to the formula of a straight line
     float formula = -0.9487 - 0.0453 * load; // f(I)=-0.9487-0.0453*I
     return formula;
 }
 
-// This function maintains the voltage in the supercapacitors between STARTCHARGINGVOLTAGE and STOPCHARGINGVOLTAGE
+// This function maintains the voltage in the super-capacitors between STARTCHARGINGVOLTAGE and STOPCHARGINGVOLTAGE
 // It MUST be called at least one time each 2 seconds
 void voltControl()
 {
@@ -398,7 +398,7 @@ void voltControl()
     }
 }
 
-// This functions blocks the code execution until a certain voltage is reached inside the supercapacitors
+// This functions blocks the code execution until a certain voltage is reached inside the super-capacitors
 void waitForVoltage(float volts)
 {
     float voltage = voltRead();
@@ -424,20 +424,20 @@ void waitForVoltage(float volts)
 float getDCAmps(int samples)
 {
     float sensorVolts;
-    float corriente = 0;
+    float current = 0;
     for (int i = 0; i < samples; i++)
     {
         sensorVolts = analogRead(mainAmpSensor) * (5.0 / 1023.0); // sensor reading
-        corriente = corriente + (sensorVolts - DCAmpZero) / DCAmpSensivity; // Proccess input to get Amperage
+        current = current + (sensorVolts - DCAmpZero) / DCAmpSensitivity; // Process input to get Amperage
     }
-    corriente = corriente / samples;
-    return(corriente >=0 ? corriente : 0);
+    current = current / samples;
+    return(current >= 0 ? current : 0);
 }
 
 // This function uses all the data logged by logACAmps() and calculates an RMS Amperage value for the UV sensor
 float getACAmps()
 {
-    float amps = ACAmpZero + ACAmpSensivity * inputStats.sigma();
+    float amps = ACAmpZero + ACAmpSensitivity * inputStats.sigma();
     return(amps >= 0 ? amps : 0); // calculate RMS Amperage
 }
 
@@ -516,7 +516,7 @@ void raise(byte error, String possibleExplanation)
 // This function will check for hardware errors on the system
 void errorCheck()
 {
-    // Check for buoy incongruences
+    // Check for incongruent buoys
     if (!digitalRead(lowSurfaceBuoy) && digitalRead(highSurfaceBuoy))
     {
         raise(BUOYINCONGRUENCEERROR, F("An incongruence has been detected with either lowSurfaceBuoy or highSurfaceBuoy. Please check the connections to those sensors"));
@@ -560,7 +560,7 @@ void disconnectEverything()
     output(endPump, 0);
     output(UVRelay, 0);
     output(filterRelay, 0);
-    debug(F("DisconenctEverything - Done"));
+    debug(F("DisconnectEverything - Done"));
 }
 
 /*------------Error Control-------------*/
@@ -570,7 +570,7 @@ void disconnectEverything()
 #if GUI
 
 // This function handles the screen system: communication, on/off, errors.
-// It also check and answer any request from the screen client if it is conencted
+// It also checks and answer any request from the screen client if it is connected
 void updateServer()
 {
     switch (screenStatus)
@@ -578,7 +578,7 @@ void updateServer()
     case SCREENNOTCONNECTED:
     case SCREENSHUTTINGDOWN:
         debug(F("UpdateServer - Screen shutting down"));
-        //TODO send shutdown command, wait for answer and disconenct the screen
+        //TODO send shutdown command, wait for answer and disconnect the screen
         Serial1.end();
         screenStatus = SCREENOFF;
 
@@ -592,7 +592,7 @@ void updateServer()
         output(screenRelay, 1);
         delay(1000);
         Serial1.begin(SCREENBAUDRATE);
-        debug(F("UpdateServer - Conencting to screen..."));
+        debug(F("UpdateServer - Connecting to screen..."));
         screenStatus = SCREENCONNECTING;
         handshakeRetries = 0;
         break;
@@ -604,7 +604,7 @@ void updateServer()
         }
         else if (++handshakeRetries >= MAXHANDSHAKERETRIES)
         {
-            screenStatus = SCREENNOTCONNECTED; // TODO what happens when the screen cannot conenct?
+            screenStatus = SCREENNOTCONNECTED; // TODO what happens when the screen cannot connect?
             raise(SCREENNOTCONNECTEDERROR, F("Unable to communicate to the screen, double check the connections to it"));
         }
 
@@ -662,7 +662,7 @@ bool doServerHandshake()
 {
     unsigned long pm = millis();
     byte sw = 0;
-    debug(F("doServerHandsake - Step 0"));
+    debug(F("doServerHandshake - Step 0"));
     while (sw != 2 && pm + 30000 > millis()) //HANDSHAKETIMEOUT
     {
         if (Serial1.available())
@@ -670,7 +670,7 @@ bool doServerHandshake()
             debug(sw);
             if (sw == 0 && Serial1.read() == 'A')
             {
-                debug(F("doServerHandsake - Step 1"));
+                debug(F("doServerHandshake - Step 1"));
                 delay(50);
                 Serial1.print('Z');
                 flush(Serial1);
@@ -679,7 +679,7 @@ bool doServerHandshake()
             }
             else if (sw == 1 && Serial1.read() == 'Z')
             {
-                debug(F("doServerHandsake - Step 2"));
+                debug(F("doServerHandshake - Step 2"));
                 sw = 2;
             }
         }
@@ -687,7 +687,7 @@ bool doServerHandshake()
     flush(Serial1);
     if (sw == 2)
     {
-        debug(F("doServerHandshake - Succesful handshake"));
+        debug(F("doServerHandshake - Successful handshake"));
     }
     else
     {
@@ -699,8 +699,8 @@ bool doServerHandshake()
 //TODO processMessage(withRetryOption) 
 
 // This function get a message from the Serial1 buffer, then it decodes and verifies it returning the message itself and its type
-// If its resoult is false, the message couldn't be received properly
-// and a false is returned to proper handle the failure in the function that called getMessage
+// If its result is false, the message couldn't be received properly
+// and false is returned to proper handle the failure in the function that called getMessage
 bool getMessage(char* message, char* type) // handles timeout and retry
 {
 
@@ -740,7 +740,7 @@ bool getMessageHelper(char* message, char* type)
 }
 
 // This function sends a message from the type 'type' and ensures it is received properly.
-// If its resoult is false, the message couldn't be delivered properly
+// If its result is false, the message couldn't be delivered properly
 // and a false is returned to proper handle the failure in the function that called sendMessage
 // TODO test timeout and retry system (needs getMessage for it to work)
 bool sendMessage(const char* message, const char type)
@@ -951,7 +951,7 @@ void setup()
 
     // put setup code after this line
 
-    inputStats.setWindowSecs(40.0 / ACFrequency);     //Set AC Amperemeter frequency
+    inputStats.setWindowSecs(40.0 / ACFrequency);     //Set AC Ammeter frequency
 
     mode = 0;
     debug(F("Setup - Ready"));

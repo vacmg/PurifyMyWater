@@ -167,8 +167,8 @@ void raise(byte error, String possibleExplanation)
         }
         voltControl();
     }
-}
-//*/void raise(byte error, String possibleExplanation) {}
+}///* */
+void raise(byte error, String* possibleExplanation) {}
 
 /*------------Error Control-------------*/
 
@@ -180,11 +180,30 @@ void raise(byte error, String possibleExplanation)
 
 /*------------COMMUNICATION-------------*/
 
-// This function checks and answers any request from the PurifyMyWater MCU if it is conencted
+// This function checks and answers any request from the PurifyMyWater MCU if it is connected
 
 void updateClient()
 {
-    
+    if(Serial.available())
+    {
+        char message[32];
+        char type;
+        if(getMessage(message,&type))
+        {
+            char* command = strtok(message,",");
+            /*if(strcmp(message,"command") == 0)
+            {
+                dosomething();
+            }
+            else if(strcmp(message, "command2") == 0)
+            {
+                ...
+            }*/
+        }
+
+
+
+    }
 }
 
 // This function checks if the screen is properly connected and available for other functions to use it
@@ -196,7 +215,7 @@ void updateClient()
 bool doClientHandshake()
 {
     unsigned long pm = millis();
-    bool sw = 0;
+    bool sw = false;
     flush(Serial);
     while (!sw && pm + HANDSHAKETIMEOUT > millis())
     {
@@ -207,7 +226,7 @@ bool doClientHandshake()
             delay(200);
             Serial.print('Z');
             delay(50);
-            sw = 1;
+            sw = true;
         }
     }
     flush(Serial);
@@ -217,8 +236,8 @@ bool doClientHandshake()
 //TODO processMessage(withRetryOption) 
 
 // This function get a message from the Serial1 buffer, then it decodes and verifies it returning the message itself and its type
-// If its resoult is false, the message couldn't be received properly
-// and a false is returned to proper handle the failure in the function that called getMessage
+// If its result is false, the message couldn't be received properly
+// and false is returned to proper handle the failure in the function that called getMessage
 bool getMessage(char* message, char* type) // handles timeout and retry
 {
 
@@ -256,8 +275,8 @@ bool getMessageHelper(char* message, char* type)
 }
 
 // This function sends a message from the type 'type' and ensures it is received properly.
-// If its resoult is false, the message couldn't be delivered properly
-// and a false is returned to proper handle the failure in the function that called sendMessage
+// If its result is false, the message couldn't be delivered properly
+// and false is returned to proper handle the failure in the function that called sendMessage
 bool sendMessage(const char* message, const char type)
 {
     bool ok = false;
@@ -272,7 +291,7 @@ bool sendMessage(const char* message, const char type)
             {
                 char typ = 0;
                 char msg[39] = "";
-                if (getMessageHelper(msg, &typ) && typ == COMMSG && strcmp(msg, Message(F("OK"))))
+                if (getMessageHelper(msg, &typ) && typ == COMMSG && strcmp(msg, Message(F("OK")))==0)
                 {
                     ok = true;
                 }
