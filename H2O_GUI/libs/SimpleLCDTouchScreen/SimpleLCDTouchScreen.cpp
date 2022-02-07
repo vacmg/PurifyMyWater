@@ -7,7 +7,7 @@ SimpleLCDTouchScreen::SimpleLCDTouchScreen(int16_t wid, int16_t heg, uint8_t cs,
     sd_cs = 10;
 }
 
-SimpleLCDTouchScreen::SimpleLCDTouchScreen(uint16_t model1, uint8_t cs1, uint8_t cd1, uint8_t wr1, uint8_t rd1,uint8_t reset1) : LCDWIKI_KBV(model1, cs1, cd1, wr1, rd1, reset1)
+SimpleLCDTouchScreen::SimpleLCDTouchScreen(uint16_t model, uint8_t cs, uint8_t cd, uint8_t wr, uint8_t rd,uint8_t reset) : LCDWIKI_KBV(model, cs, cd, wr, rd, reset)
 {
     isSDReady = false;
     sd_cs = 10;
@@ -15,23 +15,23 @@ SimpleLCDTouchScreen::SimpleLCDTouchScreen(uint16_t model1, uint8_t cs1, uint8_t
 
 bool SimpleLCDTouchScreen::draw(Line* line)
 {
-    this->Set_Draw_color(line->getMainColor().to565());
-    this->Draw_Line(line->getx(),line->gety(),line->getx1(),line->gety1());
+    Set_Draw_color(line->getMainColor().to565());
+    Draw_Line(line->getx(),line->gety(),line->getx1(),line->gety1());
     return true;
 }
 
 bool SimpleLCDTouchScreen::draw(Label* label)
 {
-    this->Set_Text_colour(label->getMainColor().to565());
+    Set_Text_colour(label->getMainColor().to565());
     if (label->isAValidSecondaryColor())
     {
-        this->Set_Text_Back_colour(label->getSecondaryColor().to565());
-        this->Set_Text_Mode(false);
+        Set_Text_Back_colour(label->getSecondaryColor().to565());
+        Set_Text_Mode(false);
     }
     else
-        this->Set_Text_Mode(true);
-    this->Set_Text_Size(label->getFontSize());
-    this->Print_String(label->getString(),label->getx(),label->gety());
+        Set_Text_Mode(true);
+    Set_Text_Size(label->getFontSize());
+    Print_String(label->getString(),label->getx(),label->gety());
     return true;
 }
 
@@ -39,11 +39,11 @@ bool SimpleLCDTouchScreen::draw(Rectangle* rectangle)
 {
     if(rectangle->isAValidSecondaryColor())
     {
-        this->Set_Draw_color(rectangle->getSecondaryColor().to565());
-        this->Fill_Rectangle(rectangle->getx(), rectangle->gety(), rectangle->getx1(), rectangle->gety1());
+        Set_Draw_color(rectangle->getSecondaryColor().to565());
+        Fill_Rectangle(rectangle->getx(),rectangle->gety(),rectangle->getx1(),rectangle->gety1());
     }
-    this->Set_Draw_color(rectangle->getMainColor().to565());
-    this->Draw_Rectangle(rectangle->getx(),rectangle->gety(),rectangle->getx1(),rectangle->gety1());
+    Set_Draw_color(rectangle->getMainColor().to565());
+    Draw_Rectangle(rectangle->getx(),rectangle->gety(),rectangle->getx1(),rectangle->gety1());
     if(rectangle->isAValidLabel())
     {
         rectangle->updateLabelLocation(rectangle->getMargin());
@@ -56,11 +56,11 @@ bool SimpleLCDTouchScreen::draw(RoundRectangle* roundRectangle)
 {
     if(roundRectangle->isAValidSecondaryColor())
     {
-        this->Set_Draw_color(roundRectangle->getSecondaryColor().to565());
-        this->Fill_Round_Rectangle(roundRectangle->getx(), roundRectangle->gety(), roundRectangle->getx1(), roundRectangle->gety1(), roundRectangle->getRadius());
+        Set_Draw_color(roundRectangle->getSecondaryColor().to565());
+        Fill_Round_Rectangle(roundRectangle->getx(), roundRectangle->gety(), roundRectangle->getx1(), roundRectangle->gety1(), roundRectangle->getRadius());
     }
-    this->Set_Draw_color(roundRectangle->getMainColor().to565());
-    this->Draw_Round_Rectangle(roundRectangle->getx(),roundRectangle->gety(),roundRectangle->getx1(),roundRectangle->gety1(),roundRectangle->getRadius());
+    Set_Draw_color(roundRectangle->getMainColor().to565());
+    Draw_Round_Rectangle(roundRectangle->getx(),roundRectangle->gety(),roundRectangle->getx1(),roundRectangle->gety1(),roundRectangle->getRadius());
     if(roundRectangle->isAValidLabel())
     {
         roundRectangle->updateLabelLocation(roundRectangle->getMargin());

@@ -5,7 +5,7 @@
 #ifndef SIMPLELCDTOUCHSCREEN_SCREENOBJECT_H
 #define SIMPLELCDTOUCHSCREEN_SCREENOBJECT_H
 
-#include <Color.h>
+#include "Color.h"
 
 class ScreenObject
 {

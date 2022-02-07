@@ -4,7 +4,7 @@
 
 #ifndef SIMPLELCDTOUCHSCREEN_SCREENOBJECTWITHSECONDARYCOLOR_H
 #define SIMPLELCDTOUCHSCREEN_SCREENOBJECTWITHSECONDARYCOLOR_H
-#include <ScreenObject.h>
+#include "ScreenObject.h"
 
 class ScreenObjectWithSecondaryColor : virtual public ScreenObject
 {

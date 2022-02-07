@@ -4,9 +4,9 @@
 
 #ifndef SIMPLELCDTOUCHSCREEN_SCREENOBJECTWITHTOUCH_H
 #define SIMPLELCDTOUCHSCREEN_SCREENOBJECTWITHTOUCH_H
-#include <ScreenObjectWithXtraCoords.h>
-#include <TouchScreen.h>
-#include <TouchScreenObject.h>
+#include "ScreenObjectWithXtraCoords.h"
+#include "TouchScreen.h"
+#include "TouchScreenObject.h"
 
 class ScreenObjectWithTouch: virtual public ScreenObjectWithXtraCoords
 {

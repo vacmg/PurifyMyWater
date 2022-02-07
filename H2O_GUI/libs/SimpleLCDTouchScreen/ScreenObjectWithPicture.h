@@ -4,8 +4,8 @@
 
 #ifndef SIMPLELCDTOUCHSCREEN_SCREENOBJECTWITHPICTURE_H
 #define SIMPLELCDTOUCHSCREEN_SCREENOBJECTWITHPICTURE_H
-#include <Picture.h>
-#include <ScreenObject.h>
+#include "Picture.h"
+#include "ScreenObject.h"
 
 class ScreenObjectWithPicture: virtual public ScreenObject
 {

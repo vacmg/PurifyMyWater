@@ -10,9 +10,9 @@
 class Color
 {
 public:
-    uint8_t r = 0;
-    uint8_t g = 0;
-    uint8_t b = 0;
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
     Color()
     {
         r = 0;
@@ -24,6 +24,17 @@ public:
         this->r = r;
         this->g = g;
         this->b = b;
+    }
+
+    explicit Color(uint16_t rgb565)
+    {
+        unsigned int r5,g6,b5;
+        r5 = (rgb565&0xF800)>>11;
+        g6 = (rgb565&0x7E0)>>5;
+        b5 = (rgb565&0x1F);
+        r = ( r5 * 527 + 23 ) >> 6;
+        g = ( g6 * 259 + 33 ) >> 6;
+        b = ( b5 * 527 + 23 ) >> 6;
     }
 
     uint16_t to565() const

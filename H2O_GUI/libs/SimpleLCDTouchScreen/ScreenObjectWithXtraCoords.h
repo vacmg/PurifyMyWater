@@ -4,7 +4,7 @@
 
 #ifndef SIMPLELCDTOUCHSCREEN_SCREENOBJECTWITHXTRACOORDS_H
 #define SIMPLELCDTOUCHSCREEN_SCREENOBJECTWITHXTRACOORDS_H
-#include <ScreenObject.h>
+#include "ScreenObject.h"
 
 
 class ScreenObjectWithXtraCoords: virtual public ScreenObject

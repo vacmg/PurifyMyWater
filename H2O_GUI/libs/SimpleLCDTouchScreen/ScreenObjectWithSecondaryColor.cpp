@@ -35,10 +35,12 @@ bool ScreenObjectWithSecondaryColor::isAValidSecondaryColor()
 void ScreenObjectWithSecondaryColor::setSecondaryColor(Color secondaryColor)
 {
     this->secondaryColor = secondaryColor;
+    validSecondaryColor = true;
 }
 
 void ScreenObjectWithSecondaryColor::setSecondaryColor(uint8_t r, uint8_t g, uint8_t b)
 {
     this->secondaryColor = Color(r, g, b);
+    validSecondaryColor = true;
 }
 

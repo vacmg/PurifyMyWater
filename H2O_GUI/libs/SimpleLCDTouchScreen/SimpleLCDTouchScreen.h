@@ -19,7 +19,7 @@
 class SimpleLCDTouchScreen: virtual public LCDWIKI_KBV
 {
 public:
-    SimpleLCDTouchScreen(uint16_t model1, uint8_t cs1, uint8_t cd1, uint8_t wr1, uint8_t rd1, uint8_t reset1);
+    SimpleLCDTouchScreen(uint16_t model, uint8_t cs, uint8_t cd, uint8_t wr, uint8_t rd, uint8_t reset);
     SimpleLCDTouchScreen(int16_t wid, int16_t heg, uint8_t cs, uint8_t cd, uint8_t wr, uint8_t rd, uint8_t reset);
     void Init_LCD();
     void set_sd_cs(uint8_t sd_cs);

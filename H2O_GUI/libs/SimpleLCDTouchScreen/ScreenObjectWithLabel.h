@@ -4,8 +4,8 @@
 
 #ifndef SIMPLELCDTOUCHSCREEN_SCREENOBJECTWITHLABEL_H
 #define SIMPLELCDTOUCHSCREEN_SCREENOBJECTWITHLABEL_H
-#include <ScreenObjectWithXtraCoords.h>
-#include <Label.h>
+#include "ScreenObjectWithXtraCoords.h"
+#include "Label.h"
 
 
 class ScreenObjectWithLabel: virtual public ScreenObjectWithXtraCoords

@@ -4,6 +4,8 @@
 
 #include "ScreenObjectWithLabel.h"
 
+// TODO (feature) set alignment (left, center, right)
+
 ScreenObjectWithLabel::ScreenObjectWithLabel(int x, int y, Color mainColor, Label* label, bool disableAutoSize):ScreenObject(x, y, mainColor)
 {
     this->label = label;
