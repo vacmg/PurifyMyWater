@@ -7,16 +7,16 @@
 #define DEBUG true
 
 #define BOOTING 0
-#define LOADMENU 1
-#define MENU 2
+#define LOADSTATUS 1
+#define STATUS 2
 
 #if DEBUG
     const char mode0[] PROGMEM = "BOOTING"; // in order (BOOTING = 0 ---> mode0 = "BOOTING" --> modeTable[0] = mode0)
-    const char mode1[] PROGMEM = "LOADMENU";
-    const char mode2[] PROGMEM = "MENU";
+    const char mode1[] PROGMEM = "LOADSTATUS";
+    const char mode2[] PROGMEM = "STATUS";
 
     const char *const modeTable[] PROGMEM = {mode0, mode1, mode2};
-    char printModeBuff[9]; // Max size of any modeX string
+    char printModeBuff[11]; // Max size of any modeX string
 
     char* modeToString(byte pMode)
     {
@@ -25,7 +25,7 @@
     }
 #endif
 
-byte mode = BOOTING;
+byte mode = LOADSTATUS;
 SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
 TouchScreenObject ts(8,A3,A2,9,300,320,480,3,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
 
@@ -45,16 +45,28 @@ void bootAnimation()
     my_lcd.draw(&loading);
 }
 
-void drawMenuBackground()
+void drawStatusBackground()
 {
-    Rectangle rec(190,275,280,300, Color(255,255,255), Color(255,255,255));
-    my_lcd.draw(&rec);
-    Picture menuBackground(14,44,"schArd.bmp");
-    debug(menuBackground.gety1());
+    Picture menuBackground(14,74,"schArd.bmp");
     my_lcd.draw(&menuBackground);
-    rec.ScreenObject::setCoords(234,0);
-    rec.setCoords1(238,42);
+    Rectangle rec(216,0,249,73, Color(255,255,255), Color(255,255,255));
     my_lcd.draw(&rec);
+}
+
+void drawStatusForeground()
+{
+
+    Label lab(200,10,"Menu",20,Color(0,0,0)); //Label MENU
+    RectangleButton rec(135,234,260,290, Color(0,0,0), Color(255,255,255),&lab,&ts);
+    my_lcd.draw(&rec);
+
+    lab.setString("ON/OFF"); //Label ON/OFF
+    rec.ScreenObject::setCoords(300,234);
+    rec.setCoords1(420,290);
+    my_lcd.draw(&rec);
+    //lab.setString("status");
+    Label lab1(150,20,"Status",5,Color(0,0,0)); //Label status
+    my_lcd.draw(&lab1);//Label status
 }
 
 void setup()
@@ -95,14 +107,15 @@ void loop()
     {
         case BOOTING:
             bootAnimation();
-            changeMode(LOADMENU);
+            changeMode(LOADSTATUS);
             break;
-        case LOADMENU:
-            drawMenuBackground();
-            changeMode(MENU);
+        case LOADSTATUS:
+            drawStatusBackground();
+            changeMode(STATUS);
             break;
-        case MENU:
-            //ifs para cambiar cosas
+        case STATUS:
+            drawStatusForeground();
+            while(1);
             break;
     }
 }
