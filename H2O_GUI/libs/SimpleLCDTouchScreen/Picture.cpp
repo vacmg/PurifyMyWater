@@ -45,6 +45,26 @@ bool Picture::setPicturePath(char *picturePath)
     return init();
 }
 
+void Picture::setCoords(int x, int y)
+{
+    ScreenObject::setCoords(x, y);
+    readyToUse = bmpHeaderAnalysis();
+}
+
+int Picture::getx1()
+{
+    if(!readyToUse)
+        readyToUse = bmpHeaderAnalysis();
+    return ScreenObjectWithXtraCoords::getx1();
+}
+
+int Picture::gety1()
+{
+    if(!readyToUse)
+        readyToUse = bmpHeaderAnalysis();
+    return ScreenObjectWithXtraCoords::gety1();
+}
+
 // Call it before accessing any of its members
 bool Picture::init()
 {

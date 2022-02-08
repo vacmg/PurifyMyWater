@@ -25,6 +25,9 @@ public:
     uint32_t getBmpHeight();
     uint32_t getIgnoreBytes();
     bool isReadyToUse();
+    void setCoords(int x, int y);
+    int getx1();
+    int gety1();
 
 private:
     bool bmpHeaderAnalysis();

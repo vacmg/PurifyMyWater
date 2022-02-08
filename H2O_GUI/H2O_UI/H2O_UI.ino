@@ -25,7 +25,7 @@
     }
 #endif
 
-byte mode = LOADSTATUS;
+byte mode = BOOTING;
 SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
 TouchScreenObject ts(8,A3,A2,9,300,320,480,3,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
 
@@ -139,5 +139,3 @@ void loop()
             break;
     }
 }
-
-
