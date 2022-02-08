@@ -7,6 +7,7 @@
 #define DEBUG true
 
 #define BOOTING 0
+#define LOADMENU 1
 
 #if DEBUG
     const char mode0[] PROGMEM = "BOOTING"; // in order (BOOTING = 0 ---> mode0 = "BOOTING" --> modeTable[0] = mode0)
@@ -58,6 +59,8 @@ void setup()
     //todo Test code after this line
 
     bootAnimation();
+    changeMode(2); --> debug(String(F("Mode changed from '")) +String(modeToString(mode))+String(F("' to '"))+String(modeToString(2))+String(F("'"))); mode = 2
+
 
     //todo Test code before this line
 #if DEBUG
@@ -71,6 +74,15 @@ void loop()
     switch (mode)
     {
         case BOOTING:
+            bootAnimation();
+            changeMode(LOADMENU);
+            break;
+        case LOADMENU:
+            drawMenuBackground();
+            changeMode(MENU);
+            break;
+        case MENU:
+            //ifs para cambiar cosas
             break;
     }
 }
@@ -81,4 +93,10 @@ void bootAnimation()
     my_lcd.draw(&bigLogo);
     Label loading(165,85,"Loading...",3,Color(0,70,200));
     my_lcd.draw(&loading);
+}
+
+void drawMenuBackground()
+{
+    Picture menuBackground(14,44,"schArd.bmp");
+    my_lcd.draw(&menuBackground);
 }
