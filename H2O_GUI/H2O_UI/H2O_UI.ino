@@ -57,15 +57,13 @@ void drawStatusForeground()
 {
 
     Label lab(200,10,"Menu",3,Color(0,0,0)); //Label MENU
-    RectangleButton rec(135,234,260,290, Color(0,0,0), Color(255,255,255),&lab,true,&ts);
-    my_lcd.draw(&rec);
-
+    RectangleButton recOn_OFF(135,234,260,290, Color(0,0,0), Color(255,255,255),&lab,true,&ts);
+    RectangleButton recMenu(300,234,420,290, Color(0,0,0), Color(255,255,255),&lab,true,&ts);
+    my_lcd.draw(&recMenu);
     lab.setString("ON/OFF"); //Label ON/OFF
-    rec.ScreenObject::setCoords(300,234);
-    rec.setCoords1(420,290);
-    my_lcd.draw(&rec);
+    my_lcd.draw(&recOn_OFF);
 
-
+    Rectangle rec(300,234,420,290, Color(0,0,0), Color(255,255,255),&lab,&ts);
     lab.setString("Logo"); //todo add logo 60*60
     lab.setFontSize(2);
     rec.ScreenObject::setCoords(400,10);
@@ -84,9 +82,10 @@ void drawStatusForeground()
     rec.setCoords1(440,215);
     my_lcd.draw(&rec);
 
-    //lab.setString("status"); //Label status
-    Label lab1(150,20,"Status",5,Color(0,0,0)); //Label status
-    my_lcd.draw(&lab1);
+    lab.setCoords(150,20);
+    lab.setFontSize(5);
+    lab.setString("status");
+    my_lcd.draw(&lab);
 }
 
 void setup()
