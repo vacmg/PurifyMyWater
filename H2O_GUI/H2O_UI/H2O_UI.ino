@@ -56,17 +56,37 @@ void drawStatusBackground()
 void drawStatusForeground()
 {
 
-    Label lab(200,10,"Menu",20,Color(0,0,0)); //Label MENU
-    RectangleButton rec(135,234,260,290, Color(0,0,0), Color(255,255,255),&lab,&ts);
+    Label lab(200,10,"Menu",3,Color(0,0,0)); //Label MENU
+    RectangleButton rec(135,234,260,290, Color(0,0,0), Color(255,255,255),&lab,true,&ts);
     my_lcd.draw(&rec);
 
     lab.setString("ON/OFF"); //Label ON/OFF
     rec.ScreenObject::setCoords(300,234);
     rec.setCoords1(420,290);
     my_lcd.draw(&rec);
-    //lab.setString("status");
+
+
+    lab.setString("Logo"); //todo add logo 60*60
+    lab.setFontSize(2);
+    rec.ScreenObject::setCoords(400,10);
+    rec.setCoords1(460,70);
+    my_lcd.draw(&rec);
+
+
+    lab.setString("15.4 V"); //todo add Voltage
+    lab.setFontSize(1);
+    rec.ScreenObject::setCoords(20,115);
+    rec.setCoords1(70,135);
+    my_lcd.draw(&rec);
+
+    lab.setString("200 L"); //todo add Liters
+    rec.ScreenObject::setCoords(400,195);
+    rec.setCoords1(440,215);
+    my_lcd.draw(&rec);
+
+    //lab.setString("status"); //Label status
     Label lab1(150,20,"Status",5,Color(0,0,0)); //Label status
-    my_lcd.draw(&lab1);//Label status
+    my_lcd.draw(&lab1);
 }
 
 void setup()
