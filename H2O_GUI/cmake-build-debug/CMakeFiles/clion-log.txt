@@ -1,4 +1,4 @@
-/home/victor/Programas/clion-2021.2.1/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/victor/Documentos/GitHub/PurifyMyWater/H2O_GUI
+"C:\Program Files\JetBrains\CLion 2021.3.3\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" D:\GitHub_Repositories\PurifyMyWater\H2O_GUI
 CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
   Compatibility with CMake < 2.8.12 will be removed from a future version of
   CMake.
@@ -7,13 +7,145 @@ CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
   CMake that the project does not need compatibility with older versions.
 
 
-CMake Error at cmake/ArduinoToolchain.cmake:82 (message):
-  Could not find Arduino SDK (set ARDUINO_SDK_PATH)!
+-- The C compiler identification is GNU 7.3.0
+-- The CXX compiler identification is GNU 7.3.0
+CMake Deprecation Warning at cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
 Call Stack (most recent call first):
-  /home/victor/Programas/clion-2021.2.1/bin/cmake/linux/share/cmake-3.21/Modules/CMakeDetermineSystem.cmake:124 (include)
+  C:/Program Files/JetBrains/CLion 2021.3.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake:27 (include)
   CMakeLists.txt:8 (project)
 
 
-CMake Error: CMake was unable to find a build program corresponding to "Unix Makefiles".  CMAKE_MAKE_PROGRAM is not set.  You probably need to select a different build tool.
--- Configuring incomplete, errors occurred!
-See also "/home/victor/Documentos/GitHub/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/CMakeOutput.log".
+-- Arduino SDK version 1.8.19: C:/Program Files (x86)/Arduino
+CMake Deprecation Warning at cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+Call Stack (most recent call first):
+  C:/Program Files/JetBrains/CLion 2021.3.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeCInformation.cmake:66 (include)
+  CMakeLists.txt:8 (project)
+
+
+-- Detecting C compiler ABI info
+CMake Deprecation Warning at D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+Call Stack (most recent call first):
+  C:/Program Files/JetBrains/CLion 2021.3.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake:27 (include)
+  D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
+
+
+CMake Deprecation Warning at D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+Call Stack (most recent call first):
+  C:/Program Files/JetBrains/CLion 2021.3.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeCInformation.cmake:66 (include)
+  D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
+
+
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Program Files (x86)/Arduino/hardware/tools/avr/bin/avr-gcc.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+CMake Deprecation Warning at cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+Call Stack (most recent call first):
+  C:/Program Files/JetBrains/CLion 2021.3.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeCXXInformation.cmake:65 (include)
+  CMakeLists.txt:8 (project)
+
+
+-- Detecting CXX compiler ABI info
+CMake Deprecation Warning at D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+Call Stack (most recent call first):
+  C:/Program Files/JetBrains/CLion 2021.3.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake:27 (include)
+  D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
+
+
+CMake Deprecation Warning at D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+Call Stack (most recent call first):
+  C:/Program Files/JetBrains/CLion 2021.3.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeCXXInformation.cmake:65 (include)
+  D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
+
+
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files (x86)/Arduino/hardware/tools/avr/bin/avr-g++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Generating H2O_GUI
+-- Using C:/Program Files (x86)/Arduino/hardware/tools/avr/bin/avr-objcopy.exe for converting firmware image to hex
+-- AVR Boards:
+--                   menu: 
+--                    yun: Arduino Y
+--                    uno: Arduino Uno
+--              diecimila: Arduino Duemilanove or Diecimila
+--                   nano: Arduino Nano
+--                   mega: Arduino Mega or Mega 2560
+--                megaADK: Arduino Mega ADK
+--               leonardo: Arduino Leonardo
+--            leonardoeth: Arduino Leonardo ETH
+--                  micro: Arduino Micro
+--                esplora: Arduino Esplora
+--                   mini: Arduino Mini
+--               ethernet: Arduino Ethernet
+--                    fio: Arduino Fio
+--                     bt: Arduino BT
+--             LilyPadUSB: LilyPad Arduino USB
+--                lilypad: LilyPad Arduino
+--                    pro: Arduino Pro or Pro Mini
+--               atmegang: Arduino NG or older
+--           robotControl: Arduino Robot Control
+--             robotMotor: Arduino Robot Motor
+--                  gemma: Arduino Gemma
+--     circuitplay32u4cat: Adafruit Circuit Playground
+--                yunmini: Arduino Y
+--                chiwawa: Arduino Industrial 101
+--                    one: Linino One
+--                unowifi: Arduino Uno WiFi
+-- 
+-- 
+-- AVR Programmers:
+--                     avrisp: AVR ISP
+--                 avrispmkii: AVRISP mkII
+--                 usbtinyisp: USBtinyISP
+--                 arduinoisp: ArduinoISP
+--              arduinoisporg: ArduinoISP.org
+--                     usbasp: USBasp
+--                   parallel: Parallel Programmer
+--               arduinoasisp: Arduino as ISP
+--     arduinoasispatmega32u4: Arduino as ISP (ATmega32U4)
+--                   usbGemma: Arduino Gemma
+--                  buspirate: BusPirate as ISP
+--                     stk500: Atmel STK500 development board
+--                   jtag3isp: Atmel JTAGICE3 (ISP mode)
+--                      jtag3: Atmel JTAGICE3 (JTAG mode)
+--                  atmel_ice: Atmel-ICE (AVR)
+-- 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug

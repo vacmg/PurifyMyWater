@@ -1,0 +1,5 @@
+D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/uno_CORE.dir
+D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/H2O_GUI.dir
+D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/H2O_GUI-size.dir
+D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/rebuild_cache.dir

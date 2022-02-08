@@ -8,13 +8,15 @@
 
 #define BOOTING 0
 #define LOADMENU 1
+#define MENU 2
 
 #if DEBUG
     const char mode0[] PROGMEM = "BOOTING"; // in order (BOOTING = 0 ---> mode0 = "BOOTING" --> modeTable[0] = mode0)
-    const char mode1[] PROGMEM = "mode1";
+    const char mode1[] PROGMEM = "LOADMENU";
+    const char mode2[] PROGMEM = "MENU";
 
-    const char *const modeTable[] PROGMEM = {mode0, mode1};
-    char printModeBuff[8]; // Max size of any modeX string
+    const char *const modeTable[] PROGMEM = {mode0, mode1, mode2};
+    char printModeBuff[9]; // Max size of any modeX string
 
     char* modeToString(byte pMode)
     {
@@ -34,6 +36,26 @@ TouchScreenObject ts(8,A3,A2,9,300,320,480,3,924,111,58,935); // rx is the resis
 #define debug(data) ;
 #define changeMode(newMode) mode = newMode
 #endif
+
+void bootAnimation()
+{
+    Picture bigLogo(157,25,"PMWBL.bmp");
+    my_lcd.draw(&bigLogo);
+    Label loading(165,85,"Loading...",3,Color(0,70,200));
+    my_lcd.draw(&loading);
+}
+
+void drawMenuBackground()
+{
+    Rectangle rec(190,275,280,300, Color(255,255,255), Color(255,255,255));
+    my_lcd.draw(&rec);
+    Picture menuBackground(14,44,"schArd.bmp");
+    debug(menuBackground.gety1());
+    my_lcd.draw(&menuBackground);
+    rec.ScreenObject::setCoords(234,0);
+    rec.setCoords1(238,42);
+    my_lcd.draw(&rec);
+}
 
 void setup()
 {
@@ -58,8 +80,6 @@ void setup()
 
     //todo Test code after this line
 
-    bootAnimation();
-    changeMode(2); --> debug(String(F("Mode changed from '")) +String(modeToString(mode))+String(F("' to '"))+String(modeToString(2))+String(F("'"))); mode = 2
 
 
     //todo Test code before this line
@@ -87,16 +107,4 @@ void loop()
     }
 }
 
-void bootAnimation()
-{
-    Picture bigLogo(157,25,"PMWBL.bmp");
-    my_lcd.draw(&bigLogo);
-    Label loading(165,85,"Loading...",3,Color(0,70,200));
-    my_lcd.draw(&loading);
-}
 
-void drawMenuBackground()
-{
-    Picture menuBackground(14,44,"schArd.bmp");
-    my_lcd.draw(&menuBackground);
-}

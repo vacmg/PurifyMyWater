@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "H2O_GUI",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "H2O_GUI::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-H2O_GUI-Debug-841b0788c05cc718b4bb.json",
+					"name" : "H2O_GUI",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "H2O_GUI-size::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-H2O_GUI-size-Debug-3c1d211c662686177ef1.json",
+					"name" : "H2O_GUI-size",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uno_CORE::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uno_CORE-Debug-bc3a817fe30625aa85a8.json",
+					"name" : "uno_CORE",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug",
+		"source" : "D:/GitHub_Repositories/PurifyMyWater/H2O_GUI"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}
