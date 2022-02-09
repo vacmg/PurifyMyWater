@@ -17,8 +17,10 @@ public:
     ScreenObjectWithLabel();
     bool isAValidLabel();
     bool isAutoSizeDisabled();
+    void setDisableAutoSize(bool disableAutoSize);
     Label* getLabel();
     void setLabel(Label* label);
+    void disableLabel();
     void updateLabelLocation(uint8_t margin);
     int getMargin();
     void setMargin(int margin);

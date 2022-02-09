@@ -44,3 +44,7 @@ void ScreenObjectWithSecondaryColor::setSecondaryColor(uint8_t r, uint8_t g, uin
     validSecondaryColor = true;
 }
 
+void ScreenObjectWithSecondaryColor::disableSecondaryColor()
+{
+    validSecondaryColor = false;
+}

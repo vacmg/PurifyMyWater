@@ -51,6 +51,12 @@ bool ScreenObjectWithLabel::isAValidLabel()
 void ScreenObjectWithLabel::setLabel(Label* label)
 {
     this->label = label;
+    validLabel = true;
+}
+
+void ScreenObjectWithLabel::disableLabel()
+{
+    validLabel = false;
 }
 
 // This function dynamicly set rectangle's label position and font size
@@ -87,6 +93,7 @@ int ScreenObjectWithLabel::getMargin()
 void ScreenObjectWithLabel::setMargin(int margin)
 {
     this->margin = margin;
+    updateLabelLocation(this->margin);
 }
 
 void ScreenObjectWithLabel::setCoords(int x, int y)
@@ -106,4 +113,8 @@ bool ScreenObjectWithLabel::isAutoSizeDisabled()
     return disableAutoSize;
 }
 
-
+void ScreenObjectWithLabel::setDisableAutoSize(bool disableAutoSize)
+{
+    this->disableAutoSize = disableAutoSize;
+    updateLabelLocation(margin);
+}
