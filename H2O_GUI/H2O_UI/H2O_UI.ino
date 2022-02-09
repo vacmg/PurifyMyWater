@@ -53,7 +53,7 @@ char* modeToString(byte pMode)
 
 char auxBuffer[32] = ""; // TODO when using progmem, use it as a buffer to print each label
 
-byte mode = LOADMENU;
+byte mode = LOADSETTINGS;
 SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
 TouchScreenObject ts(8,A3,A2,9,300,320,480,3,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
 
@@ -160,8 +160,8 @@ void draw4ButtonsLayout(char* str1, char* str2, char* str3, char* str4)
 void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char* topRight, char* centerRight, char* bottomRight, bool topHelp, bool centerHelp, bool bottomHelp, byte page, byte maxPage)
 {
     label.setString(topLeft);
-    btn1.setCoords(30,100);
-    btn1.setCoords1(200,140);
+    btn1.setCoords(25,100);
+    btn1.setCoords1(195,140);
     my_lcd.draw(&btn1);
 
     label.setString(topRight);
@@ -170,8 +170,8 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
     my_lcd.draw(&btn2);
 
     label.setString(centerLeft);
-    btn3.setCoords(30,160);
-    btn3.setCoords1(200,200);
+    btn3.setCoords(25,160);
+    btn3.setCoords1(195,200);
     my_lcd.draw(&btn3);
 
     label.setString(centerRight);
@@ -180,8 +180,8 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
     my_lcd.draw(&btn4);
 
     label.setString(bottomLeft);
-    btn5.setCoords(30,220);
-    btn5.setCoords1(200,260);
+    btn5.setCoords(25,220);
+    btn5.setCoords1(195,260);
     my_lcd.draw(&btn5);
 
     label.setString(bottomRight);
@@ -191,24 +191,24 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
 
     if(topHelp)
     {
-        btnHelp1.setCoords(210,100);
-        btnHelp1.setCoords1(250,140);
+        btnHelp1.setCoords(205,100);
+        btnHelp1.setCoords1(245,140);
         label.setString("?");
         my_lcd.draw(&btnHelp1);
     }
 
     if(centerHelp)
     {
-        btnHelp2.setCoords(210,160);
-        btnHelp2.setCoords1(250,200);
+        btnHelp2.setCoords(205,160);
+        btnHelp2.setCoords1(245,200);
         label.setString("?");
         my_lcd.draw(&btnHelp2);
     }
 
     if(bottomHelp)
     {
-        btnHelp3.setCoords(210,220);
-        btnHelp3.setCoords1(250,260);
+        btnHelp3.setCoords(205,220);
+        btnHelp3.setCoords1(245,260);
         label.setString("?");
         my_lcd.draw(&btnHelp3);
     }
@@ -216,19 +216,22 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
     {
         sprintf(auxBuffer,"%d",page);
         label.setString(auxBuffer);
-        Rectangle(0,0,0,0,Color(0),&label); // TODO set real coords
+        Rectangle auxRec(230,280,250,300,Color(0),&label);
+        my_lcd.draw(&auxRec);
 
         if(page>1)
         {
             label.setString("Previous");
-            btn7.setCoords(0,0); // TODO set real coords
-            btn7.setCoords1(0,0);
+            btn7.setCoords(40,275); // TODO set real coords
+            btn7.setCoords1(190,305);
+            my_lcd.draw(&btn7);
         }
         if (page<maxPage)
         {
             label.setString("Next");
-            btn7.setCoords(0,0); // TODO set real coords
-            btn7.setCoords1(0,0);
+            btn8.setCoords(290,275); // TODO set real coords
+            btn8.setCoords1(440,305);
+            my_lcd.draw(&btn8);
         }
     }
 
@@ -313,6 +316,16 @@ void drawSettings()
     my_lcd.draw(&title);
     //Layout4Buttons
     draw4ButtonsLayout("Electricity","Water","Interface","Temperature");
+}
+
+void drawElectricity()
+{
+    //Title electricity
+    titleLabel.setString("Electricity Settings");
+    titleLabel.setFontSize(2);
+    my_lcd.draw(&title);
+    //Layout 6 Buttons
+    draw6ButtonsLayout("Start Charging Voltage","Stop Charging Voltage","UV light est. Current","","","",true,true,true,1,3);
 }
 //Main Functions
 
@@ -454,7 +467,7 @@ void loop()
             break;
         case LOADELECTRICITY:
             drawBackground();
-            draw6ButtonsLayout("a","b","c","d","e","f",false,false,false,2,2);
+            drawElectricity();
             changeMode(ELECTRICITY);
             break;
         case ELECTRICITY:
