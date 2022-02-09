@@ -20,8 +20,13 @@
 #define LOADEXTRAFUNCTIONS 11
 #define EXTRAFUNCTIONS 12
 #define LOADELECTRICITY 13
-#define ELECTRICITY 14
+#define LOADPAGEELECTRICITY 14
+#define ELECTRICITY 15
 
+// ERROR CODES (CODE<0)
+#define ON 1
+#define OFF 0
+#define ERROR -1
 
 #if DEBUG
 const char mode0[] PROGMEM = "BOOTING"; // in order (BOOTING = 0 ---> mode0 = "BOOTING" --> modeTable[0] = mode0)
@@ -38,10 +43,11 @@ const char mode10[] PROGMEM = "ENGINEERINGMODE";
 const char mode11[] PROGMEM = "LOADEXTRAFUNCTIONS";
 const char mode12[] PROGMEM = "EXTRAFUNCTIONS";
 const char mode13[] PROGMEM = "LOADELECTRICTY";
-const char mode14[] PROGMEM = "ELECTRICITY";
+const char mode14[] PROGMEM = "LOADPAGEELECTRICITY";
+const char mode15[] PROGMEM = "ELECTRICITY";
 
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15};
 char printModeBuff[20]; // Max size of any modeX string
 
 char* modeToString(byte pMode)
@@ -53,7 +59,10 @@ char* modeToString(byte pMode)
 
 char auxBuffer[32] = ""; // TODO when using progmem, use it as a buffer to print each label
 
-byte mode = LOADSETTINGS;
+char mainSwitchSt = OFF;
+byte mode = BOOTING;
+byte page = 0;
+byte maxPage = 0;
 SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
 TouchScreenObject ts(8,A3,A2,9,300,320,480,3,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
 
@@ -67,7 +76,7 @@ TouchScreenObject ts(8,A3,A2,9,300,320,480,3,924,111,58,935); // rx is the resis
 
 //Status Variable
 Label label(200,10,"Menu",3,Color(0,0,0)); //general label
-Rectangle rectangle(300,234,420,290, Color(0,0,0), Color(255,255,255),&label,&ts);
+Rectangle rectangle(300,234,420,290, Color(0,0,0), Color(255,255,255),&label);
 /*
 RectangleButton recOn_OFF(300,234,420,290, Color(0,0,0), Color(255,255,255),&label,true,&ts);
 RectangleButton recMenu(135,234,260,290, Color(0,0,0), Color(255,255,255),&label,true,&ts);*/
@@ -83,9 +92,9 @@ RectangleButton btn7(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts)
 RectangleButton btn8(30,220,230,300,Color(0,0,0),Color(255,255,255),&label,&ts);
 
 //Rectangle Button Help
-RectangleButton btnHelp1(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts);
-RectangleButton btnHelp2(30,220,230,300,Color(0,0,0),Color(255,255,255),&label,&ts);
-RectangleButton btnHelp3(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts);
+RectangleButton btn9(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts);
+RectangleButton btn10(30,220,230,300,Color(0,0,0),Color(255,255,255),&label,&ts);
+RectangleButton btn11(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts);
 
 // Frequently used ScreenObjects
 RectangleButton backBtn(20,20,60,60,Color(0,0,0),Color(255,255,255),&label,&ts);
@@ -156,82 +165,90 @@ void draw4ButtonsLayout(char* str1, char* str2, char* str3, char* str4)
     btn4.setDisableAutoSize(false);
 }
 
-// btn1 --> topLeft; btn2 --> centerLeft; btn3 --> bottomLeft; btn4 --> topRight; btn5 --> centerRight; btn6 --> bottomRight; helpButton1 --> topHelp; helpButton2 --> centerHelp; helpButton3 --> bottomHelp; btn7 --> Previous; btn8 --> Next
-void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char* topRight, char* centerRight, char* bottomRight, bool topHelp, bool centerHelp, bool bottomHelp, byte page, byte maxPage)
+// btn1 --> topLeft; btn2 --> centerLeft; btn3 --> bottomLeft; btn4 --> topRight; btn5 --> centerRight; btn6 --> bottomRight; btn7 --> Previous; btn8 --> Next; btn9 --> topHelp; btn10 --> centerHelp; btn11 --> bottomHelp;
+void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char* topRight, char* centerRight, char* bottomRight, bool topHelp, bool centerHelp, bool bottomHelp, byte maxPage)
 {
     label.setString(topLeft);
-    btn1.setCoords(25,100);
-    btn1.setCoords1(195,140);
+    btn1.setCoords(25,95);
+    btn1.setCoords1(195,135);
     my_lcd.draw(&btn1);
 
     label.setString(topRight);
-    btn2.setCoords(280,100);
-    btn2.setCoords1(450,140);
+    btn2.setCoords(280,95);
+    btn2.setCoords1(450,135);
     my_lcd.draw(&btn2);
 
     label.setString(centerLeft);
-    btn3.setCoords(25,160);
-    btn3.setCoords1(195,200);
+    btn3.setCoords(25,155);
+    btn3.setCoords1(195,195);
     my_lcd.draw(&btn3);
 
     label.setString(centerRight);
-    btn4.setCoords(280,160);
-    btn4.setCoords1(450,200);
+    btn4.setCoords(280,155);
+    btn4.setCoords1(450,195);
     my_lcd.draw(&btn4);
 
     label.setString(bottomLeft);
-    btn5.setCoords(25,220);
-    btn5.setCoords1(195,260);
+    btn5.setCoords(25,215);
+    btn5.setCoords1(195,255);
     my_lcd.draw(&btn5);
 
     label.setString(bottomRight);
-    btn6.setCoords(280,220);
-    btn6.setCoords1(450,260);
+    btn6.setCoords(280,215);
+    btn6.setCoords1(450,255);
     my_lcd.draw(&btn6);
 
     if(topHelp)
     {
-        btnHelp1.setCoords(205,100);
-        btnHelp1.setCoords1(245,140);
+        btn9.setCoords(218,95);
+        btn9.setCoords1(258,135);
         label.setString("?");
-        my_lcd.draw(&btnHelp1);
+        my_lcd.draw(&btn9);
     }
 
     if(centerHelp)
     {
-        btnHelp2.setCoords(205,160);
-        btnHelp2.setCoords1(245,200);
+        btn10.setCoords(218,155);
+        btn10.setCoords1(258,195);
         label.setString("?");
-        my_lcd.draw(&btnHelp2);
+        my_lcd.draw(&btn10);
     }
 
     if(bottomHelp)
     {
-        btnHelp3.setCoords(205,220);
-        btnHelp3.setCoords1(245,260);
+        btn11.setCoords(218,215);
+        btn11.setCoords1(258,255);
         label.setString("?");
-        my_lcd.draw(&btnHelp3);
+        my_lcd.draw(&btn11);
     }
-    if(page!=0||maxPage>1)
+    if(page>0 && maxPage>1)
     {
+        Rectangle auxRec(0,268,480,320,Color(0), Color(255,255,255)); // Rectangle auxRec(229,284,249,304,Color(0),&label);
+        my_lcd.draw(&auxRec);
+
         sprintf(auxBuffer,"%d",page);
         label.setString(auxBuffer);
-        Rectangle auxRec(230,280,250,300,Color(0),&label);
+        auxRec.setCoords(229,284);
+        auxRec.setCoords1(249,304);
+        auxRec.setLabel(&label);
         my_lcd.draw(&auxRec);
 
         if(page>1)
         {
             label.setString("Previous");
-            btn7.setCoords(40,275); // TODO set real coords
-            btn7.setCoords1(190,305);
+            btn7.setCoords(35,278);
+            btn7.setCoords1(190,308);
             my_lcd.draw(&btn7);
         }
         if (page<maxPage)
         {
+            btn8.setDisableAutoSize(true);
+            label.setFontSize(3);
             label.setString("Next");
-            btn8.setCoords(290,275); // TODO set real coords
-            btn8.setCoords1(440,305);
+            btn8.setCoords(290,278);
+            btn8.setCoords1(440,308);
             my_lcd.draw(&btn8);
+            btn8.setDisableAutoSize(false);
         }
     }
 
@@ -240,6 +257,11 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
 //Auxiliary functions
 
 //Main Functions
+void drawStatusColors(bool wellPump, bool UVPump, bool endPump, bool UVRelay, bool filterRelay, char well, char tank1, char tank2, char tank3, bool endTank) // TODO rectangles // false --> OFF, true -->ON, <0 --> LOW, = 0 --> Half, >0 --> FULL
+{
+
+}
+
 void drawStatusBackground(bool dontFillScreen)
 {
     if(!dontFillScreen)
@@ -267,13 +289,13 @@ void drawStatusBackground(bool dontFillScreen)
     my_lcd.draw(&btn1);
     btn1.setDisableAutoSize(false);
 
-    btn1.setDisableAutoSize(true);
+    /*btn2.setDisableAutoSize(true);
     label.setFontSize(2);
-    label.setString("ON/OFF"); //Label ON/OFF todo button mechanic (ON(green) || OFF(red))
+    label.setString("ON/OFF"); //Label ON/OFF
     btn2.setCoords(300,234);
     btn2.setCoords1(420,290);
     my_lcd.draw(&btn2);
-    btn1.setDisableAutoSize(false);
+    btn2.setDisableAutoSize(false);*/
 }
 void drawStatusBackground()
 {
@@ -283,19 +305,42 @@ void drawStatusBackground()
 // Draw voltage & amount of purified water
 void drawStatusForeground(char* voltage, char* waterAmount)//TODO add water levels & other indicators
 {
-    debug("Voltage: "+String(voltage)+"\tWater amount: "+waterAmount);
+    debug("Voltage: " + String(voltage) + "\tWater amount: " + waterAmount);
 
     label.setString(voltage);
-    rectangle.setMargin(4);
-    rectangle.setCoords(20,115);
-    rectangle.setCoords1(70,135);
+    rectangle.setCoords(20, 115);
+    rectangle.setCoords1(70, 135);
     my_lcd.draw(&rectangle);
 
     label.setString(waterAmount);
-    rectangle.setCoords(400,195);
-    rectangle.setCoords1(440,215);
+    rectangle.setCoords(400, 195);
+    rectangle.setCoords1(440, 215);
     my_lcd.draw(&rectangle);
-    rectangle.setMargin(8);
+
+    btn2.setDisableAutoSize(true);
+    label.setFontSize(2);
+    btn2.setCoords(300,234);
+    btn2.setCoords1(420,290);
+    if (mainSwitchSt < 0) // ERROR
+    {
+        label.setString("FAILURE");
+        btn2.setSecondaryColor(Color(239, 127, 26));
+    }
+    else if(mainSwitchSt == 0) // OFF
+    {
+        label.setString("OFF");
+        btn2.setSecondaryColor(Color(176, 54, 20));
+    }
+    else // ON
+    {
+        label.setString("ON");
+        btn2.setSecondaryColor(Color(20, 150, 44));
+    }
+    my_lcd.draw(&btn2);
+    btn2.setSecondaryColor(Color(255, 255, 255));
+    btn2.setDisableAutoSize(false);
+
+    drawStatusColors(0,0,0,0,0,0,0,0,0,0);
 }
 
 // Buttons mapped to: btn1 --> Settings, btn2 --> Help, btn3 --> Engineering Mode, btn4 --> Extra Functions
@@ -318,14 +363,40 @@ void drawSettings()
     draw4ButtonsLayout("Electricity","Water","Interface","Temperature");
 }
 
-void drawElectricity()
+void drawElectricity() // TODO get settings real value
 {
     //Title electricity
     titleLabel.setString("Electricity Settings");
     titleLabel.setFontSize(2);
     my_lcd.draw(&title);
-    //Layout 6 Buttons
-    draw6ButtonsLayout("Start Charging Voltage","Stop Charging Voltage","UV light est. Current","","","",true,true,true,1,3);
+    titleLabel.setFontSize(5);
+    switch (page)
+    {
+        case 1:
+            draw6ButtonsLayout("Start Charging Voltage","Stop Charging Voltage","UV light est. Current","12.5V","15.5V","1A",true,true,true, maxPage);
+            break;
+        case 2:
+            draw6ButtonsLayout("Start Working Voltage","Stop Working Voltage","AC Inverter Frequency","15.2V","11.9V","50Hz",true,true,true, maxPage);
+            break;
+        case 3:
+            draw6ButtonsLayout("AC Ammeter Sensitivity","AC Ammeter Zero","DC Ammeter Sensitivity","1.856","3.678","1.567",true,true,true, maxPage);
+            break;
+        case 4:
+            draw6ButtonsLayout("DC Ammeter Zero","","","4.678","","",true,false,false, maxPage);
+            break;
+    }
+}
+
+void clickElectricity()
+{
+    /*if(btnx.isPressed())
+    {
+        switch (page)
+        {
+            case 1:
+            changeMode(XXXXX);
+        }
+    }*/
 }
 //Main Functions
 
@@ -395,7 +466,22 @@ void loop()
             }
             else if(btn2.isPressed())
             {
-                debug(F("Button ON/OFF pressed"));
+                if(mainSwitchSt == ON)
+                {
+                    debug(F("Button OFF pressed"));
+                    mainSwitchSt = OFF; // TODO send off command
+                    drawStatusForeground("15.4V", "320L");
+                }
+                else if(mainSwitchSt == OFF)
+                {
+                    debug(F("Button ON pressed"));
+                    mainSwitchSt = ON; // TODO send on command
+                    drawStatusForeground("15.4V", "320L");
+                }
+                else if(mainSwitchSt < 0)
+                {
+                    debug(F("Button FAILURE pressed")); // TODO Draw ERROR message
+                }
                 delay(500);
             }
             break;
@@ -466,16 +552,34 @@ void loop()
             }*/
             break;
         case LOADELECTRICITY:
+            page = 1;
+            maxPage = 4;
             drawBackground();
+        case LOADPAGEELECTRICITY:
+            debug(String(F("Loading page "))+page+" / "+maxPage);
             drawElectricity();
             changeMode(ELECTRICITY);
             break;
         case ELECTRICITY:
-            if(backBtn.isPressed()) // Go to LOADMENU
+            if(backBtn.isPressed()) // Go to LOADSETTINGS
             {
                 debug(F("Back button pressed"));
                 changeMode(LOADSETTINGS);
             }
+            else if(page>1&&btn7.isPressed()) // Previous
+            {
+                debug(F("Previous button pressed"));
+                page--;
+                changeMode(LOADPAGEELECTRICITY);
+            }
+            else if(page<maxPage&&btn8.isPressed()) // Next
+            {
+                debug(F("Next button pressed"));
+                page++;
+                changeMode(LOADPAGEELECTRICITY);
+            }
+            else
+                clickElectricity();
             break;
 
 
