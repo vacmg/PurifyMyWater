@@ -51,6 +51,8 @@ char* modeToString(byte pMode)
 }
 #endif
 
+char auxBuffer[32] = ""; // TODO when using progmem, use it as a buffer to print each label
+
 byte mode = LOADMENU;
 SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
 TouchScreenObject ts(8,A3,A2,9,300,320,480,3,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
@@ -81,9 +83,9 @@ RectangleButton btn7(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts)
 RectangleButton btn8(30,220,230,300,Color(0,0,0),Color(255,255,255),&label,&ts);
 
 //Rectangle Button Help
-RectangleButton btnHelp1(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,true,&ts);
-RectangleButton btnHelp2(30,220,230,300,Color(0,0,0),Color(255,255,255),&label,true,&ts);
-RectangleButton btnHelp3(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,true,&ts);
+RectangleButton btnHelp1(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts);
+RectangleButton btnHelp2(30,220,230,300,Color(0,0,0),Color(255,255,255),&label,&ts);
+RectangleButton btnHelp3(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts);
 
 // Frequently used ScreenObjects
 RectangleButton backBtn(20,20,60,60,Color(0,0,0),Color(255,255,255),&label,&ts);
@@ -114,37 +116,49 @@ void drawBackground()
 
 }
 
+//btn1 --> str1; btn2 --> str2; btn3 --> str3; btn4 --> str4
 void draw4ButtonsLayout(char* str1, char* str2, char* str3, char* str4)
 {
-    // Settings button
+    // Top left button
+    btn1.setDisableAutoSize(true);
     label.setFontSize(2);
     label.setString(str1);
     btn1.setCoords(30,120);
     btn1.setCoords1(230,200);
     my_lcd.draw(&btn1);
+    btn1.setDisableAutoSize(false);
 
-    // Help button
+    // Top right button
+    btn2.setDisableAutoSize(true);
+    label.setFontSize(2);
     label.setString(str2);
     btn2.setCoords(250,120);
     btn2.setCoords1(440,200);
     my_lcd.draw(&btn2);
+    btn2.setDisableAutoSize(false);
 
-    // Engineering Mode button
+    // Bottom left button
+    btn3.setDisableAutoSize(true);
+    label.setFontSize(2);
     label.setString(str3);
     btn3.setCoords(30,220);
     btn3.setCoords1(230,300);
     my_lcd.draw(&btn3);
+    btn3.setDisableAutoSize(false);
 
-    // Extra Functions button
+    // Bottom right button
+    btn4.setDisableAutoSize(true);
+    label.setFontSize(2);
     label.setString(str4);
     btn4.setCoords(250,220);
     btn4.setCoords1(440,300);
     my_lcd.draw(&btn4);
+    btn4.setDisableAutoSize(false);
 }
 
+// btn1 --> topLeft; btn2 --> centerLeft; btn3 --> bottomLeft; btn4 --> topRight; btn5 --> centerRight; btn6 --> bottomRight; helpButton1 --> topHelp; helpButton2 --> centerHelp; helpButton3 --> bottomHelp; btn7 --> Previous; btn8 --> Next
 void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char* topRight, char* centerRight, char* bottomRight, bool topHelp, bool centerHelp, bool bottomHelp, byte page, byte maxPage)
 {
-    label.setFontSize(2);
     label.setString(topLeft);
     btn1.setCoords(30,100);
     btn1.setCoords1(200,140);
@@ -166,18 +180,18 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
     my_lcd.draw(&btn4);
 
     label.setString(bottomLeft);
-    btn3.setCoords(30,220);
-    btn3.setCoords1(200,260);
-    my_lcd.draw(&btn3);
+    btn5.setCoords(30,220);
+    btn5.setCoords1(200,260);
+    my_lcd.draw(&btn5);
 
     label.setString(bottomRight);
-    btn4.setCoords(280,220);
-    btn4.setCoords1(450,260);
-    my_lcd.draw(&btn4);
+    btn6.setCoords(280,220);
+    btn6.setCoords1(450,260);
+    my_lcd.draw(&btn6);
 
     if(topHelp)
     {
-        btnHelp1.ScreenObjectWithLabel::setCoords(210,100);
+        btnHelp1.setCoords(210,100);
         btnHelp1.setCoords1(250,140);
         label.setString("?");
         my_lcd.draw(&btnHelp1);
@@ -185,7 +199,7 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
 
     if(centerHelp)
     {
-        btnHelp2.ScreenObjectWithLabel::setCoords(210,160);
+        btnHelp2.setCoords(210,160);
         btnHelp2.setCoords1(250,200);
         label.setString("?");
         my_lcd.draw(&btnHelp2);
@@ -193,10 +207,29 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
 
     if(bottomHelp)
     {
-        btnHelp3.ScreenObjectWithLabel::setCoords(210,220);
+        btnHelp3.setCoords(210,220);
         btnHelp3.setCoords1(250,260);
         label.setString("?");
         my_lcd.draw(&btnHelp3);
+    }
+    if(page!=0||maxPage>1)
+    {
+        sprintf(auxBuffer,"%d",page);
+        label.setString(auxBuffer);
+        Rectangle(0,0,0,0,Color(0),&label); // TODO set real coords
+
+        if(page>1)
+        {
+            label.setString("Previous");
+            btn7.setCoords(0,0); // TODO set real coords
+            btn7.setCoords1(0,0);
+        }
+        if (page<maxPage)
+        {
+            label.setString("Next");
+            btn7.setCoords(0,0); // TODO set real coords
+            btn7.setCoords1(0,0);
+        }
     }
 
 }
@@ -223,17 +256,21 @@ void drawStatusBackground(bool dontFillScreen)
     //Small logo
     Picture logoPhoto(400,10,"PMWSL.bmp");
     my_lcd.draw(&logoPhoto);
-
+    btn1.setDisableAutoSize(true);
     label.setFontSize(2);
     label.setString("Menu"); // Label Menu
     btn1.setCoords(135,234);
     btn1.setCoords1(260,290);
     my_lcd.draw(&btn1);
+    btn1.setDisableAutoSize(false);
 
+    btn1.setDisableAutoSize(true);
+    label.setFontSize(2);
     label.setString("ON/OFF"); //Label ON/OFF todo button mechanic (ON(green) || OFF(red))
     btn2.setCoords(300,234);
     btn2.setCoords1(420,290);
     my_lcd.draw(&btn2);
+    btn1.setDisableAutoSize(false);
 }
 void drawStatusBackground()
 {
@@ -246,7 +283,7 @@ void drawStatusForeground(char* voltage, char* waterAmount)//TODO add water leve
     debug("Voltage: "+String(voltage)+"\tWater amount: "+waterAmount);
 
     label.setString(voltage);
-    label.setFontSize(1);
+    rectangle.setMargin(4);
     rectangle.setCoords(20,115);
     rectangle.setCoords1(70,135);
     my_lcd.draw(&rectangle);
@@ -255,6 +292,7 @@ void drawStatusForeground(char* voltage, char* waterAmount)//TODO add water leve
     rectangle.setCoords(400,195);
     rectangle.setCoords1(440,215);
     my_lcd.draw(&rectangle);
+    rectangle.setMargin(8);
 }
 
 // Buttons mapped to: btn1 --> Settings, btn2 --> Help, btn3 --> Engineering Mode, btn4 --> Extra Functions
@@ -418,6 +456,13 @@ void loop()
             drawBackground();
             draw6ButtonsLayout("a","b","c","d","e","f",false,false,false,2,2);
             changeMode(ELECTRICITY);
+            break;
+        case ELECTRICITY:
+            if(backBtn.isPressed()) // Go to LOADMENU
+            {
+                debug(F("Back button pressed"));
+                changeMode(LOADSETTINGS);
+            }
             break;
 
 
