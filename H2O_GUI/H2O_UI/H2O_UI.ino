@@ -19,6 +19,9 @@
 #define ENGINEERINGMODE 10
 #define LOADEXTRAFUNCTIONS 11
 #define EXTRAFUNCTIONS 12
+#define LOADELECTRICITY 13
+#define ELECTRICITY 14
+
 
 #if DEBUG
 const char mode0[] PROGMEM = "BOOTING"; // in order (BOOTING = 0 ---> mode0 = "BOOTING" --> modeTable[0] = mode0)
@@ -34,9 +37,11 @@ const char mode9[] PROGMEM = "LOADENGINEERINGMODE";
 const char mode10[] PROGMEM = "ENGINEERINGMODE";
 const char mode11[] PROGMEM = "LOADEXTRAFUNCTIONS";
 const char mode12[] PROGMEM = "EXTRAFUNCTIONS";
+const char mode13[] PROGMEM = "LOADELECTRICTY";
+const char mode14[] PROGMEM = "ELECTRICITY";
 
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14};
 char printModeBuff[20]; // Max size of any modeX string
 
 char* modeToString(byte pMode)
@@ -46,7 +51,7 @@ char* modeToString(byte pMode)
 }
 #endif
 
-byte mode = BOOTING;
+byte mode = LOADMENU;
 SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
 TouchScreenObject ts(8,A3,A2,9,300,320,480,3,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
 
@@ -66,10 +71,19 @@ RectangleButton recOn_OFF(300,234,420,290, Color(0,0,0), Color(255,255,255),&lab
 RectangleButton recMenu(135,234,260,290, Color(0,0,0), Color(255,255,255),&label,true,&ts);*/
 
 //Rectangle Buttons
-RectangleButton btn1(30,120,230,200,Color(0,0,0),Color(255,255,255),&label,true,&ts);
-RectangleButton btn2(250,120,440,200,Color(0,0,0),Color(255,255,255),&label,true,&ts);
-RectangleButton btn3(30,220,230,300,Color(0,0,0),Color(255,255,255),&label,true,&ts);
-RectangleButton btn4(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,true,&ts);
+RectangleButton btn1(30,120,230,200,Color(0,0,0),Color(255,255,255),&label,&ts);//todo disable autosize & enable again in the cases that is needed
+RectangleButton btn2(250,120,440,200,Color(0,0,0),Color(255,255,255),&label,&ts);
+RectangleButton btn3(30,220,230,300,Color(0,0,0),Color(255,255,255),&label,&ts);
+RectangleButton btn4(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts);
+RectangleButton btn5(30,220,230,300,Color(0,0,0),Color(255,255,255),&label, &ts);
+RectangleButton btn6(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts);
+RectangleButton btn7(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts);
+RectangleButton btn8(30,220,230,300,Color(0,0,0),Color(255,255,255),&label,&ts);
+
+//Rectangle Button Help
+RectangleButton btnHelp1(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,true,&ts);
+RectangleButton btnHelp2(30,220,230,300,Color(0,0,0),Color(255,255,255),&label,true,&ts);
+RectangleButton btnHelp3(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,true,&ts);
 
 // Frequently used ScreenObjects
 RectangleButton backBtn(20,20,60,60,Color(0,0,0),Color(255,255,255),&label,&ts);
@@ -97,6 +111,93 @@ void drawBackground()
     //Small logo
     Picture logoPhoto(426,10,"PMWSL.bmp");
     my_lcd.draw(&logoPhoto);
+
+}
+
+void draw4ButtonsLayout(char* str1, char* str2, char* str3, char* str4)
+{
+    // Settings button
+    label.setFontSize(2);
+    label.setString(str1);
+    btn1.setCoords(30,120);
+    btn1.setCoords1(230,200);
+    my_lcd.draw(&btn1);
+
+    // Help button
+    label.setString(str2);
+    btn2.setCoords(250,120);
+    btn2.setCoords1(440,200);
+    my_lcd.draw(&btn2);
+
+    // Engineering Mode button
+    label.setString(str3);
+    btn3.setCoords(30,220);
+    btn3.setCoords1(230,300);
+    my_lcd.draw(&btn3);
+
+    // Extra Functions button
+    label.setString(str4);
+    btn4.setCoords(250,220);
+    btn4.setCoords1(440,300);
+    my_lcd.draw(&btn4);
+}
+
+void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char* topRight, char* centerRight, char* bottomRight, bool topHelp, bool centerHelp, bool bottomHelp, byte page, byte maxPage)
+{
+    label.setFontSize(2);
+    label.setString(topLeft);
+    btn1.setCoords(30,100);
+    btn1.setCoords1(200,140);
+    my_lcd.draw(&btn1);
+
+    label.setString(topRight);
+    btn2.setCoords(280,100);
+    btn2.setCoords1(450,140);
+    my_lcd.draw(&btn2);
+
+    label.setString(centerLeft);
+    btn3.setCoords(30,160);
+    btn3.setCoords1(200,200);
+    my_lcd.draw(&btn3);
+
+    label.setString(centerRight);
+    btn4.setCoords(280,160);
+    btn4.setCoords1(450,200);
+    my_lcd.draw(&btn4);
+
+    label.setString(bottomLeft);
+    btn3.setCoords(30,220);
+    btn3.setCoords1(200,260);
+    my_lcd.draw(&btn3);
+
+    label.setString(bottomRight);
+    btn4.setCoords(280,220);
+    btn4.setCoords1(450,260);
+    my_lcd.draw(&btn4);
+
+    if(topHelp)
+    {
+        btnHelp1.ScreenObjectWithLabel::setCoords(210,100);
+        btnHelp1.setCoords1(250,140);
+        label.setString("?");
+        my_lcd.draw(&btnHelp1);
+    }
+
+    if(centerHelp)
+    {
+        btnHelp2.ScreenObjectWithLabel::setCoords(210,160);
+        btnHelp2.setCoords1(250,200);
+        label.setString("?");
+        my_lcd.draw(&btnHelp2);
+    }
+
+    if(bottomHelp)
+    {
+        btnHelp3.ScreenObjectWithLabel::setCoords(210,220);
+        btnHelp3.setCoords1(250,260);
+        label.setString("?");
+        my_lcd.draw(&btnHelp3);
+    }
 
 }
 
@@ -162,34 +263,19 @@ void drawMenu()
     //Title Menu
     titleLabel.setString("Menu");
     my_lcd.draw(&title);
-
-    // Settings button
-    label.setFontSize(3);
-    label.setString("Settings");
-    btn1.setCoords(30,120);
-    btn1.setCoords1(230,200);
-    my_lcd.draw(&btn1);
-
-    // Help button
-    label.setString("Help");
-    btn2.setCoords(250,120);
-    btn2.setCoords1(440,200);
-    my_lcd.draw(&btn2);
-
-    // Engineering Mode button
-    label.setFontSize(2);
-    label.setString("Engineering Mode");
-    btn3.setCoords(30,220);
-    btn3.setCoords1(230,300);
-    my_lcd.draw(&btn3);
-
-    // Extra Functions button
-    label.setString("Extra Functions");
-    btn4.setCoords(250,220);
-    btn4.setCoords1(440,300);
-    my_lcd.draw(&btn4);
+    //Layout4Buttons
+    draw4ButtonsLayout("Settings","Help","Engineering Mode","Extra functions");
 }
 
+// Buttons mapped to: btn1 --> Electricity, btn2 --> Water, btn3 --> Interface, btn4 --> Temperature
+void drawSettings()
+{
+    //Title Menu
+    titleLabel.setString("Settings");
+    my_lcd.draw(&title);
+    //Layout4Buttons
+    draw4ButtonsLayout("Electricity","Water","Interface","Temperature");
+}
 //Main Functions
 
 void setup()
@@ -262,32 +348,85 @@ void loop()
                 delay(500);
             }
             break;
+
         case LOADMENU:
             drawBackground();
             drawMenu();
             changeMode(MENU);
             break;
+
         case MENU:
             if(backBtn.isPressed()) // Go to LOADSTATUS
             {
+                debug(F("Back button pressed"));
                 changeMode(LOADSTATUS);
-                break;
             }
             else if(btn1.isPressed()) //Settings
             {
+                debug(F("Settings button pressed"));
                 changeMode(LOADSETTINGS);
             }
             else if(btn2.isPressed()) //Help
             {
+                debug(F("Help button pressed"));
                 changeMode(LOADHELP);
             }
             else if(btn3.isPressed()) //Engineering Mode
             {
+                debug(F("Engineering mode button pressed"));
                 changeMode(LOADENGINEERINGMODE);
             }
             else if(btn4.isPressed()) //Extra Functions
             {
+                debug(F("Extra functions button pressed"));
                 changeMode(LOADEXTRAFUNCTIONS);
             }
+            break;
+
+        case LOADSETTINGS:
+            drawBackground();
+            drawSettings();
+            changeMode(SETTINGS);
+            break;
+
+        case SETTINGS:
+            if(backBtn.isPressed()) // Go to LOADMENU
+            {
+                debug(F("Back button pressed"));
+                changeMode(LOADMENU);
+            }
+            else if(btn1.isPressed())
+            {
+                debug(F("Electricity button pressed"));
+                changeMode(LOADELECTRICITY);
+            }
+            /*
+            else if(btn2.isPressed())
+            {
+                changeMode();
+            }
+            else if(btn3.isPressed())
+            {
+                changeMode();
+            }
+            else if(btn4.isPressed())
+            {
+                changeMode();
+            }*/
+            break;
+        case LOADELECTRICITY:
+            drawBackground();
+            draw6ButtonsLayout("a","b","c","d","e","f",false,false,false,2,2);
+            changeMode(ELECTRICITY);
+            break;
+
+
+
+        /*case LOADHELP:
+        case HELP:
+        case LOADENGINEERINGMODE:
+        case ENGINEERINGMODE:
+        case LOADEXTRAFUNCTIONS:
+        case EXTRAFUNCTIONS:*/
     }//*/
 }
