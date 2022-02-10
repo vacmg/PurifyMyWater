@@ -1,3 +1,5 @@
+![LOGO](https://github.com/vacmg/PurifyMyWater/blob/master/docs/media/PMWBigLogoRaw.bmp)
+
 # Welcome to PurifyMyWater
 Here you can read about the hardware & software being used to bring to the world with a cheap DIY water purification system which can be assembled without great expenditures in expensive components. Our goal is to make purified water more accessible to those in dire need of it.
 
