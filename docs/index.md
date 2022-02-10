@@ -1,7 +1,7 @@
 # Welcome to PurifyMyWater
 Here you can read about the hardware & software being used to bring to the world with a cheap DIY water purification system which can be assembled without great expenditures in expensive components. Our goal is to make purified water more accessible to those in dire need of it.
 
-![LOGO](https://github.com/vacmg/PurifyMyWater/blob/master/docs/media/PMWBigLogoRaw.bmp)
+![LOGO](https://github.com/vacmg/PurifyMyWater/raw/master/docs/media/PMWBigLogoRaw.bmp)
 
 ## About us
 This project is being developed by [**@vacmg**](https://github.com/vacmg) & [**@Javisantir**](https://github.com/Javisantir) with the support of the [**ALUMNOS SOLIDARIOS**](https://www.joyfe.es/gente-joyfe/alumnos-solidarios/) initiative of JOYFE's school in Madrid.
