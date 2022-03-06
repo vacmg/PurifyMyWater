@@ -259,7 +259,131 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
 //Main Functions
 void drawStatusColors(bool wellPump, bool UVPump, bool endPump, bool UVRelay, bool filterRelay, char well, char tank1, char tank2, char tank3, bool endTank) // TODO rectangles // false --> OFF, true -->ON, <0 --> LOW, = 0 --> Half, >0 --> FULL
 {
+    //todo change delays for conditions of the buoys 
 
+    //tank1
+    Rectangle Rec1(28,258,89,301,Color(81, 136, 223),Color(81, 136, 223)); // big rectangle under valve
+    my_lcd.draw(&Rec1);
+    //tank1_1
+    delay(1000);
+    Rec1.setCoords1(78,258); // Rectangle at the let of the valve
+    Rec1.setCoords(28,230);
+    my_lcd.draw(&Rec1);
+    Rec1.setCoords1(89,254); // Small Rectangle under valve
+    Rec1.setCoords(78,259);
+    my_lcd.draw(&Rec1);
+    Rec1.setCoords(85,245); // Small rectangle right of the tube
+    Rec1.setCoords1(89,230);
+    my_lcd.draw(&Rec1);
+    Rec1.setCoords(78,245); // Small rectangle left of the tube
+    Rec1.setCoords1(80,230);
+    my_lcd.draw(&Rec1);
+
+
+    //tank2
+    delay(1000);
+    Rectangle Rec2(99,211,144,219,Color(81, 136, 223),Color(81, 136, 223));
+    my_lcd.draw(&Rec2);
+    //tank2_1
+    delay(1000);
+    Rec2.setCoords(99,208); // Small Rectangle under valve
+    Rec2.setCoords1(144,211);
+    my_lcd.draw(&Rec2);
+    Rec2.setCoords(99,180); // Rectangle at the left of the valve
+    Rec2.setCoords1(133,208);
+    my_lcd.draw(&Rec2);
+    Rec2.setCoords(133,180); // Small Rectangle at the left of the tube
+    Rec2.setCoords1(136,199);
+    my_lcd.draw(&Rec2);
+    Rec2.setCoords(141,180); // Small Rectangle at the right of the tube
+    Rec2.setCoords1(144,199);
+    my_lcd.draw(&Rec2);
+    //tank2_2
+    delay(1000);
+    Rec2.setCoords(99,153); // Big Rectangle at the top right of the tube
+    Rec2.setCoords1(136,180);
+    my_lcd.draw(&Rec2);
+    Rec2.setCoords(141,153); // Rectangle at the top left of the tube
+    Rec2.setCoords1(144,180);
+    my_lcd.draw(&Rec2);
+
+    //tank3
+    delay(1000);
+    Rectangle Rec3(213,213,258,219,Color(81, 136, 223),Color(81, 136, 223)); // Big rectangle under valve
+    my_lcd.draw(&Rec3);
+    //tan3_1
+    delay(1000);
+    Rec3.setCoords(213,210); // Large rectangle under valve
+    Rec3.setCoords1(258,213);
+    my_lcd.draw(&Rec3);
+    Rec3.setCoords(213,180); // Big bottom rectangle under valve
+    Rec3.setCoords1(247,210);
+    my_lcd.draw(&Rec3);
+    Rec3.setCoords(247,180); // Large bottom rectangle at the left of the tube
+    Rec3.setCoords1(251,201);
+    my_lcd.draw(&Rec3);
+    Rec3.setCoords(256,180); // Large bottom rectangle at the right of the tube
+    Rec3.setCoords1(258,201);
+    my_lcd.draw(&Rec3);
+    //tank3_2
+    delay(1000);
+    Rec3.setCoords(213,163); // Big top rectangle under valve
+    Rec3.setCoords1(247,180);
+    my_lcd.draw(&Rec3);
+    Rec3.setCoords(247,163); // Large top rectangle at the left of the tube
+    Rec3.setCoords1(251,180);
+    my_lcd.draw(&Rec3);
+    Rec3.setCoords(256,163); // Large top rectangle at the right of the tube
+    Rec3.setCoords1(258,180);
+    my_lcd.draw(&Rec3);
+
+
+    //tank4
+    delay(1000);
+    Rectangle Rec4(339,213,379,219,Color(81, 136, 223),Color(81, 136, 223));// Big rectangle under valve
+    my_lcd.draw(&Rec4);
+    //tank4_1
+    delay(1000);
+    Rec4.setCoords(339,210); // Large rectangle under valve
+    Rec4.setCoords1(379,213);
+    my_lcd.draw(&Rec4);
+    Rec4.setCoords(339,180); // Big rectangle bottom left of the tube
+    Rec4.setCoords1(368,210);
+    my_lcd.draw(&Rec4);
+    Rec4.setCoords(368,180); // Large rectangle bottom left of the tube
+    Rec4.setCoords1(372,201);
+    my_lcd.draw(&Rec4);
+    Rec4.setCoords(377,180); // Large rectangle bottom right of the tube
+    Rec4.setCoords1(379,201);
+    my_lcd.draw(&Rec4);
+    //tank4_2
+    delay(1000);
+    Rec4.setCoords(339,165); // Big rectangle top left of the tube
+    Rec4.setCoords1(368,180);
+    my_lcd.draw(&Rec4);
+    Rec4.setCoords(368,165); // Large rectangle top left of the tube
+    Rec4.setCoords1(372,180);
+    my_lcd.draw(&Rec4);
+    Rec4.setCoords(377,165); // Large rectangle top right of the tube
+    Rec4.setCoords1(379,180);
+    my_lcd.draw(&Rec4);
+
+
+    //tank5
+    delay(1000);
+    Rectangle Rec5(396,135,452,157,Color(81, 136, 223),Color(81, 136, 223));// Big rectangle under valve
+    my_lcd.draw(&Rec5);
+    Rec5.setCoords(427,157); // Rectangle on the tube
+    Rec5.setCoords1(430,182);
+    my_lcd.draw(&Rec5);
+    Rec5.setCoords(427,183); // Rectangle on the tube
+    Rec5.setCoords1(462,186);
+    my_lcd.draw(&Rec5);
+    //tank5_1
+    delay(1000);
+    Rec5.setCoords(396,92); // Big rectangle top top of the tank
+    Rec5.setCoords1(452,135);
+    my_lcd.draw(&Rec5);
 }
 
 void drawStatusBackground(bool dontFillScreen)
