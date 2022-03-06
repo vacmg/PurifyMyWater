@@ -60,7 +60,7 @@ char* modeToString(byte pMode)
 char auxBuffer[32] = ""; // TODO when using progmem, use it as a buffer to print each label
 
 char mainSwitchSt = OFF;
-byte mode = BOOTING;
+byte mode = LOADSTATUS;
 byte page = 0;
 byte maxPage = 0;
 SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
@@ -259,7 +259,7 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
 //Main Functions
 void drawStatusColors(bool wellPump, bool UVPump, bool endPump, bool UVRelay, bool filterRelay, char well, char tank1, char tank2, char tank3, bool endTank) // TODO rectangles // false --> OFF, true -->ON, <0 --> LOW, = 0 --> Half, >0 --> FULL
 {
-    //todo change delays for conditions of the buoys 
+    //todo change delays for conditions of the buoys
 
     //tank1
     Rectangle Rec1(28,258,89,301,Color(81, 136, 223),Color(81, 136, 223)); // big rectangle under valve
@@ -279,6 +279,21 @@ void drawStatusColors(bool wellPump, bool UVPump, bool endPump, bool UVRelay, bo
     Rec1.setCoords1(80,230);
     my_lcd.draw(&Rec1);
 
+    //ValveTank1
+    delay(1000);
+    Rec1.setMainColor(Color(255,255,0));
+    Rec1.setSecondaryColor(Color(255,255,0));
+    Rec1.setCoords(91,254); // Valve
+    Rec1.setCoords1(80,247);
+    my_lcd.draw(&Rec1);
+
+    //TubeTank1
+    //delay(1000);
+    //Rec1.setMainColor(Color(81, 136, 223));
+    // Rec1.setSecondaryColor(Color(81, 136, 223));
+    //Rec1.setCoords1(83,170); // Tube
+    //Rec1.setCoords(81,2);
+    //my_lcd.draw(&Rec1);
 
     //tank2
     delay(1000);
