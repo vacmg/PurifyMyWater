@@ -15,3 +15,4 @@ settings in both SD and Flash and update settings method (maybe inside the file 
 Log screen (for events or something like that...)
 Redirect from screen to mega all messages that start with '_' untill a '\n' is reached
 Overview screen with system map (photo) (to easily see what is the system doing anytime)
+Reboot Master from Screen using reset pin
