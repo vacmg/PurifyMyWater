@@ -181,7 +181,7 @@ void raise(byte error, String* possibleExplanation) {}
 /*------------COMMUNICATION-------------*/
 
 // This function checks and answers any request from the PurifyMyWater MCU if it is connected
-
+/*
 void updateClient()
 {
     if(Serial.available())
@@ -198,13 +198,13 @@ void updateClient()
             else if(strcmp(message, "command2") == 0)
             {
                 ...
-            }*/
+            }*//*
         }
 
 
 
     }
-}
+}*/
 
 // This function checks if the screen is properly connected and available for other functions to use it
 // The handshake consists of:
@@ -231,180 +231,6 @@ bool doClientHandshake()
     }
     flush(Serial);
     return sw;
-}
-
-//TODO processMessage(withRetryOption) 
-
-// This function get a message from the Serial1 buffer, then it decodes and verifies it returning the message itself and its type
-// If its result is false, the message couldn't be received properly
-// and false is returned to proper handle the failure in the function that called getMessage
-bool getMessage(char* message, char* type) // handles timeout and retry
-{
-
-    if (getMessageHelper(message, type)) // send resend last message
-    {
-        debug(F("getMessage - Failure receiving a message, retrying..."));
-        sendMessageHelper(Message(F("R")), COMMSG);
-    }
-}
-
-bool getMessageHelper(char* message, char* type)
-{
-    byte size = Serial.readBytesUntil('\n', message, 38); // get raw message without /n or NULL
-    if (size <= 0)
-    {
-        return false;
-    }
-    message[size] = '\0'; // add string NULL
-    bool res = verifyMessage(message);
-    if (!res)
-    {
-        message = NULL;
-        type = NULL;
-        debug(F("getMessageHelper - Message corrupted"));
-        return false;
-    }
-    *type = message[0];
-
-    for (byte i = 0; i < size; i++) // remove message type from the string
-    {
-        message[i] = message[i + 1];
-    }
-    debug(String(F("getMessageHelper - Got a message from type ")) + type + String(F(" and message ")) + message);
-    return true;
-}
-
-// This function sends a message from the type 'type' and ensures it is received properly.
-// If its result is false, the message couldn't be delivered properly
-// and false is returned to proper handle the failure in the function that called sendMessage
-bool sendMessage(const char* message, const char type)
-{
-    bool ok = false;
-
-    for (byte i = 1; !ok && i <= MAXMESSAGERETRIES; i++)
-    {
-        if (sendMessageHelper(message, type))
-        {
-            unsigned long before = millis();
-            while (!Serial.available() && before + MSGTIMEOUT > millis());
-            if (Serial.available())
-            {
-                char typ = 0;
-                char msg[39] = "";
-                if (getMessageHelper(msg, &typ) && typ == COMMSG && strcmp(msg, Message(F("OK")))==0)
-                {
-                    ok = true;
-                }
-            }
-        }
-#if DEBUG
-        if (!ok && type != DEBUGMSG)
-        {
-            debug(String(F("sendMessage - Failure sending this message: ")) + message + String(F(".\tAttempt ")) + i + String(F(" out of ")) + MAXMESSAGERETRIES);
-        }
-#endif
-
-    }
-#if DEBUG
-    if (!ok && type != DEBUGMSG)
-    {
-        raise(SENDMESSAGEERROR, String(F("sendMessage - Failure sending this message: ")) + message + String(F(".\tNo more attempts left")));
-    }
-#endif
-    return ok;
-}
-
-bool sendMessage(char* message)
-{
-    return(sendMessage(message, DATAMSG));
-}
-
-bool sendMessageHelper(const char* message, const char type)
-{
-    char sendMe[39];
-    messageConstructor(type, message, sendMe);
-    char temp[39];
-    strcpy(temp, sendMe);
-    if (verifyMessage(temp))
-    {
-#if DEBUG
-        if (type != DEBUGMSG)
-            debug(String(F("sendMessageHelper - Sending this message: '")) + sendMe + String(F("'")));
-#endif
-        Serial.println(sendMe);
-        return true;
-    }
-#if DEBUG
-    else
-    {
-        if (type != DEBUGMSG)
-            debug(String(F("sendMessageHelper - Verification failed for message: ")) + sendMe);
-    }
-#endif
-    return false;
-}
-
-// This function verifies the CRC8 of the message and returns true if it matches
-// CAUTION: This function modifies rawMessage so after it, rawMessage only contains the message without ,C(crc8)
-bool verifyMessage(char* rawMessage)
-{
-    if (strlen(rawMessage) > 38)
-        raise(MAXMESSAGESIZEEXCEEDEDERROR, String(F("verifyMessage - The message that exceeded it is: ")) + rawMessage);
-    char* message = strtok(rawMessage, ",C");
-    bool res = (byte)atoi(strtok(NULL, ",C")) == CRC8((byte*)message, strlen(message));
-
-    return res;
-}
-
-// This function build a message appending the type and the CRC8 checksum
-// The dest string MUST be of length >= 39
-void messageConstructor(const char type, const char* message, char* dest)
-{
-    if (strlen(message) > 32) // 33 with null
-        raise(MAXMESSAGESIZEEXCEEDEDERROR, String(F("messageConstructor - The message that exceeded it is: ")) + message);
-
-    sprintf(dest, "%c", type); // size 2
-    strcat(dest, message); // max size 2 - 1 + 33 = 34
-    char tmp[6];
-    sprintf(tmp, ",C%d", CRC8((byte*)dest, strlen(dest)));
-    strcat(dest, tmp); // max size 34 - 1 + 6 = 39
-
-#if DEBUG
-    if(type != DEBUGMSG)
-        debug(String(F("messageConstructor - MessageReady is: ")) + dest);
-#endif
-}
-
-//This function returns a CRC8 Checksum code from an array of any size
-//CRC-8 Checksum - based on the CRC8 formulas by Dallas/Maxim
-//code released under the terms of the GNU GPL 3.0 license
-byte CRC8(const byte* data, size_t dataLength)
-{
-    byte crc = 0x00;
-    while (dataLength--)
-    {
-        byte extract = *data++;
-        for (byte tempI = 8; tempI; tempI--)
-        {
-            byte sum = (crc ^ extract) & 0x01;
-            crc >>= 1;
-            if (sum)
-            {
-                crc ^= 0x8C;
-            }
-            extract >>= 1;
-        }
-    }
-    return crc;
-}
-
-// This function flushes an input HardwareSerial and discards all data on the input buffer
-void flush(HardwareSerial ser)
-{
-    while (ser.available())
-    {
-        ser.read();
-    }
 }
 
 /*------------COMMUNICATION-------------*/
