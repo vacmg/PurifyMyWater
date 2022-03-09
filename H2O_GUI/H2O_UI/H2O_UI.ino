@@ -6,6 +6,9 @@
 
 #define DEBUG true
 
+#define ROTATION 3 // sets screen rotation
+#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
+
 #define BOOTING 0
 #define LOADSTATUS 1
 #define STATUS 2
@@ -27,6 +30,19 @@
 #define ON 1
 #define OFF 0
 #define ERROR -1
+
+
+#if SCREENHW == 35
+#define SCREEN35ROTATIONOFFSET 2
+TouchScreenObject ts(9,A2,A3,8,300,320,480,(ROTATION+SCREEN35ROTATIONOFFSET)%4,177,900,157,958); // for 3.5inch
+#elif SCREENHW == 39
+TouchScreenObject ts(8,A3,A2,9,300,320,480,ROTATION,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
+#endif
+
+SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
+char mainSwitchSt = OFF;
+byte mode = LOADELECTRICITY;
+
 
 #if DEBUG
 const char mode0[] PROGMEM = "BOOTING"; // in order (BOOTING = 0 ---> mode0 = "BOOTING" --> modeTable[0] = mode0)
@@ -59,19 +75,15 @@ char* modeToString(byte pMode)
 
 char auxBuffer[32] = ""; // TODO when using progmem, use it as a buffer to print each label
 
-char mainSwitchSt = OFF;
-byte mode = LOADSTATUS;
 byte page = 0;
 byte maxPage = 0;
-SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
-TouchScreenObject ts(8,A3,A2,9,300,320,480,3,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
 
 #if DEBUG
 #define debug(data) Serial.println(String(data))
 #define changeMode(newMode) debug(String(F("Mode changed from '")) +String(modeToString(mode))+String(F("' to '"))+String(modeToString(newMode))+String(F("'"))); mode = newMode
 #else
 #define debug(data) ;
-#define changeMode(newMode) mode = newMode
+    #define changeMode(newMode) mode = newMode
 #endif
 
 //Status Variable
@@ -100,7 +112,18 @@ RectangleButton btn11(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts
 RectangleButton backBtn(20,20,60,60,Color(0,0,0),Color(255,255,255),&label,&ts);
 Label titleLabel(0,0,"Menu",5,Color(0),Color(255,255,255));
 Rectangle title(65,5,415,75,Color(0xFFFF),/*Color(255,0,0),*/&titleLabel,true);
-//395
+
+void setRotation(byte rotation)
+{
+#if SCREENHW == 35
+    my_lcd.Set_Rotation(rotation);
+    ts.setRotation((rotation+SCREEN35ROTATIONOFFSET)%4);
+    ts.invertXAxis(true);
+#elif SCREENHW == 39
+    my_lcd.Set_Rotation(rotation);
+    ts.setRotation(rotation);
+#endif
+}
 
 void bootAnimation()
 {
@@ -554,8 +577,7 @@ void setup()
     pinMode(10,INPUT);
 
     my_lcd.Init_LCD();
-    my_lcd.Set_Rotation(3);
-    ts.setRotation(3);
+    setRotation(ROTATION);
 
     //my_lcd.Fill_Screen(0);
     my_lcd.Fill_Screen(Color(255,255,255).to565());
@@ -723,11 +745,11 @@ void loop()
 
 
 
-        /*case LOADHELP:
-        case HELP:
-        case LOADENGINEERINGMODE:
-        case ENGINEERINGMODE:
-        case LOADEXTRAFUNCTIONS:
-        case EXTRAFUNCTIONS:*/
+            /*case LOADHELP:
+            case HELP:
+            case LOADENGINEERINGMODE:
+            case ENGINEERINGMODE:
+            case LOADEXTRAFUNCTIONS:
+            case EXTRAFUNCTIONS:*/
     }//*/
 }
