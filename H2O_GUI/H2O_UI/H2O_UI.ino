@@ -4,7 +4,7 @@
 #include <TouchScreen.h>
 #include <SimpleLCDTouchScreen.h>
 
-#define DEBUG true
+#define DEBUG true //test
 
 #define BOOTING 0
 #define LOADSTATUS 1
