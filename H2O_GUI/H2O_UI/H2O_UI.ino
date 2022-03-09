@@ -283,17 +283,27 @@ void drawStatusColors(bool wellPump, bool UVPump, bool endPump, bool UVRelay, bo
     delay(1000);
     Rec1.setMainColor(Color(255,255,0));
     Rec1.setSecondaryColor(Color(255,255,0));
-    Rec1.setCoords(91,254); // Valve
-    Rec1.setCoords1(80,247);
+    Rec1.setCoords(80,247); // Valve
+    Rec1.setCoords1(89,252);
     my_lcd.draw(&Rec1);
 
     //TubeTank1
-    //delay(1000);
-    //Rec1.setMainColor(Color(81, 136, 223));
-    // Rec1.setSecondaryColor(Color(81, 136, 223));
-    //Rec1.setCoords1(83,170); // Tube
-    //Rec1.setCoords(81,2);
-    //my_lcd.draw(&Rec1);
+    delay(1000);
+    Rec1.setMainColor(Color(81, 136, 223));
+    Rec1.setSecondaryColor(Color(81, 136, 223));
+    Rec1.setCoords(82,120);// Tube
+    Rec1.setCoords1(83,245);
+    my_lcd.draw(&Rec1);
+    delay(1000);
+    Rec1.setCoords(82,118);// Tube
+    Rec1.setCoords1(121,119);
+    my_lcd.draw(&Rec1);
+    delay(1000);
+    Rec1.setCoords(120,118);// Tube
+    Rec1.setCoords1(121,180);
+    my_lcd.draw(&Rec1);
+
+
 
     //tank2
     delay(1000);
@@ -321,6 +331,28 @@ void drawStatusColors(bool wellPump, bool UVPump, bool endPump, bool UVRelay, bo
     Rec2.setCoords(141,153); // Rectangle at the top left of the tube
     Rec2.setCoords1(144,180);
     my_lcd.draw(&Rec2);
+
+    //ValveTank2
+    delay(1000);
+    Rec2.setMainColor(Color(255,255,0));
+    Rec2.setSecondaryColor(Color(255,255,0));
+    Rec2.setCoords(135,201); // Valve
+    Rec2.setCoords1(144,206);
+    my_lcd.draw(&Rec2);
+
+    //TubeTank2
+    delay(1000);
+    Rec2.setMainColor(Color(81, 136, 223));
+    Rec2.setSecondaryColor(Color(81, 136, 223));
+    Rec2.setCoords(138,136);// Tube
+    Rec2.setCoords1(139,199);
+    my_lcd.draw(&Rec2);
+    delay(1000);
+    Rec2.setCoords(139,136);// Tube
+    Rec2.setCoords1(154,137);
+    my_lcd.draw(&Rec2);
+
+
 
     //tank3
     delay(1000);
@@ -401,6 +433,7 @@ void drawStatusColors(bool wellPump, bool UVPump, bool endPump, bool UVRelay, bo
     my_lcd.draw(&Rec5);
 }
 
+
 void drawStatusBackground(bool dontFillScreen)
 {
     if(!dontFillScreen)
@@ -428,6 +461,8 @@ void drawStatusBackground(bool dontFillScreen)
     my_lcd.draw(&btn1);
     btn1.setDisableAutoSize(false);
 
+
+
     /*btn2.setDisableAutoSize(true);
     label.setFontSize(2);
     label.setString("ON/OFF"); //Label ON/OFF
@@ -436,6 +471,9 @@ void drawStatusBackground(bool dontFillScreen)
     my_lcd.draw(&btn2);
     btn2.setDisableAutoSize(false);*/
 }
+
+
+
 void drawStatusBackground()
 {
     drawStatusBackground(false);
