@@ -43,19 +43,19 @@ cmake_force:
 SHELL = cmd.exe
 
 # The CMake executable.
-CMAKE_COMMAND = "C:\Program Files\JetBrains\CLion 2021.3.3\bin\cmake\win\bin\cmake.exe"
+CMAKE_COMMAND = "C:\Program Files\JetBrains\CLion 2021.3\bin\cmake\win\bin\cmake.exe"
 
 # The command to remove a file.
-RM = "C:\Program Files\JetBrains\CLion 2021.3.3\bin\cmake\win\bin\cmake.exe" -E rm -f
+RM = "C:\Program Files\JetBrains\CLion 2021.3\bin\cmake\win\bin\cmake.exe" -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = D:\GitHub_Repositories\PurifyMyWater\H2O_GUI
+CMAKE_SOURCE_DIR = E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug
+CMAKE_BINARY_DIR = E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/uno_CORE.dir/depend.make
@@ -71,7 +71,7 @@ include CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/CDC.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/CDC.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/CDC.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/CDC.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/CDC.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/CDC.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/CDC.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\CDC.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\CDC.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\CDC.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/CDC.cpp.i: cmake_force
@@ -85,7 +85,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial.cpp.i: cmake_force
@@ -99,7 +99,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial0.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial0.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial0.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial0.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial0.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial0.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial0.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial0.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial0.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial0.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial0.cpp.i: cmake_force
@@ -113,7 +113,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial1.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial1.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial1.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial1.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial1.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial1.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial1.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial1.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial1.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial1.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial1.cpp.i: cmake_force
@@ -127,7 +127,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial2.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial2.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial2.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial2.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial2.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial2.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial2.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial2.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial2.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial2.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial2.cpp.i: cmake_force
@@ -141,7 +141,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial3.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial3.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial3.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial3.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial3.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial3.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial3.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial3.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial3.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial3.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/HardwareSerial3.cpp.i: cmake_force
@@ -155,7 +155,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/IPAddress.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/IPAddress.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/IPAddress.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/IPAddress.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/IPAddress.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/IPAddress.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/IPAddress.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\IPAddress.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\IPAddress.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\IPAddress.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/IPAddress.cpp.i: cmake_force
@@ -169,7 +169,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/PluggableUSB.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/PluggableUSB.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/PluggableUSB.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/PluggableUSB.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/PluggableUSB.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/PluggableUSB.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/PluggableUSB.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\PluggableUSB.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\PluggableUSB.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\PluggableUSB.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/PluggableUSB.cpp.i: cmake_force
@@ -183,7 +183,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Print.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Print.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/Print.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Print.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Print.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Print.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Print.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\Print.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\Print.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\Print.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Print.cpp.i: cmake_force
@@ -197,7 +197,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Stream.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Stream.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/Stream.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Stream.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Stream.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Stream.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Stream.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\Stream.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\Stream.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\Stream.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Stream.cpp.i: cmake_force
@@ -211,7 +211,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Tone.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Tone.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/Tone.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Tone.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Tone.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Tone.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Tone.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\Tone.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\Tone.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\Tone.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/Tone.cpp.i: cmake_force
@@ -225,7 +225,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/USBCore.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/USBCore.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/USBCore.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/USBCore.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/USBCore.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/USBCore.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/USBCore.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\USBCore.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\USBCore.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\USBCore.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/USBCore.cpp.i: cmake_force
@@ -239,7 +239,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WInterrupts.c.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WInterrupts.c.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/WInterrupts.c
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WInterrupts.c.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WInterrupts.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WInterrupts.c.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\avr-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WInterrupts.c.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\WInterrupts.c.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\WInterrupts.c.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\WInterrupts.c"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WInterrupts.c.i: cmake_force
@@ -253,7 +253,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WMath.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WMath.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/WMath.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WMath.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WMath.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WMath.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WMath.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\WMath.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\WMath.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\WMath.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WMath.cpp.i: cmake_force
@@ -267,7 +267,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WString.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WString.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/WString.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WString.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WString.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WString.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WString.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\WString.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\WString.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\WString.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/WString.cpp.i: cmake_force
@@ -281,7 +281,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/abi.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/abi.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/abi.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/abi.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/abi.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/abi.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/abi.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\abi.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\abi.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\abi.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/abi.cpp.i: cmake_force
@@ -295,7 +295,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/hooks.c.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/hooks.c.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/hooks.c
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/hooks.c.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/hooks.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/hooks.c.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\avr-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/hooks.c.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\hooks.c.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\hooks.c.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\hooks.c"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/hooks.c.i: cmake_force
@@ -309,7 +309,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/main.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/main.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/main.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/main.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/main.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/main.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/main.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\main.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\main.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\main.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/main.cpp.i: cmake_force
@@ -323,7 +323,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/new.cpp.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/new.cpp.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/new.cpp
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/new.cpp.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/new.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/new.cpp.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/new.cpp.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\new.cpp.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\new.cpp.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\new.cpp"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/new.cpp.i: cmake_force
@@ -337,7 +337,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring.c.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring.c.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring.c
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring.c.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring.c.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\avr-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring.c.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring.c.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring.c.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring.c"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring.c.i: cmake_force
@@ -351,7 +351,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_analog.c.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_analog.c.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_analog.c
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_analog.c.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_analog.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_analog.c.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\avr-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_analog.c.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_analog.c.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_analog.c.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_analog.c"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_analog.c.i: cmake_force
@@ -365,7 +365,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_digital.c.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_digital.c.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_digital.c
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_digital.c.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_digital.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_digital.c.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\avr-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_digital.c.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_digital.c.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_digital.c.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_digital.c"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_digital.c.i: cmake_force
@@ -379,7 +379,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_pulse.c.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_pulse.c.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_pulse.c
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_pulse.c.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_pulse.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_pulse.c.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\avr-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_pulse.c.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_pulse.c.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_pulse.c.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_pulse.c"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_pulse.c.i: cmake_force
@@ -393,7 +393,7 @@ CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/core
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_shift.c.obj: CMakeFiles/uno_CORE.dir/flags.make
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_shift.c.obj: C:/Program\ Files\ (x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_shift.c
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_shift.c.obj: CMakeFiles/uno_CORE.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_shift.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_shift.c.obj"
 	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\avr-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_shift.c.obj -MF CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_shift.c.obj.d -o CMakeFiles\uno_CORE.dir\C_\Program_Files_(x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_shift.c.obj -c "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_shift.c"
 
 CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_shift.c.i: cmake_force
@@ -460,7 +460,7 @@ libuno_CORE.a: CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/a
 libuno_CORE.a: CMakeFiles/uno_CORE.dir/C_/Program_Files_(x86)/Arduino/hardware/arduino/avr/cores/arduino/wiring_shift.c.obj
 libuno_CORE.a: CMakeFiles/uno_CORE.dir/build.make
 libuno_CORE.a: CMakeFiles/uno_CORE.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Linking CXX static library libuno_CORE.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Linking CXX static library libuno_CORE.a"
 	$(CMAKE_COMMAND) -P CMakeFiles\uno_CORE.dir\cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\uno_CORE.dir\link.txt --verbose=$(VERBOSE)
 
@@ -473,6 +473,6 @@ CMakeFiles/uno_CORE.dir/clean:
 .PHONY : CMakeFiles/uno_CORE.dir/clean
 
 CMakeFiles/uno_CORE.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\GitHub_Repositories\PurifyMyWater\H2O_GUI D:\GitHub_Repositories\PurifyMyWater\H2O_GUI D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles\uno_CORE.dir\DependInfo.cmake --color=$(COLOR)
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles\uno_CORE.dir\DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/uno_CORE.dir/depend
 

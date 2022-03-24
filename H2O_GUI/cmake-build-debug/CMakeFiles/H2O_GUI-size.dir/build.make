@@ -43,19 +43,19 @@ cmake_force:
 SHELL = cmd.exe
 
 # The CMake executable.
-CMAKE_COMMAND = "C:\Program Files\JetBrains\CLion 2021.3.3\bin\cmake\win\bin\cmake.exe"
+CMAKE_COMMAND = "C:\Program Files\JetBrains\CLion 2021.3\bin\cmake\win\bin\cmake.exe"
 
 # The command to remove a file.
-RM = "C:\Program Files\JetBrains\CLion 2021.3.3\bin\cmake\win\bin\cmake.exe" -E rm -f
+RM = "C:\Program Files\JetBrains\CLion 2021.3\bin\cmake\win\bin\cmake.exe" -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = D:\GitHub_Repositories\PurifyMyWater\H2O_GUI
+CMAKE_SOURCE_DIR = E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug
+CMAKE_BINARY_DIR = E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug
 
 # Utility rule file for H2O_GUI-size.
 
@@ -66,8 +66,8 @@ include CMakeFiles/H2O_GUI-size.dir/compiler_depend.make
 include CMakeFiles/H2O_GUI-size.dir/progress.make
 
 CMakeFiles/H2O_GUI-size: H2O_GUI.elf
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Calculating H2O_GUI image size"
-	"C:\Program Files\JetBrains\CLion 2021.3.3\bin\cmake\win\bin\cmake.exe" -DFIRMWARE_IMAGE=D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/H2O_GUI.elf -DMCU=atmega328p -DEEPROM_IMAGE=D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/H2O_GUI.eep -P D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/FirmwareSize.cmake
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Calculating H2O_GUI image size"
+	"C:\Program Files\JetBrains\CLion 2021.3\bin\cmake\win\bin\cmake.exe" -DFIRMWARE_IMAGE=E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/H2O_GUI.elf -DMCU=atmega328p -DEEPROM_IMAGE=E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/H2O_GUI.eep -P E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/FirmwareSize.cmake
 
 H2O_GUI-size: CMakeFiles/H2O_GUI-size
 H2O_GUI-size: CMakeFiles/H2O_GUI-size.dir/build.make
@@ -82,6 +82,6 @@ CMakeFiles/H2O_GUI-size.dir/clean:
 .PHONY : CMakeFiles/H2O_GUI-size.dir/clean
 
 CMakeFiles/H2O_GUI-size.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\GitHub_Repositories\PurifyMyWater\H2O_GUI D:\GitHub_Repositories\PurifyMyWater\H2O_GUI D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug D:\GitHub_Repositories\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles\H2O_GUI-size.dir\DependInfo.cmake --color=$(COLOR)
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI\cmake-build-debug\CMakeFiles\H2O_GUI-size.dir\DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/H2O_GUI-size.dir/depend
 

@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/H2O_GUI_H2O_GUI.ino.cpp" "CMakeFiles/H2O_GUI.dir/H2O_GUI_H2O_GUI.ino.cpp.obj" "gcc" "CMakeFiles/H2O_GUI.dir/H2O_GUI_H2O_GUI.ino.cpp.obj.d"
+  "E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/H2O_GUI_H2O_GUI.ino.cpp" "CMakeFiles/H2O_GUI.dir/H2O_GUI_H2O_GUI.ino.cpp.obj" "gcc" "CMakeFiles/H2O_GUI.dir/H2O_GUI_H2O_GUI.ino.cpp.obj.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/uno_CORE.dir/DependInfo.cmake"
+  "E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/uno_CORE.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

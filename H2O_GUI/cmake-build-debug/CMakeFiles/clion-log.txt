@@ -1,4 +1,4 @@
-"C:\Program Files\JetBrains\CLion 2021.3.3\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" D:\GitHub_Repositories\PurifyMyWater\H2O_GUI
+"C:\Program Files\JetBrains\CLion 2021.3\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" E:\Datos\Documentos\Proyectos\PurifyMyWater\H2O_GUI
 CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
   Compatibility with CMake < 2.8.12 will be removed from a future version of
   CMake.
@@ -16,7 +16,7 @@ CMake Deprecation Warning at cmake/Platform/Arduino.cmake:285 (cmake_minimum_req
   Update the VERSION argument <min> value or use a ...<max> suffix to tell
   CMake that the project does not need compatibility with older versions.
 Call Stack (most recent call first):
-  C:/Program Files/JetBrains/CLion 2021.3.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake:27 (include)
+  C:/Program Files/JetBrains/CLion 2021.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake:27 (include)
   CMakeLists.txt:8 (project)
 
 
@@ -28,31 +28,31 @@ CMake Deprecation Warning at cmake/Platform/Arduino.cmake:285 (cmake_minimum_req
   Update the VERSION argument <min> value or use a ...<max> suffix to tell
   CMake that the project does not need compatibility with older versions.
 Call Stack (most recent call first):
-  C:/Program Files/JetBrains/CLion 2021.3.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeCInformation.cmake:66 (include)
+  C:/Program Files/JetBrains/CLion 2021.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeCInformation.cmake:66 (include)
   CMakeLists.txt:8 (project)
 
 
 -- Detecting C compiler ABI info
-CMake Deprecation Warning at D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+CMake Deprecation Warning at E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
   Compatibility with CMake < 2.8.12 will be removed from a future version of
   CMake.
 
   Update the VERSION argument <min> value or use a ...<max> suffix to tell
   CMake that the project does not need compatibility with older versions.
 Call Stack (most recent call first):
-  C:/Program Files/JetBrains/CLion 2021.3.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake:27 (include)
-  D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
+  C:/Program Files/JetBrains/CLion 2021.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake:27 (include)
+  E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
 
 
-CMake Deprecation Warning at D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+CMake Deprecation Warning at E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
   Compatibility with CMake < 2.8.12 will be removed from a future version of
   CMake.
 
   Update the VERSION argument <min> value or use a ...<max> suffix to tell
   CMake that the project does not need compatibility with older versions.
 Call Stack (most recent call first):
-  C:/Program Files/JetBrains/CLion 2021.3.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeCInformation.cmake:66 (include)
-  D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
+  C:/Program Files/JetBrains/CLion 2021.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeCInformation.cmake:66 (include)
+  E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
 
 
 -- Detecting C compiler ABI info - done
@@ -66,31 +66,31 @@ CMake Deprecation Warning at cmake/Platform/Arduino.cmake:285 (cmake_minimum_req
   Update the VERSION argument <min> value or use a ...<max> suffix to tell
   CMake that the project does not need compatibility with older versions.
 Call Stack (most recent call first):
-  C:/Program Files/JetBrains/CLion 2021.3.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeCXXInformation.cmake:65 (include)
+  C:/Program Files/JetBrains/CLion 2021.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeCXXInformation.cmake:65 (include)
   CMakeLists.txt:8 (project)
 
 
 -- Detecting CXX compiler ABI info
-CMake Deprecation Warning at D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+CMake Deprecation Warning at E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
   Compatibility with CMake < 2.8.12 will be removed from a future version of
   CMake.
 
   Update the VERSION argument <min> value or use a ...<max> suffix to tell
   CMake that the project does not need compatibility with older versions.
 Call Stack (most recent call first):
-  C:/Program Files/JetBrains/CLion 2021.3.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake:27 (include)
-  D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
+  C:/Program Files/JetBrains/CLion 2021.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake:27 (include)
+  E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
 
 
-CMake Deprecation Warning at D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+CMake Deprecation Warning at E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
   Compatibility with CMake < 2.8.12 will be removed from a future version of
   CMake.
 
   Update the VERSION argument <min> value or use a ...<max> suffix to tell
   CMake that the project does not need compatibility with older versions.
 Call Stack (most recent call first):
-  C:/Program Files/JetBrains/CLion 2021.3.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeCXXInformation.cmake:65 (include)
-  D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
+  C:/Program Files/JetBrains/CLion 2021.3/bin/cmake/win/share/cmake-3.21/Modules/CMakeCXXInformation.cmake:65 (include)
+  E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
 
 
 -- Detecting CXX compiler ABI info - done
@@ -148,4 +148,4 @@ Call Stack (most recent call first):
 -- 
 -- Configuring done
 -- Generating done
--- Build files have been written to: D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake-build-debug
+-- Build files have been written to: E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug

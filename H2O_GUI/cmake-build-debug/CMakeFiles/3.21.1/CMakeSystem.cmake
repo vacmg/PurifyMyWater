@@ -3,7 +3,7 @@ set(CMAKE_HOST_SYSTEM_NAME "Windows")
 set(CMAKE_HOST_SYSTEM_VERSION "10.0.22000")
 set(CMAKE_HOST_SYSTEM_PROCESSOR "AMD64")
 
-include("D:/GitHub_Repositories/PurifyMyWater/H2O_GUI/cmake/ArduinoToolchain.cmake")
+include("E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake/ArduinoToolchain.cmake")
 
 set(CMAKE_SYSTEM "Arduino")
 set(CMAKE_SYSTEM_NAME "Arduino")
