@@ -1,5 +1,0 @@
-E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/uno_CORE.dir
-E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/edit_cache.dir
-E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/H2O_GUI.dir
-E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/H2O_GUI-size.dir
-E:/Datos/Documentos/Proyectos/PurifyMyWater/H2O_GUI/cmake-build-debug/CMakeFiles/rebuild_cache.dir
