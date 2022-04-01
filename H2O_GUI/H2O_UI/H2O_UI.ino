@@ -291,16 +291,16 @@ void drawStatusColors(bool wellPump, bool UVPump, bool endPump, bool UVRelay, bo
     delay(1000);
     Rec1.setMainColor(Color(81, 136, 223));
     Rec1.setSecondaryColor(Color(81, 136, 223));
-    Rec1.setCoords(82,120);// Tube
+    Rec1.setCoords(82,120);// Tube up
     Rec1.setCoords1(83,245);
     my_lcd.draw(&Rec1);
     delay(1000);
-    Rec1.setCoords(82,118);// Tube
+    Rec1.setCoords(82,118);// Tube right
     Rec1.setCoords1(121,119);
     my_lcd.draw(&Rec1);
     delay(1000);
-    Rec1.setCoords(120,118);// Tube
-    Rec1.setCoords1(121,180);
+    Rec1.setCoords(120,118);// Tube down
+    Rec1.setCoords1(121,205);
     my_lcd.draw(&Rec1);
 
 
@@ -344,12 +344,20 @@ void drawStatusColors(bool wellPump, bool UVPump, bool endPump, bool UVRelay, bo
     delay(1000);
     Rec2.setMainColor(Color(81, 136, 223));
     Rec2.setSecondaryColor(Color(81, 136, 223));
-    Rec2.setCoords(138,136);// Tube
+    Rec2.setCoords(138,136);// Tube up
     Rec2.setCoords1(139,199);
     my_lcd.draw(&Rec2);
     delay(1000);
-    Rec2.setCoords(139,136);// Tube
-    Rec2.setCoords1(154,137);
+    Rec2.setCoords(139,136);// Tube right before filter
+    Rec2.setCoords1(156,137);
+    my_lcd.draw(&Rec2);
+    delay(1000);
+    Rec2.setCoords(200,136);// Tube right after filter
+    Rec2.setCoords1(219,137);
+    my_lcd.draw(&Rec2);
+    delay(1000);
+    Rec2.setCoords(218,136);// Tube down
+    Rec2.setCoords1(219,205);
     my_lcd.draw(&Rec2);
 
 
@@ -383,6 +391,16 @@ void drawStatusColors(bool wellPump, bool UVPump, bool endPump, bool UVRelay, bo
     Rec3.setCoords(256,163); // Large top rectangle at the right of the tube
     Rec3.setCoords1(258,180);
     my_lcd.draw(&Rec3);
+
+    //ValveTank3
+    delay(1000);
+    Rec3.setMainColor(Color(255,255,0));
+    Rec3.setSecondaryColor(Color(255,255,0));
+    Rec3.setCoords(249,203); // Valve
+    Rec3.setCoords1(258,208);
+    my_lcd.draw(&Rec3);
+
+    //TubeTank3
 
 
     //tank4
@@ -433,6 +451,14 @@ void drawStatusColors(bool wellPump, bool UVPump, bool endPump, bool UVRelay, bo
     my_lcd.draw(&Rec5);
 }
 
+void StatusBackgrounPhoto ()
+{
+    //todo change photo for rectangles
+
+    Rectangle Rec1 = Rectangle(20,80,460,3000,Color(0,0,0),Color(255,255,255));
+    my_lcd.draw(&Rec1);
+
+}
 
 void drawStatusBackground(bool dontFillScreen)
 {
@@ -447,6 +473,7 @@ void drawStatusBackground(bool dontFillScreen)
 
     Picture statusBackground(14,74,"schArd.bmp");
     my_lcd.draw(&statusBackground);
+    //StatusBackgrounPhoto();
     Rectangle rec(225,60,249,73, Color(255,255,255), Color(255,255,255));
     my_lcd.draw(&rec);
 
