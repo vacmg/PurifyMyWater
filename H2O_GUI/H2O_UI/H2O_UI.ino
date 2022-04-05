@@ -4,7 +4,10 @@
 #include <TouchScreen.h>
 #include <SimpleLCDTouchScreen.h>
 
-#define DEBUG true //test
+#define DEBUG true
+
+#define ROTATION 3 // sets screen rotation
+#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 #define BOOTING 0
 #define LOADSTATUS 1
@@ -27,6 +30,19 @@
 #define ON 1
 #define OFF 0
 #define ERROR -1
+
+
+#if SCREENHW == 35
+#define SCREEN35ROTATIONOFFSET 2
+TouchScreenObject ts(9,A2,A3,8,300,320,480,(ROTATION+SCREEN35ROTATIONOFFSET)%4,177,900,157,958); // for 3.5inch
+#elif SCREENHW == 39
+TouchScreenObject ts(8,A3,A2,9,300,320,480,ROTATION,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
+#endif
+
+SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
+char mainSwitchSt = OFF;
+byte mode = LOADELECTRICITY;
+
 
 #if DEBUG
 const char mode0[] PROGMEM = "BOOTING"; // in order (BOOTING = 0 ---> mode0 = "BOOTING" --> modeTable[0] = mode0)
@@ -59,19 +75,15 @@ char* modeToString(byte pMode)
 
 char auxBuffer[32] = ""; // TODO when using progmem, use it as a buffer to print each label
 
-char mainSwitchSt = OFF;
-byte mode = LOADSTATUS;
 byte page = 0;
 byte maxPage = 0;
-SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
-TouchScreenObject ts(8,A3,A2,9,300,320,480,3,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
 
 #if DEBUG
 #define debug(data) Serial.println(String(data))
 #define changeMode(newMode) debug(String(F("Mode changed from '")) +String(modeToString(mode))+String(F("' to '"))+String(modeToString(newMode))+String(F("'"))); mode = newMode
 #else
 #define debug(data) ;
-#define changeMode(newMode) mode = newMode
+    #define changeMode(newMode) mode = newMode
 #endif
 
 //Status Variable
@@ -100,7 +112,18 @@ RectangleButton btn11(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts
 RectangleButton backBtn(20,20,60,60,Color(0,0,0),Color(255,255,255),&label,&ts);
 Label titleLabel(0,0,"Menu",5,Color(0),Color(255,255,255));
 Rectangle title(65,5,415,75,Color(0xFFFF),/*Color(255,0,0),*/&titleLabel,true);
-//395
+
+void setRotation(byte rotation)
+{
+#if SCREENHW == 35
+    my_lcd.Set_Rotation(rotation);
+    ts.setRotation((rotation+SCREEN35ROTATIONOFFSET)%4);
+    ts.invertXAxis(true);
+#elif SCREENHW == 39
+    my_lcd.Set_Rotation(rotation);
+    ts.setRotation(rotation);
+#endif
+}
 
 void bootAnimation()
 {
@@ -289,7 +312,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     rec1.setCoords1(121,205);
     my_lcd.draw(&rec1);
 
-    
+
     //well_low
     rec1.setMainColor(blue);
     rec1.setSecondaryColor(blue);
@@ -338,7 +361,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     rec2.setCoords(139,136); // Tube right
     rec2.setCoords1(156,137);
     my_lcd.draw(&rec2);
-    
+
 
     //filter
     RoundRectangle recFilter(158,131,199,151,3,white,white);
@@ -361,7 +384,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     my_lcd.draw(&recFilter);
     recFilter.setCoords(218,136); // Tube down
     recFilter.setCoords1(219,215);
-    my_lcd.draw(&recFilter);    
+    my_lcd.draw(&recFilter);
 
 
     //surfaceTank_low
@@ -585,7 +608,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     rec4.setCoords(377,165); // Large rectangle top right of the tube
     rec4.setCoords1(379,180);
     my_lcd.draw(&rec4);
-    
+
 
     //EndTank_low
     Rectangle rec5(396,135,452,157,blue,blue);// Big rectangle under valve
@@ -611,14 +634,6 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     my_lcd.draw(&rec5);
 }
 
-void StatusBackgroundPhoto()
-{
-    //todo change photo for rectangles
-    Rectangle rec1 = Rectangle(20,80,460,3000,Color(0,0,0),Color(255,255,255));
-    my_lcd.draw(&rec1);
-
-}
-
 void drawStatusBackground(bool dontFillScreen)
 {
     if(!dontFillScreen)
@@ -632,7 +647,6 @@ void drawStatusBackground(bool dontFillScreen)
 
     Picture statusBackground(14,74,"schArd.bmp");
     my_lcd.draw(&statusBackground);
-    //StatusBackgrounPhoto();
     Rectangle rec(225,60,249,73, Color(255,255,255), Color(255,255,255));
     my_lcd.draw(&rec);
 
@@ -647,8 +661,6 @@ void drawStatusBackground(bool dontFillScreen)
     my_lcd.draw(&btn1);
     btn1.setDisableAutoSize(false);
 
-
-
     /*btn2.setDisableAutoSize(true);
     label.setFontSize(2);
     label.setString("ON/OFF"); //Label ON/OFF
@@ -657,9 +669,6 @@ void drawStatusBackground(bool dontFillScreen)
     my_lcd.draw(&btn2);
     btn2.setDisableAutoSize(false);*/
 }
-
-
-
 void drawStatusBackground()
 {
     drawStatusBackground(false);
@@ -703,7 +712,7 @@ void drawStatusForeground(char* voltage, char* waterAmount)//TODO add water leve
     btn2.setSecondaryColor(Color(255, 255, 255));
     btn2.setDisableAutoSize(false);
 
-    drawStatusColors(0,0,0,0,0,0,0,0,0);
+    drawStatusColors(0,0,0,0,0,0,0,0,0,0);
 }
 
 // Buttons mapped to: btn1 --> Settings, btn2 --> Help, btn3 --> Engineering Mode, btn4 --> Extra Functions
@@ -778,8 +787,7 @@ void setup()
     pinMode(10,INPUT);
 
     my_lcd.Init_LCD();
-    my_lcd.Set_Rotation(3);
-    ts.setRotation(3);
+    setRotation(ROTATION);
 
     //my_lcd.Fill_Screen(0);
     my_lcd.Fill_Screen(Color(255,255,255).to565());
@@ -947,11 +955,11 @@ void loop()
 
 
 
-        /*case LOADHELP:
-        case HELP:
-        case LOADENGINEERINGMODE:
-        case ENGINEERINGMODE:
-        case LOADEXTRAFUNCTIONS:
-        case EXTRAFUNCTIONS:*/
+            /*case LOADHELP:
+            case HELP:
+            case LOADENGINEERINGMODE:
+            case ENGINEERINGMODE:
+            case LOADEXTRAFUNCTIONS:
+            case EXTRAFUNCTIONS:*/
     }//*/
 }
