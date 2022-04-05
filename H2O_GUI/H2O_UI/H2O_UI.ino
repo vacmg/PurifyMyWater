@@ -712,7 +712,7 @@ void drawStatusForeground(char* voltage, char* waterAmount)//TODO add water leve
     btn2.setSecondaryColor(Color(255, 255, 255));
     btn2.setDisableAutoSize(false);
 
-    drawStatusColors(0,0,0,0,0,0,0,0,0,0);
+    drawStatusColors(0,0,0,0,0,0,0,0,0);
 }
 
 // Buttons mapped to: btn1 --> Settings, btn2 --> Help, btn3 --> Engineering Mode, btn4 --> Extra Functions

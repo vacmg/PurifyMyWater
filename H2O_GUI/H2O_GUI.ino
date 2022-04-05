@@ -361,7 +361,7 @@ bool verifyMessage(char* rawMessage)
 void messageConstructor(const char type, const char* message, char* dest)
 {
     if (strlen(message) > 32) // 33 with null
-        raise(MAXMESSAGESIZEEXCEEDEDERROR, String(F("messageConstructor - The message that exceeded it is: ")) + message);
+        raise(MAXMESSAGESIZEEXCEEDEDERROR, String(F("messageConstructor - The message that exceeded it is: ")) + String(message));
 
     sprintf(dest, "%c", type); // size 2
     strcat(dest, message); // max size 2 - 1 + 33 = 34
