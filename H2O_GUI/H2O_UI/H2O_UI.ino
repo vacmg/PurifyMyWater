@@ -257,294 +257,368 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
 //Auxiliary functions
 
 //Main Functions
-void drawStatusColors(bool wellPump, bool UVPump, bool endPump, bool UVRelay, bool filterRelay, char well, char tank1, char tank2, char tank3, bool endTank) // TODO rectangles // false --> OFF, true -->ON, <0 --> LOW, = 0 --> Half, >0 --> FULL
+void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRelay, char well, char surfaceTank, char filteredTank, char purifiedTank, bool endTank) // TODO rectangles // false --> OFF, true -->ON, <0 --> LOW, = 0 --> Half, >0 --> FULL
 {
-    //tank1 //todo Add conditions depending on how much water is on the Tank1
-    Rectangle Rec1(28,258,89,301,Color(81, 136, 223),Color(81, 136, 223)); // big rectangle under valve
-    my_lcd.draw(&Rec1);
-    //tank1_1
-    delay(1000);//Add conditions here
-    Rec1.setCoords1(78,258); // Rectangle at the let of the valve
-    Rec1.setCoords(28,230);
-    my_lcd.draw(&Rec1);
-    Rec1.setCoords1(89,254); // Small Rectangle under valve
-    Rec1.setCoords(78,259);
-    my_lcd.draw(&Rec1);
-    Rec1.setCoords(85,245); // Small rectangle right of the tube
-    Rec1.setCoords1(89,230);
-    my_lcd.draw(&Rec1);
-    Rec1.setCoords(78,245); // Small rectangle left of the tube
-    Rec1.setCoords1(80,230);
-    my_lcd.draw(&Rec1);
+    Color blue(81, 136, 223);
+    Color white(0xFFFF);
+    Color yellow(255,255,0);
 
-    //ValveTank1
-    delay(1000);//todo Add conditions when valveTank1 is pumping
-    Rec1.setMainColor(Color(255,255,0));
-    Rec1.setSecondaryColor(Color(255,255,0));
-    Rec1.setCoords(80,247); // Valve
-    Rec1.setCoords1(89,252);
-    my_lcd.draw(&Rec1);
+    Rectangle rec1(80,247,89,252,white,white); // big rectangle under the valve
+    //wellPump
+    if(wellPump)
+    {
+        rec1.setMainColor(yellow);
+        rec1.setSecondaryColor(yellow);
+    }
+    my_lcd.draw(&rec1);
 
-    //TubeTank1
-    delay(1000);//todo Add conditions when ValveTank1 is pumping water to Tank2
-    Rec1.setMainColor(Color(81, 136, 223));
-    Rec1.setSecondaryColor(Color(81, 136, 223));
-    Rec1.setCoords(82,120);// Tube up
-    Rec1.setCoords1(83,245);
-    my_lcd.draw(&Rec1);
-    delay(1000);//Add conditions here
-    Rec1.setCoords(82,118);// Tube right
-    Rec1.setCoords1(121,119);
-    my_lcd.draw(&Rec1);
-    delay(1000);//Add conditions here
-    Rec1.setCoords(120,118);// Tube down
-    Rec1.setCoords1(121,205);
-    my_lcd.draw(&Rec1);
+    if(wellPump)
+    {
+        rec1.setMainColor(blue);
+        rec1.setSecondaryColor(blue);
+    }
+    rec1.setCoords(82,120); // Tube up
+    rec1.setCoords1(83,245);
+    my_lcd.draw(&rec1);
 
-//----------------------------------------------------------------------------------------------------//
+    rec1.setCoords(82,118);// Tube right
+    rec1.setCoords1(121,119);
+    my_lcd.draw(&rec1);
 
-    //tank2
-    delay(1000);//todo Add conditions depending on how much water is on the Tank2
-    Rectangle Rec2(99,211,144,219,Color(81, 136, 223),Color(81, 136, 223));
-    my_lcd.draw(&Rec2);
-    //tank2_1
-    delay(1000);//Add conditions here
-    Rec2.setCoords(99,208); // Small Rectangle under valve
-    Rec2.setCoords1(144,211);
-    my_lcd.draw(&Rec2);
-    Rec2.setCoords(99,180); // Rectangle at the left of the valve
-    Rec2.setCoords1(133,208);
-    my_lcd.draw(&Rec2);
-    Rec2.setCoords(133,180); // Small Rectangle at the left of the tube
-    Rec2.setCoords1(136,199);
-    my_lcd.draw(&Rec2);
-    Rec2.setCoords(141,180); // Small Rectangle at the right of the tube
-    Rec2.setCoords1(144,199);
-    my_lcd.draw(&Rec2);
-    //tank2_2
-    delay(1000);//Add conditions here
-    Rec2.setCoords(99,153); // Big Rectangle at the top right of the tube
-    Rec2.setCoords1(136,180);
-    my_lcd.draw(&Rec2);
-    Rec2.setCoords(141,153); // Rectangle at the top left of the tube
-    Rec2.setCoords1(144,180);
-    my_lcd.draw(&Rec2);
+    rec1.setCoords(120,118);// Tube down
+    rec1.setCoords1(121,205);
+    my_lcd.draw(&rec1);
 
-    //ValveTank2
-    delay(1000);//todo Add conditions when valveTank2 is pumping
-    Rec2.setMainColor(Color(255,255,0));
-    Rec2.setSecondaryColor(Color(255,255,0));
-    Rec2.setCoords(135,201); // Valve
-    Rec2.setCoords1(144,206);
-    my_lcd.draw(&Rec2);
+    
+    //well_low
+    rec1.setMainColor(blue);
+    rec1.setSecondaryColor(blue);
+    rec1.setCoords(28,258);
+    rec1.setCoords1(89,301);
+    my_lcd.draw(&rec1);
 
-    //TubeTank2
-    delay(1000);//todo Add conditions when ValveTank2 is pumping water to Tank3
-    Rec2.setMainColor(Color(81, 136, 223));
-    Rec2.setSecondaryColor(Color(81, 136, 223));
-    Rec2.setCoords(138,136);// Tube up
-    Rec2.setCoords1(139,199);
-    my_lcd.draw(&Rec2);
-    delay(1000);//Add conditions here
-    Rec2.setCoords(139,136);// Tube right
-    Rec2.setCoords1(156,137);
-    my_lcd.draw(&Rec2);
-    delay(1000);//Add conditions here
+    //well_high
+    if(!well)
+    {
+        rec1.setMainColor(white);
+        rec1.setSecondaryColor(white);
+    }
+    rec1.setCoords1(78,258); // Rectangle at the let of the valve
+    rec1.setCoords(28,230);
+    my_lcd.draw(&rec1);
+    rec1.setCoords1(89,254); // Small Rectangle under valve
+    rec1.setCoords(78,259);
+    my_lcd.draw(&rec1);
+    rec1.setCoords(85,245); // Small rectangle right of the tube
+    rec1.setCoords1(89,230);
+    my_lcd.draw(&rec1);
+    rec1.setCoords(78,245); // Small rectangle left of the tube
+    rec1.setCoords1(80,230);
+    my_lcd.draw(&rec1);
 
 
-//----------------------------------------------------------------------------------------------------//
+    //Filter
+    Rectangle rec2(135,201,144,206,white,white);
+    if(filterRelay)
+    {
+        rec2.setMainColor(yellow);
+        rec2.setSecondaryColor(yellow);
+    }
+    my_lcd.draw(&rec2);
+
+    //TubeSurfaceTank
+    if(filterRelay)
+    {
+        rec2.setMainColor(blue);
+        rec2.setSecondaryColor(blue);
+    }
+    rec2.setCoords(138,136); // Tube up
+    rec2.setCoords1(139,199);
+    my_lcd.draw(&rec2);
+    rec2.setCoords(139,136); // Tube right
+    rec2.setCoords1(156,137);
+    my_lcd.draw(&rec2);
+    
 
     //filter
-    delay(1000);//todo Add conditions when Filter is working
-    RoundRectangle RecFilter(158,131,199,151,3,Color(255,255,0),Color(255,255,0)) ;
-    my_lcd.draw(&RecFilter);
+    RoundRectangle recFilter(158,131,199,151,3,white,white);
+    if(filterRelay)
+    {
+        recFilter.setMainColor(yellow);
+        recFilter.setSecondaryColor(yellow);
+    }
+    my_lcd.draw(&recFilter);
 
     //TubeFilter
-    delay(1000);//Add conditions here
-    RecFilter.setMainColor(Color(81, 136, 223));
-    RecFilter.setSecondaryColor(Color(81, 136, 22));
-    RecFilter.setRadius(0);
-    delay(1000);//Add conditions here
-    RecFilter.setCoords(200,136);// Tube right
-    RecFilter.setCoords1(219,137);
-    my_lcd.draw(&RecFilter);
-    delay(1000);//Add conditions here
-    RecFilter.setCoords(218,136);// Tube down
-    RecFilter.setCoords1(219,205);
-    my_lcd.draw(&RecFilter);
+    if(filterRelay)
+    {
+        recFilter.setMainColor(blue);
+        recFilter.setSecondaryColor(blue);
+    }
+    recFilter.setRadius(0);
+    recFilter.setCoords(200,136); // Tube right
+    recFilter.setCoords1(219,137);
+    my_lcd.draw(&recFilter);
+    recFilter.setCoords(218,136); // Tube down
+    recFilter.setCoords1(219,215);
+    my_lcd.draw(&recFilter);    
+
+
+    //surfaceTank_low
+    rec2.setCoords(99, 211);
+    rec2.setCoords1(144, 219);
+    rec2.setMainColor(blue);
+    rec2.setSecondaryColor(blue);
+    my_lcd.draw(&rec2);
+
+    //surfaceTank_medium
+    if(surfaceTank == -1)
+    {
+        rec2.setMainColor(white);
+        rec2.setSecondaryColor(white);
+    }
+    rec2.setCoords(99,208); // Small Rectangle under valve
+    rec2.setCoords1(144,211);
+    my_lcd.draw(&rec2);
+    rec2.setCoords(99,180); // Rectangle at the left of the valve
+    rec2.setCoords1(133,208);
+    my_lcd.draw(&rec2);
+    rec2.setCoords(133,180); // Small Rectangle at the left of the tube
+    rec2.setCoords1(136,199);
+    my_lcd.draw(&rec2);
+    rec2.setCoords(141,180); // Small Rectangle at the right of the tube
+    rec2.setCoords1(144,199);
+    my_lcd.draw(&rec2);
+
+    //surfaceTank_high
+    if(surfaceTank == 0)
+    {
+        rec2.setMainColor(white);
+        rec2.setSecondaryColor(white);
+    }
+    rec2.setCoords(99,153); // Big Rectangle at the top right of the tube
+    rec2.setCoords1(136,180);
+    my_lcd.draw(&rec2);
+    rec2.setCoords(141,153); // Rectangle at the top left of the tube
+    rec2.setCoords1(144,180);
+    my_lcd.draw(&rec2);
+
+
+    //UVPump
+    Rectangle rec3(213,213,258,219,white,white);
+    if(UVRelay)
+    {
+        rec3.setMainColor(yellow);
+        rec3.setSecondaryColor(yellow);
+    }
+    rec3.setCoords(249,203);
+    rec3.setCoords1(258,208);
+    my_lcd.draw(&rec3);
+
+    //TubeUVPump
+    if(UVRelay)
+    {
+        rec3.setMainColor(blue);
+        rec3.setSecondaryColor(blue);
+    }
+    rec3.setCoords(253,148); // Tube up
+    rec3.setCoords1(254,201);
+    my_lcd.draw(&rec3);
+    rec3.setCoords(253,148); // Tube right
+    rec3.setCoords1(278,149);
+    my_lcd.draw(&rec3);
+    rec3.setCoords(277,149); // Tube down
+    rec3.setCoords1(278,199);
+    my_lcd.draw(&rec3);
+
+    //UV
+    if(UVRelay)
+    {
+        recFilter.setMainColor(yellow);
+        recFilter.setSecondaryColor(yellow);
+    }
+    else
+    {
+        recFilter.setMainColor(white);
+        recFilter.setSecondaryColor(white);
+    }
+    recFilter.setRadius(2);
+    recFilter.setCoords(272,201);
+    recFilter.setCoords1(323,210);
+    my_lcd.draw(&recFilter);
+
+    //TubeUV
+    recFilter.setRadius(0);
+    if(UVRelay)
+    {
+        recFilter.setMainColor(blue);
+        recFilter.setSecondaryColor(blue);
+    }
+    else
+    {
+        recFilter.setMainColor(white);
+        recFilter.setSecondaryColor(white);
+    }
+    recFilter.setCoords(317,148); // Tube up
+    recFilter.setCoords1(318,199);
+    my_lcd.draw(&recFilter);
+    recFilter.setCoords(318,148); // Tube right
+    recFilter.setCoords1(344,149);
+    my_lcd.draw(&recFilter);
+    recFilter.setCoords(343,149); // Tube down
+    recFilter.setCoords1(344,219);
+    my_lcd.draw(&recFilter);
+
+
+    //FilteredTank_low
+    rec3.setCoords(213,213);
+    rec3.setCoords1(258,219);
+    rec3.setMainColor(blue);
+    rec3.setSecondaryColor(blue);
+    my_lcd.draw(&rec3);
+
+    //FilteredTank_medium
+    if(filteredTank == -1)
+    {
+        rec3.setMainColor(white);
+        rec3.setSecondaryColor(white);
+    }
+    rec3.setCoords(213,210); // Large rectangle under valve
+    rec3.setCoords1(258,213);
+    my_lcd.draw(&rec3);
+    rec3.setCoords(213,180); // Big bottom rectangle under valve
+    rec3.setCoords1(247,210);
+    my_lcd.draw(&rec3);
+    rec3.setCoords(247,180); // Large bottom rectangle at the left of the tube
+    rec3.setCoords1(251,201);
+    my_lcd.draw(&rec3);
+    rec3.setCoords(256,180); // Large bottom rectangle at the right of the tube
+    rec3.setCoords1(258,201);
+    my_lcd.draw(&rec3);
+
+    //FilteredTank_high
+    if(filteredTank == 0)
+    {
+        rec3.setMainColor(white);
+        rec3.setSecondaryColor(white);
+    }
+    rec3.setCoords(213,163); // Big top rectangle under valve
+    rec3.setCoords1(247,180);
+    my_lcd.draw(&rec3);
+    rec3.setCoords(247,163); // Large top rectangle at the left of the tube
+    rec3.setCoords1(251,180);
+    my_lcd.draw(&rec3);
+    rec3.setCoords(256,163); // Large top rectangle at the right of the tube
+    rec3.setCoords1(258,180);
+    my_lcd.draw(&rec3);
+
 
 //----------------------------------------------------------------------------------------------------//
 
-    //tank3
-    delay(1000); //todo Add conditions depending on how much water is on the Tank3
-    Rectangle Rec3(213,213,258,219,Color(81, 136, 223),Color(81, 136, 223)); // Big rectangle under valve
-    my_lcd.draw(&Rec3);
-    //tank3_1
-    delay(1000);//Add conditions here
-    Rec3.setCoords(213,210); // Large rectangle under valve
-    Rec3.setCoords1(258,213);
-    my_lcd.draw(&Rec3);
-    Rec3.setCoords(213,180); // Big bottom rectangle under valve
-    Rec3.setCoords1(247,210);
-    my_lcd.draw(&Rec3);
-    Rec3.setCoords(247,180); // Large bottom rectangle at the left of the tube
-    Rec3.setCoords1(251,201);
-    my_lcd.draw(&Rec3);
-    Rec3.setCoords(256,180); // Large bottom rectangle at the right of the tube
-    Rec3.setCoords1(258,201);
-    my_lcd.draw(&Rec3);
-    //tank3_2
-    delay(1000);//Add conditions here
-    Rec3.setCoords(213,163); // Big top rectangle under valve
-    Rec3.setCoords1(247,180);
-    my_lcd.draw(&Rec3);
-    Rec3.setCoords(247,163); // Large top rectangle at the left of the tube
-    Rec3.setCoords1(251,180);
-    my_lcd.draw(&Rec3);
-    Rec3.setCoords(256,163); // Large top rectangle at the right of the tube
-    Rec3.setCoords1(258,180);
-    my_lcd.draw(&Rec3);
+    //EndPump
+    Rectangle rec4(339,213,379,219,white,white);
 
-    //ValveTank3
-    delay(1000); //todo Add conditions when valveTank3 is pumping
-    Rec3.setMainColor(Color(255,255,0));
-    Rec3.setSecondaryColor(Color(255,255,0));
-    Rec3.setCoords(249,203); // Valve
-    Rec3.setCoords1(258,208);
-    my_lcd.draw(&Rec3);
+    if(endPump)
+    {
+        rec4.setMainColor(yellow);
+        rec4.setSecondaryColor(yellow);
+    }
+    rec4.setCoords(370,203);
+    rec4.setCoords1(379,208);
+    my_lcd.draw(&rec4);
 
-    //TubeTank3
-    delay(1000);//todo Add conditions when ValveTank3 is pumping water to Tank4
-    Rec3.setMainColor(Color(81, 136, 223));
-    Rec3.setSecondaryColor(Color(81, 136, 22));
-    Rec3.setCoords(253,148); // Tube up
-    Rec3.setCoords1(254,201);
-    my_lcd.draw(&Rec3);
-    delay(1000);//Add conditions here
-    Rec3.setCoords(253,148); // Tube right
-    Rec3.setCoords1(278,149);
-    my_lcd.draw(&Rec3);
-    delay(1000);//Add conditions here
-    Rec3.setCoords(277,149); // Tube down
-    Rec3.setCoords1(278,199);
-    my_lcd.draw(&Rec3);
+    //TubeEndPump
+    if(endPump)
+    {
+        rec4.setMainColor(blue);
+        rec4.setSecondaryColor(blue);
+    }
+    rec4.setCoords(374,201); // Tube up
+    rec4.setCoords1(375,81);
+    my_lcd.draw(&rec4);
+    rec4.setCoords(375,81); // Tube right
+    rec4.setCoords1(402,82);
+    my_lcd.draw(&rec4);
+    rec4.setCoords(401,81); // Tube down
+    rec4.setCoords1(402,136);
+    my_lcd.draw(&rec4);
 
-//----------------------------------------------------------------------------------------------------//
 
-    //todo name of the thing between tank_3 and tank_4 / Add conditions when it is working
-    delay(1000);//Add conditions here
-    RecFilter.setRadius(2);
-    RecFilter.setMainColor(Color(255,255,0));
-    RecFilter.setSecondaryColor(Color(255,255,0));
-    RecFilter.setCoords(272,201); // Tube up
-    RecFilter.setCoords1(323,210);
-    my_lcd.draw(&RecFilter);
+    //PurifiedTank_low
+    rec4.setCoords(339,213);
+    rec4.setCoords1(379,219);
+    rec4.setMainColor(blue);
+    rec4.setSecondaryColor(blue);
+    my_lcd.draw(&rec4);
 
-    //Tube todo name of the thing between tank_3 and tank_4 / Add conditions when water is going to tank4
-    RecFilter.setRadius(0);
-    delay(1000);//Add conditions here
-    RecFilter.setMainColor(Color(81, 136, 223));
-    RecFilter.setSecondaryColor(Color(81, 136, 22));
-    RecFilter.setCoords(317,148); // Tube up
-    RecFilter.setCoords1(318,199);
-    my_lcd.draw(&RecFilter);
-    delay(1000);//Add conditions here
-    RecFilter.setMainColor(Color(81, 136, 223));
-    RecFilter.setSecondaryColor(Color(81, 136, 22));
-    RecFilter.setCoords(318,148); // Tube right
-    RecFilter.setCoords1(344,149);
-    my_lcd.draw(&RecFilter);
-    delay(1000);//Add conditions here
-    RecFilter.setMainColor(Color(81, 136, 223));
-    RecFilter.setSecondaryColor(Color(81, 136, 22));
-    RecFilter.setCoords(343,149); // Tube down
-    RecFilter.setCoords1(344,199);
-    my_lcd.draw(&RecFilter);
+    //PurifiedTank_medium
+    if(purifiedTank == -1)
+    {
+        rec4.setMainColor(white);
+        rec4.setSecondaryColor(white);
+    }
+    rec4.setCoords(339,210); // Large rectangle under valve
+    rec4.setCoords1(379,213);
+    my_lcd.draw(&rec4);
+    rec4.setCoords(339,180); // Big rectangle bottom left of the tube
+    rec4.setCoords1(368,210);
+    my_lcd.draw(&rec4);
+    rec4.setCoords(368,180); // Large rectangle bottom left of the tube
+    rec4.setCoords1(372,201);
+    my_lcd.draw(&rec4);
+    rec4.setCoords(377,180); // Large rectangle bottom right of the tube
+    rec4.setCoords1(379,201);
+    my_lcd.draw(&rec4);
+
+    //PurifiedTank_high
+    if(purifiedTank == 0)
+    {
+        rec4.setMainColor(white);
+        rec4.setSecondaryColor(white);
+    }
+    rec4.setCoords(339,165); // Big rectangle top left of the tube
+    rec4.setCoords1(368,180);
+    my_lcd.draw(&rec4);
+    rec4.setCoords(368,165); // Large rectangle top left of the tube
+    rec4.setCoords1(372,180);
+    my_lcd.draw(&rec4);
+    rec4.setCoords(377,165); // Large rectangle top right of the tube
+    rec4.setCoords1(379,180);
+    my_lcd.draw(&rec4);
+
+
 
 //----------------------------------------------------------------------------------------------------//
 
-    //tank4
-    delay(1000);//todo Add conditions depending on how much water is on the Tank4
-    Rectangle Rec4(339,213,379,219,Color(81, 136, 223),Color(81, 136, 223));// Big rectangle under valve
-    my_lcd.draw(&Rec4);
-    //tank4_1
-    delay(1000);//Add conditions here
-    Rec4.setCoords(339,210); // Large rectangle under valve
-    Rec4.setCoords1(379,213);
-    my_lcd.draw(&Rec4);
-    Rec4.setCoords(339,180); // Big rectangle bottom left of the tube
-    Rec4.setCoords1(368,210);
-    my_lcd.draw(&Rec4);
-    Rec4.setCoords(368,180); // Large rectangle bottom left of the tube
-    Rec4.setCoords1(372,201);
-    my_lcd.draw(&Rec4);
-    Rec4.setCoords(377,180); // Large rectangle bottom right of the tube
-    Rec4.setCoords1(379,201);
-    my_lcd.draw(&Rec4);
-    //tank4_2
-    delay(1000);//Add conditions here
-    Rec4.setCoords(339,165); // Big rectangle top left of the tube
-    Rec4.setCoords1(368,180);
-    my_lcd.draw(&Rec4);
-    Rec4.setCoords(368,165); // Large rectangle top left of the tube
-    Rec4.setCoords1(372,180);
-    my_lcd.draw(&Rec4);
-    Rec4.setCoords(377,165); // Large rectangle top right of the tube
-    Rec4.setCoords1(379,180);
-    my_lcd.draw(&Rec4);
+    //EndTank_low
+    Rectangle rec5(396,135,452,157,blue,blue);// Big rectangle under valve
+    my_lcd.draw(&rec5);
 
-    //ValveTank4
-    delay(1000);//todo Add conditions when ValveTank4 start pumping
-    Rec4.setMainColor(Color(255,255,0));
-    Rec4.setSecondaryColor(Color(255,255,0));
-    Rec4.setCoords(370,203); // Valve
-    Rec4.setCoords1(379,208);
-    my_lcd.draw(&Rec4);
+    //TubeEndTank
+    rec5.setCoords(427,157); // Rectangle exit tube down
+    rec5.setCoords1(430,182);
+    my_lcd.draw(&rec5);
+    rec5.setCoords(427,183); // Rectangle exit tube right
+    rec5.setCoords1(462,186);
+    my_lcd.draw(&rec5);
 
-    //TubeTank4
-    delay(1000);//todo Add conditions when ValveTank4 is pumping water to Tank5
-    Rec4.setMainColor(Color(81, 136, 223));
-    Rec4.setSecondaryColor(Color(81, 136, 22));
-    Rec4.setCoords(374,201); // Tube up
-    Rec4.setCoords1(375,81);
-    my_lcd.draw(&Rec4);
-    delay(1000);//Add conditions here
-    Rec4.setCoords(375,81); // Tube right
-    Rec4.setCoords1(402,82);
-    my_lcd.draw(&Rec4);
-    delay(1000);//Add conditions here
-    Rec4.setCoords(401,81); // Tube down
-    Rec4.setCoords1(402,131);
-    my_lcd.draw(&Rec4);
 
-//----------------------------------------------------------------------------------------------------//
-
-    //tank5
-    delay(1000);//todo Add conditions depending on how much water is on the Tank5
-    Rectangle Rec5(396,135,452,157,Color(81, 136, 223),Color(81, 136, 223));// Big rectangle under valve
-    my_lcd.draw(&Rec5);
-    delay(1000);//Add conditions here
-    Rec5.setCoords(396,92); // Big rectangle top of the tank
-    Rec5.setCoords1(452,135);
-    my_lcd.draw(&Rec5);
-
-    //TubeTank5
-    delay(1000);//todo Add conditions if the water is exiting the system
-    Rec5.setCoords(427,157); // Rectangle exit tube down
-    Rec5.setCoords1(430,182);
-    my_lcd.draw(&Rec5);
-    delay(1000);//Add conditions here
-    Rec5.setCoords(427,183); // Rectangle exit tube right
-    Rec5.setCoords1(462,186);
-    my_lcd.draw(&Rec5);
-
+    //EndTank_high
+    if(!endTank)
+    {
+        rec5.setMainColor(white);
+        rec5.setSecondaryColor(white);
+    }
+    rec5.setCoords(396,92); // Big rectangle top of the tank
+    rec5.setCoords1(452,135);
+    my_lcd.draw(&rec5);
 }
 
-void StatusBackgrounPhoto ()
+void StatusBackgroundPhoto()
 {
     //todo change photo for rectangles
-    Rectangle Rec1 = Rectangle(20,80,460,3000,Color(0,0,0),Color(255,255,255));
-    my_lcd.draw(&Rec1);
+    Rectangle rec1 = Rectangle(20,80,460,3000,Color(0,0,0),Color(255,255,255));
+    my_lcd.draw(&rec1);
 
 }
 
@@ -632,7 +706,7 @@ void drawStatusForeground(char* voltage, char* waterAmount)//TODO add water leve
     btn2.setSecondaryColor(Color(255, 255, 255));
     btn2.setDisableAutoSize(false);
 
-    drawStatusColors(0,0,0,0,0,0,0,0,0,0);
+    drawStatusColors(0,0,0,0,0,0,0,0,0);
 }
 
 // Buttons mapped to: btn1 --> Settings, btn2 --> Help, btn3 --> Engineering Mode, btn4 --> Extra Functions
