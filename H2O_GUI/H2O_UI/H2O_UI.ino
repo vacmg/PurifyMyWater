@@ -585,10 +585,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     rec4.setCoords(377,165); // Large rectangle top right of the tube
     rec4.setCoords1(379,180);
     my_lcd.draw(&rec4);
-
-
-
-//----------------------------------------------------------------------------------------------------//
+    
 
     //EndTank_low
     Rectangle rec5(396,135,452,157,blue,blue);// Big rectangle under valve
