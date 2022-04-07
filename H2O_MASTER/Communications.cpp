@@ -29,8 +29,6 @@ bool getMessageHelper(char* message, char* type)
 
     if (!verifyMessage(message))
     {
-        message = NULL;
-        type = NULL;
         debug(F("getMessageHelper - Message corrupted"));
         return false;
     }
