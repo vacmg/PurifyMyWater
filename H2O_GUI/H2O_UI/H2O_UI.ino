@@ -7,7 +7,7 @@
 #define DEBUG true
 
 #define ROTATION 3 // sets screen rotation
-#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
+#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 #define BOOTING 0
 #define LOADSTATUS 1
@@ -25,6 +25,9 @@
 #define LOADELECTRICITY 13
 #define LOADPAGEELECTRICITY 14
 #define ELECTRICITY 15
+#define LOADINTERFACE 16
+#define LOADPAGEINTERFACE 17
+#define INTERFACE 18
 
 // ERROR CODES (CODE<0)
 #define ON 1
@@ -61,9 +64,12 @@ const char mode12[] PROGMEM = "EXTRAFUNCTIONS";
 const char mode13[] PROGMEM = "LOADELECTRICTY";
 const char mode14[] PROGMEM = "LOADPAGEELECTRICITY";
 const char mode15[] PROGMEM = "ELECTRICITY";
+const char mode16[] PROGMEM = "LOADINTERFACE";
+const char mode17[] PROGMEM = "LOADPAGEINTERFACE";
+const char mode18[] PROGMEM = "INTERFACE";
 
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18};
 char printModeBuff[20]; // Max size of any modeX string
 
 char* modeToString(byte pMode)
@@ -759,6 +765,23 @@ void drawElectricity() // TODO get settings real value
     }
 }
 
+void drawInterface()
+{
+    titleLabel.setString("Interface");
+    titleLabel.setFontSize(2);
+    my_lcd.draw(&title);
+    titleLabel.setFontSize(5);
+    switch (page)
+    {
+        case 1:
+            draw6ButtonsLayout("Language","Screen Rotation","Screen Calibration","English","Inverted Landscape","Calibrate",true,true,true, maxPage);
+            break;
+        case 2:
+            draw6ButtonsLayout("Refresh Rate","Reset","","5","Perform Reset","",true,true,false, maxPage);
+            break;
+    }
+
+}
 void clickElectricity()
 {
     /*if(btnx.isPressed())
@@ -769,6 +792,11 @@ void clickElectricity()
             changeMode(XXXXX);
         }
     }*/
+}
+
+void clickInterface()
+{
+    // Empty
 }
 //Main Functions
 
@@ -912,11 +940,13 @@ void loop()
             else if(btn2.isPressed())
             {
                 changeMode();
-            }
-            else if(btn3.isPressed())
+            }*/
+            else if(btn3.isPressed()) // Go to LOADINTERFACE
             {
-                changeMode();
+                debug(F("Interface button pressed"));
+                changeMode(LOADINTERFACE);
             }
+            /*
             else if(btn4.isPressed())
             {
                 changeMode();
@@ -952,6 +982,43 @@ void loop()
             else
                 clickElectricity();
             break;
+        case LOADINTERFACE:
+            page = 1;
+            maxPage = 2;
+            drawBackground();
+        case LOADPAGEINTERFACE:
+            // in this case you draw the interface
+            debug(String(F("Loading page "))+page+" / "+maxPage);
+            drawInterface();
+            changeMode(INTERFACE);
+            break;
+        case INTERFACE:
+            if(backBtn.isPressed())
+            {
+                debug(F("Back button pressed"));
+                changeMode(LOADSETTINGS);
+                // if back botton is pressed you go to the previous page, so you start uploading the settings page
+            }
+            else if(page<maxPage&&btn8.isPressed()) // Next page
+            {
+                debug(F("Next page button pressed"));
+                page++;
+                changeMode(LOADPAGEINTERFACE);
+                // if you press this button and it's not the last page, you change to the next page and charge the page by changing to LOADPAGEINTERFACE
+            }
+            else if(page!=1&&btn7.isPressed())
+            {
+                debug(F("Next page button pressed"));
+                page--;
+                changeMode(LOADPAGEINTERFACE);
+                // if you press this button and it's not the first page, you change to the previous page and charge the page by changing to LOADPAGEINTERFACE
+            }
+            else
+                clickInterface();
+            // if you click in one of the bottons of the page, you go to this function
+            break;
+
+
 
 
 
