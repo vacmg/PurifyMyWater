@@ -79,10 +79,10 @@ byte page = 0;
 byte maxPage = 0;
 
 #if DEBUG
-    #define debug(data) Serial.println(String(data))
-    #define changeMode(newMode) debug(String(F("Mode changed from '")) +String(modeToString(mode))+String(F("' to '"))+String(modeToString(newMode))+String(F("'"))); mode = newMode
+#define debug(data) Serial.println(String(data))
+#define changeMode(newMode) debug(String(F("Mode changed from '")) +String(modeToString(mode))+String(F("' to '"))+String(modeToString(newMode))+String(F("'"))); mode = newMode
 #else
-    #define debug(data) ;
+#define debug(data) ;
     #define changeMode(newMode) mode = newMode
 #endif
 
@@ -189,7 +189,7 @@ void draw4ButtonsLayout(char* str1, char* str2, char* str3, char* str4)
 }
 
 // btn1 --> topLeft; btn2 --> centerLeft; btn3 --> bottomLeft; btn4 --> topRight; btn5 --> centerRight; btn6 --> bottomRight; btn7 --> Previous; btn8 --> Next; btn9 --> topHelp; btn10 --> centerHelp; btn11 --> bottomHelp;
-void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char* topRight, char* centerRight, char* bottomRight, bool topHelp, bool centerHelp, bool bottomHelp)
+void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char* topRight, char* centerRight, char* bottomRight, bool topHelp, bool centerHelp, bool bottomHelp, byte maxPage)
 {
     label.setString(topLeft);
     btn1.setCoords(25,95);
@@ -277,16 +277,10 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
 
 }
 
-float getNumInput(char* title, char* unit)
-{
-
-    return 0.0;
-}
-
 //Auxiliary functions
 
 //Main Functions
-void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRelay, char well, char surfaceTank, char filteredTank, char purifiedTank, bool endTank) // false --> OFF, true -->ON, <0 --> LOW, = 0 --> Half, >0 --> FULL
+void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRelay, char well, char surfaceTank, char filteredTank, char purifiedTank, bool endTank) // TODO rectangles // false --> OFF, true -->ON, <0 --> LOW, = 0 --> Half, >0 --> FULL
 {
     Color blue(81, 136, 223);
     Color white(0xFFFF);
@@ -751,16 +745,16 @@ void drawElectricity() // TODO get settings real value
     switch (page)
     {
         case 1:
-            draw6ButtonsLayout("Start Charging Voltage","Stop Charging Voltage","UV light est. Current","12.5V","15.5V","1A",true,true,true);
+            draw6ButtonsLayout("Start Charging Voltage","Stop Charging Voltage","UV light est. Current","12.5V","15.5V","1A",true,true,true, maxPage);
             break;
         case 2:
-            draw6ButtonsLayout("Start Working Voltage","Stop Working Voltage","AC Inverter Frequency","15.2V","11.9V","50Hz",true,true,true);
+            draw6ButtonsLayout("Start Working Voltage","Stop Working Voltage","AC Inverter Frequency","15.2V","11.9V","50Hz",true,true,true, maxPage);
             break;
         case 3:
-            draw6ButtonsLayout("AC Ammeter Sensitivity","AC Ammeter Zero","DC Ammeter Sensitivity","1.856","3.678","1.567",true,true,true);
+            draw6ButtonsLayout("AC Ammeter Sensitivity","AC Ammeter Zero","DC Ammeter Sensitivity","1.856","3.678","1.567",true,true,true, maxPage);
             break;
         case 4:
-            draw6ButtonsLayout("DC Ammeter Zero","","","4.678","","",true,false,false);
+            draw6ButtonsLayout("DC Ammeter Zero","","","4.678","","",true,false,false, maxPage);
             break;
     }
 }
@@ -773,9 +767,6 @@ void clickElectricity()
         {
             case 1:
             changeMode(XXXXX);
-            break;
-            case x:
-                ...
         }
     }*/
 }
@@ -804,7 +795,6 @@ void setup()
     //todo Test code after this line
 
 
-    //while (true); // TODO delete or comment this
 
     //todo Test code before this line
 
@@ -813,7 +803,6 @@ void setup()
     delay(50);
 #endif
 }
-
 bool sw = true; // todo delete this
 void loop()
 {
