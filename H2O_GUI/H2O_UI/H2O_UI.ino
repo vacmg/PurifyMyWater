@@ -25,8 +25,11 @@
 #define LOADELECTRICITY 13
 #define LOADPAGEELECTRICITY 14
 #define ELECTRICITY 15
+#define LOADINTERFACE 16
+#define LOADPAGEINTERFACE 17
+#define INTERFACE 18
 
-// ERROR CODES (CODE<0)
+// ON/OFF BTN STATUS
 #define ON 1
 #define OFF 0
 #define ERROR -1
@@ -41,7 +44,7 @@ TouchScreenObject ts(8,A3,A2,9,300,320,480,ROTATION,924,111,58,935); // rx is th
 
 SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
 char mainSwitchSt = OFF;
-byte mode = LOADELECTRICITY;
+byte mode = LOADINTERFACE;
 
 
 #if DEBUG
@@ -61,9 +64,12 @@ const char mode12[] PROGMEM = "EXTRAFUNCTIONS";
 const char mode13[] PROGMEM = "LOADELECTRICTY";
 const char mode14[] PROGMEM = "LOADPAGEELECTRICITY";
 const char mode15[] PROGMEM = "ELECTRICITY";
+const char mode16[] PROGMEM = "LOADINTERFACE";
+const char mode17[] PROGMEM = "LOADPAGEINTERFACE";
+const char mode18[] PROGMEM = "INTERFACE";
 
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18};
 char printModeBuff[20]; // Max size of any modeX string
 
 char* modeToString(byte pMode)
@@ -113,6 +119,8 @@ RectangleButton backBtn(20,20,60,60,Color(0,0,0),Color(255,255,255),&label,&ts);
 Label titleLabel(0,0,"Menu",5,Color(0),Color(255,255,255));
 Rectangle title(65,5,415,75,Color(0xFFFF),/*Color(255,0,0),*/&titleLabel,true);
 
+//Auxiliary functions
+
 void setRotation(byte rotation)
 {
 #if SCREENHW == 35
@@ -124,13 +132,6 @@ void setRotation(byte rotation)
     ts.setRotation(rotation);
 #endif
 }
-
-void bootAnimation()
-{
-    Picture bigLogo(157,25,"PMWBL.bmp");
-    my_lcd.draw(&bigLogo);
-}
-//Auxiliary functions
 
 void drawBackground()
 {
@@ -148,78 +149,111 @@ void drawBackground()
 
 }
 
-//btn1 --> str1; btn2 --> str2; btn3 --> str3; btn4 --> str4
-void draw4ButtonsLayout(char* str1, char* str2, char* str3, char* str4)
+//btn1 --> topLeft; btn2 --> topRight; btn3 --> bottomLeft; btn4 --> bottomRight
+void draw4ButtonsLayout(char* topLeft, char* topRight, char* bottomLeft, char* bottomRight, const byte* fontSize)
 {
+    bool validFontSize = fontSize!=NULL;
+    if(validFontSize)
+    {
+        if(fontSize[0] != 0) btn1.setDisableAutoSize(true);
+        if(fontSize[1] != 0) btn2.setDisableAutoSize(true);
+        if(fontSize[2] != 0) btn3.setDisableAutoSize(true);
+        if(fontSize[3] != 0) btn4.setDisableAutoSize(true);
+    }
+
     // Top left button
-    btn1.setDisableAutoSize(true);
-    label.setFontSize(2);
-    label.setString(str1);
+    if (validFontSize) label.setFontSize(fontSize[0]);
+    label.setString(topLeft);
     btn1.setCoords(30,120);
     btn1.setCoords1(230,200);
     my_lcd.draw(&btn1);
     btn1.setDisableAutoSize(false);
 
     // Top right button
-    btn2.setDisableAutoSize(true);
-    label.setFontSize(2);
-    label.setString(str2);
+    if (validFontSize) label.setFontSize(fontSize[1]);
+    label.setString(topRight);
     btn2.setCoords(250,120);
     btn2.setCoords1(440,200);
     my_lcd.draw(&btn2);
     btn2.setDisableAutoSize(false);
 
     // Bottom left button
-    btn3.setDisableAutoSize(true);
-    label.setFontSize(2);
-    label.setString(str3);
+    if (validFontSize) label.setFontSize(fontSize[2]);
+    label.setString(bottomLeft);
     btn3.setCoords(30,220);
     btn3.setCoords1(230,300);
     my_lcd.draw(&btn3);
     btn3.setDisableAutoSize(false);
 
     // Bottom right button
-    btn4.setDisableAutoSize(true);
-    label.setFontSize(2);
-    label.setString(str4);
+    if (validFontSize) label.setFontSize(fontSize[3]);
+    label.setString(bottomRight);
     btn4.setCoords(250,220);
     btn4.setCoords1(440,300);
     my_lcd.draw(&btn4);
     btn4.setDisableAutoSize(false);
 }
 
-// btn1 --> topLeft; btn2 --> centerLeft; btn3 --> bottomLeft; btn4 --> topRight; btn5 --> centerRight; btn6 --> bottomRight; btn7 --> Previous; btn8 --> Next; btn9 --> topHelp; btn10 --> centerHelp; btn11 --> bottomHelp;
-void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char* topRight, char* centerRight, char* bottomRight, bool topHelp, bool centerHelp, bool bottomHelp, byte maxPage)
+void draw4ButtonsLayout(char* topLeft, char* topRight, char* bottomLeft, char* bottomRight)
 {
+    draw4ButtonsLayout(topLeft, topRight, bottomLeft, bottomRight, NULL);
+}
+
+// btn1 --> topLeft; btn2 --> centerLeft; btn3 --> bottomLeft; btn4 --> topRight; btn5 --> centerRight; btn6 --> bottomRight; btn7 --> Previous; btn8 --> Next; btn9 --> topHelp; btn10 --> centerHelp; btn11 --> bottomHelp; If fontSize = NULL, autoFontSize; len(fontSize) = 6
+void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char* topRight, char* centerRight, char* bottomRight, bool topHelp, bool centerHelp, bool bottomHelp, const byte* fontSize)
+{
+    bool validFontSize = fontSize!=NULL;
+    if(validFontSize)
+    {
+        if(fontSize[0] != 0) btn1.setDisableAutoSize(true);
+        if(fontSize[1] != 0) btn2.setDisableAutoSize(true);
+        if(fontSize[2] != 0) btn3.setDisableAutoSize(true);
+        if(fontSize[3] != 0) btn4.setDisableAutoSize(true);
+        if(fontSize[4] != 0) btn5.setDisableAutoSize(true);
+        if(fontSize[5] != 0) btn6.setDisableAutoSize(true);
+    }
     label.setString(topLeft);
+    if (validFontSize) label.setFontSize(fontSize[0]);
     btn1.setCoords(25,95);
     btn1.setCoords1(195,135);
     my_lcd.draw(&btn1);
 
-    label.setString(topRight);
-    btn2.setCoords(280,95);
-    btn2.setCoords1(450,135);
-    my_lcd.draw(&btn2);
-
     label.setString(centerLeft);
+    if (validFontSize) label.setFontSize(fontSize[1]);
     btn3.setCoords(25,155);
     btn3.setCoords1(195,195);
     my_lcd.draw(&btn3);
 
-    label.setString(centerRight);
-    btn4.setCoords(280,155);
-    btn4.setCoords1(450,195);
-    my_lcd.draw(&btn4);
-
     label.setString(bottomLeft);
+    if (validFontSize) label.setFontSize(fontSize[2]);
     btn5.setCoords(25,215);
     btn5.setCoords1(195,255);
     my_lcd.draw(&btn5);
 
+    label.setString(topRight);
+    if (validFontSize) label.setFontSize(fontSize[3]);
+    btn2.setCoords(280,95);
+    btn2.setCoords1(450,135);
+    my_lcd.draw(&btn2);
+
+    label.setString(centerRight);
+    if (validFontSize) label.setFontSize(fontSize[4]);
+    btn4.setCoords(280,155);
+    btn4.setCoords1(450,195);
+    my_lcd.draw(&btn4);
+
     label.setString(bottomRight);
+    if (validFontSize) label.setFontSize(fontSize[5]);
     btn6.setCoords(280,215);
     btn6.setCoords1(450,255);
     my_lcd.draw(&btn6);
+
+    btn1.setDisableAutoSize(false);
+    btn2.setDisableAutoSize(false);
+    btn3.setDisableAutoSize(false);
+    btn4.setDisableAutoSize(false);
+    btn5.setDisableAutoSize(false);
+    btn6.setDisableAutoSize(false);
 
     if(topHelp)
     {
@@ -277,9 +311,45 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
 
 }
 
+void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char* topRight, char* centerRight, char* bottomRight, bool topHelp, bool centerHelp, bool bottomHelp)
+{
+    draw6ButtonsLayout(topLeft,centerLeft,bottomLeft,topRight,centerRight,bottomRight,topHelp,centerHelp,bottomHelp,NULL);
+}
+
+void setFontSizeArray(byte* fontSizeArray, byte tl, byte cl, byte bl, byte tr, byte cr, byte br)
+{
+    fontSizeArray[0] = tl;
+    fontSizeArray[1] = cl;
+    fontSizeArray[2] = bl;
+    fontSizeArray[3] = tr;
+    fontSizeArray[4] = cr;
+    fontSizeArray[5] = br;
+}
+
+void setFontSizeArray(byte* fontSizeArray, byte tl, byte tr, byte bl, byte br)
+{
+    fontSizeArray[0] = tl;
+    fontSizeArray[1] = tr;
+    fontSizeArray[2] = bl;
+    fontSizeArray[3] = br;
+}
+
+float getNumInput(char* title, char* unit)
+{
+
+    return 0.0;
+}
+
 //Auxiliary functions
 
 //Main Functions
+
+void bootAnimation()
+{
+    Picture bigLogo(157,25,"PMWBL.bmp");
+    my_lcd.draw(&bigLogo);
+}
+
 void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRelay, char well, char surfaceTank, char filteredTank, char purifiedTank, bool endTank) // TODO rectangles // false --> OFF, true -->ON, <0 --> LOW, = 0 --> Half, >0 --> FULL
 {
     Color blue(81, 136, 223);
@@ -536,8 +606,6 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     my_lcd.draw(&rec3);
 
 
-//----------------------------------------------------------------------------------------------------//
-
     //EndPump
     Rectangle rec4(339,213,379,219,white,white);
 
@@ -669,6 +737,7 @@ void drawStatusBackground(bool dontFillScreen)
     my_lcd.draw(&btn2);
     btn2.setDisableAutoSize(false);*/
 }
+
 void drawStatusBackground()
 {
     drawStatusBackground(false);
@@ -722,7 +791,9 @@ void drawMenu()
     titleLabel.setString("Menu");
     my_lcd.draw(&title);
     //Layout4Buttons
-    draw4ButtonsLayout("Settings","Help","Engineering Mode","Extra functions");
+    byte fontSize[4];
+    setFontSizeArray(fontSize,2,2,2,2);
+    draw4ButtonsLayout("Settings","Help","Engineering Mode","Extra functions",fontSize);
 }
 
 // Buttons mapped to: btn1 --> Electricity, btn2 --> Water, btn3 --> Interface, btn4 --> Temperature
@@ -732,7 +803,9 @@ void drawSettings()
     titleLabel.setString("Settings");
     my_lcd.draw(&title);
     //Layout4Buttons
-    draw4ButtonsLayout("Electricity","Water","Interface","Temperature");
+    byte fontSize[4];
+    setFontSizeArray(fontSize,2,2,2,2);
+    draw4ButtonsLayout("Electricity","Water","Interface","Temperature",fontSize);
 }
 
 void drawElectricity() // TODO get settings real value
@@ -742,21 +815,47 @@ void drawElectricity() // TODO get settings real value
     titleLabel.setFontSize(2);
     my_lcd.draw(&title);
     titleLabel.setFontSize(5);
+    byte fontSizes[6];
     switch (page)
     {
         case 1:
-            draw6ButtonsLayout("Start Charging Voltage","Stop Charging Voltage","UV light est. Current","12.5V","15.5V","1A",true,true,true, maxPage);
+            setFontSizeArray(fontSizes, 1,1,1,2,2,2);
+            draw6ButtonsLayout("Start Charging Voltage","Stop Charging Voltage","UV light est. Current","12.5V","15.5V","1A",true,true,true,fontSizes);
             break;
         case 2:
-            draw6ButtonsLayout("Start Working Voltage","Stop Working Voltage","AC Inverter Frequency","15.2V","11.9V","50Hz",true,true,true, maxPage);
+            setFontSizeArray(fontSizes, 1,1,1,2,2,2);
+            draw6ButtonsLayout("Start Working Voltage","Stop Working Voltage","AC Inverter Frequency","15.2V","11.9V","50Hz",true,true,true, fontSizes);
             break;
         case 3:
-            draw6ButtonsLayout("AC Ammeter Sensitivity","AC Ammeter Zero","DC Ammeter Sensitivity","1.856","3.678","1.567",true,true,true, maxPage);
+            setFontSizeArray(fontSizes, 1,1,1,2,2,2);
+            draw6ButtonsLayout("AC Ammeter Sensitivity","AC Ammeter Zero","DC Ammeter Sensitivity","1.856","3.678","1.567",true,true,true,fontSizes);
             break;
         case 4:
-            draw6ButtonsLayout("DC Ammeter Zero","","","4.678","","",true,false,false, maxPage);
+            setFontSizeArray(fontSizes, 1,1,1,2,1,1);
+            draw6ButtonsLayout("DC Ammeter Zero","","","4.678","","",true,false,false,fontSizes);
             break;
     }
+}
+
+void drawInterface()
+{
+    titleLabel.setString("Interface");
+    titleLabel.setFontSize(2);
+    my_lcd.draw(&title);
+    titleLabel.setFontSize(5);
+    byte fontSizes[6];
+    switch (page)
+    {
+        case 1:
+            setFontSizeArray(fontSizes,1,1,1,1,1,1);
+            draw6ButtonsLayout("Language","Screen Rotation","Screen Calibration","English","Inverted Landscape","Calibrate",true,true,true, fontSizes);
+            break;
+        case 2:
+            setFontSizeArray(fontSizes,2,2,2,2,2,2);
+            draw6ButtonsLayout("Refresh Rate","Reset","","5s","Perform Reset","",true,true,false, fontSizes);
+            break;
+    }
+
 }
 
 void clickElectricity()
@@ -767,9 +866,29 @@ void clickElectricity()
         {
             case 1:
             changeMode(XXXXX);
+            break;
+            case x:
+                ...
         }
     }*/
 }
+
+void clickInterface()
+{
+    /*if(btnx.isPressed())
+    {
+        switch (page)
+        {
+            case 1:
+            changeMode(XXXXX);
+            break;
+            case x:
+                ...
+        }
+    }*/
+}
+
+
 //Main Functions
 
 void setup()
@@ -795,6 +914,7 @@ void setup()
     //todo Test code after this line
 
 
+    //while (true); // TODO delete or comment this
 
     //todo Test code before this line
 
@@ -803,6 +923,8 @@ void setup()
     delay(50);
 #endif
 }
+
+
 bool sw = true; // todo delete this
 void loop()
 {
@@ -912,11 +1034,13 @@ void loop()
             else if(btn2.isPressed())
             {
                 changeMode();
-            }
-            else if(btn3.isPressed())
+            }*/
+            else if(btn3.isPressed()) // Go to LOADINTERFACE
             {
-                changeMode();
+                debug(F("Interface button pressed"));
+                changeMode(LOADINTERFACE);
             }
+            /*
             else if(btn4.isPressed())
             {
                 changeMode();
@@ -952,6 +1076,43 @@ void loop()
             else
                 clickElectricity();
             break;
+        case LOADINTERFACE:
+            page = 1;
+            maxPage = 2;
+            drawBackground();
+        case LOADPAGEINTERFACE:
+            // in this case you draw the interface
+            debug(String(F("Loading page "))+page+" / "+maxPage);
+            drawInterface();
+            changeMode(INTERFACE);
+            break;
+        case INTERFACE:
+            if(backBtn.isPressed())
+            {
+                debug(F("Back button pressed"));
+                changeMode(LOADSETTINGS);
+                // if back button is pressed you go to the previous page, so you start uploading the settings page
+            }
+            else if(page<maxPage&&btn8.isPressed()) // Next page
+            {
+                debug(F("Next page button pressed"));
+                page++;
+                changeMode(LOADPAGEINTERFACE);
+                // if you press this button, and it's not the last page, change to the next page and load the page by changing to LOADPAGEINTERFACE
+            }
+            else if(page!=1&&btn7.isPressed())
+            {
+                debug(F("Next page button pressed"));
+                page--;
+                changeMode(LOADPAGEINTERFACE);
+                // if you press this button, and it's not the first page, change to the previous page and load the page by changing to LOADPAGEINTERFACE
+            }
+            else
+                clickInterface();
+            // if you click in one of the buttons of the page, you go to this function
+            break;
+
+
 
 
 
