@@ -28,6 +28,9 @@
 #define LOADINTERFACE 16
 #define LOADPAGEINTERFACE 17
 #define INTERFACE 18
+#define LOADTEMPERATURE 19
+#define LOADPAGETEMPERATURE 20
+#define TEMPERATURE 21
 
 // ON/OFF BTN STATUS
 #define ON 1
@@ -67,9 +70,13 @@ const char mode15[] PROGMEM = "ELECTRICITY";
 const char mode16[] PROGMEM = "LOADINTERFACE";
 const char mode17[] PROGMEM = "LOADPAGEINTERFACE";
 const char mode18[] PROGMEM = "INTERFACE";
+const char mode19[] PROGMEM = "LOADTEMPERATURE";
+const char mode20[] PROGMEM = "LOADPAGETEMPERATURE";
+const char mode21[] PROGMEM = "TEMPERATURE";
 
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18};
+
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20,mode21};
 char printModeBuff[20]; // Max size of any modeX string
 
 char* modeToString(byte pMode)
@@ -856,6 +863,26 @@ void drawInterface()
             break;
     }
 
+}
+
+void drawTemperature() {
+    titleLabel.setString("Temperature");
+    titleLabel.setFontSize(2);
+    my_lcd.draw(&title);
+    titleLabel.setFontSize(5);
+    byte fontSizes[6];
+    switch (page) {
+        case 1:
+            setFontSizeArray(fontSizes, 1, 1, 1, 1, 1, 1);
+            draw6ButtonsLayout("Temp. Refresh Rate", "System Stop Temp.", "PSU Fan Start Temp.", "20s", "65ºC", "40ºC",
+                               true, true, true, fontSizes);
+            break;
+        case 2:
+            setFontSizeArray(fontSizes, 2, 2, 2, 2, 2, 2);
+            draw6ButtonsLayout("PSU Fan Stop Temp.", "Case Fan Start Temp.", "Case Fan Stop Temp.", "35ºC", "38ºC",
+                               "34ºC", true, true, true, fontSizes);
+            break;
+    }
 }
 
 void clickElectricity()
