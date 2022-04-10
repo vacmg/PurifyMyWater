@@ -874,13 +874,13 @@ void drawTemperature() {
     switch (page) {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout("Temp. Refresh Rate", "System Stop Temp.", "PSU Fan Start Temp.", "20s", "65ºC", "40ºC",
+            draw6ButtonsLayout("Temp. Refresh Rate", "System Stop Temp.", "PSU Fan Start Temp.", "20s", "65 C", "40 C",
                                true, true, true, fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout("PSU Fan Stop Temp.", "Case Fan Start Temp.", "Case Fan Stop Temp.", "35ºC", "38ºC",
-                               "34ºC", true, true, true, fontSizes);
+            draw6ButtonsLayout("PSU Fan Stop Temp.", "Case Fan Start Temp.", "Case Fan Stop Temp.", "35 C", "38 C",
+                               "34 C", true, true, true, fontSizes);
             break;
     }
 }
