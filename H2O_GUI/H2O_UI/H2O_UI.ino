@@ -7,7 +7,7 @@
 #define DEBUG true
 
 #define ROTATION 3 // sets screen rotation
-#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
+#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 #define BOOTING 0
 #define LOADSTATUS 1
@@ -873,12 +873,12 @@ void drawTemperature() {
     byte fontSizes[6];
     switch (page) {
         case 1:
-            setFontSizeArray(fontSizes, 1, 1, 1, 1, 1, 1);
+            setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
             draw6ButtonsLayout("Temp. Refresh Rate", "System Stop Temp.", "PSU Fan Start Temp.", "20s", "65ºC", "40ºC",
                                true, true, true, fontSizes);
             break;
         case 2:
-            setFontSizeArray(fontSizes, 2, 2, 2, 2, 2, 2);
+            setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
             draw6ButtonsLayout("PSU Fan Stop Temp.", "Case Fan Start Temp.", "Case Fan Stop Temp.", "35ºC", "38ºC",
                                "34ºC", true, true, true, fontSizes);
             break;
@@ -1067,11 +1067,10 @@ void loop()
                 debug(F("Interface button pressed"));
                 changeMode(LOADINTERFACE);
             }
-            /*
             else if(btn4.isPressed())
             {
-                changeMode();
-            }*/
+                changeMode(LOADTEMPERATURE);
+            }
             break;
         case LOADELECTRICITY:
             page = 1;
@@ -1166,7 +1165,7 @@ void loop()
                 page--;
                 changeMode(LOADPAGETEMPERATURE);
             }
-            
+
             break;
 
 
