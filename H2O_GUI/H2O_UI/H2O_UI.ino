@@ -1129,7 +1129,7 @@ void loop()
             }
             else if(page!=1&&btn7.isPressed())
             {
-                debug(F("Next page button pressed"));
+                debug(F("Previous page button pressed"));
                 page--;
                 changeMode(LOADPAGEINTERFACE);
                 // if you press this button, and it's not the first page, change to the previous page and load the page by changing to LOADPAGEINTERFACE
@@ -1138,6 +1138,37 @@ void loop()
                 clickInterface();
             // if you click in one of the buttons of the page, you go to this function
             break;
+        case LOADTEMPERATURE:
+            page = 1;
+            maxPage = 2;
+            drawBackground();
+        case LOADPAGETEMPERATURE:
+            debug(String(F("Loading page "))+page+" / "+maxPage);
+            drawTemperature();
+            changeMode(TEMPERATURE);
+            break;
+        case TEMPERATURE:
+            if(backBtn.isPressed())
+            {
+                debug(F("Back button pressed"));
+                changeMode(LOADSETTINGS);
+                // if back button is pressed you go to the previous page, so you start uploading the settings page
+            }
+            else if(page<maxPage&&btn8.isPressed()) // Next page
+            {
+                debug(F("Next page button pressed"));
+                page++;
+                changeMode(LOADPAGETEMPERATURE);
+            }
+            else if(page!=1&&btn7.isPressed())
+            {
+                debug(F("Previous page button pressed"));
+                page--;
+                changeMode(LOADPAGETEMPERATURE);
+            }
+            
+            break;
+
 
 
 
