@@ -277,8 +277,89 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
 
 }
 
-float getNumInput(char* title, char* unit)
+float getNumInput(char* titleNumInput, char* unit)
 {
+    drawBackground();
+    titleLabel.setString(titleNumInput); // title
+    my_lcd.draw(&title);
+
+    //NUMERIC BUTTONS//
+    label.setString("1"); // Button number 1
+    btn1.setCoords(40,155);
+    btn1.setCoords1(100,205);
+    my_lcd.draw(&btn1);
+
+    label.setString("2"); // Button number 2
+    btn2.setCoords(125,155);
+    btn2.setCoords1(185,205);
+    my_lcd.draw(&btn2);
+
+    label.setString("3"); // Button number 3
+    btn3.setCoords(210,155);
+    btn3.setCoords1(270,205);
+    my_lcd.draw(&btn3);
+
+    label.setString("4"); // Button number 4
+    btn4.setCoords(295,155);
+    btn4.setCoords1(355,205);
+    my_lcd.draw(&btn4);
+
+    label.setString("5"); // Button number 5
+    btn5.setCoords(380,155);
+    btn5.setCoords1(440,205);
+    my_lcd.draw(&btn5);
+
+    label.setString("6"); // Button number 6
+    btn6.setCoords(40,215);
+    btn6.setCoords1(100,265);
+    my_lcd.draw(&btn6);
+
+    label.setString("7"); // Button number 7
+    btn7.setCoords(125,215);
+    btn7.setCoords1(185,265);
+    my_lcd.draw(&btn7);
+
+    label.setString("8"); // Button number 8
+    btn8.setCoords(210,215);
+    btn8.setCoords1(270,265);
+    my_lcd.draw(&btn8);
+
+    label.setString("9"); // Button number 9
+    btn9.setCoords(295,215);
+    btn9.setCoords1(355,265);
+    my_lcd.draw(&btn9);
+
+    label.setString("10"); // Button number 10
+    btn10.setCoords(380,215);
+    btn10.setCoords1(440,265);
+    my_lcd.draw(&btn10);
+
+    //AUXILIARY BUTTONS//
+    label.setString("Delete"); // Button Delete
+    btn11.setCoords(60,270);
+    btn11.setCoords1(230,310);
+    my_lcd.draw(&btn11);
+
+    label.setString("OK"); // Button OK
+    RectangleButton oKBtn(250,270,410,310,Color(0,0,0),Color(255,255,255),&label,&ts);
+    my_lcd.draw(&oKBtn);
+
+    label.setString("."); // Button DOT
+    label.setFontSize(3);
+    RectangleButton dotBtn(425,95,475,145,Color(0,0,0),Color(255,255,255),&label,true,&ts);
+    my_lcd.draw(&dotBtn);
+    label.setFontSize(5);
+
+    label.setString("+/-"); // Button Sign
+    RectangleButton signBtn(5,95,55,145,Color(0,0,0),Color(255,255,255),&label,&ts);
+    my_lcd.draw(&signBtn);
+
+    //OUTPUT//
+    //String outputString=""; //TODO functional output
+    //Label outputLabel(0,0,outputString,5,Color(255,255,255));
+    Rectangle output(60,95,420,145,Color (0,0,0),Color (255,255,255));
+    my_lcd.draw(&output);
+
 
     return 0.0;
 }
@@ -803,8 +884,8 @@ void setup()
 
     //todo Test code after this line
 
-
-    //while (true); // TODO delete or comment this
+    getNumInput("Electricity","C");
+    while (true);
 
     //todo Test code before this line
 
