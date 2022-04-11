@@ -29,15 +29,6 @@
 
 
 byte CRC8(const byte* data, size_t dataLength);
-void messageConstructor(char type, const char* message, char* dest);
-bool verifyMessage(char* rawMessage);
-bool sendMessageHelper(const char* message, char type);
-bool sendMessage(char* message);
-bool sendMessage(const char* message, char type);
-bool getMessageHelper(char* message, char* type);
-bool getMessage(char* message, char* type);
-bool doServerHandshake();
-void updateServer();
 void flush(HardwareSerial ser);
 
 #endif //H2O_COMMUNICATIONS_H

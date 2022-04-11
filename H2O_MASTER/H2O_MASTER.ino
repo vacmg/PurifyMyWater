@@ -668,50 +668,7 @@ void updateServer()
 
 #if GUI
 
-// This function checks if the screen is properly connected and available for other functions to use it
-// The handshake consists of:
-// The screen sends each 500ms an 'A'
-// The server answers with a 'Z' once it discovers it
-// The screen sends another 'Z' to end handshake
-// All of this must be done in less than HANDSHAKETIMEOUT ms
-// TODO handshake with CRC8?
-bool doServerHandshake()
-{
-    unsigned long pm = millis();
-    byte sw = 0;
-    debug(F("doServerHandshake - Step 0"));
-    while (sw != 2 && pm + 30000 > millis()) //HANDSHAKETIMEOUT
-    {
-        if (Serial1.available())
-        {
-            debug(sw);
-            if (sw == 0 && Serial1.read() == 'A')
-            {
-                debug(F("doServerHandshake - Step 1"));
-                delay(50);
-                Serial1.print('Z');
-                flush(Serial1);
-                delay(200);
-                sw = 1;
-            }
-            else if (sw == 1 && Serial1.read() == 'Z')
-            {
-                debug(F("doServerHandshake - Step 2"));
-                sw = 2;
-            }
-        }
-    }
-    flush(Serial1);
-    if (sw == 2)
-    {
-        debug(F("doServerHandshake - Successful handshake"));
-    }
-    else
-    {
-        debug(String(F("doServerHandshake - Handshake failed in step "))+ sw);
-    }
-    return sw == 2;
-}
+
 
 //TODO processMessage(withRetryOption)
 
