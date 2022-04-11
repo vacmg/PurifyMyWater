@@ -28,6 +28,9 @@
 #define LOADINTERFACE 16
 #define LOADPAGEINTERFACE 17
 #define INTERFACE 18
+#define LOADWATER 19
+#define LOADPAGEWATER 20
+#define WATER 21
 
 // ON/OFF BTN STATUS
 #define ON 1
@@ -67,9 +70,12 @@ const char mode15[] PROGMEM = "ELECTRICITY";
 const char mode16[] PROGMEM = "LOADINTERFACE";
 const char mode17[] PROGMEM = "LOADPAGEINTERFACE";
 const char mode18[] PROGMEM = "INTERFACE";
+const char mode19[] PROGMEM = "LOADWATER";
+const char mode20[] PROGMEM = "LOADPAGEWATER";
+const char mode21[] PROGMEM = "WATER";
 
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21};
 char printModeBuff[20]; // Max size of any modeX string
 
 char* modeToString(byte pMode)
@@ -858,6 +864,25 @@ void drawInterface()
 
 }
 
+void drawWater()
+{
+    titleLabel.setString("Water Settings");
+    titleLabel.setFontSize(2);
+    my_lcd.draw(&title);
+    titleLabel.setFontSize(5);
+    byte fontSizes[6];
+    switch (page) {
+        case 1:
+            setFontSizeArray(fontSizes,1,1,1,2,2,2);
+            draw6ButtonsLayout("Well Pump max time ON","UV Pump max time ON","End Pump max time ON", "60s","45s", "80s", true, true, true, fontSizes);
+            break;
+        case 2:
+            setFontSizeArray(fontSizes,1,1,1,2,2,2);
+            draw6ButtonsLayout("Filter max time ON","UV Pump flow","", "30s","130L/H", "", true, true, true, fontSizes);
+            break;
+    }
+}
+
 void clickElectricity()
 {
     /*if(btnx.isPressed())
@@ -888,6 +913,9 @@ void clickInterface()
     }*/
 }
 
+void clickWater(){
+
+}
 
 //Main Functions
 
@@ -1030,11 +1058,12 @@ void loop()
                 debug(F("Electricity button pressed"));
                 changeMode(LOADELECTRICITY);
             }
-            /*
+
             else if(btn2.isPressed())
             {
-                changeMode();
-            }*/
+                debug(F("Water button pressed")); // Go to LOADWATER
+                changeMode(LOADWATER);
+            }
             else if(btn3.isPressed()) // Go to LOADINTERFACE
             {
                 debug(F("Interface button pressed"));
@@ -1111,10 +1140,36 @@ void loop()
                 clickInterface();
             // if you click in one of the buttons of the page, you go to this function
             break;
-
-
-
-
+        case LOADWATER:
+            page = 1;
+            maxPage = 2;
+            drawBackground();
+        case LOADPAGEWATER:
+            debug(String(F("Loading page "))+page+" / "+maxPage);
+            drawWater();
+            changeMode(WATER);
+            break;
+        case WATER:
+            if (backBtn.isPressed())    // Go to LOADSETTINGS
+            {
+                debug(F("Back Page button pressed"));
+                changeMode(LOADSETTINGS);
+            }
+            else if(page<maxPage && btn8.isPressed())   // Go to LOADPAGEWATER on next page
+            {
+                debug(F("Next page button pressed"));
+                page++;
+                changeMode(LOADPAGEWATER);
+            }
+            else if(page!=1 && btn7.isPressed())    // Go to LOADPAGEWATER on previous page
+            {
+                debug(F("Previous page button pressed"));
+                page--;
+                changeMode(LOADPAGEWATER);
+            }
+            else
+                clickWater();       
+            break;
 
             /*case LOADHELP:
             case HELP:
