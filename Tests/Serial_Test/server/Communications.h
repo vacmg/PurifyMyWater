@@ -34,7 +34,7 @@
 
 
 
-
+void printAsHex(char* string, int size);
 bool sendMessage(char* message, HardwareSerial serial);
 bool getMessage(char* message, HardwareSerial serial);
 bool verifyMessage(char* message);

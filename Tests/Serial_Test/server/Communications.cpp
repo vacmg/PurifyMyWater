@@ -42,10 +42,25 @@ bool sendMessage(char* payload, HardwareSerial serial)
 
 bool getMessage(char* message, HardwareSerial serial)
 {
-    delay(100);
-    serial.readBytesUntil('\n',message,MAXRAWMSGSIZE); // [CRC][size][payload]
+    delay(1000);
+    Serial.println(serial.available());
+    delay(1000);
+    bool messageReceived = false;
+    for (byte i = 0; serial.available()&&!messageReceived&&i<MAXRAWMSGSIZE;i++)
+    {
+      char c = serial.read();
+      if(c=='\n')
+      {
+        c = '\0';
+        messageReceived = true;
+        flush(serial);
+      }
+      message[i] = c;
+    }
+    
+    Serial.println(message);
     flush(serial);
-
+    printAsHex(message, 8);
     if (verifyMessage(message)) // verify message
     {
         Serial.write(ACK);
@@ -92,4 +107,12 @@ void flush(HardwareSerial serial)
     {
         serial.read();
     }
+}
+
+void printAsHex(char* string, int size)
+{
+  for(int i = 0; i<size;i++)
+  {
+    Serial.println(string[i],DEC);
+  }
 }

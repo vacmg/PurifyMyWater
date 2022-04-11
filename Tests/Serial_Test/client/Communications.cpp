@@ -28,6 +28,7 @@ bool sendMessage(char* payload, HardwareSerial serial)
     bool successfulSend = false;
     for(byte i = 0; !successfulSend && i<MAXMSGRETRIES; i++)
     {
+      printAsHex(message,payloadLength+2);
         serial.println(message);//[CRC][size][payload]\n
         unsigned long startTime = millis();
         while (!successfulSend && millis()-startTime<MSGTIMEOUT)
@@ -44,6 +45,7 @@ bool getMessage(char* message, HardwareSerial serial)
 {
     delay(100);
     serial.readBytesUntil('\n',message,MAXRAWMSGSIZE); // [CRC][size][payload]
+    
     flush(serial);
 
     if (verifyMessage(message)) // verify message
@@ -92,4 +94,12 @@ void flush(HardwareSerial serial)
     {
         serial.read();
     }
+}
+
+void printAsHex(char* string, int size)
+{
+  for(int i = 0; i<size;i++)
+  {
+    Serial.println(string[i],DEC);
+  }
 }
