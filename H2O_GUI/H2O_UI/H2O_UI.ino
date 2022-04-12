@@ -80,7 +80,7 @@ const char mode22[] PROGMEM = "LOADTEMPERATURE";
 const char mode23[] PROGMEM = "LOADPAGETEMPERATURE";
 const char mode24[] PROGMEM = "TEMPERATURE";
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode22, mode24};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24};
 char printModeBuff[20]; // Max size of any modeX string
 
 char* modeToString(byte pMode)
