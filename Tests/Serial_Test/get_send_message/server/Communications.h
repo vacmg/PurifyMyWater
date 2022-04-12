@@ -6,7 +6,7 @@
 #define H2O_COMMUNICATIONS_H
 
 #define SCREENBAUDRATE 115200
-#define MAXMSGRETRIES 1
+#define MAXMSGRETRIES 3
 #define MSGTIMEOUT 2500
 #define SCREENTIMEOUT 120000
 #define MAXMSGSIZE 60
@@ -35,11 +35,10 @@
 
 
 
-bool sendMessage(char* message, HardwareSerial serial);
-bool getMessage(char* message, HardwareSerial serial);
+bool sendMessage(char* message, HardwareSerial* serial);
+bool getMessage(char* message, HardwareSerial* serial);
 bool verifyMessage(char* message);
 byte CRC8(const byte* data, size_t dataLength);
-void flush(HardwareSerial ser);
-void printAsHex(char* string, int size);
+void flush(HardwareSerial* serial);
 
 #endif //H2O_COMMUNICATIONS_H

@@ -35,10 +35,10 @@
 
 
 
-bool sendMessage(char* message, HardwareSerial serial);
-bool getMessage(char* message, HardwareSerial serial);
+bool sendMessage(const char* message, HardwareSerial* serial);
+bool getMessage(char* message, HardwareSerial* serial);
 bool verifyMessage(char* message);
 byte CRC8(const byte* data, size_t dataLength);
-void flush(HardwareSerial ser);
+void flush(HardwareSerial* serial);
 
 #endif //H2O_COMMUNICATIONS_H
