@@ -5,89 +5,97 @@
 #include <SimpleLCDTouchScreen.h>
 
 #define DEBUG true
+#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
-#define ROTATION 3 // sets screen rotation
-#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
+// Default Settings
 
-#define BOOTING 0
-#define LOADSTATUS 1
-#define STATUS 2
-#define LOADMENU 3
-#define MENU 4
-#define LOADSETTINGS 5
-#define SETTINGS 6
-#define LOADHELP 7
-#define HELP 8
-#define LOADENGINEERINGMODE 9
-#define ENGINEERINGMODE 10
-#define LOADEXTRAFUNCTIONS 11
-#define EXTRAFUNCTIONS 12
-#define LOADELECTRICITY 13
-#define LOADPAGEELECTRICITY 14
-#define ELECTRICITY 15
-#define LOADINTERFACE 16
-#define LOADPAGEINTERFACE 17
-#define INTERFACE 18
-#define LOADWATER 19
-#define LOADPAGEWATER 20
-#define WATER 21
-#define LOADTEMPERATURE 22
-#define LOADPAGETEMPERATURE 23
-#define TEMPERATURE 24
+// Electricity settings
+float STARTCHARGINGVOLTAGE = 13;
+float STOPCHARGINGVOLTAGE = 15.75;
+float STARTWORKINGVOLTAGE = 15;
+float STOPWORKINGVOLTAGE = 12;
 
+double DCAmpSensitivity = 0.1135; //sensor sensitivity in Volts/Amps // 5.4A for 60w test load
+double DCAmpZero = 2.4956; // sensor voltage for 0 Amps current
+
+double ACAmpZero = -0.07157; // sensor calibration correction value
+double ACAmpSensitivity = 0.033; // sensor sensitivity in Volts/Amps // 0.25A for 60w test load
+byte ACFrequency = 50; // AC signal frequency (Hz)
+
+float ESTIMATEDUVAMPERAGE = 1.0; // Minimum estimated current that the UV light uses // todo place real value
+
+// Water settings
+unsigned long WELLPUMPTIMEOUT = 60000;
+unsigned long UVPUMPTIMEOUT = 60000;
+unsigned long ENDPUMPTIMEOUT = 60000;
+unsigned long FILTERTIMEOUT = 60000;
+unsigned int UVPUMPFLOW = 55;
+
+// Interface settings
+enum Languages {ENGLISH = 0};
+Languages LANGUAGE = ENGLISH;
+byte ROTATION = 3;
+unsigned long DATAREFRESHPERIOD = 5000;
+
+// Temperature settings
+unsigned long TEMPCHECKTIME = 10000;
+byte STOPWORKINGTEMP = 65;
+byte MAXCASETEMP = 40;
+byte MINCASETEMP = 38;
+byte MAXPSUTEMP = 40;
+byte MINPSUTEMP = 38;
+
+// Default Settings
+enum ScreenStatus {BOOTING = 0, LOADSTATUS, STATUS, LOADMENU, MENU, LOADSETTINGS, SETTINGS, LOADHELP, HELP, LOADENGINEERINGMODE, ENGINEERINGMODE, LOADEXTRAFUNCTIONS, EXTRAFUNCTIONS, LOADELECTRICITY, LOADPAGEELECTRICITY, ELECTRICITY, LOADINTERFACE, LOADPAGEINTERFACE, INTERFACE, LOADWATER, LOADPAGEWATER, WATER, LOADTEMPERATURE, LOADPAGETEMPERATURE, TEMPERATURE};
 // ON/OFF BTN STATUS
-#define ON 1
-#define OFF 0
-#define ERROR -1
-
+enum BtnStatus {OFF, ON, ERROR};
 
 #if SCREENHW == 35
-#define SCREEN35ROTATIONOFFSET 2
-TouchScreenObject ts(9,A2,A3,8,300,320,480,(ROTATION+SCREEN35ROTATIONOFFSET)%4,177,900,157,958); // for 3.5inch
+    #define SCREEN35ROTATIONOFFSET 2
+    TouchScreenObject ts(9,A2,A3,8,300,320,480,(ROTATION+SCREEN35ROTATIONOFFSET)%4,177,900,157,958); // for 3.5inch
 #elif SCREENHW == 39
-TouchScreenObject ts(8,A3,A2,9,300,320,480,ROTATION,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
+    TouchScreenObject ts(8,A3,A2,9,300,320,480,ROTATION,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
 #endif
 
 SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
-char mainSwitchSt = OFF;
-byte mode = LOADINTERFACE;
-
+BtnStatus mainSwitchSt = OFF;
+ScreenStatus screenStatus = LOADINTERFACE;
 
 #if DEBUG
-const char mode0[] PROGMEM = "BOOTING"; // in order (BOOTING = 0 ---> mode0 = "BOOTING" --> modeTable[0] = mode0)
-const char mode1[] PROGMEM = "LOADSTATUS";
-const char mode2[] PROGMEM = "STATUS";
-const char mode3[] PROGMEM = "LOADMENU";
-const char mode4[] PROGMEM = "MENU";
-const char mode5[] PROGMEM = "LOADSETTINGS";
-const char mode6[] PROGMEM = "SETTINGS";
-const char mode7[] PROGMEM = "LOADHELP";
-const char mode8[] PROGMEM = "HELP";
-const char mode9[] PROGMEM = "LOADENGINEERINGMODE";
-const char mode10[] PROGMEM = "ENGINEERINGMODE";
-const char mode11[] PROGMEM = "LOADEXTRAFUNCTIONS";
-const char mode12[] PROGMEM = "EXTRAFUNCTIONS";
-const char mode13[] PROGMEM = "LOADELECTRICTY";
-const char mode14[] PROGMEM = "LOADPAGEELECTRICITY";
-const char mode15[] PROGMEM = "ELECTRICITY";
-const char mode16[] PROGMEM = "LOADINTERFACE";
-const char mode17[] PROGMEM = "LOADPAGEINTERFACE";
-const char mode18[] PROGMEM = "INTERFACE";
-const char mode19[] PROGMEM = "LOADWATER";
-const char mode20[] PROGMEM = "LOADPAGEWATER";
-const char mode21[] PROGMEM = "WATER";
-const char mode22[] PROGMEM = "LOADTEMPERATURE";
-const char mode23[] PROGMEM = "LOADPAGETEMPERATURE";
-const char mode24[] PROGMEM = "TEMPERATURE";
+    const char mode0[] PROGMEM = "BOOTING"; // in order (BOOTING = 0 ---> mode0 = "BOOTING" --> modeTable[0] = mode0)
+    const char mode1[] PROGMEM = "LOADSTATUS";
+    const char mode2[] PROGMEM = "STATUS";
+    const char mode3[] PROGMEM = "LOADMENU";
+    const char mode4[] PROGMEM = "MENU";
+    const char mode5[] PROGMEM = "LOADSETTINGS";
+    const char mode6[] PROGMEM = "SETTINGS";
+    const char mode7[] PROGMEM = "LOADHELP";
+    const char mode8[] PROGMEM = "HELP";
+    const char mode9[] PROGMEM = "LOADENGINEERINGMODE";
+    const char mode10[] PROGMEM = "ENGINEERINGMODE";
+    const char mode11[] PROGMEM = "LOADEXTRAFUNCTIONS";
+    const char mode12[] PROGMEM = "EXTRAFUNCTIONS";
+    const char mode13[] PROGMEM = "LOADELECTRICTY";
+    const char mode14[] PROGMEM = "LOADPAGEELECTRICITY";
+    const char mode15[] PROGMEM = "ELECTRICITY";
+    const char mode16[] PROGMEM = "LOADINTERFACE";
+    const char mode17[] PROGMEM = "LOADPAGEINTERFACE";
+    const char mode18[] PROGMEM = "INTERFACE";
+    const char mode19[] PROGMEM = "LOADWATER";
+    const char mode20[] PROGMEM = "LOADPAGEWATER";
+    const char mode21[] PROGMEM = "WATER";
+    const char mode22[] PROGMEM = "LOADTEMPERATURE";
+    const char mode23[] PROGMEM = "LOADPAGETEMPERATURE";
+    const char mode24[] PROGMEM = "TEMPERATURE";
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24};
-char printModeBuff[20]; // Max size of any modeX string
+    const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24};
+    char printModeBuff[20]; // Max size of any modeX string
 
-char* modeToString(byte pMode)
-{
-    strcpy_P(printModeBuff, (char *)pgm_read_word(&(modeTable[pMode])));
-    return printModeBuff;
-}
+    char* modeToString(ScreenStatus status)
+    {
+        strcpy_P(printModeBuff, (char *)pgm_read_word(&(modeTable[status])));
+        return printModeBuff;
+    }
 #endif
 
 char auxBuffer[32] = ""; // TODO when using progmem, use it as a buffer to print each label
@@ -96,11 +104,11 @@ byte page = 0;
 byte maxPage = 0;
 
 #if DEBUG
-#define debug(data) Serial.println(String(data))
-#define changeMode(newMode) debug(String(F("Mode changed from '")) +String(modeToString(mode))+String(F("' to '"))+String(modeToString(newMode))+String(F("'"))); mode = newMode
+    #define debug(data) Serial.println(String(data))
+    #define changeStatus(newStatus) debug(String(F("Mode changed from '")) +String(modeToString(screenStatus))+String(F("' to '"))+String(modeToString(newStatus))+String(F("'"))); screenStatus = newStatus
 #else
-#define debug(data) ;
-    #define changeMode(newMode) mode = newMode
+    #define debug(data) ;
+    #define changeStatus(newStaus) screenStatus = newStatus
 #endif
 
 //Status Variable
@@ -739,14 +747,6 @@ void drawStatusBackground(bool dontFillScreen)
     btn1.setCoords1(260,290);
     my_lcd.draw(&btn1);
     btn1.setDisableAutoSize(false);
-
-    /*btn2.setDisableAutoSize(true);
-    label.setFontSize(2);
-    label.setString("ON/OFF"); //Label ON/OFF
-    btn2.setCoords(300,234);
-    btn2.setCoords1(420,290);
-    my_lcd.draw(&btn2);
-    btn2.setDisableAutoSize(false);*/
 }
 
 void drawStatusBackground()
@@ -863,7 +863,7 @@ void drawInterface()
             break;
         case 2:
             setFontSizeArray(fontSizes,2,2,2,2,2,2);
-            draw6ButtonsLayout("Refresh Rate","Reset","","5s","Perform Reset","",true,true,false, fontSizes);
+            draw6ButtonsLayout("Refresh Period","Reset","","5s","Perform Reset","",true,true,false, fontSizes);
             break;
     }
 
@@ -879,13 +879,13 @@ void drawTemperature() {
     {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout("Temp. Refresh Rate", "System Stop Temp.", "PSU Fan Start Temp.", "20s", "65 C", "40 C",
+            draw6ButtonsLayout("Temp. Refresh Rate", "System Stop Temp.", "PSU Fan Start Temp.", "20s", "65C", "40C",
                                true, true, true, fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout("PSU Fan Stop Temp.", "Case Fan Start Temp.", "Case Fan Stop Temp.", "35 C", "38 C",
-                               "34 C", true, true, true, fontSizes);
+            draw6ButtonsLayout("PSU Fan Stop Temp.", "Case Fan Start Temp.", "Case Fan Stop Temp.", "35C", "38C",
+                               "34C", true, true, true, fontSizes);
             break;
     }
 }
@@ -917,7 +917,7 @@ void clickElectricity()
         switch (page)
         {
             case 1:
-            changeMode(XXXXX);
+            changeStatus(XXXXX);
             break;
             case x:
                 ...
@@ -932,7 +932,7 @@ void clickInterface()
         switch (page)
         {
             case 1:
-            changeMode(XXXXX);
+            changeStatus(XXXXX);
             break;
             case x:
                 ...
@@ -940,8 +940,34 @@ void clickInterface()
     }*/
 }
 
-void clickWater(){
+void clickWater()
+{
+    /*if(btnx.isPressed())
+    {
+        switch (page)
+        {
+            case 1:
+            changeStatus(XXXXX);
+            break;
+            case x:
+                ...
+        }
+    }*/
+}
 
+void clickTemperature()
+{
+    /*if(btnx.isPressed())
+    {
+        switch (page)
+        {
+            case 1:
+            changeStatus(XXXXX);
+            break;
+            case x:
+                ...
+        }
+    }*/
 }
 
 //Main Functions
@@ -983,7 +1009,7 @@ void setup()
 bool sw = true; // todo delete this
 void loop()
 {
-    switch (mode)
+    switch (screenStatus)
     {
         case BOOTING:
             bootAnimation();
@@ -992,13 +1018,13 @@ void loop()
             // Perform other boot stuff before this line
             sw = true; // todo delete this
             drawStatusBackground(true);
-            changeMode(STATUS);
+            changeStatus(STATUS);
             break;
 
         case LOADSTATUS:
             sw = true; // todo delete this
             drawStatusBackground();
-            changeMode(STATUS);
+            changeStatus(STATUS);
             break;
 
         case STATUS:
@@ -1010,7 +1036,7 @@ void loop()
             if(btn1.isPressed())
             {
                 debug(F("Button MENU pressed"));
-                changeMode(LOADMENU);
+                changeStatus(LOADMENU);
             }
             else if(btn2.isPressed())
             {
@@ -1037,68 +1063,68 @@ void loop()
         case LOADMENU:
             drawBackground();
             drawMenu();
-            changeMode(MENU);
+            changeStatus(MENU);
             break;
 
         case MENU:
             if(backBtn.isPressed()) // Go to LOADSTATUS
             {
                 debug(F("Back button pressed"));
-                changeMode(LOADSTATUS);
+                changeStatus(LOADSTATUS);
             }
             else if(btn1.isPressed()) //Settings
             {
                 debug(F("Settings button pressed"));
-                changeMode(LOADSETTINGS);
+                changeStatus(LOADSETTINGS);
             }
             else if(btn2.isPressed()) //Help
             {
                 debug(F("Help button pressed"));
-                changeMode(LOADHELP);
+                changeStatus(LOADHELP);
             }
             else if(btn3.isPressed()) //Engineering Mode
             {
                 debug(F("Engineering mode button pressed"));
-                changeMode(LOADENGINEERINGMODE);
+                changeStatus(LOADENGINEERINGMODE);
             }
             else if(btn4.isPressed()) //Extra Functions
             {
                 debug(F("Extra functions button pressed"));
-                changeMode(LOADEXTRAFUNCTIONS);
+                changeStatus(LOADEXTRAFUNCTIONS);
             }
             break;
 
         case LOADSETTINGS:
             drawBackground();
             drawSettings();
-            changeMode(SETTINGS);
+            changeStatus(SETTINGS);
             break;
 
         case SETTINGS:
             if(backBtn.isPressed()) // Go to LOADMENU
             {
                 debug(F("Back button pressed"));
-                changeMode(LOADMENU);
+                changeStatus(LOADMENU);
             }
             else if(btn1.isPressed())
             {
                 debug(F("Electricity button pressed"));
-                changeMode(LOADELECTRICITY);
+                changeStatus(LOADELECTRICITY);
             }
 
             else if(btn2.isPressed())
             {
                 debug(F("Water button pressed")); // Go to LOADWATER
-                changeMode(LOADWATER);
+                changeStatus(LOADWATER);
             }
             else if(btn3.isPressed()) // Go to LOADINTERFACE
             {
                 debug(F("Interface button pressed"));
-                changeMode(LOADINTERFACE);
+                changeStatus(LOADINTERFACE);
             }
             else if(btn4.isPressed())
             {
-                changeMode(LOADTEMPERATURE);
+                changeStatus(LOADTEMPERATURE);
             }
             break;
         
@@ -1109,26 +1135,26 @@ void loop()
         case LOADPAGEELECTRICITY:
             debug(String(F("Loading page "))+page+" / "+maxPage);
             drawElectricity();
-            changeMode(ELECTRICITY);
+            changeStatus(ELECTRICITY);
             break;
         
         case ELECTRICITY:
             if(backBtn.isPressed()) // Go to LOADSETTINGS
             {
                 debug(F("Back button pressed"));
-                changeMode(LOADSETTINGS);
+                changeStatus(LOADSETTINGS);
             }
             else if(page>1&&btn7.isPressed()) // Previous
             {
                 debug(F("Previous button pressed"));
                 page--;
-                changeMode(LOADPAGEELECTRICITY);
+                changeStatus(LOADPAGEELECTRICITY);
             }
             else if(page<maxPage&&btn8.isPressed()) // Next
             {
                 debug(F("Next button pressed"));
                 page++;
-                changeMode(LOADPAGEELECTRICITY);
+                changeStatus(LOADPAGEELECTRICITY);
             }
             else
                 clickElectricity();
@@ -1143,28 +1169,28 @@ void loop()
             // in this case you draw the interface
             debug(String(F("Loading page "))+page+" / "+maxPage);
             drawInterface();
-            changeMode(INTERFACE);
+            changeStatus(INTERFACE);
             break;
         
         case INTERFACE:
             if(backBtn.isPressed())
             {
                 debug(F("Back button pressed"));
-                changeMode(LOADSETTINGS);
+                changeStatus(LOADSETTINGS);
                 // if back button is pressed you go to the previous page, so you start uploading the settings page
             }
             else if(page<maxPage&&btn8.isPressed()) // Next page
             {
                 debug(F("Next page button pressed"));
                 page++;
-                changeMode(LOADPAGEINTERFACE);
+                changeStatus(LOADPAGEINTERFACE);
                 // if you press this button, and it's not the last page, change to the next page and load the page by changing to LOADPAGEINTERFACE
             }
             else if(page!=1&&btn7.isPressed())
             {
                 debug(F("Previous page button pressed"));
                 page--;
-                changeMode(LOADPAGEINTERFACE);
+                changeStatus(LOADPAGEINTERFACE);
                 // if you press this button, and it's not the first page, change to the previous page and load the page by changing to LOADPAGEINTERFACE
             }
             else
@@ -1179,27 +1205,31 @@ void loop()
         case LOADPAGETEMPERATURE:
             debug(String(F("Loading page "))+page+" / "+maxPage);
             drawTemperature();
-            changeMode(TEMPERATURE);
+            changeStatus(TEMPERATURE);
             break;
         
         case TEMPERATURE:
             if(backBtn.isPressed())
             {
                 debug(F("Back button pressed"));
-                changeMode(LOADSETTINGS);
+                changeStatus(LOADSETTINGS);
                 // if back button is pressed you go to the previous page, so you start uploading the settings page
             }
             else if(page<maxPage&&btn8.isPressed()) // Next page
             {
                 debug(F("Next page button pressed"));
                 page++;
-                changeMode(LOADPAGETEMPERATURE);
+                changeStatus(LOADPAGETEMPERATURE);
             }
-            else if(page!=1&&btn7.isPressed())
+            else if(page>1&&btn7.isPressed())
             {
                 debug(F("Previous page button pressed"));
                 page--;
-                changeMode(LOADPAGETEMPERATURE);
+                changeStatus(LOADPAGETEMPERATURE);
+            }
+            else
+            {
+                clickTemperature();
             }
 
             break;
@@ -1211,25 +1241,25 @@ void loop()
         case LOADPAGEWATER:
             debug(String(F("Loading page "))+page+" / "+maxPage);
             drawWater();
-            changeMode(WATER);
+            changeStatus(WATER);
             break;
         case WATER:
             if (backBtn.isPressed())    // Go to LOADSETTINGS
             {
                 debug(F("Back Page button pressed"));
-                changeMode(LOADSETTINGS);
+                changeStatus(LOADSETTINGS);
             }
             else if(page<maxPage && btn8.isPressed())   // Go to LOADPAGEWATER on next page
             {
                 debug(F("Next page button pressed"));
                 page++;
-                changeMode(LOADPAGEWATER);
+                changeStatus(LOADPAGEWATER);
             }
-            else if(page!=1 && btn7.isPressed())    // Go to LOADPAGEWATER on previous page
+            else if(page>1 && btn7.isPressed())    // Go to LOADPAGEWATER on previous page
             {
                 debug(F("Previous page button pressed"));
                 page--;
-                changeMode(LOADPAGEWATER);
+                changeStatus(LOADPAGEWATER);
             }
             else
                 clickWater();       
