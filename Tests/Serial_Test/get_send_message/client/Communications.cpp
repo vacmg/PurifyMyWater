@@ -18,7 +18,7 @@ bool sendMessage(const char* payload, HardwareSerial* serial)
     byte payloadLength = strlen(payload);
     if(payloadLength>MAXMSGSIZE)
     {
-        debug(Message(F("Payload exceeded maximum message size: ")+payloadLength+F(" > ")+MAXMSGSIZE));
+        debug(Message(F("Payload exceeded maximum message size: ")+payloadLength+" > "+MAXMSGSIZE));
     }
     char message[MAXRAWMSGSIZE];
     message[1] = payloadLength+1; // set size of the message

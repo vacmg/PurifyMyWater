@@ -35,7 +35,7 @@
 
 
 
-bool sendMessage(const char* message, HardwareSerial* serial);
+bool sendMessage(char* message, HardwareSerial* serial);
 bool getMessage(char* message, HardwareSerial* serial);
 bool verifyMessage(char* message);
 byte CRC8(const byte* data, size_t dataLength);
