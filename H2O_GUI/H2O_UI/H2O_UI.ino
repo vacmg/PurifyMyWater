@@ -7,7 +7,7 @@
 #define DEBUG true
 
 #define ROTATION 3 // sets screen rotation
-#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
+#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 #define BOOTING 0
 #define LOADSTATUS 1
@@ -31,6 +31,9 @@
 #define LOADWATER 19
 #define LOADPAGEWATER 20
 #define WATER 21
+#define LOADTEMPERATURE 22
+#define LOADPAGETEMPERATURE 23
+#define TEMPERATURE 24
 
 // ON/OFF BTN STATUS
 #define ON 1
@@ -73,9 +76,11 @@ const char mode18[] PROGMEM = "INTERFACE";
 const char mode19[] PROGMEM = "LOADWATER";
 const char mode20[] PROGMEM = "LOADPAGEWATER";
 const char mode21[] PROGMEM = "WATER";
+const char mode22[] PROGMEM = "LOADTEMPERATURE";
+const char mode23[] PROGMEM = "LOADPAGETEMPERATURE";
+const char mode24[] PROGMEM = "TEMPERATURE";
 
-
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode22, mode24};
 char printModeBuff[20]; // Max size of any modeX string
 
 char* modeToString(byte pMode)
@@ -864,6 +869,27 @@ void drawInterface()
 
 }
 
+void drawTemperature() {
+    titleLabel.setString("Temperature");
+    titleLabel.setFontSize(2);
+    my_lcd.draw(&title);
+    titleLabel.setFontSize(5);
+    byte fontSizes[6];
+    switch (page) 
+    {
+        case 1:
+            setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
+            draw6ButtonsLayout("Temp. Refresh Rate", "System Stop Temp.", "PSU Fan Start Temp.", "20s", "65 C", "40 C",
+                               true, true, true, fontSizes);
+            break;
+        case 2:
+            setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
+            draw6ButtonsLayout("PSU Fan Stop Temp.", "Case Fan Start Temp.", "Case Fan Stop Temp.", "35 C", "38 C",
+                               "34 C", true, true, true, fontSizes);
+            break;
+    }
+}
+
 void drawWater()
 {
     titleLabel.setString("Water Settings");
@@ -871,7 +897,8 @@ void drawWater()
     my_lcd.draw(&title);
     titleLabel.setFontSize(5);
     byte fontSizes[6];
-    switch (page) {
+    switch (page) 
+    {
         case 1:
             setFontSizeArray(fontSizes,1,1,1,2,2,2);
             draw6ButtonsLayout("Well Pump max time ON","UV Pump max time ON","End Pump max time ON", "60s","45s", "80s", true, true, true, fontSizes);
@@ -1069,12 +1096,12 @@ void loop()
                 debug(F("Interface button pressed"));
                 changeMode(LOADINTERFACE);
             }
-            /*
             else if(btn4.isPressed())
             {
-                changeMode();
-            }*/
+                changeMode(LOADTEMPERATURE);
+            }
             break;
+        
         case LOADELECTRICITY:
             page = 1;
             maxPage = 4;
@@ -1084,6 +1111,7 @@ void loop()
             drawElectricity();
             changeMode(ELECTRICITY);
             break;
+        
         case ELECTRICITY:
             if(backBtn.isPressed()) // Go to LOADSETTINGS
             {
@@ -1105,16 +1133,19 @@ void loop()
             else
                 clickElectricity();
             break;
+        
         case LOADINTERFACE:
             page = 1;
             maxPage = 2;
             drawBackground();
+        
         case LOADPAGEINTERFACE:
             // in this case you draw the interface
             debug(String(F("Loading page "))+page+" / "+maxPage);
             drawInterface();
             changeMode(INTERFACE);
             break;
+        
         case INTERFACE:
             if(backBtn.isPressed())
             {
@@ -1131,7 +1162,7 @@ void loop()
             }
             else if(page!=1&&btn7.isPressed())
             {
-                debug(F("Next page button pressed"));
+                debug(F("Previous page button pressed"));
                 page--;
                 changeMode(LOADPAGEINTERFACE);
                 // if you press this button, and it's not the first page, change to the previous page and load the page by changing to LOADPAGEINTERFACE
@@ -1140,6 +1171,39 @@ void loop()
                 clickInterface();
             // if you click in one of the buttons of the page, you go to this function
             break;
+        
+        case LOADTEMPERATURE:
+            page = 1;
+            maxPage = 2;
+            drawBackground();
+        case LOADPAGETEMPERATURE:
+            debug(String(F("Loading page "))+page+" / "+maxPage);
+            drawTemperature();
+            changeMode(TEMPERATURE);
+            break;
+        
+        case TEMPERATURE:
+            if(backBtn.isPressed())
+            {
+                debug(F("Back button pressed"));
+                changeMode(LOADSETTINGS);
+                // if back button is pressed you go to the previous page, so you start uploading the settings page
+            }
+            else if(page<maxPage&&btn8.isPressed()) // Next page
+            {
+                debug(F("Next page button pressed"));
+                page++;
+                changeMode(LOADPAGETEMPERATURE);
+            }
+            else if(page!=1&&btn7.isPressed())
+            {
+                debug(F("Previous page button pressed"));
+                page--;
+                changeMode(LOADPAGETEMPERATURE);
+            }
+
+            break;
+
         case LOADWATER:
             page = 1;
             maxPage = 2;
