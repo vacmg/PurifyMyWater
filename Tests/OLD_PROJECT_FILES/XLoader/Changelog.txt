@@ -1,0 +1,5 @@
+v1.0_ST
+-first stable release
+-fixed all known bugs
+-added display
+-added settings (first boot) mode
