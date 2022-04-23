@@ -910,6 +910,94 @@ void drawWater()
     }
 }
 
+void drawExtraFunctions()
+{
+    titleLabel.setString("Extra Functions");
+    titleLabel.setFontSize(2);
+    my_lcd.draw(&title);
+    titleLabel.setFontSize(5);
+    byte fontSizes[6];
+    setFontSizeArray(fontSizes,1,1,1,2,2,2);
+    draw6ButtonsLayout("AC Power Supply","DC Power Supply","Install Wizard", "ON/OFF","ON/OFF", "Start", true, true, true, fontSizes);
+}
+
+void clickStatus()
+{
+    if(btn1.isPressed())
+    {
+        debug(F("Button MENU pressed"));
+        changeStatus(LOADMENU);
+    }
+    else if(btn2.isPressed())
+    {
+        if(mainSwitchSt == ON)
+        {
+            debug(F("Button OFF pressed"));
+            mainSwitchSt = OFF; // TODO send off command
+            drawStatusForeground("15.4V", "320L");
+        }
+        else if(mainSwitchSt == OFF)
+        {
+            debug(F("Button ON pressed"));
+            mainSwitchSt = ON; // TODO send on command
+            drawStatusForeground("15.4V", "320L");
+        }
+        else if(mainSwitchSt < 0)
+        {
+            debug(F("Button FAILURE pressed")); // TODO Draw ERROR message
+        }
+        delay(500);
+    }
+}
+
+void clickMenu()
+{
+    if(btn1.isPressed()) //Settings
+    {
+        debug(F("Settings button pressed"));
+        changeStatus(LOADSETTINGS);
+    }
+    else if(btn2.isPressed()) //Help
+    {
+        debug(F("Help button pressed"));
+        changeStatus(LOADHELP);
+    }
+    else if(btn3.isPressed()) //Engineering Mode
+    {
+        debug(F("Engineering mode button pressed"));
+        changeStatus(LOADENGINEERINGMODE);
+    }
+    else if(btn4.isPressed()) //Extra Functions
+    {
+        debug(F("Extra functions button pressed"));
+        changeStatus(LOADEXTRAFUNCTIONS);
+    }
+}
+
+void clickSettings()
+{
+    if(btn1.isPressed())
+    {
+        debug(F("Electricity button pressed"));
+        changeStatus(LOADELECTRICITY);
+    }
+
+    else if(btn2.isPressed())
+    {
+        debug(F("Water button pressed")); // Go to LOADWATER
+        changeStatus(LOADWATER);
+    }
+    else if(btn3.isPressed()) // Go to LOADINTERFACE
+    {
+        debug(F("Interface button pressed"));
+        changeStatus(LOADINTERFACE);
+    }
+    else if(btn4.isPressed())
+    {
+        changeStatus(LOADTEMPERATURE);
+    }
+}
+
 void clickElectricity()
 {
     /*if(btnx.isPressed())
@@ -956,6 +1044,21 @@ void clickWater()
 }
 
 void clickTemperature()
+{
+    /*if(btnx.isPressed())
+    {
+        switch (page)
+        {
+            case 1:
+            changeStatus(XXXXX);
+            break;
+            case x:
+                ...
+        }
+    }*/
+}
+
+void clickExtraFunctions()
 {
     /*if(btnx.isPressed())
     {
@@ -1033,30 +1136,9 @@ void loop()
                 drawStatusForeground("15.4V", "320L");
                 sw = false; // todo delete this
             }
-            if(btn1.isPressed())
+            else
             {
-                debug(F("Button MENU pressed"));
-                changeStatus(LOADMENU);
-            }
-            else if(btn2.isPressed())
-            {
-                if(mainSwitchSt == ON)
-                {
-                    debug(F("Button OFF pressed"));
-                    mainSwitchSt = OFF; // TODO send off command
-                    drawStatusForeground("15.4V", "320L");
-                }
-                else if(mainSwitchSt == OFF)
-                {
-                    debug(F("Button ON pressed"));
-                    mainSwitchSt = ON; // TODO send on command
-                    drawStatusForeground("15.4V", "320L");
-                }
-                else if(mainSwitchSt < 0)
-                {
-                    debug(F("Button FAILURE pressed")); // TODO Draw ERROR message
-                }
-                delay(500);
+                clickStatus();
             }
             break;
 
@@ -1072,25 +1154,9 @@ void loop()
                 debug(F("Back button pressed"));
                 changeStatus(LOADSTATUS);
             }
-            else if(btn1.isPressed()) //Settings
+            else
             {
-                debug(F("Settings button pressed"));
-                changeStatus(LOADSETTINGS);
-            }
-            else if(btn2.isPressed()) //Help
-            {
-                debug(F("Help button pressed"));
-                changeStatus(LOADHELP);
-            }
-            else if(btn3.isPressed()) //Engineering Mode
-            {
-                debug(F("Engineering mode button pressed"));
-                changeStatus(LOADENGINEERINGMODE);
-            }
-            else if(btn4.isPressed()) //Extra Functions
-            {
-                debug(F("Extra functions button pressed"));
-                changeStatus(LOADEXTRAFUNCTIONS);
+                clickMenu();
             }
             break;
 
@@ -1106,25 +1172,9 @@ void loop()
                 debug(F("Back button pressed"));
                 changeStatus(LOADMENU);
             }
-            else if(btn1.isPressed())
+            else
             {
-                debug(F("Electricity button pressed"));
-                changeStatus(LOADELECTRICITY);
-            }
-
-            else if(btn2.isPressed())
-            {
-                debug(F("Water button pressed")); // Go to LOADWATER
-                changeStatus(LOADWATER);
-            }
-            else if(btn3.isPressed()) // Go to LOADINTERFACE
-            {
-                debug(F("Interface button pressed"));
-                changeStatus(LOADINTERFACE);
-            }
-            else if(btn4.isPressed())
-            {
-                changeStatus(LOADTEMPERATURE);
+                clickSettings();
             }
             break;
         
@@ -1265,11 +1315,27 @@ void loop()
                 clickWater();       
             break;
 
-            /*case LOADHELP:
-            case HELP:
-            case LOADENGINEERINGMODE:
-            case ENGINEERINGMODE:
-            case LOADEXTRAFUNCTIONS:
-            case EXTRAFUNCTIONS:*/
+        case LOADEXTRAFUNCTIONS:
+            drawBackground();
+            page = 0;
+            drawExtraFunctions();
+            changeStatus(EXTRAFUNCTIONS);
+            break;
+        case EXTRAFUNCTIONS:
+            if(backBtn.isPressed())
+            {
+                debug(F("Back Page button pressed"));
+                changeStatus(LOADMENU);
+            }
+            else
+            {
+                clickExtraFunctions();
+            }
+            break;
+        /*case LOADHELP:
+        case HELP:
+        case LOADENGINEERINGMODE:
+        case ENGINEERINGMODE:
+        case LOADEXTRAFUNCTIONS:*/
     }//*/
 }
