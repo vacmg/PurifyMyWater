@@ -169,7 +169,7 @@ void drawBackground()
 }
 
 //btn1 --> topLeft; btn2 --> topRight; btn3 --> bottomLeft; btn4 --> bottomRight
-void draw4ButtonsLayout(char* topLeft, char* topRight, char* bottomLeft, char* bottomRight, const byte* fontSize)
+void draw4ButtonsLayout(String topLeft, String topRight, String bottomLeft, String bottomRight, const byte* fontSize)
 {
     bool validFontSize = fontSize!=NULL;
     if(validFontSize)
@@ -182,7 +182,7 @@ void draw4ButtonsLayout(char* topLeft, char* topRight, char* bottomLeft, char* b
 
     // Top left button
     if (validFontSize) label.setFontSize(fontSize[0]);
-    label.setString(topLeft);
+    label.setString(topLeft.c_str());
     btn1.setCoords(30,120);
     btn1.setCoords1(230,200);
     my_lcd.draw(&btn1);
@@ -190,7 +190,7 @@ void draw4ButtonsLayout(char* topLeft, char* topRight, char* bottomLeft, char* b
 
     // Top right button
     if (validFontSize) label.setFontSize(fontSize[1]);
-    label.setString(topRight);
+    label.setString(topRight.c_str());
     btn2.setCoords(250,120);
     btn2.setCoords1(440,200);
     my_lcd.draw(&btn2);
@@ -198,7 +198,7 @@ void draw4ButtonsLayout(char* topLeft, char* topRight, char* bottomLeft, char* b
 
     // Bottom left button
     if (validFontSize) label.setFontSize(fontSize[2]);
-    label.setString(bottomLeft);
+    label.setString(bottomLeft.c_str());
     btn3.setCoords(30,220);
     btn3.setCoords1(230,300);
     my_lcd.draw(&btn3);
@@ -206,20 +206,20 @@ void draw4ButtonsLayout(char* topLeft, char* topRight, char* bottomLeft, char* b
 
     // Bottom right button
     if (validFontSize) label.setFontSize(fontSize[3]);
-    label.setString(bottomRight);
+    label.setString(bottomRight.c_str());
     btn4.setCoords(250,220);
     btn4.setCoords1(440,300);
     my_lcd.draw(&btn4);
     btn4.setDisableAutoSize(false);
 }
 
-void draw4ButtonsLayout(char* topLeft, char* topRight, char* bottomLeft, char* bottomRight)
+void draw4ButtonsLayout(String topLeft, String topRight, String bottomLeft, String bottomRight)
 {
     draw4ButtonsLayout(topLeft, topRight, bottomLeft, bottomRight, NULL);
 }
 
 // btn1 --> topLeft; btn2 --> centerLeft; btn3 --> bottomLeft; btn4 --> topRight; btn5 --> centerRight; btn6 --> bottomRight; btn7 --> Previous; btn8 --> Next; btn9 --> topHelp; btn10 --> centerHelp; btn11 --> bottomHelp; If fontSize = NULL, autoFontSize; len(fontSize) = 6
-void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char* topRight, char* centerRight, char* bottomRight, bool topHelp, bool centerHelp, bool bottomHelp, const byte* fontSize)
+void draw6ButtonsLayout(String topLeft, String centerLeft, String bottomLeft, String topRight, String centerRight, String bottomRight, bool topHelp, bool centerHelp, bool bottomHelp, const byte* fontSize)
 {
     bool validFontSize = fontSize!=NULL;
     if(validFontSize)
@@ -231,37 +231,37 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
         if(fontSize[4] != 0) btn5.setDisableAutoSize(true);
         if(fontSize[5] != 0) btn6.setDisableAutoSize(true);
     }
-    label.setString(topLeft);
+    label.setString(topLeft.c_str());
     if (validFontSize) label.setFontSize(fontSize[0]);
     btn1.setCoords(25,95);
     btn1.setCoords1(195,135);
     my_lcd.draw(&btn1);
 
-    label.setString(centerLeft);
+    label.setString(centerLeft.c_str());
     if (validFontSize) label.setFontSize(fontSize[1]);
     btn3.setCoords(25,155);
     btn3.setCoords1(195,195);
     my_lcd.draw(&btn3);
 
-    label.setString(bottomLeft);
+    label.setString(bottomLeft.c_str());
     if (validFontSize) label.setFontSize(fontSize[2]);
     btn5.setCoords(25,215);
     btn5.setCoords1(195,255);
     my_lcd.draw(&btn5);
 
-    label.setString(topRight);
+    label.setString(topRight.c_str());
     if (validFontSize) label.setFontSize(fontSize[3]);
     btn2.setCoords(280,95);
     btn2.setCoords1(450,135);
     my_lcd.draw(&btn2);
 
-    label.setString(centerRight);
+    label.setString(centerRight.c_str());
     if (validFontSize) label.setFontSize(fontSize[4]);
     btn4.setCoords(280,155);
     btn4.setCoords1(450,195);
     my_lcd.draw(&btn4);
 
-    label.setString(bottomRight);
+    label.setString(bottomRight.c_str());
     if (validFontSize) label.setFontSize(fontSize[5]);
     btn6.setCoords(280,215);
     btn6.setCoords1(450,255);
@@ -330,7 +330,7 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
 
 }
 
-void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char* topRight, char* centerRight, char* bottomRight, bool topHelp, bool centerHelp, bool bottomHelp)
+void draw6ButtonsLayout(String topLeft, String centerLeft, String bottomLeft, String topRight, String centerRight, String bottomRight, bool topHelp, bool centerHelp, bool bottomHelp)
 {
     draw6ButtonsLayout(topLeft,centerLeft,bottomLeft,topRight,centerRight,bottomRight,topHelp,centerHelp,bottomHelp,NULL);
 }
@@ -804,7 +804,7 @@ void drawMenu()
     //Layout4Buttons
     byte fontSize[4];
     setFontSizeArray(fontSize,2,2,2,2);
-    draw4ButtonsLayout("Settings","Help","Engineering Mode","Extra functions",fontSize);
+    draw4ButtonsLayout(F("Settings"),F("Help"),F("Engineering Mode"),F("Extra functions"),fontSize);
 }
 
 // Buttons mapped to: btn1 --> Electricity, btn2 --> Water, btn3 --> Interface, btn4 --> Temperature
@@ -816,7 +816,7 @@ void drawSettings()
     //Layout4Buttons
     byte fontSize[4];
     setFontSizeArray(fontSize,2,2,2,2);
-    draw4ButtonsLayout("Electricity","Water","Interface","Temperature",fontSize);
+    draw4ButtonsLayout(F("Electricity"),F("Water"),F("Interface"),F("Temperature"),fontSize);
 }
 
 void drawElectricity() // TODO get settings real value
@@ -831,19 +831,19 @@ void drawElectricity() // TODO get settings real value
     {
         case 1:
             setFontSizeArray(fontSizes, 1,1,1,2,2,2);
-            draw6ButtonsLayout("Start Charging Voltage","Stop Charging Voltage","UV light est. Current","12.5V","15.5V","1A",true,true,true,fontSizes);
+            draw6ButtonsLayout(F("Start Charging Voltage"),F("Stop Charging Voltage"),F("UV light est. Current"),"12.5V","15.5V","1A",true,true,true,fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1,1,1,2,2,2);
-            draw6ButtonsLayout("Start Working Voltage","Stop Working Voltage","AC Inverter Frequency","15.2V","11.9V","50Hz",true,true,true, fontSizes);
+            draw6ButtonsLayout(F("Start Working Voltage"),F("Stop Working Voltage"),F("AC Inverter Frequency"),"15.2V","11.9V","50Hz",true,true,true, fontSizes);
             break;
         case 3:
             setFontSizeArray(fontSizes, 1,1,1,2,2,2);
-            draw6ButtonsLayout("AC Ammeter Sensitivity","AC Ammeter Zero","DC Ammeter Sensitivity","1.856","3.678","1.567",true,true,true,fontSizes);
+            draw6ButtonsLayout(F("AC Ammeter Sensitivity"),F("AC Ammeter Zero"),F("DC Ammeter Sensitivity"),"1.856","3.678","1.567",true,true,true,fontSizes);
             break;
         case 4:
             setFontSizeArray(fontSizes, 1,1,1,2,1,1);
-            draw6ButtonsLayout("DC Ammeter Zero","","","4.678","","",true,false,false,fontSizes);
+            draw6ButtonsLayout(F("DC Ammeter Zero"),"","","4.678","","",true,false,false,fontSizes);
             break;
     }
 }
@@ -859,11 +859,11 @@ void drawInterface()
     {
         case 1:
             setFontSizeArray(fontSizes,1,1,1,1,1,1);
-            draw6ButtonsLayout("Language","Screen Rotation","Screen Calibration","English","Inverted Landscape","Calibrate",true,true,true, fontSizes);
+            draw6ButtonsLayout(F("Language"),F("Screen Rotation"),F("Screen Calibration"),F("English"),F("Inverted Landscape"),F("Calibrate"),true,true,true, fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes,2,2,2,2,2,2);
-            draw6ButtonsLayout("Refresh Period","Reset","","5s","Perform Reset","",true,true,false, fontSizes);
+            draw6ButtonsLayout(F("Refresh Period"),F("Reset"),"","5s","Perform Reset","",true,true,false, fontSizes);
             break;
     }
 
@@ -879,12 +879,12 @@ void drawTemperature() {
     {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout("Temp. Refresh Rate", "System Stop Temp.", "PSU Fan Start Temp.", "20s", "65C", "40C",
+            draw6ButtonsLayout(F("Temp. Refresh Rate"), F("System Stop Temp."), F("PSU Fan Start Temp."), "20s", "65C", "40C",
                                true, true, true, fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout("PSU Fan Stop Temp.", "Case Fan Start Temp.", "Case Fan Stop Temp.", "35C", "38C",
+            draw6ButtonsLayout(F("PSU Fan Stop Temp."), F("Case Fan Start Temp."), F("Case Fan Stop Temp."), "35C", "38C",
                                "34C", true, true, true, fontSizes);
             break;
     }
@@ -901,11 +901,11 @@ void drawWater()
     {
         case 1:
             setFontSizeArray(fontSizes,1,1,1,2,2,2);
-            draw6ButtonsLayout("Well Pump max time ON","UV Pump max time ON","End Pump max time ON", "60s","45s", "80s", true, true, true, fontSizes);
+            draw6ButtonsLayout(F("Well Pump max time ON"),F("UV Pump max time ON"),F("End Pump max time ON"), "60s","45s", "80s", true, true, true, fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes,1,1,1,2,2,2);
-            draw6ButtonsLayout("Filter max time ON","UV Pump flow","", "30s","130L/H", "", true, true, true, fontSizes);
+            draw6ButtonsLayout(F("Filter max time ON"),F("UV Pump flow"),"", "30s","130L/H", "", true, true, true, fontSizes);
             break;
     }
 }
@@ -918,7 +918,7 @@ void drawExtraFunctions()
     titleLabel.setFontSize(5);
     byte fontSizes[6];
     setFontSizeArray(fontSizes,1,1,1,2,2,2);
-    draw6ButtonsLayout("AC Power Supply","DC Power Supply","Install Wizard", "ON/OFF","ON/OFF", "Start", true, true, true, fontSizes);
+    draw6ButtonsLayout(F("AC Power Supply"),F("DC Power Supply"),F("Install Wizard"), "ON/OFF","ON/OFF", "Start", true, true, true, fontSizes);
 }
 
 void clickStatus()

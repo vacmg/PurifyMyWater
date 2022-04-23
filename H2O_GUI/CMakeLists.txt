@@ -3,8 +3,8 @@ set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/cmake/ArduinoToolchain.cmake)
 set(CMAKE_CXX_STANDARD 11)
 set(PROJECT_NAME H2O_GUI)
 
-set(${PROJECT_NAME}_BOARD uno)
-# set(ARDUINO_CPU)
+set(${PROJECT_NAME}_BOARD mega)
+set(ARDUINO_CPU atmega2560)
 project(${PROJECT_NAME})
 
 # Define additional source and header files or default arduino sketch files
@@ -36,7 +36,7 @@ set(_RECURSE true)
 #### Additional settings for programmer. From programmers.txt
 set(${PROJECT_NAME}_PROGRAMMER avrisp)
 # set(${PROJECT_NAME}_PORT /dev/cu.usbserial-00000000)
-# set(uno.upload.speed 9600)
+# set(mega.upload.speed 9600)
 
 ## Verbose build process
 set(${PROJECT_NAME}_AFLAGS -v)
