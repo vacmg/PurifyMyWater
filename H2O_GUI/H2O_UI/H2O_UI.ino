@@ -755,7 +755,7 @@ void drawStatusBackground()
 }
 
 // Draw voltage & amount of purified water
-void drawStatusForeground(char* voltage, char* waterAmount)//TODO add water levels & other indicators
+void drawStatusForeground(const char* voltage, const char* waterAmount)//TODO add water levels & other indicators
 {
     debug("Voltage: " + String(voltage) + "\tWater amount: " + waterAmount);
 
