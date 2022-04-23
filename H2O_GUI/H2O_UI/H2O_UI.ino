@@ -59,7 +59,7 @@ enum BtnStatus {OFF, ON, ERROR};
 
 SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
 BtnStatus mainSwitchSt = OFF;
-ScreenStatus screenStatus = LOADINTERFACE;
+ScreenStatus screenStatus = LOADELECTRICITY;
 
 #if DEBUG
     const char mode0[] PROGMEM = "BOOTING"; // in order (BOOTING = 0 ---> mode0 = "BOOTING" --> modeTable[0] = mode0)
@@ -104,7 +104,7 @@ byte page = 0;
 byte maxPage = 0;
 
 #if DEBUG
-    #define debug(data) Serial.println(String(data))
+    #define debug(data) Serial.println(data)
     #define changeStatus(newStatus) debug(String(F("Mode changed from '")) +String(modeToString(screenStatus))+String(F("' to '"))+String(modeToString(newStatus))+String(F("'"))); screenStatus = newStatus
 #else
     #define debug(data) ;
@@ -213,13 +213,14 @@ void draw4ButtonsLayout(String topLeft, String topRight, String bottomLeft, Stri
     btn4.setDisableAutoSize(false);
 }
 
+//btn1 --> topLeft; btn2 --> topRight; btn3 --> bottomLeft; btn4 --> bottomRight
 void draw4ButtonsLayout(String topLeft, String topRight, String bottomLeft, String bottomRight)
 {
     draw4ButtonsLayout(topLeft, topRight, bottomLeft, bottomRight, NULL);
 }
 
 // btn1 --> topLeft; btn2 --> centerLeft; btn3 --> bottomLeft; btn4 --> topRight; btn5 --> centerRight; btn6 --> bottomRight; btn7 --> Previous; btn8 --> Next; btn9 --> topHelp; btn10 --> centerHelp; btn11 --> bottomHelp; If fontSize = NULL, autoFontSize; len(fontSize) = 6
-void draw6ButtonsLayout(String topLeft, String centerLeft, String bottomLeft, String topRight, String centerRight, String bottomRight, bool topHelp, bool centerHelp, bool bottomHelp, const byte* fontSize)
+void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottomLeftBtn3, String topRightBtn4, String centerRightBtn5, String bottomRightBtn6, bool topHelpBtn9, bool centerHelpBtn10, bool bottomHelpBtn11, const byte* fontSize)
 {
     bool validFontSize = fontSize!=NULL;
     if(validFontSize)
@@ -231,37 +232,37 @@ void draw6ButtonsLayout(String topLeft, String centerLeft, String bottomLeft, St
         if(fontSize[4] != 0) btn5.setDisableAutoSize(true);
         if(fontSize[5] != 0) btn6.setDisableAutoSize(true);
     }
-    label.setString(topLeft.c_str());
+    label.setString(topLeftBtn1.c_str());
     if (validFontSize) label.setFontSize(fontSize[0]);
     btn1.setCoords(25,95);
     btn1.setCoords1(195,135);
     my_lcd.draw(&btn1);
 
-    label.setString(centerLeft.c_str());
+    label.setString(centerLeftBtn2.c_str());
     if (validFontSize) label.setFontSize(fontSize[1]);
-    btn3.setCoords(25,155);
-    btn3.setCoords1(195,195);
-    my_lcd.draw(&btn3);
-
-    label.setString(bottomLeft.c_str());
-    if (validFontSize) label.setFontSize(fontSize[2]);
-    btn5.setCoords(25,215);
-    btn5.setCoords1(195,255);
-    my_lcd.draw(&btn5);
-
-    label.setString(topRight.c_str());
-    if (validFontSize) label.setFontSize(fontSize[3]);
-    btn2.setCoords(280,95);
-    btn2.setCoords1(450,135);
+    btn2.setCoords(25,155);
+    btn2.setCoords1(195,195);
     my_lcd.draw(&btn2);
 
-    label.setString(centerRight.c_str());
-    if (validFontSize) label.setFontSize(fontSize[4]);
-    btn4.setCoords(280,155);
-    btn4.setCoords1(450,195);
+    label.setString(bottomLeftBtn3.c_str());
+    if (validFontSize) label.setFontSize(fontSize[2]);
+    btn3.setCoords(25,215);
+    btn3.setCoords1(195,255);
+    my_lcd.draw(&btn3);
+
+    label.setString(topRightBtn4.c_str());
+    if (validFontSize) label.setFontSize(fontSize[3]);
+    btn4.setCoords(280,95);
+    btn4.setCoords1(450,135);
     my_lcd.draw(&btn4);
 
-    label.setString(bottomRight.c_str());
+    label.setString(centerRightBtn5.c_str());
+    if (validFontSize) label.setFontSize(fontSize[4]);
+    btn5.setCoords(280,155);
+    btn5.setCoords1(450,195);
+    my_lcd.draw(&btn5);
+
+    label.setString(bottomRightBtn6.c_str());
     if (validFontSize) label.setFontSize(fontSize[5]);
     btn6.setCoords(280,215);
     btn6.setCoords1(450,255);
@@ -274,7 +275,7 @@ void draw6ButtonsLayout(String topLeft, String centerLeft, String bottomLeft, St
     btn5.setDisableAutoSize(false);
     btn6.setDisableAutoSize(false);
 
-    if(topHelp)
+    if(topHelpBtn9)
     {
         btn9.setCoords(218,95);
         btn9.setCoords1(258,135);
@@ -282,7 +283,7 @@ void draw6ButtonsLayout(String topLeft, String centerLeft, String bottomLeft, St
         my_lcd.draw(&btn9);
     }
 
-    if(centerHelp)
+    if(centerHelpBtn10)
     {
         btn10.setCoords(218,155);
         btn10.setCoords1(258,195);
@@ -290,7 +291,7 @@ void draw6ButtonsLayout(String topLeft, String centerLeft, String bottomLeft, St
         my_lcd.draw(&btn10);
     }
 
-    if(bottomHelp)
+    if(bottomHelpBtn11)
     {
         btn11.setCoords(218,215);
         btn11.setCoords1(258,255);
@@ -330,9 +331,10 @@ void draw6ButtonsLayout(String topLeft, String centerLeft, String bottomLeft, St
 
 }
 
-void draw6ButtonsLayout(String topLeft, String centerLeft, String bottomLeft, String topRight, String centerRight, String bottomRight, bool topHelp, bool centerHelp, bool bottomHelp)
+// btn1 --> topLeft; btn2 --> centerLeft; btn3 --> bottomLeft; btn4 --> topRight; btn5 --> centerRight; btn6 --> bottomRight; btn7 --> Previous; btn8 --> Next; btn9 --> topHelp; btn10 --> centerHelp; btn11 --> bottomHelp
+void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottomLeftBtn3, String topRightBtn4, String centerRightBtn5, String bottomRightBtn6, bool topHelpBtn9, bool centerHelpBtn10, bool bottomHelpBtn11)
 {
-    draw6ButtonsLayout(topLeft,centerLeft,bottomLeft,topRight,centerRight,bottomRight,topHelp,centerHelp,bottomHelp,NULL);
+    draw6ButtonsLayout(topLeftBtn1,centerLeftBtn2,bottomLeftBtn3,topRightBtn4,centerRightBtn5,bottomRightBtn6,topHelpBtn9,centerHelpBtn10,bottomHelpBtn11,NULL);
 }
 
 void setFontSizeArray(byte* fontSizeArray, byte tl, byte cl, byte bl, byte tr, byte cr, byte br)
@@ -353,7 +355,7 @@ void setFontSizeArray(byte* fontSizeArray, byte tl, byte tr, byte bl, byte br)
     fontSizeArray[3] = br;
 }
 
-float getNumInput(char* title, char* unit)
+float getNumInput(String title, String unit)
 {
 
     return 0.0;
@@ -1096,7 +1098,6 @@ void setup()
     my_lcd.Fill_Screen(Color(255,255,255).to565());
 
     //todo Test code after this line
-
 
     //while (true); // TODO delete or comment this
 
