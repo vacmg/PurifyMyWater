@@ -22,7 +22,7 @@ Label::Label()
     this->fontSize = 0;
 }
 
-char *Label::getString()
+const char *Label::getString()
 {
     return string;
 }
@@ -32,7 +32,7 @@ int Label::getFontSize()
     return fontSize;
 }
 
-void Label::setString(char *string)
+void Label::setString(const char *string)
 {
     this->string = string;
 }

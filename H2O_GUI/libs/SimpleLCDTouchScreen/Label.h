@@ -13,13 +13,13 @@ public:
     Label(int x, int y, char* string, int fontSize, Color mainColor, Color secondaryColor);
     Label(int x, int y, char* string, int fontSize, Color mainColor);
     Label(); // Do not use, only for virtual keyword purposes
-    char* getString();
+    const char* getString();
     int getFontSize();
-    void setString(char* string);
+    void setString(const char* string);
     void setFontSize(int fontSize);
 
 private:
-    char* string;
+    const char* string;
     int fontSize; // length of each square that compounds any symbol in px
 };
 
