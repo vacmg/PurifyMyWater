@@ -10,8 +10,8 @@
 class Label: public ScreenObjectWithSecondaryColor
 {
 public:
-    Label(int x, int y, char* string, int fontSize, Color mainColor, Color secondaryColor);
-    Label(int x, int y, char* string, int fontSize, Color mainColor);
+    Label(int x, int y, const char* string, int fontSize, Color mainColor, Color secondaryColor);
+    Label(int x, int y, const char* string, int fontSize, Color mainColor);
     Label(); // Do not use, only for virtual keyword purposes
     const char* getString();
     int getFontSize();

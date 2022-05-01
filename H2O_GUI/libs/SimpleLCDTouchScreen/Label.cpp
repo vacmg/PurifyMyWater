@@ -4,13 +4,13 @@
 
 #include "Label.h"
 
-Label::Label(int x, int y, char* string, int fontSize, Color mainColor, Color secondaryColor):ScreenObjectWithSecondaryColor(x, y, mainColor, secondaryColor), ScreenObject(x, y, mainColor)
+Label::Label(int x, int y, const char* string, int fontSize, Color mainColor, Color secondaryColor):ScreenObjectWithSecondaryColor(x, y, mainColor, secondaryColor), ScreenObject(x, y, mainColor)
 {
     this->string = string;
     this->fontSize = fontSize;
 }
 
-Label::Label(int x, int y, char* string, int fontSize, Color mainColor):ScreenObjectWithSecondaryColor(x, y, mainColor), ScreenObject(x, y, mainColor)
+Label::Label(int x, int y, const char* string, int fontSize, Color mainColor):ScreenObjectWithSecondaryColor(x, y, mainColor), ScreenObject(x, y, mainColor)
 {
     this->string = string;
     this->fontSize = fontSize;
