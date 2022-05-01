@@ -15,7 +15,7 @@ enum BtnStatus {OFF, ON, ERROR};
 
 BtnStatus mainSwitchSt = OFF;
 ScreenStatus screenStatus = LOADELECTRICITY; // Must be initialized to BOOTING in order to show splash screen
-byte ROTATION = 3;
+byte ROTATION = 1;
 
 #include "sharedData.h"
 
@@ -260,8 +260,11 @@ void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottom
 void drawNumInput (String titleNumInput, String unit)
 {
     drawBackground();
+    title.setDisableAutoSize(true);
     titleLabel.setString(titleNumInput.c_str()); // title
+    titleLabel.setFontSize(2); // TODO check autosize bug with long labels
     my_lcd.draw(&title);
+    title.setDisableAutoSize(false);
 
     //NUMERIC BUTTONS//
     label.setString("1"); // Button number 1
@@ -369,60 +372,70 @@ double getNumInput(String titleNumInput, String unit)
                 len++;
                 strcat(string,"1");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn2.isPressed())
             {
                 len++;
                 strcat(string,"2");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn3.isPressed())
             {
                 len++;
                 strcat(string,"3");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn4.isPressed())
             {
                 len++;
                 strcat(string,"4");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn5.isPressed())
             {
                 len++;
                 strcat(string,"5");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn6.isPressed())
             {
                 len++;
                 strcat(string,"6");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn7.isPressed())
             {
                 len++;
                 strcat(string,"7");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn8.isPressed())
             {
                 len++;
                 strcat(string,"8");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn9.isPressed())
             {
                 len++;
                 strcat(string,"9");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn10.isPressed())
             {
                 len++;
                 strcat(string,"0");
                 my_lcd.draw(&output);
+                delay(200);
             }
         }
 
@@ -439,15 +452,18 @@ double getNumInput(String titleNumInput, String unit)
             len--;
 
             my_lcd.draw(&output);
+            delay(200);
         }
 
         if(backBtn.isPressed())
         {
             exit=-1;
+            delay(200);
         }
         if(oKBtn.isPressed())
         {
             exit=1;
+            delay(200);
         }
         if(signBtn.isPressed())
         {
@@ -461,6 +477,7 @@ double getNumInput(String titleNumInput, String unit)
                 string[0]='-';
             }
             my_lcd.draw(&output);
+            delay(200);
         }
         if(dotBtn.isPressed() && !decimalDotPlaced)
         {
@@ -470,6 +487,7 @@ double getNumInput(String titleNumInput, String unit)
                 strcat(string, ".");
                 decimalDotPlaced = true;
                 my_lcd.draw(&output);
+                delay(200);
             }
         }
     }
@@ -982,7 +1000,7 @@ void drawElectricity() // TODO get settings real value
     {
         case 1:
             setFontSizeArray(fontSizes, 1,1,1,2,2,2);
-            draw6ButtonsLayout(F("Start Charging Voltage"),F("Stop Charging Voltage"),F("UV light est. Current"),"12.5V","15.5V","1A",true,true,true,fontSizes);
+            draw6ButtonsLayout(F("Start Charging Voltage"),F("Stop Charging Voltage"),F("UV light est. Current"),String(STARTCHARGINGVOLTAGE)+"V","15.5V","1A",true,true,true,fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1,1,1,2,2,2);
@@ -1151,7 +1169,29 @@ void clickSettings()
 
 void clickElectricity()
 {
-    /*if(btnx.isPressed())
+    if(btn4.isPressed())
+    {
+        switch (page)
+        {
+            case 1: // Start charging voltage
+                float tempVal = getNumInput("Start charging Voltage","V");
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if(STOPWORKINGVOLTAGE<tempVal && tempVal<STOPCHARGINGVOLTAGE)
+                    {
+                        debug(String(F("STARTCHARGINGVOTAGE UPDATED: "))+STARTCHARGINGVOLTAGE+String(F(" --> "))+tempVal);
+                        STARTCHARGINGVOLTAGE = tempVal;
+                        // TODO send new setting
+                    }
+                    changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                    drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+                }
+                break;
+                /*case x:
+                    ...*/
+        }
+    }
+    /*else if(btnx.isPressed())
     {
         switch (page)
         {
