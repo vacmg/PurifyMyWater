@@ -260,8 +260,11 @@ void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottom
 void drawNumInput (String titleNumInput, String unit)
 {
     drawBackground();
+    title.setDisableAutoSize(true);
     titleLabel.setString(titleNumInput.c_str()); // title
+    titleLabel.setFontSize(2); // TODO check autosize bug with long labels
     my_lcd.draw(&title);
+    title.setDisableAutoSize(false);
 
     //NUMERIC BUTTONS//
     label.setString("1"); // Button number 1
@@ -369,60 +372,70 @@ double getNumInput(String titleNumInput, String unit)
                 len++;
                 strcat(string,"1");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn2.isPressed())
             {
                 len++;
                 strcat(string,"2");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn3.isPressed())
             {
                 len++;
                 strcat(string,"3");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn4.isPressed())
             {
                 len++;
                 strcat(string,"4");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn5.isPressed())
             {
                 len++;
                 strcat(string,"5");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn6.isPressed())
             {
                 len++;
                 strcat(string,"6");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn7.isPressed())
             {
                 len++;
                 strcat(string,"7");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn8.isPressed())
             {
                 len++;
                 strcat(string,"8");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn9.isPressed())
             {
                 len++;
                 strcat(string,"9");
                 my_lcd.draw(&output);
+                delay(200);
             }
             if(btn10.isPressed())
             {
                 len++;
                 strcat(string,"0");
                 my_lcd.draw(&output);
+                delay(200);
             }
         }
 
@@ -439,15 +452,18 @@ double getNumInput(String titleNumInput, String unit)
             len--;
 
             my_lcd.draw(&output);
+            delay(200);
         }
 
         if(backBtn.isPressed())
         {
             exit=-1;
+            delay(200);
         }
         if(oKBtn.isPressed())
         {
             exit=1;
+            delay(200);
         }
         if(signBtn.isPressed())
         {
@@ -461,6 +477,7 @@ double getNumInput(String titleNumInput, String unit)
                 string[0]='-';
             }
             my_lcd.draw(&output);
+            delay(200);
         }
         if(dotBtn.isPressed() && !decimalDotPlaced)
         {
@@ -470,6 +487,7 @@ double getNumInput(String titleNumInput, String unit)
                 strcat(string, ".");
                 decimalDotPlaced = true;
                 my_lcd.draw(&output);
+                delay(200);
             }
         }
     }
