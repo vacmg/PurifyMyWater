@@ -7,7 +7,7 @@
 #define DEBUG true
 
 #define ROTATION 3 // sets screen rotation
-#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
+#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 #define BOOTING 0
 #define LOADSTATUS 1
@@ -112,6 +112,12 @@ RectangleButton btn11(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts
 RectangleButton backBtn(20,20,60,60,Color(0,0,0),Color(255,255,255),&label,&ts);
 Label titleLabel(0,0,"Menu",5,Color(0),Color(255,255,255));
 Rectangle title(65,5,415,75,Color(0xFFFF),/*Color(255,0,0),*/&titleLabel,true);
+
+//Rectangle Button GetNumInput
+RectangleButton oKBtn(250,270,410,310,Color(0,0,0),Color(255,255,255),&label,&ts);
+RectangleButton dotBtn(425,95,475,145,Color(0,0,0),Color(255,255,255),&label,true,&ts);
+RectangleButton signBtn(5,95,55,145,Color(0,0,0),Color(255,255,255),&label,&ts);
+
 
 void setRotation(byte rotation)
 {
@@ -277,8 +283,9 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
 
 }
 
-float getNumInput(String titleNumInput, String unit)
+void drawNumInput (String titleNumInput, String unit)
 {
+    //todo cambiar botones privados a globales<
     drawBackground();
     titleLabel.setString(titleNumInput.c_str()); // title
     my_lcd.draw(&title);
@@ -329,7 +336,7 @@ float getNumInput(String titleNumInput, String unit)
     btn9.setCoords1(355,265);
     my_lcd.draw(&btn9);
 
-    label.setString("10"); // Button number 10
+    label.setString("0"); // Button number 10
     btn10.setCoords(380,215);
     btn10.setCoords1(440,265);
     my_lcd.draw(&btn10);
@@ -341,30 +348,145 @@ float getNumInput(String titleNumInput, String unit)
     my_lcd.draw(&btn11);
 
     label.setString("OK"); // Button OK
-    RectangleButton oKBtn(250,270,410,310,Color(0,0,0),Color(255,255,255),&label,&ts);
+    oKBtn;
     my_lcd.draw(&oKBtn);
 
     label.setString("."); // Button DOT
     label.setFontSize(3);
-    RectangleButton dotBtn(425,95,475,145,Color(0,0,0),Color(255,255,255),&label,true,&ts);
+    dotBtn;
     my_lcd.draw(&dotBtn);
     label.setFontSize(5);
 
     label.setString("+/-"); // Button Sign
-    RectangleButton signBtn(5,95,55,145,Color(0,0,0),Color(255,255,255),&label,&ts);
+    signBtn;
     my_lcd.draw(&signBtn);
-    //todo cambiar botones privados a globales
 
-    //OUTPUT//
-    //String outputString=""; //TODO functional output
-    //Label outputLabel(0,0,outputString,5,Color(255,255,255));
-    Rectangle output(60,95,420,145,Color (0,0,0),Color (255,255,255));
+}
+
+double getNumInput(String titleNumInput, String unit)
+{
+    drawNumInput(titleNumInput,unit); //TODO unit
+    char exit=0;
+    byte len=1;
+    char string[15]="";
+    Label outputLabel(0,0,string,5,Color(0,0,0));
+    Rectangle output(60,95,420,145,Color(),Color(255,255,255),&outputLabel);
     my_lcd.draw(&output);
 
+    int counter=0; //SignButton extras
+    string[0]='+';
+
+    while(exit==0)
+    {
+        if(btn1.isPressed())
+        {
+            len++;
+            strcat(string,"1");
+            my_lcd.draw(&output);
+        }
+        if(btn2.isPressed())
+        {
+            len++;
+            strcat(string,"2");
+            my_lcd.draw(&output);
+        }
+        if(btn3.isPressed())
+        {
+            len++;
+            strcat(string,"3");
+            my_lcd.draw(&output);
+        }
+        if(btn4.isPressed())
+        {
+            len++;
+            strcat(string,"4");
+            my_lcd.draw(&output);
+        }
+        if(btn5.isPressed())
+        {
+            len++;
+            strcat(string,"5");
+            my_lcd.draw(&output);
+        }
+        if(btn6.isPressed())
+        {
+            len++;
+            strcat(string,"6");
+            my_lcd.draw(&output);
+        }
+        if(btn7.isPressed())
+        {
+            len++;
+            strcat(string,"7");
+            my_lcd.draw(&output);
+        }
+        if(btn8.isPressed())
+        {
+            len++;
+            strcat(string,"8");
+            my_lcd.draw(&output);
+        }
+        if(btn9.isPressed())
+        {
+            len++;
+            strcat(string,"9");
+            my_lcd.draw(&output);
+        }
+        if(btn10.isPressed())
+        {
+            len++;
+            strcat(string,"0");
+            my_lcd.draw(&output);
+        }
+
+        if(btn11.isPressed() && len>0)
+        {
+            string[len]='\0';
+            len--;
+            my_lcd.draw(&output);
+        }
+
+        //Si exit vale -1 cancelas (nan) / si exit vale 1 aceptas (double) atof
+        if(backBtn.isPressed())
+        {
+            exit=-1;
+        }
+        if(oKBtn.isPressed())
+        {
+            exit=1;
+        }
+        if(signBtn.isPressed())
+        {
+            counter++;
+            if(counter%2==0)
+            {
+                string[0]='+';
+            }
+            else
+            {
+                string[0]='-';
+            }
+            my_lcd.draw(&output);
+        }
+        if(dotBtn.isPressed())
+        {
+            len++;
+            strcat(string,".");
+            my_lcd.draw(&output);
+        }
+    }
 
 
 
-    return 0.0;
+    if(exit==-1)
+    {
+        return NAN;
+    }
+    if (exit==1)
+    {
+        return atof(string);
+    }
+
 }
 
 //Auxiliary functions
