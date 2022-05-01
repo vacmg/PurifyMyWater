@@ -277,10 +277,10 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
 
 }
 
-float getNumInput(char* titleNumInput, char* unit)
+float getNumInput(String titleNumInput, String unit)
 {
     drawBackground();
-    titleLabel.setString(titleNumInput); // title
+    titleLabel.setString(titleNumInput.c_str()); // title
     my_lcd.draw(&title);
 
     //NUMERIC BUTTONS//
@@ -353,12 +353,15 @@ float getNumInput(char* titleNumInput, char* unit)
     label.setString("+/-"); // Button Sign
     RectangleButton signBtn(5,95,55,145,Color(0,0,0),Color(255,255,255),&label,&ts);
     my_lcd.draw(&signBtn);
+    //todo cambiar botones privados a globales
 
     //OUTPUT//
     //String outputString=""; //TODO functional output
     //Label outputLabel(0,0,outputString,5,Color(255,255,255));
     Rectangle output(60,95,420,145,Color (0,0,0),Color (255,255,255));
     my_lcd.draw(&output);
+
+
 
 
     return 0.0;
