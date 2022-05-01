@@ -753,8 +753,7 @@ void drawElectricity() // TODO get settings real value
     {
         case 1:
             setFontSizeArray(fontSizes, 1,1,1,2,2,2);
-            draw6ButtonsLayout(F("Start Charging Voltage"),F("Stop Charging Voltage"),F("UV light est. Current"),"12.5V","15.5V","1A",true,true,true,fontSizes);
-            break;
+            draw6ButtonsLayout(F("Start Charging Voltage"),F("Stop Charging Voltage"),F("UV light est. Current"),String(STARTCHARGINGVOLTAGE)+"V","15.5V","1A",true,true,true,fontSizes);            break;
         case 2:
             setFontSizeArray(fontSizes, 1,1,1,2,2,2);
             draw6ButtonsLayout(F("Start Working Voltage"),F("Stop Working Voltage"),F("AC Inverter Frequency"),"15.2V","11.9V","50Hz",true,true,true, fontSizes);
@@ -922,7 +921,29 @@ void clickSettings()
 
 void clickElectricity()
 {
-    /*if(btnx.isPressed())
+    if(btn4.isPressed())
+    {
+        switch (page)
+        {
+            case 1: // Start charging voltage
+                float tempVal = getNumInput("",""); // TODO place real title & unit
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if(STOPWORKINGVOLTAGE<tempVal && tempVal<STOPCHARGINGVOLTAGE)
+                    {
+                        debug(String(F("STARTCHARGINGVOTAGE UPDATED: "))+STARTCHARGINGVOLTAGE+String(F(" --> "))+tempVal);
+                        STARTCHARGINGVOLTAGE = tempVal;
+                        changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                        // TODO send new setting
+                        drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+                    }
+                }
+                break;
+                /*case x:
+                    ...*/
+        }
+    }
+    /*else if(btnx.isPressed())
     {
         switch (page)
         {
