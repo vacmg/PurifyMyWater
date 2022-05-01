@@ -11,6 +11,7 @@
 
 #define MAXCAPACITORSALLOWEDVOLTAGE 16
 #define MINSYSTEMALLOWEDVOLTAGE 12
+#define MAXUVAMPERAGE 10
 
 // Hardware constants
 
@@ -22,35 +23,35 @@ float STOPCHARGINGVOLTAGE = 15.75; // STARTCHARGINGVOLTAGE < STOPCHARGINGVOLTAGE
 float STARTWORKINGVOLTAGE = 15; // STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
 float STOPWORKINGVOLTAGE = 12; // MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE // // leave at least 1 volt of margin between STOPWORKINGVOLTAGE && STARTCHARGINGVOLTAGE
 
-double DCAMPSENSITIVITY = 0.1135; //sensor sensitivity in Volts/Amps // 5.4A for 60w test load
-double DCAMPZERO = 2.4956; // sensor voltage for 0 Amps current
+double DCAMPSENSITIVITY = 0.1135; //sensor sensitivity in Volts/Amps // 5.4A for 60w test load // No limits
+double DCAMPZERO = 2.4956; // sensor voltage for 0 Amps current // No limits
 
-double ACAMPZERO = -0.07157; // sensor calibration correction value
-double ACAMPSENSITIVITY = 0.033; // sensor sensitivity in Volts/Amps // 0.25A for 60w test load
-byte ACFREQUENCY = 50; // AC signal frequency (Hz)
+double ACAMPZERO = -0.07157; // sensor calibration correction value // No limits
+double ACAMPSENSITIVITY = 0.033; // sensor sensitivity in Volts/Amps // 0.25A for 60w test load // No limits
+byte ACFREQUENCY = 50; // AC signal frequency (Hz) 50 <= ACFREQUENCY <= 60
 
-float ESTIMATEDUVAMPERAGE = 1.0; // Minimum estimated current that the UV light uses // todo place real value
+float ESTIMATEDUVAMPERAGE = 1.0; // Minimum estimated current that the UV light uses // 0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE // todo place real value
 
 // Water settings
-unsigned long WELLPUMPTIMEOUT = 60000;
-unsigned long UVPUMPTIMEOUT = 60000;
-unsigned long ENDPUMPTIMEOUT = 60000;
-unsigned long FILTERTIMEOUT = 60000;
-unsigned int UVPUMPFLOW = 55;
+unsigned long WELLPUMPTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < WELLPUMPTIMEOUT
+unsigned long UVPUMPTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < UVPUMPTIMEOUT
+unsigned long ENDPUMPTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < ENDPUMPTIMEOUT
+unsigned long FILTERTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < FILTERTIMEOUT
+unsigned int UVPUMPFLOW = 55; // L/H
 
 // Temperature settings
-unsigned long TEMPCHECKTIME = 10000;
-byte STOPWORKINGTEMP = 65;
-byte MAXCASETEMP = 40;
-byte MINCASETEMP = 38;
-byte MAXPSUTEMP = 40;
-byte MINPSUTEMP = 38;
+unsigned long TEMPCHECKTIME = 10000; // Stored in ms, input in s (1s = 1000ms) // 0 < TEMPCHECKTIME
+byte STOPWORKINGTEMP = 65; // in Cº // 0 < MAXCASETEMP, MAXPSUTEMP < STOPWORKINGTEMP
+byte MAXCASETEMP = 40; // in Cº // 0 < MINCASETEMP < MAXCASETEMP
+byte MINCASETEMP = 38; // in Cº // 0 < MINCASETEMP < MAXCASETEMP
+byte MAXPSUTEMP = 40; // in Cº // 0 < MINPSUTEMP < MAXPSUTEMP
+byte MINPSUTEMP = 38; // in Cº // 0 < MINPSUTEMP < MAXPSUTEMP
 
 #ifdef H2O_GUI
     // Interface settings
     enum Languages {ENGLISH = 0};
     Languages LANGUAGE = ENGLISH;
-    unsigned long DATAREFRESHPERIOD = 5000;
+    unsigned long DATAREFRESHPERIOD = 5000; // Stored in ms, input in s (1s = 1000ms) // 0 < DATAREFRESHPERIOD
 #endif
 
 // Default Settings
