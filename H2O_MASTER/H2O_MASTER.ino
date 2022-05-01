@@ -15,45 +15,17 @@
 #define DEBUG true
 #define GUI true
 #define ONLYVITALACTIVITYALLOWED true
-#define TEMPERATURE false
+#define TEMPERATURE true
 #define OVERRRIDEMAXVOLTAGE false // useful to check some functions without powering all the system
 
-#define STARTCHARGINGVOLTAGE 13
-#define STOPCHARGINGVOLTAGE 15.75
-#define STARTWORKINGVOLTAGE 15
-#define STOPWORKINGVOLTAGE 12
-
-#define DCAmpSensitivity 0.1135 //sensor sensitivity in Volts/Amps // 5.4A for 60w test load
-#define DCAmpZero 2.4956 // sensor voltage for 0 Amps current
-
-#define ACAmpZero -0.07157 // sensor calibration correction value
-#define ACAmpSensitivity 0.033 // sensor sensitivity in Volts/Amps // 0.25A for 60w test load
-#define ACFrequency 50 // AC signal frequency (Hz)
-
-#define UVPUMPFLOW 55 // 171 // UV pump flow in L/H
-#define ESTIMATEDUVAMPERAGE -1.0 // Minimum estimated current that the UV light uses // todo place real value
-
-// If any of this pumps work for more than the specified milliseconds, raise PUMPTIMEOUTERROR
-#define WELLPUMPTIMEOUT 60000
-#define UVPUMPTIMEOUT 60000
-#define ENDPUMPTIMEOUT 60000
-#define FILTERTIMEOUT 60000
-
-#if TEMPERATURE
-    #define TEMPCHECKTIME 10000
-    #define STOPWORKINGTEMP 65
-    #define MAXCASETEMP 40
-    #define MINCASETEMP 38
-    #define MAXPSUTEMP 40
-    #define MINPSUTEMP 38
-#endif
-
 #if GUI
-    #define SCREENBRIDGEMODE true
-    #define SCREENALWAYSON false
-    #define MAXHANDSHAKERETRIES 3
-    #define HANDSHAKETIMEOUT 10000
+#define SCREENBRIDGEMODE true
+#define SCREENALWAYSON false
+#define MAXHANDSHAKERETRIES 3
+#define HANDSHAKETIMEOUT 10000
 #endif
+
+#include "sharedData.h"
 
 /*------------Config----------------*/
 
@@ -89,6 +61,9 @@
 /*------------Errors----------------*/
 
 /*------------FunctionHeaders-------*/
+#if DEBUG
+    void readAllSensors();
+#endif
 
 #if TEMPERATURE
 void tempControl();
@@ -200,7 +175,7 @@ ledAnimation defaultErrorAnimation = { 500,2,0,{{255,0,0},{0,0,0}} };
 #if TEMPERATURE
 unsigned long tempMillis = 0;
 
-// Setup a oneWire instance to communicate with any OneWire device
+// Set up a oneWire instance to communicate with any OneWire device
 OneWire oneWire(tempPin);
 
 // Pass oneWire reference to DallasTemperature library
@@ -213,11 +188,6 @@ DallasTemperature sensors(&oneWire);
     /*------------Temperature-----------*/
 
     /*------------Other-----------------*/
-#if DEBUG
-    #define debug(data) Serial.println(data)
-#else
-    #define debug(data) ;
-#endif
 
 #define TRANSITIONTOIDLE 0
 #define IDLE 1
@@ -440,22 +410,22 @@ void waitForVoltage(float volts)
 // This function returns the amperage of the main sensor
 float getDCAmps(int samples)
 {
-    float sensorVolts;
-    float current = 0;
+    double sensorVolts;
+    double current = 0;
     for (int i = 0; i < samples; i++)
     {
         sensorVolts = analogRead(mainAmpSensor) * (5.0 / 1023.0); // sensor reading
-        current = current + (sensorVolts - DCAmpZero) / DCAmpSensitivity; // Process input to get Amperage
+        current = current + (sensorVolts - DCAMPZERO) / DCAMPSENSITIVITY; // Process input to get Amperage
     }
     current = current / samples;
-    return(current >= 0 ? current : 0);
+    return(current >= 0 ? (float)current : 0);
 }
 
 // This function uses all the data logged by logACAmps() and calculates an RMS Amperage value for the UV sensor
 float getACAmps()
 {
-    float amps = ACAmpZero + ACAmpSensitivity * inputStats.sigma();
-    return(amps >= 0 ? amps : 0); // calculate RMS Amperage
+    double amps = ACAMPZERO + ACAMPSENSITIVITY * inputStats.sigma();
+    return(amps >= 0 ? (float)amps : 0); // calculate RMS Amperage
 }
 
 // To measure AC current, arduino must log sensor data all the time. This function read and log one value per call
@@ -756,7 +726,7 @@ void setup()
 
     // put setup code after this line
 
-    inputStats.setWindowSecs(40.0 / ACFrequency);     //Set AC Ammeter frequency
+    inputStats.setWindowSecs(40.0F / ACFREQUENCY);     //Set AC Ammeter frequency
 
     mode = 0;
     debug(F("Setup - Ready"));
