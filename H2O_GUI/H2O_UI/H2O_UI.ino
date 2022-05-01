@@ -285,7 +285,6 @@ void draw6ButtonsLayout(char* topLeft, char* centerLeft, char* bottomLeft, char*
 
 void drawNumInput (String titleNumInput, String unit)
 {
-    //todo cambiar botones privados a globales<
     drawBackground();
     titleLabel.setString(titleNumInput.c_str()); // title
     my_lcd.draw(&title);
@@ -294,51 +293,61 @@ void drawNumInput (String titleNumInput, String unit)
     label.setString("1"); // Button number 1
     btn1.setCoords(40,155);
     btn1.setCoords1(100,205);
+    btn1.setDisableAutoSize(false);
     my_lcd.draw(&btn1);
 
     label.setString("2"); // Button number 2
     btn2.setCoords(125,155);
     btn2.setCoords1(185,205);
+    btn2.setDisableAutoSize(false);
     my_lcd.draw(&btn2);
 
     label.setString("3"); // Button number 3
     btn3.setCoords(210,155);
     btn3.setCoords1(270,205);
+    btn3.setDisableAutoSize(false);
     my_lcd.draw(&btn3);
 
     label.setString("4"); // Button number 4
     btn4.setCoords(295,155);
     btn4.setCoords1(355,205);
+    btn4.setDisableAutoSize(false);
     my_lcd.draw(&btn4);
 
     label.setString("5"); // Button number 5
     btn5.setCoords(380,155);
     btn5.setCoords1(440,205);
+    btn5.setDisableAutoSize(false);
     my_lcd.draw(&btn5);
 
     label.setString("6"); // Button number 6
     btn6.setCoords(40,215);
     btn6.setCoords1(100,265);
+    btn6.setDisableAutoSize(false);
     my_lcd.draw(&btn6);
 
     label.setString("7"); // Button number 7
     btn7.setCoords(125,215);
     btn7.setCoords1(185,265);
+    btn7.setDisableAutoSize(false);
     my_lcd.draw(&btn7);
 
     label.setString("8"); // Button number 8
     btn8.setCoords(210,215);
     btn8.setCoords1(270,265);
+    btn8.setDisableAutoSize(false);
     my_lcd.draw(&btn8);
 
     label.setString("9"); // Button number 9
     btn9.setCoords(295,215);
     btn9.setCoords1(355,265);
+    btn9.setDisableAutoSize(false);
     my_lcd.draw(&btn9);
 
-    label.setString("0"); // Button number 10
+    label.setString("0"); // Button number 0
     btn10.setCoords(380,215);
     btn10.setCoords1(440,265);
+    btn10.setDisableAutoSize(false);
     my_lcd.draw(&btn10);
 
     //AUXILIARY BUTTONS//
@@ -361,92 +370,106 @@ void drawNumInput (String titleNumInput, String unit)
     signBtn;
     my_lcd.draw(&signBtn);
 
+    Label unitLabel(0,0,unit.c_str(),5,Color(0,0,0));
+    Rectangle outputUnit(370,95,420,145,Color(),Color(255,255,255),&unitLabel);
+    my_lcd.draw(&outputUnit);
+
 }
 
 double getNumInput(String titleNumInput, String unit)
 {
-    drawNumInput(titleNumInput,unit); //TODO unit
-    char exit=0;
-    byte len=1;
-    char string[15]="";
+    drawNumInput(titleNumInput,unit);
+    char exit=0; // exit switch
+    byte len=1; // size of the string
+    char string[15]=" ";
     Label outputLabel(0,0,string,5,Color(0,0,0));
-    Rectangle output(60,95,420,145,Color(),Color(255,255,255),&outputLabel);
+    Rectangle output(60,95,370,145,Color(),Color(255,255,255),&outputLabel);
     my_lcd.draw(&output);
 
-    int counter=0; //SignButton extras
-    string[0]='+';
+    bool negative=false; // sign switch
+    bool decimalDotPlaced = false;
 
     while(exit==0)
     {
-        if(btn1.isPressed())
+        if (len<14) // + NULL
         {
-            len++;
-            strcat(string,"1");
-            my_lcd.draw(&output);
-        }
-        if(btn2.isPressed())
-        {
-            len++;
-            strcat(string,"2");
-            my_lcd.draw(&output);
-        }
-        if(btn3.isPressed())
-        {
-            len++;
-            strcat(string,"3");
-            my_lcd.draw(&output);
-        }
-        if(btn4.isPressed())
-        {
-            len++;
-            strcat(string,"4");
-            my_lcd.draw(&output);
-        }
-        if(btn5.isPressed())
-        {
-            len++;
-            strcat(string,"5");
-            my_lcd.draw(&output);
-        }
-        if(btn6.isPressed())
-        {
-            len++;
-            strcat(string,"6");
-            my_lcd.draw(&output);
-        }
-        if(btn7.isPressed())
-        {
-            len++;
-            strcat(string,"7");
-            my_lcd.draw(&output);
-        }
-        if(btn8.isPressed())
-        {
-            len++;
-            strcat(string,"8");
-            my_lcd.draw(&output);
-        }
-        if(btn9.isPressed())
-        {
-            len++;
-            strcat(string,"9");
-            my_lcd.draw(&output);
-        }
-        if(btn10.isPressed())
-        {
-            len++;
-            strcat(string,"0");
-            my_lcd.draw(&output);
+            if(btn1.isPressed())
+            {
+                len++;
+                strcat(string,"1");
+                my_lcd.draw(&output);
+            }
+            if(btn2.isPressed())
+            {
+                len++;
+                strcat(string,"2");
+                my_lcd.draw(&output);
+            }
+            if(btn3.isPressed())
+            {
+                len++;
+                strcat(string,"3");
+                my_lcd.draw(&output);
+            }
+            if(btn4.isPressed())
+            {
+                len++;
+                strcat(string,"4");
+                my_lcd.draw(&output);
+            }
+            if(btn5.isPressed())
+            {
+                len++;
+                strcat(string,"5");
+                my_lcd.draw(&output);
+            }
+            if(btn6.isPressed())
+            {
+                len++;
+                strcat(string,"6");
+                my_lcd.draw(&output);
+            }
+            if(btn7.isPressed())
+            {
+                len++;
+                strcat(string,"7");
+                my_lcd.draw(&output);
+            }
+            if(btn8.isPressed())
+            {
+                len++;
+                strcat(string,"8");
+                my_lcd.draw(&output);
+            }
+            if(btn9.isPressed())
+            {
+                len++;
+                strcat(string,"9");
+                my_lcd.draw(&output);
+            }
+            if(btn10.isPressed())
+            {
+                len++;
+                strcat(string,"0");
+                my_lcd.draw(&output);
+            }
         }
 
         if(btn11.isPressed() && len>0)
         {
-            string[len]='\0';
+            if(string[len-1] == '.')
+                decimalDotPlaced = false;
+            if(len==2)
+            {
+                string[0] = ' ';
+                negative = false;
+            }
+            string[len-1]='\0';
             len--;
+
             my_lcd.draw(&output);
         }
 
-        //Si exit vale -1 cancelas (nan) / si exit vale 1 aceptas (double) atof
         if(backBtn.isPressed())
         {
             exit=-1;
@@ -457,10 +480,10 @@ double getNumInput(String titleNumInput, String unit)
         }
         if(signBtn.isPressed())
         {
-            counter++;
-            if(counter%2==0)
+            negative=(!negative);
+            if(!negative)
             {
-                string[0]='+';
+                string[0]=' ';
             }
             else
             {
@@ -468,25 +491,28 @@ double getNumInput(String titleNumInput, String unit)
             }
             my_lcd.draw(&output);
         }
-        if(dotBtn.isPressed())
+        if(dotBtn.isPressed() && !decimalDotPlaced)
         {
-            len++;
-            strcat(string,".");
-            my_lcd.draw(&output);
+            if(string[len-1]>='0' && string[len-1]<= '9')
+            {
+                len++;
+                strcat(string, ".");
+                decimalDotPlaced = true;
+                my_lcd.draw(&output);
+            }
         }
     }
 
-
-
     if(exit==-1)
     {
+        debug(F("getNumInput was cancelled"));
         return NAN;
     }
     if (exit==1)
     {
+        debug(String(F("getNumInput returned: "))+atof(string));
         return atof(string);
     }
-
 }
 
 //Auxiliary functions
@@ -1009,7 +1035,7 @@ void setup()
 
     //todo Test code after this line
 
-    getNumInput("Electricity","C");
+    debug(getNumInput("Electricity","C"));
     while (true);
 
     //todo Test code before this line
