@@ -1,3 +1,5 @@
+#define H2O_GUI true // H2O_GUI ID for shared files
+
 #include <Arduino.h>
 #include <LCDWIKI_KBV.h>
 #include <LCDWIKI_GUI.h>
@@ -7,119 +9,36 @@
 #define DEBUG true
 #define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
-// Default Settings
-
-// Electricity settings
-float STARTCHARGINGVOLTAGE = 13;
-float STOPCHARGINGVOLTAGE = 15.75;
-float STARTWORKINGVOLTAGE = 15;
-float STOPWORKINGVOLTAGE = 12;
-
-double DCAmpSensitivity = 0.1135; //sensor sensitivity in Volts/Amps // 5.4A for 60w test load
-double DCAmpZero = 2.4956; // sensor voltage for 0 Amps current
-
-double ACAmpZero = -0.07157; // sensor calibration correction value
-double ACAmpSensitivity = 0.033; // sensor sensitivity in Volts/Amps // 0.25A for 60w test load
-byte ACFrequency = 50; // AC signal frequency (Hz)
-
-float ESTIMATEDUVAMPERAGE = 1.0; // Minimum estimated current that the UV light uses // todo place real value
-
-// Water settings
-unsigned long WELLPUMPTIMEOUT = 60000;
-unsigned long UVPUMPTIMEOUT = 60000;
-unsigned long ENDPUMPTIMEOUT = 60000;
-unsigned long FILTERTIMEOUT = 60000;
-unsigned int UVPUMPFLOW = 55;
-
-// Interface settings
-enum Languages {ENGLISH = 0};
-Languages LANGUAGE = ENGLISH;
-byte ROTATION = 3;
-unsigned long DATAREFRESHPERIOD = 5000;
-
-// Temperature settings
-unsigned long TEMPCHECKTIME = 10000;
-byte STOPWORKINGTEMP = 65;
-byte MAXCASETEMP = 40;
-byte MINCASETEMP = 38;
-byte MAXPSUTEMP = 40;
-byte MINPSUTEMP = 38;
-
-// Default Settings
 enum ScreenStatus {BOOTING = 0, LOADSTATUS, STATUS, LOADMENU, MENU, LOADSETTINGS, SETTINGS, LOADHELP, HELP, LOADENGINEERINGMODE, ENGINEERINGMODE, LOADEXTRAFUNCTIONS, EXTRAFUNCTIONS, LOADELECTRICITY, LOADPAGEELECTRICITY, ELECTRICITY, LOADINTERFACE, LOADPAGEINTERFACE, INTERFACE, LOADWATER, LOADPAGEWATER, WATER, LOADTEMPERATURE, LOADPAGETEMPERATURE, TEMPERATURE};
 // ON/OFF BTN STATUS
 enum BtnStatus {OFF, ON, ERROR};
 
-#if SCREENHW == 35
-    #define SCREEN35ROTATIONOFFSET 2
-    TouchScreenObject ts(9,A2,A3,8,300,320,480,(ROTATION+SCREEN35ROTATIONOFFSET)%4,177,900,157,958); // for 3.5inch
-#elif SCREENHW == 39
-    TouchScreenObject ts(8,A3,A2,9,300,320,480,ROTATION,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
-#endif
-
-SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
 BtnStatus mainSwitchSt = OFF;
-ScreenStatus screenStatus = LOADELECTRICITY;
+ScreenStatus screenStatus = LOADELECTRICITY; // Must be initialized to BOOTING in order to show splash screen
+byte ROTATION = 3;
 
-#if DEBUG
-    const char mode0[] PROGMEM = "BOOTING"; // in order (BOOTING = 0 ---> mode0 = "BOOTING" --> modeTable[0] = mode0)
-    const char mode1[] PROGMEM = "LOADSTATUS";
-    const char mode2[] PROGMEM = "STATUS";
-    const char mode3[] PROGMEM = "LOADMENU";
-    const char mode4[] PROGMEM = "MENU";
-    const char mode5[] PROGMEM = "LOADSETTINGS";
-    const char mode6[] PROGMEM = "SETTINGS";
-    const char mode7[] PROGMEM = "LOADHELP";
-    const char mode8[] PROGMEM = "HELP";
-    const char mode9[] PROGMEM = "LOADENGINEERINGMODE";
-    const char mode10[] PROGMEM = "ENGINEERINGMODE";
-    const char mode11[] PROGMEM = "LOADEXTRAFUNCTIONS";
-    const char mode12[] PROGMEM = "EXTRAFUNCTIONS";
-    const char mode13[] PROGMEM = "LOADELECTRICTY";
-    const char mode14[] PROGMEM = "LOADPAGEELECTRICITY";
-    const char mode15[] PROGMEM = "ELECTRICITY";
-    const char mode16[] PROGMEM = "LOADINTERFACE";
-    const char mode17[] PROGMEM = "LOADPAGEINTERFACE";
-    const char mode18[] PROGMEM = "INTERFACE";
-    const char mode19[] PROGMEM = "LOADWATER";
-    const char mode20[] PROGMEM = "LOADPAGEWATER";
-    const char mode21[] PROGMEM = "WATER";
-    const char mode22[] PROGMEM = "LOADTEMPERATURE";
-    const char mode23[] PROGMEM = "LOADPAGETEMPERATURE";
-    const char mode24[] PROGMEM = "TEMPERATURE";
+#include "sharedData.h"
 
-    const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24};
-    char printModeBuff[20]; // Max size of any modeX string
-
-    char* modeToString(ScreenStatus status)
-    {
-        strcpy_P(printModeBuff, (char *)pgm_read_word(&(modeTable[status])));
-        return printModeBuff;
-    }
+#if SCREENHW == 35
+#define SCREEN35ROTATIONOFFSET 2
+TouchScreenObject ts(9,A2,A3,8,300,320,480,(ROTATION+SCREEN35ROTATIONOFFSET)%4,177,900,157,958); // for 3.5inch
+#elif SCREENHW == 39
+TouchScreenObject ts(8,A3,A2,9,300,320,480,ROTATION,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
 #endif
 
+//Global Variables
 char auxBuffer[32] = ""; // TODO when using progmem, use it as a buffer to print each label
 
 byte page = 0;
 byte maxPage = 0;
 
-#if DEBUG
-    #define debug(data) Serial.println(data)
-    #define changeStatus(newStatus) debug(String(F("Mode changed from '")) +String(modeToString(screenStatus))+String(F("' to '"))+String(modeToString(newStatus))+String(F("'"))); screenStatus = newStatus
-#else
-    #define debug(data) ;
-    #define changeStatus(newStaus) screenStatus = newStatus
-#endif
+SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
 
-//Status Variable
 Label label(200,10,"Menu",3,Color(0,0,0)); //general label
 Rectangle rectangle(300,234,420,290, Color(0,0,0), Color(255,255,255),&label);
-/*
-RectangleButton recOn_OFF(300,234,420,290, Color(0,0,0), Color(255,255,255),&label,true,&ts);
-RectangleButton recMenu(135,234,260,290, Color(0,0,0), Color(255,255,255),&label,true,&ts);*/
 
 //Rectangle Buttons
-RectangleButton btn1(30,120,230,200,Color(0,0,0),Color(255,255,255),&label,&ts);//todo disable autosize & enable again in the cases that is needed
+RectangleButton btn1(30,120,230,200,Color(0,0,0),Color(255,255,255),&label,&ts); // todo disable autosize & enable again in the cases that is needed
 RectangleButton btn2(250,120,440,200,Color(0,0,0),Color(255,255,255),&label,&ts);
 RectangleButton btn3(30,220,230,300,Color(0,0,0),Color(255,255,255),&label,&ts);
 RectangleButton btn4(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts);
@@ -137,6 +56,7 @@ RectangleButton btn11(250,220,440,300,Color(0,0,0),Color(255,255,255),&label,&ts
 RectangleButton backBtn(20,20,60,60,Color(0,0,0),Color(255,255,255),&label,&ts);
 Label titleLabel(0,0,"Menu",5,Color(0),Color(255,255,255));
 Rectangle title(65,5,415,75,Color(0xFFFF),/*Color(255,0,0),*/&titleLabel,true);
+//Global Variables End
 
 //Auxiliary functions
 
@@ -365,7 +285,7 @@ float getNumInput(String title, String unit)
 
 //Main Functions
 
-void bootAnimation()
+void drawSplashScreen()
 {
     Picture bigLogo(157,25,"PMWBL.bmp");
     my_lcd.draw(&bigLogo);
@@ -1116,7 +1036,7 @@ void loop()
     switch (screenStatus)
     {
         case BOOTING:
-            bootAnimation();
+            drawSplashScreen();
             // Perform other boot stuff after this line
             delay(1000);
             // Perform other boot stuff before this line
