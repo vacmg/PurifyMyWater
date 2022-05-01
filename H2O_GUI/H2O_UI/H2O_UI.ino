@@ -331,17 +331,14 @@ void drawNumInput (String titleNumInput, String unit)
     my_lcd.draw(&btn11);
 
     label.setString("OK"); // Button OK
-    oKBtn;
     my_lcd.draw(&oKBtn);
 
     label.setString("."); // Button DOT
     label.setFontSize(3);
-    dotBtn;
     my_lcd.draw(&dotBtn);
     label.setFontSize(5);
 
     label.setString("+/-"); // Button Sign
-    signBtn;
     my_lcd.draw(&signBtn);
 
     Label unitLabel(0,0,unit.c_str(),5,Color(0,0,0));
