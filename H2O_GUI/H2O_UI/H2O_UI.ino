@@ -523,7 +523,7 @@ void drawSplashScreen()
     my_lcd.draw(&bigLogo);
 }
 
-void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRelay, char well, char surfaceTank, char filteredTank, char purifiedTank, bool endTank) // TODO rectangles // false --> OFF, true -->ON, <0 --> LOW, = 0 --> Half, >0 --> FULL
+void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRelay, char well, char surfaceTank, char filteredTank, char purifiedTank, bool endTank) // false --> OFF, true -->ON, <0 --> LOW, = 0 --> Half, >0 --> FULL
 {
     Color blue(81, 136, 223);
     Color white(0xFFFF);
