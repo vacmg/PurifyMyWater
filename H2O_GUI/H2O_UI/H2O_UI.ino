@@ -7,7 +7,7 @@
 #include <SimpleLCDTouchScreen.h>
 
 #define DEBUG true
-#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
+#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 enum ScreenStatus {BOOTING = 0, LOADSTATUS, STATUS, LOADMENU, MENU, LOADSETTINGS, SETTINGS, LOADHELP, HELP, LOADENGINEERINGMODE, ENGINEERINGMODE, LOADEXTRAFUNCTIONS, EXTRAFUNCTIONS, LOADELECTRICITY, LOADPAGEELECTRICITY, ELECTRICITY, LOADINTERFACE, LOADPAGEINTERFACE, INTERFACE, LOADWATER, LOADPAGEWATER, WATER, LOADTEMPERATURE, LOADPAGETEMPERATURE, TEMPERATURE};
 // ON/OFF BTN STATUS
@@ -350,18 +350,46 @@ void drawNumInput (String titleNumInput, String unit)
 
 }
 
-double getNumInput(String titleNumInput, String unit)
+/*void printBytes(void* ptr, int size)
+{
+    for(int i = 0;i<size;i++)
+    {
+        Serial.println((byte)ptr[i]);
+    }
+}*/
+
+double getNumInput(String titleNumInput, String unit, double value)
 {
     drawNumInput(titleNumInput,unit);
-    char exit=0; // exit switch
-    byte len=1; // size of the string
-    char string[15]=" ";
+    char string[15];
+    bool negative; // sign switch
     Label outputLabel(0,0,string,5,Color(0,0,0));
     Rectangle output(60,95,370,145,Color(),Color(255,255,255),&outputLabel);
     my_lcd.draw(&output);
 
-    bool negative=false; // sign switch
-    bool decimalDotPlaced = false;
+    if(value>0)
+    {
+        string[0] = ' ';
+        string[1] = '\0';
+        negative=false;
+    }
+    else
+    {
+        string[0] = '\0';
+        negative=true;
+    }
+    strcat(string,String(value,4).c_str());
+    debug(String(F("String value: "))+string);
+
+
+    char exit=0; // exit switch
+    byte len=strlen(string); // size of the string // todo check if strlen gives the expected output
+    debug(String(F("len: "))+len);
+    bool decimalDotPlaced = true; // todo verify if sprintf always places decimal dot
+
+
+    my_lcd.draw(&output);
+
 
     while(exit==0)
     {
@@ -1174,7 +1202,7 @@ void clickElectricity()
         switch (page)
         {
             case 1: // Start charging voltage
-                float tempVal = getNumInput("Start charging Voltage","V");
+                float tempVal = getNumInput("Start charging Voltage","V",STARTCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if(STOPWORKINGVOLTAGE<tempVal && tempVal<STOPCHARGINGVOLTAGE)
