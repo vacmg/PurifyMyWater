@@ -61,19 +61,6 @@ byte MINPSUTEMP = 38; // in Cº // 0 < MINPSUTEMP < MAXPSUTEMP
 #if DEBUG
     #define debug(data) Serial.println(data)
     #define changeStatus(newStatus) debug(String(F("Mode changed from '")) +String(modeToString(screenStatus))+String(F("' to '"))+String(modeToString(newStatus))+String(F("'"))); screenStatus = newStatus
-
-    int freeMemory() // Free amount of RAM between heap & stack // All Credits to https://github.com/mpflaga/Arduino-MemoryFree contributors
-    {
-        char top;
-    #ifdef __arm__
-        return &top - reinterpret_cast<char*>(sbrk(0));
-    #elif defined(CORE_TEENSY) || (ARDUINO > 103 && ARDUINO != 151)
-        return &top - __brkval;
-    #else  // __arm__
-        return __brkval ? &top - __brkval : &top - __malloc_heap_start;
-    #endif  // __arm__
-    }
-
 #else
     #define debug(data) ;
     #define changeStatus(newStaus) screenStatus = newStatus
