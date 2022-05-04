@@ -260,9 +260,11 @@ void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottom
 void drawNumInput (String titleNumInput, String unit)
 {
     drawBackground();
+    title.setDisableAutoSize(true);
     titleLabel.setString(titleNumInput.c_str()); // title
     titleLabel.setFontSize(2);
     my_lcd.draw(&title);
+    title.setDisableAutoSize(false);
 
     //NUMERIC BUTTONS//
     label.setString("1"); // Button number 1
