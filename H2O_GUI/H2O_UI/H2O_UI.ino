@@ -402,63 +402,63 @@ double getNumInput(String titleNumInput, String unit, double value)
                 my_lcd.draw(&output);
                 delay(200);
             }
-            if(btn2.isPressed())
+            else if(btn2.isPressed())
             {
                 len++;
                 strcat(string,"2");
                 my_lcd.draw(&output);
                 delay(200);
             }
-            if(btn3.isPressed())
+            else if(btn3.isPressed())
             {
                 len++;
                 strcat(string,"3");
                 my_lcd.draw(&output);
                 delay(200);
             }
-            if(btn4.isPressed())
+            else if(btn4.isPressed())
             {
                 len++;
                 strcat(string,"4");
                 my_lcd.draw(&output);
                 delay(200);
             }
-            if(btn5.isPressed())
+            else if(btn5.isPressed())
             {
                 len++;
                 strcat(string,"5");
                 my_lcd.draw(&output);
                 delay(200);
             }
-            if(btn6.isPressed())
+            else if(btn6.isPressed())
             {
                 len++;
                 strcat(string,"6");
                 my_lcd.draw(&output);
                 delay(200);
             }
-            if(btn7.isPressed())
+            else if(btn7.isPressed())
             {
                 len++;
                 strcat(string,"7");
                 my_lcd.draw(&output);
                 delay(200);
             }
-            if(btn8.isPressed())
+            else if(btn8.isPressed())
             {
                 len++;
                 strcat(string,"8");
                 my_lcd.draw(&output);
                 delay(200);
             }
-            if(btn9.isPressed())
+            else if(btn9.isPressed())
             {
                 len++;
                 strcat(string,"9");
                 my_lcd.draw(&output);
                 delay(200);
             }
-            if(btn10.isPressed())
+            else if(btn10.isPressed())
             {
                 len++;
                 strcat(string,"0");
@@ -482,18 +482,17 @@ double getNumInput(String titleNumInput, String unit, double value)
             my_lcd.draw(&output);
             delay(200);
         }
-
-        if(backBtn.isPressed())
+        else if(backBtn.isPressed())
         {
             exit=-1;
             delay(200);
         }
-        if(oKBtn.isPressed())
+        else if(oKBtn.isPressed())
         {
             exit=1;
             delay(200);
         }
-        if(signBtn.isPressed())
+        else if(signBtn.isPressed())
         {
             negative=(!negative);
             if(!negative)
@@ -520,16 +519,14 @@ double getNumInput(String titleNumInput, String unit, double value)
         }
     }
 
-    if(exit==-1)
-    {
-        debug(F("getNumInput was cancelled"));
-        return NAN;
-    }
     if (exit==1)
     {
         debug(String(F("getNumInput returned: "))+atof(string));
         return atof(string);
     }
+
+    debug(F("getNumInput was cancelled"));
+    return NAN;
 }
 
 // btn1 --> topLeft; btn2 --> centerLeft; btn3 --> bottomLeft; btn4 --> topRight; btn5 --> centerRight; btn6 --> bottomRight; btn7 --> Previous; btn8 --> Next; btn9 --> topHelp; btn10 --> centerHelp; btn11 --> bottomHelp
