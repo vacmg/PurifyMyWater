@@ -7,7 +7,7 @@
 #include <SimpleLCDTouchScreen.h>
 
 #define DEBUG true
-#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
+#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 enum ScreenStatus {BOOTING = 0, LOADSTATUS, STATUS, LOADMENU, MENU, LOADSETTINGS, SETTINGS, LOADHELP, HELP, LOADENGINEERINGMODE, ENGINEERINGMODE, LOADEXTRAFUNCTIONS, EXTRAFUNCTIONS, LOADELECTRICITY, LOADPAGEELECTRICITY, ELECTRICITY, LOADINTERFACE, LOADPAGEINTERFACE, INTERFACE, LOADWATER, LOADPAGEWATER, WATER, LOADTEMPERATURE, LOADPAGETEMPERATURE, TEMPERATURE};
 // ON/OFF BTN STATUS
@@ -260,11 +260,9 @@ void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottom
 void drawNumInput (String titleNumInput, String unit)
 {
     drawBackground();
-    title.setDisableAutoSize(true);
     titleLabel.setString(titleNumInput.c_str()); // title
-    titleLabel.setFontSize(2); // TODO check autosize bug with long labels
+    titleLabel.setFontSize(2);
     my_lcd.draw(&title);
-    title.setDisableAutoSize(false);
 
     //NUMERIC BUTTONS//
     label.setString("1"); // Button number 1
@@ -360,6 +358,7 @@ void drawNumInput (String titleNumInput, String unit)
 
 double getNumInput(String titleNumInput, String unit, double value)
 {
+    debug(String(F("getNumInput: "))+titleNumInput+F(": ")+value+unit);
     drawNumInput(titleNumInput,unit);
     char string[15];
     bool negative; // sign switch
@@ -379,13 +378,10 @@ double getNumInput(String titleNumInput, String unit, double value)
         negative=true;
     }
     strcat(string,String(value,4).c_str());
-    debug(String(F("String value: "))+string);
-
 
     char exit=0; // exit switch
-    byte len=strlen(string); // size of the string // todo check if strlen gives the expected output
-    debug(String(F("len: "))+len);
-    bool decimalDotPlaced = true; // todo verify if sprintf always places decimal dot
+    byte len=strlen(string); // size of the string
+    bool decimalDotPlaced = true;
 
 
     my_lcd.draw(&output);
@@ -484,11 +480,13 @@ double getNumInput(String titleNumInput, String unit, double value)
         }
         else if(backBtn.isPressed())
         {
+            debug(F("Back button pressed"));
             exit=-1;
             delay(200);
         }
         else if(oKBtn.isPressed())
         {
+            debug(F("Ok button pressed"));
             exit=1;
             delay(200);
         }
@@ -1208,9 +1206,9 @@ void clickElectricity()
                         STARTCHARGINGVOLTAGE = tempVal;
                         // TODO send new setting
                     }
-                    changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
-                    drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
                 /*case x:
                     ...*/
