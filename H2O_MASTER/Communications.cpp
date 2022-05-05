@@ -30,8 +30,8 @@ bool extractRequestMessage(char* buffer, char* variableID, char* funcionID)
 {
     if(buffer == NULL || variableID == NULL || funcionID == NULL)
         return false;
-    variableID = strtok(&buffer[1],SEPARATOR);
-    funcionID = strtok(NULL,SEPARATOR);
+    strcpy(variableID,strtok(&buffer[1],SEPARATOR));
+    strcpy(funcionID,strtok(NULL,SEPARATOR);
     return true
 }
 
