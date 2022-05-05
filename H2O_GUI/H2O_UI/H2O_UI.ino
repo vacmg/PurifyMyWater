@@ -7,14 +7,14 @@
 #include <SimpleLCDTouchScreen.h>
 
 #define DEBUG true
-#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
+#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 enum ScreenStatus {BOOTING = 0, LOADSTATUS, STATUS, LOADMENU, MENU, LOADSETTINGS, SETTINGS, LOADHELP, HELP, LOADENGINEERINGMODE, ENGINEERINGMODE, LOADEXTRAFUNCTIONS, EXTRAFUNCTIONS, LOADELECTRICITY, LOADPAGEELECTRICITY, ELECTRICITY, LOADINTERFACE, LOADPAGEINTERFACE, INTERFACE, LOADWATER, LOADPAGEWATER, WATER, LOADTEMPERATURE, LOADPAGETEMPERATURE, TEMPERATURE};
 // ON/OFF BTN STATUS
 enum BtnStatus {OFF, ON, ERROR};
 
 BtnStatus mainSwitchSt = OFF;
-ScreenStatus screenStatus = LOADELECTRICITY; // Must be initialized to BOOTING in order to show splash screen
+ScreenStatus screenStatus = LOADSTATUS; // Must be initialized to BOOTING in order to show splash screen
 byte ROTATION = 1;
 
 #include "sharedData.h"
@@ -623,7 +623,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     my_lcd.draw(&rec1);
 
 
-    //Filter
+    //SufaceTank
     Rectangle rec2(135,201,144,206,white,white);
     if(filterRelay)
     {
@@ -915,19 +915,74 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     my_lcd.draw(&rec5);
 }
 
+void drawStatusBackgroundPhoto()
+{
+    //rectangle around the page
+    Rectangle rec (79,246,90,253, Color(255,0,0));
+    RoundRectangle Rrec( 15,75,465,302,1, Color(255,0,0));
+    my_lcd.draw(&Rrec);
+    //wellPump
+    my_lcd.draw(&rec);
+
+    Rrec.setCoords(81,119); // Tube up
+    Rrec.setCoords1(84,246);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(81,117);// Tube right
+    Rrec.setCoords1(122,120);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(119,117);// Tube down
+    Rrec.setCoords1(122,203);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(27,302);// well
+    Rrec.setCoords1(90,220);
+    my_lcd.draw(&Rrec);
+
+    //Filter
+    Rrec.setRadius(2);
+    Rrec.setCoords(157,130);// filter
+    Rrec.setCoords1(200,152);
+    my_lcd.draw(&Rrec);
+    Rrec.setRadius(1);
+
+    Rrec.setCoords(199,135);// tube up
+    Rrec.setCoords1(220,138);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(217,135);// tube down
+    Rrec.setCoords1(220,216);
+    my_lcd.draw(&Rrec);
+
+    //SurfaceTank
+    rec.setCoords(134,200);// valve
+    rec.setCoords1(145,207);
+    my_lcd.draw(&rec);
+
+    Rrec.setCoords(137,135);// tube up
+    Rrec.setCoords1(140,200);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(138,135);// tube right
+    Rrec.setCoords1(157,138);
+    my_lcd.draw(&Rrec);
+}
+
 void drawStatusBackground(bool dontFillScreen)
 {
     if(!dontFillScreen)
         my_lcd.Fill_Screen(0xFFFF);
 
-    Label loading(165,85,"Loading...",3,Color(0,70,200));
-    my_lcd.draw(&loading);
+    //Label loading(165,85,"Loading...",3,Color(0,70,200));
+    //my_lcd.draw(&loading);
 
     titleLabel.setString("Status"); // Title
     my_lcd.draw(&title);
 
-    Picture statusBackground(14,74,"schArd.bmp");
-    my_lcd.draw(&statusBackground);
+    drawStatusBackgroundPhoto();
+    //Picture statusBackground(14,74,"schArd.bmp");
+    //my_lcd.draw(&statusBackground);
     Rectangle rec(225,60,249,73, Color(255,255,255), Color(255,255,255));
     my_lcd.draw(&rec);
 
@@ -986,7 +1041,7 @@ void drawStatusForeground(const char* voltage, const char* waterAmount)//TODO ad
     btn2.setSecondaryColor(Color(255, 255, 255));
     btn2.setDisableAutoSize(false);
 
-    drawStatusColors(0,0,0,0,0,0,0,0,0);
+    drawStatusColors(1,1,1,1,1,1,1,1,1);
 }
 
 // Buttons mapped to: btn1 --> Settings, btn2 --> Help, btn3 --> Engineering Mode, btn4 --> Extra Functions
