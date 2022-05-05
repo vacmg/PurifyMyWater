@@ -1,5 +1,5 @@
 //
-// Created by Víctor on 08/03/2022.
+// Created by Víctor, Andrés and Gabriel on 05/05/2022.
 //
 
 #include "Communications.h"
@@ -12,6 +12,36 @@
  * \n: terminator character
  */
 
+#define ID_REQUESTMESSAGE 2
+#define SEPARATOR ","
+
+bool createRequestAnswerMessage(char* buffer, const char* idVariable, const char* value, const char* idFunction)
+{
+    if (buffer == NULL || value == NULL || idVariable == NULL || idFunction == NULL)
+        return false;
+
+    buffer[0] = ID_REQUESTMESSAGE;
+    strcat(buffer, SEPARATOR);
+    strcat(buffer, idVariable);
+    strcat(buffer, SEPARATOR);
+    strcat(buffer, value);
+    strcat(buffer, SEPARATOR);
+    strcat(buffer, idFunction);
+
+    return true;
+}
+
+bool extractRequestAnswerMessage(char* buffer, char* idVariable, char* value, char* idFunction)
+{
+    if (buffer == NULL || value == NULL || idVariable == NULL || idFunction == NULL)
+        return false;
+
+    strcpy(idVariable, strtok(buffer, SEPARATOR));
+    strcpy(value, strtok(NULL, SEPARATOR));
+    strcpy(idFunction, strtok(NULL, SEPARATOR));
+
+    return true;
+}
 
 bool sendMessage(const char* payload, HardwareSerial* serial)
 {

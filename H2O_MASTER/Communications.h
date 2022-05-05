@@ -33,7 +33,8 @@
 #define Message(data) String(data).c_str()
 
 
-
+bool createRequestAnswerMessage(char* buffer, const char* idVariable, const char* value, const char* idFunction);
+bool extractRequestAnswerMessage(char* buffer, char* idVariable, char* value, char* idFunction);
 
 bool sendMessage(const char* message, HardwareSerial* serial);
 bool getMessage(char* message, HardwareSerial* serial);
