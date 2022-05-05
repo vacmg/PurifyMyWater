@@ -1025,19 +1025,19 @@ void drawElectricity() // TODO get settings real value
     {
         case 1:
             setFontSizeArray(fontSizes, 1,1,1,2,2,2);
-            draw6ButtonsLayout(F("Start Charging Voltage"),F("Stop Charging Voltage"),F("UV light est. Current"),String(STARTCHARGINGVOLTAGE)+"V","15.5V","1A",true,true,true,fontSizes);
+            draw6ButtonsLayout(F("Start Charging Voltage"),F("Stop Charging Voltage"),F("UV light est. Current"),String(STARTCHARGINGVOLTAGE)+"V",String(STOPCHARGINGVOLTAGE),"1A",true,true,true,fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1,1,1,2,2,2);
-            draw6ButtonsLayout(F("Start Working Voltage"),F("Stop Working Voltage"),F("AC Inverter Frequency"),"15.2V","11.9V","50Hz",true,true,true, fontSizes);
+            draw6ButtonsLayout(F("Start Working Voltage"),F("Stop Working Voltage"),F("AC Inverter Frequency"),String(STARTWORKINGVOLTAGE),String(STOPWORKINGVOLTAGE),"50Hz",true,true,true, fontSizes);
             break;
         case 3:
             setFontSizeArray(fontSizes, 1,1,1,2,2,2);
-            draw6ButtonsLayout(F("AC Ammeter Sensitivity"),F("AC Ammeter Zero"),F("DC Ammeter Sensitivity"),"1.856","3.678","1.567",true,true,true,fontSizes);
+            draw6ButtonsLayout(F("AC Ammeter Sensitivity"),F("AC Ammeter Zero"),F("DC Ammeter Sensitivity"),String(STARTWORKINGVOLTAGE, 4),String(ACAMPZERO,4),"1.567",true,true,true,fontSizes);
             break;
         case 4:
             setFontSizeArray(fontSizes, 1,1,1,2,1,1);
-            draw6ButtonsLayout(F("DC Ammeter Zero"),"","","4.678","","",true,false,false,fontSizes);
+            draw6ButtonsLayout(F("DC Ammeter Zero"),"","",String(DCAMPZERO,4),"","",true,false,false,fontSizes);
             break;
     }
 }
@@ -1194,39 +1194,143 @@ void clickSettings()
 
 void clickElectricity()
 {
+    double tempVal;
     if(btn4.isPressed())
     {
         switch (page)
         {
             case 1: // Start charging voltage
-                double tempVal = getNumInput("Start charging Voltage","V",STARTCHARGINGVOLTAGE);
+                tempVal = getNumInput("Start charging Voltage","V",STARTCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if(STOPWORKINGVOLTAGE<tempVal && tempVal<STOPCHARGINGVOLTAGE)
                     {
-                        debug(String(F("STARTCHARGINGVOTAGE UPDATED: "))+STARTCHARGINGVOLTAGE+String(F(" --> "))+tempVal);
+                        debug(String(F("STARTCHARGINGVOLTAGE UPDATED: "))+STARTCHARGINGVOLTAGE+String(F(" --> "))+tempVal);
                         STARTCHARGINGVOLTAGE = tempVal;
                         // TODO send new setting
                     }
                 }
                 changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
-                break;
-                /*case x:
-                    ...*/
+            break;
+
+            case 2: //page 2
+                tempVal = getNumInput("Start Working Voltage","V",STARTWORKINGVOLTAGE);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if(STARTCHARGINGVOLTAGE<tempVal && tempVal<STOPCHARGINGVOLTAGE)// STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
+                    {
+                        debug(String(F("STARTCHARGINGVOLTAGE UPDATED: "))+STARTWORKINGVOLTAGE+String(F(" --> "))+tempVal);
+                        STARTWORKINGVOLTAGE = tempVal;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
+
+            case 3:
+                tempVal = getNumInput("AC Ammeter Sensitivity","",ACAMPSENSITIVITY);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    debug(String(F("ACAMPSENSITIVITY UPDATED: "))+ACAMPSENSITIVITY+String(F(" --> "))+tempVal);
+                    ACAMPSENSITIVITY = tempVal;
+                    // TODO send new setting
+
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
+
+            case 4:
+                tempVal = getNumInput("DC Ammeter Zero","",DCAMPZERO);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    debug(String(F(" UPDATED: DCAMPZERO"))+DCAMPZERO+String(F(" --> "))+tempVal);
+                    DCAMPZERO = tempVal;
+                    // TODO send new setting
+
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
         }
+
     }
-    /*else if(btnx.isPressed())
+    else if(btn5.isPressed())
     {
         switch (page)
         {
             case 1:
-            changeStatus(XXXXX);
+                tempVal = getNumInput("Stop Charging Voltage","V",STOPCHARGINGVOLTAGE);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if(STARTCHARGINGVOLTAGE+1<tempVal && tempVal<MAXCAPACITORSALLOWEDVOLTAGE)// STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE
+                    {
+                        debug(String(F("STOPCHARGINGVOLTAGE UPDATED: "))+STOPCHARGINGVOLTAGE+String(F(" --> "))+tempVal);
+                        STOPCHARGINGVOLTAGE = tempVal;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
             break;
-            case x:
-                ...
+
+            case 2:
+                tempVal = getNumInput("Stop Working Voltage","V",STOPWORKINGVOLTAGE);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if(MINSYSTEMALLOWEDVOLTAGE<tempVal && tempVal<STARTCHARGINGVOLTAGE-1)// MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1
+                    {
+                        debug(String(F("STOPWORKINGVOLTAGE UPDATED: "))+STOPWORKINGVOLTAGE+String(F(" --> "))+tempVal);
+                        STOPWORKINGVOLTAGE = tempVal;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
+
+            case 3:
+                tempVal = getNumInput("AC Ammeter Zero","",ACAMPZERO);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    debug(String(F("ACAMPZERO UPDATED: "))+ACAMPZERO+String(F(" --> "))+tempVal);
+                    ACAMPZERO = tempVal;
+                    // TODO send new setting
+
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
         }
-    }*/
+    }
+    else if(btn6.isPressed())
+    {
+        switch (page)
+        {
+            case 1:
+                tempVal = getNumInput("AC Ammeter Zero","",ACAMPZERO);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    debug(String(F("ACAMPZERO UPDATED: "))+ACAMPZERO+String(F(" --> "))+tempVal);
+                    ACAMPZERO = tempVal;
+                    // TODO send new setting
+
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
+
+            case 2:
+
+            break;
+
+            case 3:
+
+            break;
+        }
+    }
 }
 
 void clickInterface()
