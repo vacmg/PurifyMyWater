@@ -995,7 +995,7 @@ void drawStatusBackgroundPhoto()
 
     //UV
     Rrec.setCoords(252,147);// valve
-    Rrec.setCoords1(255,202	);
+    Rrec.setCoords1(255,202);
     my_lcd.draw(&Rrec);
 
     Rrec.setCoords(252,147);// tube up
@@ -1006,7 +1006,7 @@ void drawStatusBackgroundPhoto()
     Rrec.setCoords1(279,200);
     my_lcd.draw(&Rrec);
 
-    Rrec.setCoords(271,200);//tubo down
+    Rrec.setCoords(271,200);//tube down
     Rrec.setCoords1(324,211);
     my_lcd.draw(&Rrec);
 
@@ -1029,6 +1029,26 @@ void drawStatusBackgroundPhoto()
 
     //PurifiedTank
 
+    Rrec.setCoords(338,164);// tank
+    Rrec.setCoords1(380,220);
+    my_lcd.draw(&Rrec);
+
+    rec.setCoords(369,202);// valve
+    rec.setCoords1(380,209);
+    my_lcd.draw(&rec);
+
+    Rrec.setCoords(373,204);// tube down
+    Rrec.setCoords1(376,82);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(374,80); //tube
+    Rrec.setCoords1(403,83);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(400,80); //tube down
+    Rrec.setCoords1(403,139);
+    my_lcd.draw(&Rrec);
+
     //End tank
     Rrec.setCoords(426,156);// tube down
     Rrec.setCoords1(431,183);
@@ -1038,8 +1058,8 @@ void drawStatusBackgroundPhoto()
     Rrec.setCoords1(461,187);
     my_lcd.draw(&Rrec);
 
-    rec.setCoords(395,92);//tank
-    rec.setCoords1(472,157);
+    rec.setCoords(395,91);//tank
+    rec.setCoords1(453,158);
     my_lcd.draw(&rec);
 }
 
@@ -1054,9 +1074,11 @@ void drawStatusBackground(bool dontFillScreen)
     titleLabel.setString("Status"); // Title
     my_lcd.draw(&title);
 
+
+    Picture statusBackground(14,74,"schArd.bmp");
+    my_lcd.draw(&statusBackground);
     drawStatusBackgroundPhoto();
-    //Picture statusBackground(14,74,"schArd.bmp");
-    //my_lcd.draw(&statusBackground);
+
     Rectangle rec(225,60,249,73, Color(255,255,255), Color(255,255,255));
     my_lcd.draw(&rec);
 
@@ -1115,7 +1137,7 @@ void drawStatusForeground(const char* voltage, const char* waterAmount)//TODO ad
     btn2.setSecondaryColor(Color(255, 255, 255));
     btn2.setDisableAutoSize(false);
 
-    drawStatusColors(1,1,1,1,1,1,1,1,1);
+    drawStatusColors(0,0,0,0,0,0,0,0,0);
 }
 
 // Buttons mapped to: btn1 --> Settings, btn2 --> Help, btn3 --> Engineering Mode, btn4 --> Extra Functions
