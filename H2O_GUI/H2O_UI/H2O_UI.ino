@@ -967,6 +967,80 @@ void drawStatusBackgroundPhoto()
     Rrec.setCoords(138,135);// tube right
     Rrec.setCoords1(157,138);
     my_lcd.draw(&Rrec);
+
+    rec.setCoords(98,152);//tank
+    rec.setCoords1(145,220);
+    my_lcd.draw(&rec);
+
+    //filtered tank
+    rec.setCoords(212,162);// tank
+    rec.setCoords1(259,220);
+    my_lcd.draw(&rec);
+
+    rec.setCoords(212,162);// valve
+    rec.setCoords1(259,220);
+    my_lcd.draw(&rec);
+
+    Rrec.setCoords(252,147);// tube up
+    Rrec.setCoords1(255,202);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(252,147);// tube right
+    Rrec.setCoords1(279,150);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(276,148);//tubo down
+    Rrec.setCoords1(279,200);
+    my_lcd.draw(&Rrec);
+
+    //UV
+    Rrec.setCoords(252,147);// valve
+    Rrec.setCoords1(255,202	);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(252,147);// tube up
+    Rrec.setCoords1(279,150);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(276,148);// tube right
+    Rrec.setCoords1(279,200);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(271,200);//tubo down
+    Rrec.setCoords1(324,211);
+    my_lcd.draw(&Rrec);
+
+    //UV_2
+    Rrec.setCoords(316,147);// tube up
+    Rrec.setCoords1(319,200);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(317,147);// tube right
+    Rrec.setCoords1(345,150);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(342,148);// tube down
+    Rrec.setCoords1(345,220);
+    my_lcd.draw(&Rrec);
+
+    rec.setCoords(248,202);//valve
+    rec.setCoords1(259,209);
+    my_lcd.draw(&rec);
+
+    //PurifiedTank
+
+    //End tank
+    Rrec.setCoords(426,156);// tube down
+    Rrec.setCoords1(431,183);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(426,182);// tube right
+    Rrec.setCoords1(461,187);
+    my_lcd.draw(&Rrec);
+
+    rec.setCoords(395,92);//tank
+    rec.setCoords1(472,157);
+    my_lcd.draw(&rec);
 }
 
 void drawStatusBackground(bool dontFillScreen)
