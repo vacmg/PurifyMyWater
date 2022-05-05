@@ -35,6 +35,8 @@
 
 
 
+bool createRequestMessage(char* buffer, char* variableID, char* funcionID);
+bool extractRequestMessage(char* buffer, char* variableID, char* funcionID);
 bool sendMessage(const char* message, HardwareSerial* serial);
 bool getMessage(char* message, HardwareSerial* serial);
 bool verifyMessage(char* message);

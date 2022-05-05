@@ -11,7 +11,48 @@
  * payload: useful data of the message
  * \n: terminator character
  */
+#define ID_REQUESTMESSAGE 1
+#define ID_SENDMESSAGE 3
+#define SEPARATOR ","
 
+bool createRequestMessage(char* buffer, char* variableID, char* funcionID)
+{
+    if(variableID == NULL || buffer == NULL || funcionID == NULL)
+        return false;
+    buffer[0] = ID_REQUESTMESSAGE;
+    strcat(buffer,variableID);
+    strcat(buffer,SEPARATOR);
+    strcat(buffer,funcionID);
+    return true
+}
+
+bool extractRequestMessage(char* buffer, char* variableID, char* funcionID)
+{
+    if(buffer == NULL || variableID == NULL || funcionID == NULL)
+        return false;
+    variableID = strtok(&buffer[1],SEPARATOR);
+    funcionID = strtok(NULL,SEPARATOR);
+    return true
+}
+
+bool createSendMessage(char* buffer, byte variableID, const char* valor)
+{
+    if(valor == NULL || buffer == NULL)
+        return false;
+    buffer[0] = ID_SENDMESSAGE; // ID sendMessage
+    buffer[1] = variableID;
+    strcpy(&buffer[2], valor);
+    return true;
+}
+
+bool extractSendMessage(const char* buffer, byte* variableID, char* valor)
+{
+    if(valor == NULL || buffer == NULL)
+        return false;
+    *variableID = buffer[1];
+    strcpy(valor, &buffer[2]);
+    return true;
+}
 
 bool sendMessage(const char* payload, HardwareSerial* serial)
 {
