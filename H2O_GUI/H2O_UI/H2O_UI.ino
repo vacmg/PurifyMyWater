@@ -1199,7 +1199,7 @@ void clickElectricity()
         switch (page)
         {
             case 1: // Start charging voltage
-                float tempVal = getNumInput("Start charging Voltage","V",STARTCHARGINGVOLTAGE);
+                double tempVal = getNumInput("Start charging Voltage","V",STARTCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if(STOPWORKINGVOLTAGE<tempVal && tempVal<STOPCHARGINGVOLTAGE)
