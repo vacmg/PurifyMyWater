@@ -15,7 +15,7 @@
 #define ID_SENDMESSAGE 3
 #define SEPARATOR ","
 
-bool createRequestMessage(char* buffer, char* variableID, char* funcionID)
+bool createRequestMessage(char* buffer, const char* variableID, const char* funcionID)
 {
     if(variableID == NULL || buffer == NULL || funcionID == NULL)
         return false;
@@ -26,7 +26,7 @@ bool createRequestMessage(char* buffer, char* variableID, char* funcionID)
     return true
 }
 
-bool extractRequestMessage(char* buffer, char* variableID, char* funcionID)
+bool extractRequestMessage(const char* buffer, char* variableID, char* funcionID)
 {
     if(buffer == NULL || variableID == NULL || funcionID == NULL)
         return false;
