@@ -929,6 +929,9 @@ void drawStatusBackgroundPhoto()
     Rrec.setCoords(15,302);
     Rrec.setCoords1(465,220);
     my_lcd.draw(&Rrec);
+    Rrec.setCoords(117,302);
+    Rrec.setCoords1(435,220);
+    my_lcd.draw(&Rrec);
 
     //SolarPanel
     Line line(80,100,64,200,Color(0,0,0));
@@ -956,12 +959,12 @@ void drawStatusBackgroundPhoto()
     line.setCoords1(92,120);
     my_lcd.draw(&line);
     line.setCoords(4,140);
-    line.setCoords1(92,140);
+    line.setCoords1(90,140);
     my_lcd.draw(&line);
     line.setCoords(4,160);
     line.setCoords1(94,160);
     my_lcd.draw(&line);
-    line.setCoords(4,180);
+    line.setCoords(17,180);
     line.setCoords1(96,180);
     my_lcd.draw(&line);
 
@@ -1050,7 +1053,7 @@ void drawStatusBackgroundPhoto()
     my_lcd.draw(&Rrec);
 
     //UV
-    Rrec.setCoords(252,147);// valve
+    Rrec.setCoords(252,147);// tube right
     Rrec.setCoords1(255,202);
     my_lcd.draw(&Rrec);
 
@@ -1079,9 +1082,17 @@ void drawStatusBackgroundPhoto()
     Rrec.setCoords1(345,165);
     my_lcd.draw(&Rrec);
 
-    rec.setCoords(248,202);//valve
+    rec.setCoords(248,202);// UV
     rec.setCoords1(259,209);
     my_lcd.draw(&rec);
+
+    line.setCoords(248,220); //TODO lines
+    line.setCoords1(252,209);
+    my_lcd.draw(&line);
+
+    line.setCoords(255,209);
+    line.setCoords1(259,220);
+    my_lcd.draw(&line);
 
     //PurifiedTank
 
