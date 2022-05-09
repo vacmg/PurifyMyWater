@@ -80,15 +80,22 @@ bool SimpleLCDTouchScreen::draw(Picture* picture)
         }
         else
         {
-            draw(&Label(picture->getx(),picture->gety(),"Failure decoding .bmp",2,Color(255,255,255),Color(255,0,0)));
+            Label label(picture->getx(),picture->gety(),"Failure decoding .bmp",2,Color(255,255,255),Color(255,0,0));
+            draw(&label);
             return false;
         }
     }
     else
     {
-        draw(&Label(picture->getx(),picture->gety(),"Failure starting the SD card",2,Color(255,255,255),Color(255,0,0)));
+        Label label(picture->getx(),picture->gety(),"Failure starting the SD card",2,Color(255,255,255),Color(255,0,0));
+        draw(&label);
         return false;
     }
+}
+
+bool SimpleLCDTouchScreen::draw(TextBox* textBox)
+{
+    draw(textBox->getFrame());
 }
 
 void SimpleLCDTouchScreen::Init_LCD()
@@ -111,9 +118,9 @@ bool SimpleLCDTouchScreen::drawBmpPicture(int x, int y, File file, uint32_t offs
         for(long col = 0; col<width;col++)
         {
             uint8_t colors[3];
-            for(int i = 0; i<3;i++)
+            for(unsigned char & color : colors)
             {
-                colors[i] = file.read();
+                color = file.read();
             }
             Set_Draw_color(LCDWIKI_KBV::Color_To_565(colors[2],colors[1],colors[0]));
             Draw_Pixel((int)(x+col),(int)(y+row));

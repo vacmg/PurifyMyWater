@@ -59,9 +59,9 @@ void ScreenObjectWithLabel::disableLabel()
     validLabel = false;
 }
 
-// This function dynamicly set rectangle's label position and font size
-// The algorythm used is a little bit complex: the first part uses a predefined scheme of making the label to use 3/4 parts of the rectangle
-// With that scheme, it gets the fontSize. The second part of the algorythm uses the fontSize to get the coords used to draw the label
+// This function dynamically set rectangle's label position and font size
+// The algorithm used is a little complex: the first part uses a predefined scheme of making the label to use 3/4 parts of the rectangle
+// With that scheme, it gets the fontSize. The second part of the algorithm uses the fontSize to get the coords used to draw the label
 void ScreenObjectWithLabel::updateLabelLocation(uint8_t margin)
 {
     int wlen = strlen(getLabel()->getString());

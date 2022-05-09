@@ -15,7 +15,8 @@ public:
     int getx();
     int gety();
     Color getMainColor();
-    void setCoords(int x, int y);
+
+    virtual void setCoords(int x, int y);
     void setMainColor(Color mainColor);
     void setMainColor(uint8_t r, uint8_t g, uint8_t b);
 
