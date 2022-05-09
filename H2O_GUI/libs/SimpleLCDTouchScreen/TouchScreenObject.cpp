@@ -115,8 +115,6 @@ TSPoint TouchScreenObject::getPoint()
         point.y = aux;
     }
 
-    /*if(point.z>50) // todo delete this
-    Serial.print("point:\tx:"+String(point.x)+";\ty:"+point.y+'\n'); // todo delete this//*/
     return point;
 }
 
