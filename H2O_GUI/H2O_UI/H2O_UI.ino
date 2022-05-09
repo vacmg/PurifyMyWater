@@ -1086,13 +1086,8 @@ void drawStatusBackgroundPhoto()
     rec.setCoords1(259,209);
     my_lcd.draw(&rec);
 
-    line.setCoords(248,220); //TODO lines
-    line.setCoords1(252,209);
-    my_lcd.draw(&line);
-
-    line.setCoords(255,209);
-    line.setCoords1(259,220);
-    my_lcd.draw(&line);
+    Line legs(272,220,292,200,Color(0,0,0));
+    my_lcd.draw(&legs); //TODO Bug with the lines, x and x1 or y and y1 not working properly
 
     //PurifiedTank
 
@@ -1142,7 +1137,7 @@ void drawStatusBackground(bool dontFillScreen)
     my_lcd.draw(&title);
 
 
-    //Picture statusBackground(14,74,"schArd.bmp");
+    //Picture statusBackground(14,74,"schArd.bmp"); //Using p
     //my_lcd.draw(&statusBackground);
     drawStatusBackgroundPhoto();
 
