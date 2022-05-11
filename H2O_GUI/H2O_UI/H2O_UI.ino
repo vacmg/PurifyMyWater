@@ -1057,7 +1057,7 @@ void drawInterface()
             break;
         case 2:
             setFontSizeArray(fontSizes,2,2,2,2,2,2);
-            draw6ButtonsLayout(F("Refresh Period"),F("Reset"),"","5s","Perform Reset","",true,true,false, fontSizes);
+            draw6ButtonsLayout(F("Refresh Period"),F("Reset"),"",(String)(((double)DATAREFRESHPERIOD)/1000)+"s","Perform Reset","",true,true,false, fontSizes);
             break;
     }
 
@@ -1073,7 +1073,7 @@ void drawTemperature() {
     {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(F("Temp. Refresh Rate"), F("System Stop Temp."), F("PSU Fan Start Temp."), "20s", "65C", "40C",
+            draw6ButtonsLayout("Temp. Refresh Rate ", F("System Stop Temp."), F("PSU Fan Start Temp."), String(((double)TEMPCHECKTIME)/1000) + "s", String(STOPWORKINGTEMP)+"C", "40C",
                                true, true, true, fontSizes);
             break;
         case 2:
@@ -1231,17 +1231,28 @@ void clickElectricity()
 
 void clickInterface()
 {
-    /*if(btnx.isPressed())
+
+    if (btn4.isPressed())
     {
         switch (page)
         {
-            case 1:
-            changeStatus(XXXXX);
-            break;
-            case x:
-                ...
+            case 2: // Refresh Period
+                double tempVal = getNumInput("Refresh Period", "s", DATAREFRESHPERIOD);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if (tempVal > 0)
+                    {
+                        debug(String(F("DATAREFRESHPERIOD UPDATED: ")) + DATAREFRESHPERIOD + String(F(" --> ")) +
+                              tempVal);
+                        DATAREFRESHPERIOD = (long)tempVal*1000;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGEINTERFACE); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+                break;
         }
-    }*/
+    }
 }
 
 void clickWater()
@@ -1261,17 +1272,72 @@ void clickWater()
 
 void clickTemperature()
 {
-    /*if(btnx.isPressed())
+    if (btn4.isPressed())
     {
         switch (page)
         {
-            case 1:
-            changeStatus(XXXXX);
-            break;
-            case x:
-                ...
+            case 1: // Temp. Refresh Rate
+                double tempVal = getNumInput("Temp. Refresh Rate", "s", TEMPCHECKTIME);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if (tempVal > 0)
+                    {
+                        debug(String(F("TEMPCHECKTIME UPDATED: ")) + TEMPCHECKTIME + String(F(" --> ")) +
+                              tempVal);
+                        TEMPCHECKTIME = (long) tempVal * 1000;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGETEMPERATURE); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+                break;
         }
-    }*/
+    }
+
+    else if (btn5.isPressed())
+    {
+        switch (page)
+        {
+            case 1: // System Stop Temp.
+                double tempVal = getNumInput("Temp. Refresh Rate", "C", STOPWORKINGTEMP);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if (tempVal > 0)
+                    {
+                        debug(String(F("STOPWORKINGTEMP UPDATED: ")) + STOPWORKINGTEMP + String(F(" --> ")) +
+                              tempVal);
+                        STOPWORKINGTEMP = tempVal;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGETEMPERATURE); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+                break;
+        }
+    }
+
+    else if (btn6.isPressed())
+    {
+        switch (page)
+        {
+            case 1: // PSU Fan Start Temp.
+                double tempVal = getNumInput("PSU Fan Start Temp.", "s", STARTPSUTEMP);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if (tempVal > 0)
+                    {
+                        debug(String(F("STARTPSUTEMP UPDATED: ")) + STARTPSUTEMP + String(F(" --> ")) +
+                              tempVal);
+                        STARTPSUTEMP = tempVal;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGETEMPERATURE); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+                break;
+        }
+    }
+
 }
 
 void clickExtraFunctions()
