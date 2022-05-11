@@ -12,15 +12,32 @@
  * \n: terminator character
  */
 #define ID_REQUESTMESSAGE 1
-#define ID_REQUESTMESSAGE 2
+#define ID_REQUESTANSWERMESSAGE 2
 #define ID_SENDMESSAGE 3
 #define SEPARATOR ","
 
-char bufferSerial[MAXMSGSIZE];
 void messageManager(HardwareSerial* serial){
     if(serial->available())
     {
+        char bufferSerial[MAXMSGSIZE];
+        char variableId[1];
+        char funcionId[1];
+        char value[1];
         getMessage(bufferSerial,serial);
+        switch (bufferSerial[0])
+        {
+            case ID_REQUESTMESSAGE:
+                extractRequestMessage(bufferSerial,variableId,funcionId);
+                break;
+            case ID_REQUESTANSWERMESSAGE:
+                extractRequestAnswerMessage(bufferSerial,variableId,value,funcionId);
+                break;
+            case ID_SENDMESSAGE:
+                extractSendMessage(bufferSerial,variableId,value);
+                break;
+            default:
+                debug(F("Unknown message: ")+bufferSerial);
+        }
 
     }
 }
@@ -67,7 +84,7 @@ bool createRequestAnswerMessage(char* buffer, const char* idVariable, const char
     if (buffer == NULL || value == NULL || idVariable == NULL || idFunction == NULL)
         return false;
 
-    buffer[0] = ID_REQUESTMESSAGE;
+    buffer[0] = ID_REQUESTANSWERMESSAGE;
     strcat(buffer, SEPARATOR);
     strcat(buffer, idVariable);
     strcat(buffer, SEPARATOR);
