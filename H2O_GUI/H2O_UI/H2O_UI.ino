@@ -609,17 +609,17 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
         rec1.setMainColor(white);
         rec1.setSecondaryColor(white);
     }
-    rec1.setCoords1(78,258); // Rectangle at the let of the valve
-    rec1.setCoords(28,230);
+    rec1.setCoords1(78,230); // Rectangle at the let of the valve
+    rec1.setCoords(28,259);
     my_lcd.draw(&rec1);
     rec1.setCoords1(89,254); // Small Rectangle under valve
     rec1.setCoords(78,259);
     my_lcd.draw(&rec1);
-    rec1.setCoords(85,245); // Small rectangle right of the tube
-    rec1.setCoords1(89,230);
+    rec1.setCoords(85,230); // Small rectangle right of the tube
+    rec1.setCoords1(89,245);
     my_lcd.draw(&rec1);
-    rec1.setCoords(78,245); // Small rectangle left of the tube
-    rec1.setCoords1(80,230);
+    rec1.setCoords(78,230); // Small rectangle left of the tube
+    rec1.setCoords1(80,245);
     my_lcd.draw(&rec1);
 
 
@@ -837,8 +837,8 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
         rec4.setMainColor(blue);
         rec4.setSecondaryColor(blue);
     }
-    rec4.setCoords(374,201); // Tube up
-    rec4.setCoords1(375,81);
+    rec4.setCoords(374,81); // Tube up
+    rec4.setCoords1(375,201);
     my_lcd.draw(&rec4);
     rec4.setCoords(375,81); // Tube right
     rec4.setCoords1(402,82);
@@ -926,27 +926,30 @@ void drawStatusBackgroundPhoto()
     my_lcd.draw(&Rrec);
 
     //rectangle around the Menu and ON/OFF buttons
-    Rrec.setCoords(15,302);
-    Rrec.setCoords1(465,220);
+    Rrec.setCoords(15,220);
+    Rrec.setCoords1(465,302);
     my_lcd.draw(&Rrec);
-    Rrec.setCoords(117,302);
-    Rrec.setCoords1(435,220);
+    Rrec.setCoords(117,220);
+    Rrec.setCoords1(435,302);
     my_lcd.draw(&Rrec);
 
     //SolarPanel
-    Line line(80,100,64,200,Color(0,0,0));
+    Line line(64,100,80,200,Color(0,0,0));
     my_lcd.draw(&line);
-    line.setCoords(100,100);
-    line.setCoords1(84,200);
+    line.setCoords(84,100);
+    line.setCoords1(100,200);
     my_lcd.draw(&line);
-    line.setCoords(60,100);
-    line.setCoords1(44,200);
+    line.setCoords(84,100);
+    line.setCoords1(100,200);
     my_lcd.draw(&line);
-    line.setCoords(40,100);
-    line.setCoords1(24,200);
+    line.setCoords(44,100);
+    line.setCoords1(60,200);
     my_lcd.draw(&line);
-    line.setCoords(20,100);
-    line.setCoords1(4,200);
+    line.setCoords(24,100);
+    line.setCoords1(40,200);
+    my_lcd.draw(&line);
+    line.setCoords(4,100);
+    line.setCoords1(20,200);
     my_lcd.draw(&line);
 
     line.setCoords(20,200);
@@ -990,8 +993,8 @@ void drawStatusBackgroundPhoto()
     Rrec.setCoords1(122,153);
     my_lcd.draw(&Rrec);
 
-    Rrec.setCoords(27,302);// well
-    Rrec.setCoords1(90,220);
+    Rrec.setCoords(27,220);// well
+    Rrec.setCoords1(90,302);
     my_lcd.draw(&Rrec);
 
     //Filter
@@ -1086,8 +1089,10 @@ void drawStatusBackgroundPhoto()
     rec.setCoords1(259,209);
     my_lcd.draw(&rec);
 
-    Line legs(272,220,292,200,Color(0,0,0));
-    my_lcd.draw(&legs); //TODO Bug with the lines, x and x1 or y and y1 not working properly
+    Line legs(272,220,292,210,Color(0,0,0));
+    my_lcd.draw(&legs);
+    Line legs1(302,210,322,220,Color(0,0,0));
+    my_lcd.draw(&legs1);
 
     //PurifiedTank
 
