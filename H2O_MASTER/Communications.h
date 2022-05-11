@@ -36,6 +36,8 @@
 bool createRequestAnswerMessage(char* buffer, const char* idVariable, const char* value, const char* idFunction);
 bool extractRequestAnswerMessage(char* buffer, char* idVariable, char* value, char* idFunction);
 
+bool createRequestMessage(char* buffer, const char* variableID, const char* funcionID);
+bool extractRequestMessage(const char* buffer, char* variableID, char* funcionID);
 bool sendMessage(const char* message, HardwareSerial* serial);
 bool getMessage(char* message, HardwareSerial* serial);
 bool verifyMessage(char* message);

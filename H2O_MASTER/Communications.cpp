@@ -11,9 +11,56 @@
  * payload: useful data of the message
  * \n: terminator character
  */
-
+#define ID_REQUESTMESSAGE 1
 #define ID_REQUESTMESSAGE 2
+#define ID_SENDMESSAGE 3
 #define SEPARATOR ","
+
+char bufferSerial[MAXMSGSIZE];
+void messageManager(HardwareSerial* serial){
+    if(serial->available())
+    {
+        getMessage(bufferSerial,serial);
+
+    }
+}
+
+bool createRequestMessage(char* buffer, const char* variableID, const char* funcionID)
+{
+    if(variableID == NULL || buffer == NULL || funcionID == NULL)
+        return false;
+    buffer[0] = ID_REQUESTMESSAGE;
+    strcat(buffer,variableID);
+    strcat(buffer,SEPARATOR);
+    strcat(buffer,funcionID);
+    return true
+}
+
+bool extractRequestMessage(const char* buffer, char* variableID, char* funcionID)
+{
+    if(buffer == NULL || variableID == NULL || funcionID == NULL)
+        return false;
+    strcpy(variableID,strtok(&buffer[1],SEPARATOR));
+    strcpy(funcionID,strtok(NULL,SEPARATOR);
+    return true
+}
+
+bool createSendMessage(char* buffer, byte variableID, const char* valor)
+{
+    if(valor == NULL || buffer == NULL)
+        return false;
+    buffer[0] = ID_SENDMESSAGE; // ID sendMessage
+    buffer[1] = variableID;
+    strcpy(&buffer[2], valor);
+    return true;
+}
+
+bool extractSendMessage(const char* buffer, byte* variableID, char* valor)
+{
+    if(valor == NULL || buffer == NULL)
+        return false;
+    *variableID = buffer[1];
+    strcpy(valor, &buffer[2]);
 
 bool createRequestAnswerMessage(char* buffer, const char* idVariable, const char* value, const char* idFunction)
 {
@@ -39,7 +86,6 @@ bool extractRequestAnswerMessage(char* buffer, char* idVariable, char* value, ch
     strcpy(idVariable, strtok(buffer, SEPARATOR));
     strcpy(value, strtok(NULL, SEPARATOR));
     strcpy(idFunction, strtok(NULL, SEPARATOR));
-
     return true;
 }
 
