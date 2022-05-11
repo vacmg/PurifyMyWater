@@ -15,6 +15,15 @@
 #define ID_SENDMESSAGE 3
 #define SEPARATOR ","
 
+char bufferSerial[MAXMSGSIZE];
+void messageManager(HardwareSerial* serial){
+    if(serial->available())
+    {
+        getMessage(bufferSerial,serial);
+
+    }
+}
+
 bool createRequestMessage(char* buffer, const char* variableID, const char* funcionID)
 {
     if(variableID == NULL || buffer == NULL || funcionID == NULL)
