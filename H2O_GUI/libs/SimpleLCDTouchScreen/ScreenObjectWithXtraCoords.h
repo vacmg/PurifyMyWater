@@ -14,7 +14,7 @@ public:
     ScreenObjectWithXtraCoords(); // Do not use, only for virtual keyword purposes
     int getx1();
     int gety1();
-    void setCoords(int x, int y) override;
+    void setCoords(int x, int y);
     void setCoords1(int x1, int y1);
 
 
