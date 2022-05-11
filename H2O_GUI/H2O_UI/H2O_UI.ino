@@ -1025,19 +1025,19 @@ void drawElectricity() // TODO get settings real value
     {
         case 1:
             setFontSizeArray(fontSizes, 1,1,1,2,2,2);
-            draw6ButtonsLayout(F("Start Charging Voltage"),F("Stop Charging Voltage"),F("UV light est. Current"),String(STARTCHARGINGVOLTAGE)+"V","15.5V","1A",true,true,true,fontSizes);
+            draw6ButtonsLayout(F("Start Charging Voltage"),F("Stop Charging Voltage"),F("UV light est. Current"),String(STARTCHARGINGVOLTAGE)+F("V"),String(STOPCHARGINGVOLTAGE)+F("V"),String(ESTIMATEDUVAMPERAGE)+F("A"),true,true,true,fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1,1,1,2,2,2);
-            draw6ButtonsLayout(F("Start Working Voltage"),F("Stop Working Voltage"),F("AC Inverter Frequency"),"15.2V","11.9V","50Hz",true,true,true, fontSizes);
+            draw6ButtonsLayout(F("Start Working Voltage"),F("Stop Working Voltage"),F("AC Inverter Frequency"),String(STARTWORKINGVOLTAGE)+F("V"),String(STOPWORKINGVOLTAGE)+F("V"),String(ACFREQUENCY)+F("Hz"),true,true,true, fontSizes);
             break;
         case 3:
             setFontSizeArray(fontSizes, 1,1,1,2,2,2);
-            draw6ButtonsLayout(F("AC Ammeter Sensitivity"),F("AC Ammeter Zero"),F("DC Ammeter Sensitivity"),"1.856","3.678","1.567",true,true,true,fontSizes);
+            draw6ButtonsLayout(F("AC Ammeter Sensitivity"),F("AC Ammeter Zero"),F("DC Ammeter Sensitivity"),String(ACAMPSENSITIVITY, 4),String(ACAMPZERO,4),String(DCAMPSENSITIVITY,4),true,true,true,fontSizes);
             break;
         case 4:
             setFontSizeArray(fontSizes, 1,1,1,2,1,1);
-            draw6ButtonsLayout(F("DC Ammeter Zero"),"","","4.678","","",true,false,false,fontSizes);
+            draw6ButtonsLayout(F("DC Ammeter Zero"),"","",String(DCAMPZERO,4),"","",true,false,false,fontSizes);
             break;
     }
 }
@@ -1095,11 +1095,11 @@ void drawWater()
     {
         case 1:
             setFontSizeArray(fontSizes,1,1,1,2,2,2);
-            draw6ButtonsLayout(F("Well Pump max time ON"),F("UV Pump max time ON"),F("End Pump max time ON"), "60s","45s", "80s", true, true, true, fontSizes);
+            draw6ButtonsLayout(F("Well Pump max time ON"),F("UV Pump max time ON"),F("End Pump max time ON"), String(((double)WELLPUMPTIMEOUT)/1000)+F("s"),String(((double)UVPUMPTIMEOUT)/1000)+F("s"), String(((double)ENDPUMPTIMEOUT)/1000)+F("s"), true, true, true, fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes,1,1,1,2,2,2);
-            draw6ButtonsLayout(F("Filter max time ON"),F("UV Pump flow"),"", "30s","130L/H", "", true, true, true, fontSizes);
+            draw6ButtonsLayout(F("Filter max time ON"),F("UV Pump flow"),"", String(((double)FILTERTIMEOUT)/1000)+F("s"),String(UVPUMPFLOW)+F("L/H"), "", true, true, true, fontSizes);
             break;
     }
 }
@@ -1194,39 +1194,164 @@ void clickSettings()
 
 void clickElectricity()
 {
+    double tempVal;
     if(btn4.isPressed())
     {
         switch (page)
         {
             case 1: // Start charging voltage
-                double tempVal = getNumInput("Start charging Voltage","V",STARTCHARGINGVOLTAGE);
+                tempVal = getNumInput("Start charging Voltage","V",STARTCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if(STOPWORKINGVOLTAGE<tempVal && tempVal<STOPCHARGINGVOLTAGE)
                     {
-                        debug(String(F("STARTCHARGINGVOTAGE UPDATED: "))+STARTCHARGINGVOLTAGE+String(F(" --> "))+tempVal);
+                        debug(String(F("STARTCHARGINGVOLTAGE UPDATED: "))+STARTCHARGINGVOLTAGE+String(F(" --> "))+tempVal);
                         STARTCHARGINGVOLTAGE = tempVal;
                         // TODO send new setting
                     }
                 }
                 changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
-                break;
-                /*case x:
-                    ...*/
+            break;
+
+            case 2: //page 2
+                tempVal = getNumInput("Start Working Voltage","V",STARTWORKINGVOLTAGE);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if(STARTCHARGINGVOLTAGE<tempVal && tempVal<STOPCHARGINGVOLTAGE)// STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
+                    {
+                        debug(String(F("STARTCHARGINGVOLTAGE UPDATED: "))+STARTWORKINGVOLTAGE+String(F(" --> "))+tempVal);
+                        STARTWORKINGVOLTAGE = tempVal;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
+
+            case 3:
+                tempVal = getNumInput("AC Ammeter Sensitivity","",ACAMPSENSITIVITY);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    debug(String(F("ACAMPSENSITIVITY UPDATED: "))+ACAMPSENSITIVITY+String(F(" --> "))+tempVal);
+                    ACAMPSENSITIVITY = tempVal;
+                    // TODO send new setting
+
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
+
+            case 4:
+                tempVal = getNumInput("DC Ammeter Zero","",DCAMPZERO);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    debug(String(F(" UPDATED: DCAMPZERO"))+DCAMPZERO+String(F(" --> "))+tempVal);
+                    DCAMPZERO = tempVal;
+                    // TODO send new setting
+
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
         }
+
     }
-    /*else if(btnx.isPressed())
+    else if(btn5.isPressed())
     {
         switch (page)
         {
             case 1:
-            changeStatus(XXXXX);
+                tempVal = getNumInput("Stop Charging Voltage","V",STOPCHARGINGVOLTAGE);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if(STARTCHARGINGVOLTAGE+1<tempVal && tempVal<MAXCAPACITORSALLOWEDVOLTAGE)// STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE
+                    {
+                        debug(String(F("STOPCHARGINGVOLTAGE UPDATED: "))+STOPCHARGINGVOLTAGE+String(F(" --> "))+tempVal);
+                        STOPCHARGINGVOLTAGE = tempVal;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
             break;
-            case x:
-                ...
+
+            case 2:
+                tempVal = getNumInput("Stop Working Voltage","V",STOPWORKINGVOLTAGE);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if(MINSYSTEMALLOWEDVOLTAGE<tempVal && tempVal<STARTCHARGINGVOLTAGE-1)// MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1
+                    {
+                        debug(String(F("STOPWORKINGVOLTAGE UPDATED: "))+STOPWORKINGVOLTAGE+String(F(" --> "))+tempVal);
+                        STOPWORKINGVOLTAGE = tempVal;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
+
+            case 3:
+                tempVal = getNumInput("AC Ammeter Zero","",ACAMPZERO);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    debug(String(F("ACAMPZERO UPDATED: "))+ACAMPZERO+String(F(" --> "))+tempVal);
+                    ACAMPZERO = tempVal;
+                    // TODO send new setting
+
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
         }
-    }*/
+    }
+    else if(btn6.isPressed())
+    {
+        switch (page)
+        {
+            case 1:
+                tempVal = getNumInput("UV light est. Current","A",ESTIMATEDUVAMPERAGE);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if(0<tempVal && tempVal<MAXUVAMPERAGE)//0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE
+                    {
+                        debug(String(F("ESTIMATEDUVAMPERAGE UPDATED: "))+ESTIMATEDUVAMPERAGE+String(F(" --> "))+tempVal);
+                        ESTIMATEDUVAMPERAGE = tempVal;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
+
+            case 2:
+                tempVal = getNumInput("AC Inverter Frequency","Hz",ACFREQUENCY);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if(50<tempVal && tempVal<60)// 50 <= ACFREQUENCY <= 60
+                    {
+                        debug(String(F("ACFREQUENCY UPDATED: "))+ACFREQUENCY+String(F(" --> "))+tempVal);
+                        ACFREQUENCY = tempVal;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
+
+            case 3:
+                tempVal = getNumInput("DC Ammeter Sensitivity","",DCAMPSENSITIVITY);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    debug(String(F("DCAMPSENSITIVITY UPDATED: "))+DCAMPSENSITIVITY+String(F(" --> "))+tempVal);
+                    DCAMPSENSITIVITY = tempVal;
+                    // TODO send new setting
+                }
+                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
+        }
+    }
 }
 
 void clickInterface()
@@ -1246,17 +1371,93 @@ void clickInterface()
 
 void clickWater()
 {
-    /*if(btnx.isPressed())
+    double tempVal;
+    if(btn4.isPressed())
     {
         switch (page)
         {
             case 1:
-            changeStatus(XXXXX);
+                tempVal = getNumInput("Well Pump max time on","s",WELLPUMPTIMEOUT);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if( 0 < WELLPUMPTIMEOUT)// 0 < WELLPUMPTIMEOUT
+                    {
+                        debug(String(F("WELLPUMPTIMEOUT UPDATED: "))+WELLPUMPTIMEOUT+String(F(" --> "))+tempVal);
+                        WELLPUMPTIMEOUT = (long)tempVal*1000;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGEWATER); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
             break;
-            case x:
-                ...
+            case 2:
+                tempVal = getNumInput("Filter max time on","s",FILTERTIMEOUT);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if( 0 < FILTERTIMEOUT)// 0 < FILTERTIMEOUT
+                    {
+                        debug(String(F("FILTERTIMEOUT UPDATED: "))+FILTERTIMEOUT+String(F(" --> "))+tempVal);
+                        FILTERTIMEOUT = (long)tempVal*1000;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGEWATER); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
+       }
+    }
+
+    else if(btn5.isPressed()){
+        switch (page)
+        {
+            case 1:
+                tempVal = getNumInput("UV Pump max time on","s",UVPUMPTIMEOUT);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if( 0 < UVPUMPTIMEOUT)// 0 < UVPUMPTIMEOUT
+                    {
+                        debug(String(F("UVPUMPTIMEOUT UPDATED: "))+UVPUMPTIMEOUT+String(F(" --> "))+tempVal);
+                        UVPUMPTIMEOUT = (long)tempVal*1000;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGEWATER); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
+
+            case 2: //TODO: por hacer
+                tempVal = getNumInput("UV Pump flow","L/H",UVPUMPFLOW);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    debug(String(F("UVPUMPFLOW UPDATED: "))+UVPUMPFLOW+String(F(" --> "))+tempVal);
+                    UVPUMPFLOW = (long)tempVal;
+                    // TODO send new setting
+                }
+                changeStatus(LOADPAGEWATER); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
         }
-    }*/
+    }
+    else if(btn6.isPressed()){
+        switch (page)
+        {
+            case 1:
+                tempVal = getNumInput("End Pump max time on","s",ENDPUMPTIMEOUT);
+                if (!isnan(tempVal)) // if getNumInput was not cancelled
+                {
+                    if( 0 < ENDPUMPTIMEOUT)// 0 < ENDPUMPTIMEOUT
+                    {
+                        debug(String(F("ENDPUMPTIMEOUT UPDATED: "))+ENDPUMPTIMEOUT+String(F(" --> "))+tempVal);
+                        ENDPUMPTIMEOUT = (long)tempVal*1000;
+                        // TODO send new setting
+                    }
+                }
+                changeStatus(LOADPAGEWATER); // reload page with new config value
+                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+            break;
+        }
+    }
+
 }
 
 void clickTemperature()
