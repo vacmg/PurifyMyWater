@@ -14,7 +14,7 @@ enum ScreenStatus {BOOTING = 0, LOADSTATUS, STATUS, LOADMENU, MENU, LOADSETTINGS
 enum BtnStatus {OFF, ON, ERROR};
 
 BtnStatus mainSwitchSt = OFF;
-ScreenStatus screenStatus = LOADSTATUS; // Must be initialized to BOOTING in order to show splash screen
+ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show splash screen
 byte ROTATION = 1;
 
 #include "sharedData.h"
@@ -917,8 +917,12 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
 
 void drawStatusBackgroundPhoto()
 {
-    Rectangle backRec(15,800,420,320, Color(255,255,255),Color(255,255,255));
+    Rectangle backRec(15,70,420,320, Color(255,255,255),Color(255,255,255));
     my_lcd.draw(&backRec);
+    backRec.setCoords(160,62);
+    backRec.setCoords1(260,70);
+    my_lcd.draw(&backRec);
+
     Rectangle rec (56,200,62,220, Color(0,0,0));
     my_lcd.draw(&rec);
     //rectangle around the page
@@ -1140,19 +1144,16 @@ void drawStatusBackground(bool dontFillScreen)
 
     titleLabel.setString("Status"); // Title
     my_lcd.draw(&title);
+    Picture logoPhoto(400,10,"PMWSL.bmp"); // logo
+    my_lcd.draw(&logoPhoto);
 
 
     //Picture statusBackground(14,74,"schArd.bmp"); //Using p
     //my_lcd.draw(&statusBackground);
+
     drawStatusBackgroundPhoto();
 
-
-    Rectangle rec(225,60,249,73, Color(255,255,255), Color(255,255,255));
-    my_lcd.draw(&rec);
-
     //Small logo
-    Picture logoPhoto(400,10,"PMWSL.bmp");
-    my_lcd.draw(&logoPhoto);
     btn1.setDisableAutoSize(true);
     label.setFontSize(2);
     label.setString("Menu"); // Label Menu
