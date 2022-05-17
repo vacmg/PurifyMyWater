@@ -7,14 +7,14 @@
 #include <SimpleLCDTouchScreen.h>
 
 #define DEBUG true
-#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
+#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 enum ScreenStatus {BOOTING = 0, LOADSTATUS, STATUS, LOADMENU, MENU, LOADSETTINGS, SETTINGS, LOADHELP, HELP, LOADENGINEERINGMODE, ENGINEERINGMODE, LOADEXTRAFUNCTIONS, EXTRAFUNCTIONS, LOADELECTRICITY, LOADPAGEELECTRICITY, ELECTRICITY, LOADINTERFACE, LOADPAGEINTERFACE, INTERFACE, LOADWATER, LOADPAGEWATER, WATER, LOADTEMPERATURE, LOADPAGETEMPERATURE, TEMPERATURE};
 // ON/OFF BTN STATUS
 enum BtnStatus {OFF, ON, ERROR};
 
 BtnStatus mainSwitchSt = OFF;
-ScreenStatus screenStatus = LOADELECTRICITY; // Must be initialized to BOOTING in order to show splash screen
+ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show splash screen
 byte ROTATION = 1;
 
 #include "sharedData.h"
@@ -609,21 +609,21 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
         rec1.setMainColor(white);
         rec1.setSecondaryColor(white);
     }
-    rec1.setCoords1(78,258); // Rectangle at the let of the valve
-    rec1.setCoords(28,230);
+    rec1.setCoords1(78,230); // Rectangle at the let of the valve
+    rec1.setCoords(28,259);
     my_lcd.draw(&rec1);
     rec1.setCoords1(89,254); // Small Rectangle under valve
     rec1.setCoords(78,259);
     my_lcd.draw(&rec1);
-    rec1.setCoords(85,245); // Small rectangle right of the tube
-    rec1.setCoords1(89,230);
+    rec1.setCoords(85,230); // Small rectangle right of the tube
+    rec1.setCoords1(89,245);
     my_lcd.draw(&rec1);
-    rec1.setCoords(78,245); // Small rectangle left of the tube
-    rec1.setCoords1(80,230);
+    rec1.setCoords(78,230); // Small rectangle left of the tube
+    rec1.setCoords1(80,245);
     my_lcd.draw(&rec1);
 
 
-    //Filter
+    //SufaceTank
     Rectangle rec2(135,201,144,206,white,white);
     if(filterRelay)
     {
@@ -662,7 +662,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
         recFilter.setSecondaryColor(blue);
     }
     recFilter.setRadius(0);
-    recFilter.setCoords(200,136); // Tube right
+    recFilter.setCoords(201,136); // Tube right
     recFilter.setCoords1(219,137);
     my_lcd.draw(&recFilter);
     recFilter.setCoords(218,136); // Tube down
@@ -837,8 +837,8 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
         rec4.setMainColor(blue);
         rec4.setSecondaryColor(blue);
     }
-    rec4.setCoords(374,201); // Tube up
-    rec4.setCoords1(375,81);
+    rec4.setCoords(374,81); // Tube up
+    rec4.setCoords1(375,201);
     my_lcd.draw(&rec4);
     rec4.setCoords(375,81); // Tube right
     rec4.setCoords1(402,82);
@@ -900,7 +900,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     rec5.setCoords1(430,182);
     my_lcd.draw(&rec5);
     rec5.setCoords(427,183); // Rectangle exit tube right
-    rec5.setCoords1(462,186);
+    rec5.setCoords1(465,186);
     my_lcd.draw(&rec5);
 
 
@@ -915,25 +915,245 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     my_lcd.draw(&rec5);
 }
 
+void drawStatusBackgroundPhoto()
+{
+    Rectangle backRec(15,70,420,320, Color(255,255,255),Color(255,255,255));
+    my_lcd.draw(&backRec);
+    backRec.setCoords(160,62);
+    backRec.setCoords1(260,70);
+    my_lcd.draw(&backRec);
+
+    Rectangle rec (56,200,62,220, Color(0,0,0));
+    my_lcd.draw(&rec);
+    //rectangle around the page
+    RoundRectangle Rrec( 15,75,465,302,1, Color(0,0,0));
+    my_lcd.draw(&Rrec);
+
+    //rectangle around the Menu and ON/OFF buttons
+    Rrec.setCoords(15,220);
+    Rrec.setCoords1(465,302);
+    my_lcd.draw(&Rrec);
+    Rrec.setCoords(117,220);
+    Rrec.setCoords1(435,302);
+    my_lcd.draw(&Rrec);
+
+    //SolarPanel
+    Line line(64,100,80,200,Color(0,0,0));
+    my_lcd.draw(&line);
+    line.setCoords(84,100);
+    line.setCoords1(100,200);
+    my_lcd.draw(&line);
+    line.setCoords(84,100);
+    line.setCoords1(100,200);
+    my_lcd.draw(&line);
+    line.setCoords(44,100);
+    line.setCoords1(60,200);
+    my_lcd.draw(&line);
+    line.setCoords(24,100);
+    line.setCoords1(40,200);
+    my_lcd.draw(&line);
+    line.setCoords(4,100);
+    line.setCoords1(20,200);
+    my_lcd.draw(&line);
+
+    line.setCoords(20,200);
+    line.setCoords1(100,200);
+    my_lcd.draw(&line);
+    line.setCoords(4,100);
+    line.setCoords1(84,100);
+    my_lcd.draw(&line);
+    line.setCoords(4,120);
+    line.setCoords1(92,120);
+    my_lcd.draw(&line);
+    line.setCoords(4,140);
+    line.setCoords1(90,140);
+    my_lcd.draw(&line);
+    line.setCoords(4,160);
+    line.setCoords1(94,160);
+    my_lcd.draw(&line);
+    line.setCoords(17,180);
+    line.setCoords1(96,180);
+    my_lcd.draw(&line);
+
+    rec.setCoords(79,246);
+    rec.setCoords1(90,253);
+    my_lcd.draw(&rec);
+
+    Rectangle aux(0,0,14,270,Color(255,255,255),Color(255,255,255));
+    my_lcd.draw(&aux);
+
+    //wellPump
+    my_lcd.draw(&rec); // Pump
+
+    Rrec.setCoords(81,119); // Tube up
+    Rrec.setCoords1(84,246);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(81,117);// Tube right
+    Rrec.setCoords1(122,120);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(119,117);// Tube down
+    Rrec.setCoords1(122,153);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(27,220);// well
+    Rrec.setCoords1(90,302);
+    my_lcd.draw(&Rrec);
+
+    //Filter
+    Rrec.setCoords(200,135);// tube right
+    Rrec.setCoords1(220,138);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setRadius(4);
+    Rrec.setCoords(157,130);// filter
+    Rrec.setCoords1(200,152);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setRadius(6);
+    Rrec.setCoords(157,152);// filter
+    Rrec.setCoords1(200,220);
+    my_lcd.draw(&Rrec);
+    Rrec.setRadius(1);
+
+    Rrec.setCoords(217,135);// tube down
+    Rrec.setCoords1(220,164);
+    my_lcd.draw(&Rrec);
+
+    //SurfaceTank
+    rec.setCoords(134,200);// valve
+    rec.setCoords1(145,207);
+    my_lcd.draw(&rec);
+
+    Rrec.setCoords(137,135);// tube up
+    Rrec.setCoords1(140,200);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(138,135);// tube right
+    Rrec.setCoords1(157,138);
+    my_lcd.draw(&Rrec);
+
+    rec.setCoords(98,152);//tank
+    rec.setCoords1(145,220);
+    my_lcd.draw(&rec);
+
+    //filtered tank
+    rec.setCoords(212,162);// tank
+    rec.setCoords1(259,220);
+    my_lcd.draw(&rec);
+
+    rec.setCoords(212,162);// valve
+    rec.setCoords1(259,220);
+    my_lcd.draw(&rec);
+
+    Rrec.setCoords(252,147);// tube up
+    Rrec.setCoords1(255,202);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(252,147);// tube right
+    Rrec.setCoords1(279,150);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(276,148);//tube down
+    Rrec.setCoords1(279,168);
+    my_lcd.draw(&Rrec);
+
+    //UV
+    Rrec.setCoords(252,147);// tube right
+    Rrec.setCoords1(255,202);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(252,147);// tube up
+    Rrec.setCoords1(279,150);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(276,148);// tube right
+    Rrec.setCoords1(279,200);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(271,200);//tube down
+    Rrec.setCoords1(324,211);
+    my_lcd.draw(&Rrec);
+
+    //UV_2
+    Rrec.setCoords(316,147);// tube up
+    Rrec.setCoords1(319,200);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(317,147);// tube right
+    Rrec.setCoords1(345,150);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(342,148);// tube down
+    Rrec.setCoords1(345,165);
+    my_lcd.draw(&Rrec);
+
+    rec.setCoords(248,202);// UV
+    rec.setCoords1(259,209);
+    my_lcd.draw(&rec);
+
+    Line legs(272,220,292,210,Color(0,0,0));
+    my_lcd.draw(&legs);
+    Line legs1(302,210,322,220,Color(0,0,0));
+    my_lcd.draw(&legs1);
+
+    //PurifiedTank
+
+    Rrec.setCoords(338,164);// tank
+    Rrec.setCoords1(380,220);
+    my_lcd.draw(&Rrec);
+
+    rec.setCoords(369,202);// valve
+    rec.setCoords1(380,209);
+    my_lcd.draw(&rec);
+
+    Rrec.setCoords(373,204);// tube up - endTank
+    Rrec.setCoords1(376,80);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(374,80); //tube right - endTank
+    Rrec.setCoords1(403,83);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(400,80); //tube down - endTank
+    Rrec.setCoords1(403,109);
+    my_lcd.draw(&Rrec);
+
+    //End tank
+    Rrec.setCoords(426,156);// tube down
+    Rrec.setCoords1(431,183);
+    my_lcd.draw(&Rrec);
+
+    Rrec.setCoords(426,182);// tube right
+    Rrec.setCoords1(465,187);
+    my_lcd.draw(&Rrec);
+
+    rec.setCoords(395,91);//tank
+    rec.setCoords1(453,158);
+    my_lcd.draw(&rec);
+}
+
 void drawStatusBackground(bool dontFillScreen)
 {
     if(!dontFillScreen)
         my_lcd.Fill_Screen(0xFFFF);
 
-    Label loading(165,85,"Loading...",3,Color(0,70,200));
-    my_lcd.draw(&loading);
+    //Label loading(165,85,"Loading...",3,Color(0,70,200));
+    //my_lcd.draw(&loading);
 
     titleLabel.setString("Status"); // Title
     my_lcd.draw(&title);
+    Picture logoPhoto(400,10,"PMWSL.bmp"); // logo
+    my_lcd.draw(&logoPhoto);
 
-    Picture statusBackground(14,74,"schArd.bmp");
-    my_lcd.draw(&statusBackground);
-    Rectangle rec(225,60,249,73, Color(255,255,255), Color(255,255,255));
-    my_lcd.draw(&rec);
+
+    //Picture statusBackground(14,74,"schArd.bmp"); //Using p
+    //my_lcd.draw(&statusBackground);
+
+    drawStatusBackgroundPhoto();
 
     //Small logo
-    Picture logoPhoto(400,10,"PMWSL.bmp");
-    my_lcd.draw(&logoPhoto);
     btn1.setDisableAutoSize(true);
     label.setFontSize(2);
     label.setString("Menu"); // Label Menu
