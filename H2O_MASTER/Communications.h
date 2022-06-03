@@ -17,6 +17,7 @@
 #include <Arduino.h>
 
 /*
+ * Message structure:
  * [CRC][size][payload]\n
  * CRC: CRC8 code of [size][payload]
  * size: size in bytes of [size]+[payload]
@@ -33,14 +34,18 @@
 #define Message(data) String(data).c_str()
 
 
-bool createRequestAnswerMessage(char* buffer, const char* idVariable, const char* value, const char* idFunction);
-bool extractRequestAnswerMessage(char* buffer, char* idVariable, char* value, char* idFunction);
+// Application layer
+bool createSendMessage(char* payload, byte variableID, const char* value);
+bool extractSendMessage(const char* payload, char* variableID, char* value);
+bool createRequestAnswerMessage(char* payload, const char* variableID, const char* value, const char* functionID);
+bool extractRequestAnswerMessage(char* payload, char* variableID, char* value, char* functionID);
+bool createRequestMessage(char* payload, const char* variableID, const char* functionID);
+bool extractRequestMessage(char* payload, char* variableID, char* functionID);
 
-bool createRequestMessage(char* buffer, const char* variableID, const char* funcionID);
-bool extractRequestMessage(const char* buffer, char* variableID, char* funcionID);
-bool sendMessage(const char* message, HardwareSerial* serial);
-bool getMessage(char* message, HardwareSerial* serial);
-bool verifyMessage(char* message);
+// Link layer
+bool sendMessage(const char* payload, HardwareSerial* serial);
+bool getMessage(char* payload, HardwareSerial* serial);
+bool verifyMessage(char* payload);
 byte CRC8(const byte* data, size_t dataLength);
 void flush(HardwareSerial* serial);
 

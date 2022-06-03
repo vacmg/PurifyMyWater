@@ -20,17 +20,17 @@ void messageManager(HardwareSerial* serial){
     if(serial->available())
     {
         char bufferSerial[MAXMSGSIZE];
-        char variableId[1];
-        char funcionId[1];
-        char value[1];
+        char variableId[32];
+        char functionId[32];
+        char value[32];
         getMessage(bufferSerial,serial);
         switch (bufferSerial[0])
         {
             case ID_REQUESTMESSAGE:
-                extractRequestMessage(bufferSerial,variableId,funcionId);
+                extractRequestMessage(bufferSerial,variableId,functionId);
                 break;
             case ID_REQUESTANSWERMESSAGE:
-                extractRequestAnswerMessage(bufferSerial,variableId,value,funcionId);
+                extractRequestAnswerMessage(bufferSerial,variableId,value,functionId);
                 break;
             case ID_SENDMESSAGE:
                 extractSendMessage(bufferSerial,variableId,value);
@@ -42,70 +42,74 @@ void messageManager(HardwareSerial* serial){
     }
 }
 
-bool createRequestMessage(char* buffer, const char* variableID, const char* funcionID)
+// Application layer
+bool createSendMessage(char* payload, byte variableID, const char* value)
 {
-    if(variableID == NULL || buffer == NULL || funcionID == NULL)
+    if(value == NULL || payload == NULL)
         return false;
-    buffer[0] = ID_REQUESTMESSAGE;
-    strcat(buffer,variableID);
-    strcat(buffer,SEPARATOR);
-    strcat(buffer,funcionID);
-    return true
-}
-
-bool extractRequestMessage(const char* buffer, char* variableID, char* funcionID)
-{
-    if(buffer == NULL || variableID == NULL || funcionID == NULL)
-        return false;
-    strcpy(variableID,strtok(&buffer[1],SEPARATOR));
-    strcpy(funcionID,strtok(NULL,SEPARATOR);
-    return true
-}
-
-bool createSendMessage(char* buffer, byte variableID, const char* valor)
-{
-    if(valor == NULL || buffer == NULL)
-        return false;
-    buffer[0] = ID_SENDMESSAGE; // ID sendMessage
-    buffer[1] = variableID;
-    strcpy(&buffer[2], valor);
+    payload[0] = ID_SENDMESSAGE; // ID sendMessage
+    payload[1] = variableID;
+    strcpy(&payload[2], value);
     return true;
 }
 
-bool extractSendMessage(const char* buffer, byte* variableID, char* valor)
+bool extractSendMessage(const char* payload, char* variableID, char* value)
 {
-    if(valor == NULL || buffer == NULL)
+    if (value == NULL || payload == NULL)
         return false;
-    *variableID = buffer[1];
-    strcpy(valor, &buffer[2]);
+    *variableID = payload[1];
+    strcpy(value, &payload[2]);
+}
 
-bool createRequestAnswerMessage(char* buffer, const char* idVariable, const char* value, const char* idFunction)
+bool createRequestMessage(char* payload, const char* variableID, const char* functionID)
 {
-    if (buffer == NULL || value == NULL || idVariable == NULL || idFunction == NULL)
+    if(variableID == NULL || payload == NULL || functionID == NULL)
+        return false;
+    payload[0] = ID_REQUESTMESSAGE;
+    strcat(payload,variableID);
+    strcat(payload,SEPARATOR);
+    strcat(payload,functionID);
+    return true;
+}
+
+bool extractRequestMessage(char* payload, char* variableID, char* functionID)
+{
+    if(payload == NULL || variableID == NULL || functionID == NULL)
+        return false;
+    strcpy(variableID,strtok(&payload[1],SEPARATOR));
+    strcpy(functionID,strtok(NULL,SEPARATOR));
+    return true;
+}
+
+bool createRequestAnswerMessage(char* payload, const char* variableID, const char* value, const char* functionID)
+{
+    if (payload == NULL || value == NULL || variableID == NULL || functionID == NULL)
         return false;
 
-    buffer[0] = ID_REQUESTANSWERMESSAGE;
-    strcat(buffer, SEPARATOR);
-    strcat(buffer, idVariable);
-    strcat(buffer, SEPARATOR);
-    strcat(buffer, value);
-    strcat(buffer, SEPARATOR);
-    strcat(buffer, idFunction);
+    payload[0] = ID_REQUESTANSWERMESSAGE;
+    strcat(payload, SEPARATOR);
+    strcat(payload, variableID);
+    strcat(payload, SEPARATOR);
+    strcat(payload, value);
+    strcat(payload, SEPARATOR);
+    strcat(payload, functionID);
 
     return true;
 }
 
-bool extractRequestAnswerMessage(char* buffer, char* idVariable, char* value, char* idFunction)
+bool extractRequestAnswerMessage(char* payload, char* variableID, char* value, char* functionID)
 {
-    if (buffer == NULL || value == NULL || idVariable == NULL || idFunction == NULL)
+    if (payload == NULL || value == NULL || variableID == NULL || functionID == NULL)
         return false;
 
-    strcpy(idVariable, strtok(buffer, SEPARATOR));
+    strcpy(variableID, strtok(payload, SEPARATOR));
     strcpy(value, strtok(NULL, SEPARATOR));
-    strcpy(idFunction, strtok(NULL, SEPARATOR));
+    strcpy(functionID, strtok(NULL, SEPARATOR));
     return true;
 }
 
+
+// Link layer
 bool sendMessage(const char* payload, HardwareSerial* serial)
 {
     byte payloadLength = strlen(payload);
@@ -133,13 +137,13 @@ bool sendMessage(const char* payload, HardwareSerial* serial)
     return successfulSend;
 }
 
-bool getMessage(char* message, HardwareSerial* serial)
+bool getMessage(char* payload, HardwareSerial* serial)
 {
     delay(100);
-    serial->readBytesUntil('\n',message,MAXRAWMSGSIZE); // [CRC][size][payload]
+    serial->readBytesUntil('\n',payload,MAXRAWMSGSIZE); // [CRC][size][payload]
     flush(serial);
 
-    if (verifyMessage(message)) // if crc match expected crc
+    if (verifyMessage(payload)) // if crc match expected crc
     {
         serial->write(ACK);
         return true;
