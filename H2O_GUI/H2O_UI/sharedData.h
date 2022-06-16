@@ -63,7 +63,7 @@ byte STOPPSUTEMP = 38; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
     #define changeStatus(newStatus) debug(String(F("Mode changed from '")) +String(modeToString(screenStatus))+String(F("' to '"))+String(modeToString(newStatus))+String(F("'"))); screenStatus = newStatus
 #else
     #define debug(data) ;
-    #define changeStatus(newStaus) screenStatus = newStatus
+    #define changeStatus(newStatus) screenStatus = newStatus
 #endif
 
 #if H2O_GUI && DEBUG // H20_GUI ONLY
