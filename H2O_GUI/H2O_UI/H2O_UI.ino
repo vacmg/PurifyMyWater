@@ -1,5 +1,7 @@
 #include "UI.h"
 
+#define DEBUG true
+
 //Main Functions
 
 void setup()

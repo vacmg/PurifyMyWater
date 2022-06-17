@@ -9,7 +9,7 @@
 //todo add eeprom config
 
 #include <Arduino.h>
-//#include "H2O_UI/UI.h"
+#include "H2O_UI/UI.h"
 
 /*------------Config----------------*/
 

@@ -18,40 +18,40 @@
 // Default Settings
 
 // Electricity settings
-float STARTCHARGINGVOLTAGE = 13; // STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE < STOPCHARGINGVOLTAGE
-float STOPCHARGINGVOLTAGE = 15.75; // STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE // leave at least 1 volt of margin between STARTCHARGINGVOLTAGE & STOPCHARGINGVOLTAGE
-float STARTWORKINGVOLTAGE = 15; // STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
-float STOPWORKINGVOLTAGE = 12; // MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1 // // leave at least 1 volt of margin between STOPWORKINGVOLTAGE && STARTCHARGINGVOLTAGE
+extern float STARTCHARGINGVOLTAGE; // STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE < STOPCHARGINGVOLTAGE
+extern float STOPCHARGINGVOLTAGE; // STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE // leave at least 1 volt of margin between STARTCHARGINGVOLTAGE & STOPCHARGINGVOLTAGE
+extern float STARTWORKINGVOLTAGE; // STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
+extern float STOPWORKINGVOLTAGE; // MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1 // // leave at least 1 volt of margin between STOPWORKINGVOLTAGE && STARTCHARGINGVOLTAGE
 
-double DCAMPSENSITIVITY = 0.1135; //sensor sensitivity in Volts/Amps // 5.4A for 60w test load // No limits
-double DCAMPZERO = 2.4956; // sensor voltage for 0 Amps current // No limits
+extern double DCAMPSENSITIVITY; //sensor sensitivity in Volts/Amps // 5.4A for 60w test load // No limits
+extern double DCAMPZERO; // sensor voltage for 0 Amps current // No limits
 
-double ACAMPZERO = -0.07157; // sensor calibration correction value // No limits
-double ACAMPSENSITIVITY = 0.033; // sensor sensitivity in Volts/Amps // 0.25A for 60w test load // No limits
-byte ACFREQUENCY = 50; // AC signal frequency (Hz) 50 <= ACFREQUENCY <= 60
+extern double ACAMPZERO; // sensor calibration correction value // No limits
+extern double ACAMPSENSITIVITY; // sensor sensitivity in Volts/Amps // 0.25A for 60w test load // No limits
+extern byte ACFREQUENCY; // AC signal frequency (Hz) 50 <= ACFREQUENCY <= 60
 
-float ESTIMATEDUVAMPERAGE = 1.0; // Minimum estimated current that the UV light uses // 0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE // todo place real value
+extern float ESTIMATEDUVAMPERAGE; // Minimum estimated current that the UV light uses // 0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE // todo place real value
 
 // Water settings
-unsigned long WELLPUMPTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < WELLPUMPTIMEOUT
-unsigned long UVPUMPTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < UVPUMPTIMEOUT
-unsigned long ENDPUMPTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < ENDPUMPTIMEOUT
-unsigned long FILTERTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < FILTERTIMEOUT
-unsigned int UVPUMPFLOW = 55; // L/H
+extern unsigned long WELLPUMPTIMEOUT; // Stored in ms, input in s (1s = 1000ms) // 0 < WELLPUMPTIMEOUT
+extern unsigned long UVPUMPTIMEOUT; // Stored in ms, input in s (1s = 1000ms) // 0 < UVPUMPTIMEOUT
+extern unsigned long ENDPUMPTIMEOUT; // Stored in ms, input in s (1s = 1000ms) // 0 < ENDPUMPTIMEOUT
+extern unsigned long FILTERTIMEOUT; // Stored in ms, input in s (1s = 1000ms) // 0 < FILTERTIMEOUT
+extern unsigned int UVPUMPFLOW; // L/H
 
 // Temperature settings
-unsigned long TEMPCHECKTIME = 10000; // Stored in ms, input in s (1s = 1000ms) // 0 < TEMPCHECKTIME
-byte STOPWORKINGTEMP = 65; // in Cº // 0 < STARTCASETEMP, STARTPSUTEMP < STOPWORKINGTEMP
-byte STARTCASETEMP = 40; // in Cº // 0 < STOPCASETEMP < STARTCASETEMP
-byte STOPCASETEMP = 38; // in Cº // 0 < STOPCASETEMP < STARTCASETEMP
-byte STARTPSUTEMP = 40; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
-byte STOPPSUTEMP = 38; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
+extern unsigned long TEMPCHECKTIME; // Stored in ms, input in s (1s = 1000ms) // 0 < TEMPCHECKTIME
+extern byte STOPWORKINGTEMP; // in Cº // 0 < STARTCASETEMP, STARTPSUTEMP < STOPWORKINGTEMP
+extern byte STARTCASETEMP; // in Cº // 0 < STOPCASETEMP < STARTCASETEMP
+extern byte STOPCASETEMP; // in Cº // 0 < STOPCASETEMP < STARTCASETEMP
+extern byte STARTPSUTEMP; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
+extern byte STOPPSUTEMP; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
 
 #ifdef H2O_GUI
     // Interface settings
     enum Languages {ENGLISH = 0};
-    Languages LANGUAGE = ENGLISH;
-    unsigned long DATAREFRESHPERIOD = 5000; // Stored in ms, input in s (1s = 1000ms) // 0 < DATAREFRESHPERIOD
+    extern Languages LANGUAGE;
+    extern unsigned long DATAREFRESHPERIOD; // Stored in ms, input in s (1s = 1000ms) // 0 < DATAREFRESHPERIOD
 #endif
 
 // Default Settings
@@ -66,42 +66,7 @@ byte STOPPSUTEMP = 38; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
     #define changeStatus(newStatus) screenStatus = newStatus
 #endif
 
-#if H2O_GUI && DEBUG // H20_GUI ONLY
-    const char mode0[] PROGMEM = "BOOTING"; // in order (BOOTING = 0 ---> mode0 = "BOOTING" --> modeTable[0] = mode0)
-    const char mode1[] PROGMEM = "LOADSTATUS";
-    const char mode2[] PROGMEM = "STATUS";
-    const char mode3[] PROGMEM = "LOADMENU";
-    const char mode4[] PROGMEM = "MENU";
-    const char mode5[] PROGMEM = "LOADSETTINGS";
-    const char mode6[] PROGMEM = "SETTINGS";
-    const char mode7[] PROGMEM = "LOADHELP";
-    const char mode8[] PROGMEM = "HELP";
-    const char mode9[] PROGMEM = "LOADENGINEERINGMODE";
-    const char mode10[] PROGMEM = "ENGINEERINGMODE";
-    const char mode11[] PROGMEM = "LOADEXTRAFUNCTIONS";
-    const char mode12[] PROGMEM = "EXTRAFUNCTIONS";
-    const char mode13[] PROGMEM = "LOADELECTRICTY";
-    const char mode14[] PROGMEM = "LOADPAGEELECTRICITY";
-    const char mode15[] PROGMEM = "ELECTRICITY";
-    const char mode16[] PROGMEM = "LOADINTERFACE";
-    const char mode17[] PROGMEM = "LOADPAGEINTERFACE";
-    const char mode18[] PROGMEM = "INTERFACE";
-    const char mode19[] PROGMEM = "LOADWATER";
-    const char mode20[] PROGMEM = "LOADPAGEWATER";
-    const char mode21[] PROGMEM = "WATER";
-    const char mode22[] PROGMEM = "LOADTEMPERATURE";
-    const char mode23[] PROGMEM = "LOADPAGETEMPERATURE";
-    const char mode24[] PROGMEM = "TEMPERATURE";
 
-    const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24};
-    char printModeBuff[20]; // Max size of any modeX string
-
-    char* modeToString(ScreenStatus status)
-    {
-        strcpy_P(printModeBuff, (char *)pgm_read_word(&(modeTable[status])));
-        return printModeBuff;
-    }
-#endif // H20_GUI ONLY
 
 // Debug Functions
 

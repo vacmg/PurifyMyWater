@@ -12,8 +12,8 @@
 #include "Temperature.h"
 #include "Water.h"
 
-void drawSettings();
-void clickSettings();
+extern void drawSettings();
+extern void clickSettings();
 
 
 #endif //H2O_GUI_SETTINGS_H

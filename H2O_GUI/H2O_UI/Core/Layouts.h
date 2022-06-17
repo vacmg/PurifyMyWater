@@ -7,11 +7,11 @@
 
 #include "Core.h"
 
-void drawBackground();
-void draw4ButtonsLayout(String topLeft, String topRight, String bottomLeft, String bottomRight, const byte* fontSize);
-void draw4ButtonsLayout(String topLeft, String topRight, String bottomLeft, String bottomRight);
-void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottomLeftBtn3, String topRightBtn4, String centerRightBtn5, String bottomRightBtn6, bool topHelpBtn9, bool centerHelpBtn10, bool bottomHelpBtn11, const byte* fontSize);
-void drawNumInput (String titleNumInput, String unit);
+extern void drawBackground();
+extern void draw4ButtonsLayout(String topLeft, String topRight, String bottomLeft, String bottomRight, const byte* fontSize);
+extern void draw4ButtonsLayout(String topLeft, String topRight, String bottomLeft, String bottomRight);
+extern void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottomLeftBtn3, String topRightBtn4, String centerRightBtn5, String bottomRightBtn6, bool topHelpBtn9, bool centerHelpBtn10, bool bottomHelpBtn11, const byte* fontSize);
+extern void drawNumInput (String titleNumInput, String unit);
 
 
 #endif //H2O_GUI_LAYOUTS_H
