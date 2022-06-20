@@ -15,49 +15,17 @@
 #define DEBUG true
 #define GUI true
 #define ONLYVITALACTIVITYALLOWED true
-#define TEMPERATURE false
+#define TEMPERATURE true
 #define OVERRRIDEMAXVOLTAGE false // useful to check some functions without powering all the system
 
-#define STARTCHARGINGVOLTAGE 13
-#define STOPCHARGINGVOLTAGE 15.75
-#define STARTWORKINGVOLTAGE 15
-#define STOPWORKINGVOLTAGE 12
-
-#define DCAmpSensitivity 0.1135 //sensor sensitivity in Volts/Amps // 5.4A for 60w test load
-#define DCAmpZero 2.4956 // sensor voltage for 0 Amps current
-
-#define ACAmpZero -0.07157 // sensor calibration correction value
-#define ACAmpSensitivity 0.033 // sensor sensitivity in Volts/Amps // 0.25A for 60w test load
-#define ACFrequency 50 // AC signal frequency (Hz)
-
-#define UVPUMPFLOW 55 // 171 // UV pump flow in L/H
-#define ESTIMATEDUVAMPERAGE -1.0 // Minimum estimated current that the UV light uses // todo place real value
-
-// If any of this pumps work for more than the specified milliseconds, raise PUMPTIMEOUTERROR
-#define WELLPUMPTIMEOUT 60000
-#define UVPUMPTIMEOUT 60000
-#define ENDPUMPTIMEOUT 60000
-#define FILTERTIMEOUT 60000
-
-#if TEMPERATURE
-    #define TEMPCHECKTIME 10000
-    #define STOPWORKINGTEMP 65
-    #define MAXCASETEMP 40
-    #define MINCASETEMP 38
-    #define MAXPSUTEMP 40
-    #define MINPSUTEMP 38
-#endif
-
 #if GUI
-    #define SCREENBRIDGEMODE true
-    #define SCREENALWAYSON false
-    #define SCREENBAUDRATE 115200
-    #define MAXMESSAGERETRIES 3
-    #define MAXHANDSHAKERETRIES 3
-    #define HANDSHAKETIMEOUT 10000
-    #define MSGTIMEOUT 2500
-    #define SCREENTIMEOUT 120000
+#define SCREENBRIDGEMODE true
+#define SCREENALWAYSON false
+#define MAXHANDSHAKERETRIES 3
+#define HANDSHAKETIMEOUT 10000
 #endif
+
+#include "Shared/SharedData.h"
 
 /*------------Config----------------*/
 
@@ -88,9 +56,41 @@
 #if GUI
     #define SCREENNOTCONNECTEDERROR 30 // Cannot handshake with the screen. Probably a broken or bad connected cable or the screen didn't have the correct firmware // error code 30
     #define MAXMESSAGESIZEEXCEEDEDERROR 31 // The message that is being sent exceed the max size of 32 bytes w/out header & CRC // error code 31
-#endif 
+#endif
 
 /*------------Errors----------------*/
+
+/*------------FunctionHeaders-------*/
+#if DEBUG
+    void readAllSensors();
+#endif
+
+#if TEMPERATURE
+void tempControl();
+void getSensorsTemp(float* temp);
+#endif
+
+void disconnectEverything();
+void errorCheck();
+void raise(byte error, const String& possibleExplanation);
+void logACAmps();
+float getACAmps();
+float getDCAmps(int samples);
+void waitForVoltage(float volts);
+void voltControl();
+float loadOffset();
+float voltRead();
+float fmap(float x, float in_min, float in_max, float out_min, float out_max);
+void updateAnimation();
+void setColor(byte r, byte g, byte b);
+void setColor(byte color[3]);
+void output(byte pin, bool value);
+
+#if GUI
+    #include "Communications.h"
+#endif
+
+/*------------FunctionHeaders-------*/
 
 /*------------Const&vars------------*/
 
@@ -175,7 +175,7 @@ ledAnimation defaultErrorAnimation = { 500,2,0,{{255,0,0},{0,0,0}} };
 #if TEMPERATURE
 unsigned long tempMillis = 0;
 
-// Setup a oneWire instance to communicate with any OneWire device
+// Set up a oneWire instance to communicate with any OneWire device
 OneWire oneWire(tempPin);
 
 // Pass oneWire reference to DallasTemperature library
@@ -188,11 +188,6 @@ DallasTemperature sensors(&oneWire);
     /*------------Temperature-----------*/
 
     /*------------Other-----------------*/
-#if DEBUG
-    #define debug(data) Serial.println(data)
-#else
-    #define debug(data) ;
-#endif
 
 #define TRANSITIONTOIDLE 0
 #define IDLE 1
@@ -210,20 +205,12 @@ double purifiedWater = 0.00; // Amount of water purified since the start of the 
 
     /*---------------GUI----------------*/
 #if GUI
-    #define Message(data) String(data).c_str()
     #define SCREENOFF 0
     #define SCREENSTARTING 1
     #define SCREENON 2
     #define SCREENCONNECTING 3
     #define SCREENNOTCONNECTED 4
     #define SCREENSHUTTINGDOWN 5
-
-    // types of messages sent from/to the screen
-    #define PINGMSG 'A'
-    #define PONGMSG 'Z'
-    #define DATAMSG 'D'
-    #define DEBUGMSG '_'
-    #define COMMSG '-'
 
     byte screenStatus = SCREENOFF; // 0 = OFF, 1 = ON, 2 = Establishing connection, 3 = Unable to establish connection
     byte handshakeRetries = 0; // stores n� of handshake attempts // max n� of attempts is stored in MAXHANDSHAKERETRIES
@@ -423,22 +410,22 @@ void waitForVoltage(float volts)
 // This function returns the amperage of the main sensor
 float getDCAmps(int samples)
 {
-    float sensorVolts;
-    float current = 0;
+    double sensorVolts;
+    double current = 0;
     for (int i = 0; i < samples; i++)
     {
         sensorVolts = analogRead(mainAmpSensor) * (5.0 / 1023.0); // sensor reading
-        current = current + (sensorVolts - DCAmpZero) / DCAmpSensitivity; // Process input to get Amperage
+        current = current + (sensorVolts - DCAMPZERO) / DCAMPSENSITIVITY; // Process input to get Amperage
     }
     current = current / samples;
-    return(current >= 0 ? current : 0);
+    return(current >= 0 ? (float)current : 0);
 }
 
 // This function uses all the data logged by logACAmps() and calculates an RMS Amperage value for the UV sensor
 float getACAmps()
 {
-    float amps = ACAmpZero + ACAmpSensitivity * inputStats.sigma();
-    return(amps >= 0 ? amps : 0); // calculate RMS Amperage
+    double amps = ACAMPZERO + ACAMPSENSITIVITY * inputStats.sigma();
+    return(amps >= 0 ? (float)amps : 0); // calculate RMS Amperage
 }
 
 // To measure AC current, arduino must log sensor data all the time. This function read and log one value per call
@@ -455,7 +442,7 @@ void logACAmps()
 // and redirect the execution to an "onlyVitalActivities" function if it is critical
 // or resume the program if it is not
 // This function is not completed yet
-void raise(byte error, String possibleExplanation)
+void raise(byte error, const String& possibleExplanation)
 {
     bool critical = true;
     ledAnimation* prevAnimation = currentAnimation;
@@ -484,7 +471,7 @@ void raise(byte error, String possibleExplanation)
             delay(2000);
         #endif
 
-        long pm = millis();
+        unsigned long pm = millis();
         while (true)
         {
             if (pm + 1000 < millis())
@@ -651,221 +638,9 @@ void updateServer()
 
 #if GUI
 
-// This function checks if the screen is properly connected and available for other functions to use it
-// The handshake consists of:
-// The screen sends each 500ms an 'A'
-// The server answers with a 'Z' once it discovers it
-// The screen sends another 'Z' to end handshake
-// All of this must be done in less than HANDSHAKETIMEOUT ms
-// TODO handshake with CRC8?
-bool doServerHandshake()
-{
-    unsigned long pm = millis();
-    byte sw = 0;
-    debug(F("doServerHandshake - Step 0"));
-    while (sw != 2 && pm + 30000 > millis()) //HANDSHAKETIMEOUT
-    {
-        if (Serial1.available())
-        {
-            debug(sw);
-            if (sw == 0 && Serial1.read() == 'A')
-            {
-                debug(F("doServerHandshake - Step 1"));
-                delay(50);
-                Serial1.print('Z');
-                flush(Serial1);
-                delay(200);
-                sw = 1;
-            }
-            else if (sw == 1 && Serial1.read() == 'Z')
-            {
-                debug(F("doServerHandshake - Step 2"));
-                sw = 2;
-            }
-        }
-    }
-    flush(Serial1);
-    if (sw == 2)
-    {
-        debug(F("doServerHandshake - Successful handshake"));
-    }
-    else
-    {
-        debug(String(F("doServerHandshake - Handshake failed in step "))+ sw);
-    }
-    return sw == 2;
-}
 
-//TODO processMessage(withRetryOption) 
 
-// This function get a message from the Serial1 buffer, then it decodes and verifies it returning the message itself and its type
-// If its result is false, the message couldn't be received properly
-// and false is returned to proper handle the failure in the function that called getMessage
-bool getMessage(char* message, char* type) // handles timeout and retry
-{
-
-    if (getMessageHelper(message, type)) // send resend last message
-    {
-        debug(F("getMessage - Failure receiving a message, retrying..."));
-        sendMessageHelper(Message(F("R")), COMMSG);
-        return true;
-    }
-    return false;
-}
-
-bool getMessageHelper(char* message, char* type)
-{
-    byte size = Serial1.readBytesUntil('\n', message, 38); // get raw message without /n or NULL
-    if (size <= 0)
-    {
-        return false;
-    }
-    message[size] = '\0'; // add string NULL
-    bool res = verifyMessage(message);
-    if (!res)
-    {
-        message = NULL;
-        type = NULL;
-        debug(F("getMessageHelper - Message corrupted"));
-        return false;
-    }
-    *type = message[0];
-
-    for (byte i = 0; i < size; i++) // remove message type from the string
-    {
-        message[i] = message[i + 1];
-    }
-    debug(String(F("getMessageHelper - Got a message from type ")) + type + String(F(" and message ")) + message);
-    return true;
-}
-
-// This function sends a message from the type 'type' and ensures it is received properly.
-// If its result is false, the message couldn't be delivered properly
-// and a false is returned to proper handle the failure in the function that called sendMessage
-// TODO test timeout and retry system (needs getMessage for it to work)
-bool sendMessage(const char* message, const char type)
-{
-    bool ok = false;
-
-    for (byte i = 1; !ok && i <= MAXMESSAGERETRIES; i++)
-    {
-        if (sendMessageHelper(message, type))
-        {
-            unsigned long before = millis();
-            while (!Serial1.available() && before + MSGTIMEOUT > millis());
-            if (Serial.available())
-            {
-                char typ = 0;
-                char msg[39] = "";
-                if (getMessageHelper(msg, &typ) && typ == COMMSG && strcmp(msg, Message(F("OK"))))
-                {
-                    ok = true;
-                }
-            }
-        }
-        if (!ok)
-        {
-            debug(String(F("sendMessage - Failure sending this message: ")) + message + String(F(".\tAttempt ")) + i + String(F(" out of ")) + MAXMESSAGERETRIES);
-        }
-
-    }
-    if (!ok)
-    {
-        debug(String(F("sendMessage - Failure sending this message: ")) + message + String(F(".\tNo more attempts left")));
-    }
-    return ok;
-}
-
-bool sendMessage(char* message)
-{
-    return(sendMessage(message, DATAMSG));
-}
-
-bool sendMessageHelper(const char* message, const char type)
-{
-    char sendMe[39];
-    messageConstructor(type, message, sendMe); // creates message and stores in sendMe
-    char temp[39];
-    strcpy(temp, sendMe); // make a copy of the message and use it to verify it
-    if (verifyMessage(temp))
-    {
-        debug(String(F("sendMessageHelper - Sending this message: '")) + sendMe + String(F("'")));
-        Serial1.println(sendMe);
-        return true;
-    }
-#if DEBUG
-    else
-    {
-        debug(String(F("sendMessageHelper - Verification failed for message: ")) + sendMe);
-    }
-#endif
-    return false;
-}
-
-// This function verifies the CRC8 of the message and returns true if it matches
-// CAUTION: This function modifies rawMessage so after it, rawMessage only contains the message without ,C(crc8)
-bool verifyMessage(char* rawMessage)
-{
-    if (strlen(rawMessage) > 38)
-        raise(MAXMESSAGESIZEEXCEEDEDERROR, String(F("verifyMessage - The message that exceeded it is: ")) + rawMessage);
-    char* message = strtok(rawMessage, ",C");
-    bool res = (byte)atoi(strtok(NULL, ",C")) == CRC8((byte*)message, strlen(message));
-
-    debug(String(F("verifyMessage - Result: ")) + res);
-    return res;
-}
-
-// This function build a message appending the type and the CRC8 checksum
-// The dest string MUST be of length >= 39
-void messageConstructor(const char type, const char* message, char* dest)
-{
-    if (strlen(message) > 32) // 33 with null
-        raise(MAXMESSAGESIZEEXCEEDEDERROR, String(F("messageConstructor - The message that exceeded it is: ")) + message);
-
-    sprintf(dest, "%c", type); // size 2
-    strcat(dest, message); // max size 2 - 1 + 33 = 34
-    char tmp[6];
-    sprintf(tmp, ",C%d", CRC8((byte*)dest, strlen(dest)));
-    strcat(dest, tmp); // max size 34 - 1 + 6 = 39
-
-    debug(String(F("messageConstructor - MessageReady is: ")) + dest);
-}
-
-//This function returns a CRC8 Checksum code from an array of any size
-//CRC-8 Checksum - based on the CRC8 formulas by Dallas/Maxim
-//code released under the terms of the GNU GPL 3.0 license
-byte CRC8(const byte* data, size_t dataLength)
-{
-    byte crc = 0x00;
-    while (dataLength--)
-    {
-        byte extract = *data++;
-        for (byte tempI = 8; tempI; tempI--)
-        {
-            byte sum = (crc ^ extract) & 0x01;
-            crc >>= 1;
-            if (sum)
-            {
-                crc ^= 0x8C;
-            }
-            extract >>= 1;
-        }
-    }
-    return crc;
-}
-
-#endif
-
-#if GUI || DEBUG
-
-// This function flushes an input HardwareSerial and discards all data on the input buffer
-void flush(HardwareSerial ser)
-{
-    while (ser.available())
-    {
-        ser.read();
-    }
-}
+//TODO processMessage(withRetryOption)
 
 #endif
 
@@ -891,7 +666,7 @@ void setup()
 #if TEMPERATURE
     sensors.begin();
     byte num = sensors.getDeviceCount();
-    if (num < 3)
+    if (num != 3)
     {
         raise(TEMPSENSORSAMOUNTERROR, String(F("Setup - Less than 3 sensors were connected.\nNumber of sensors detected: "))+num);
     }
@@ -951,7 +726,7 @@ void setup()
 
     // put setup code after this line
 
-    inputStats.setWindowSecs(40.0 / ACFrequency);     //Set AC Ammeter frequency
+    inputStats.setWindowSecs(40.0F / ACFREQUENCY);     //Set AC Ammeter frequency
 
     mode = 0;
     debug(F("Setup - Ready"));
