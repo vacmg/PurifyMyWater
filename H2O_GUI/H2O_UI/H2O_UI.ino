@@ -12,7 +12,7 @@ void setup()
     Serial.println(F("Connected"));
     delay(50);
 #endif
-    UISetup();
+    UI::UISetup();
 
     //todo Test code after this line
 
@@ -28,5 +28,5 @@ void setup()
 
 void loop()
 {
-    UI();
+    UI::UI();
 }

@@ -7,8 +7,10 @@
 
 #include "Settings.h"
 
-extern void drawTemperature();
-extern void clickTemperature();
+namespace UI {
+    void drawTemperature();
 
+    void clickTemperature();
+}
 
 #endif //H2O_GUI_TEMPERATURE_H

@@ -9,8 +9,10 @@
 #include "Settings/Settings.h"
 #include "ExtraFunctions/ExtraFunctions.h"
 
-extern void drawMenu();
-extern void clickMenu();
+namespace UI {
+    void drawMenu();
 
+    void clickMenu();
+}
 
 #endif //H2O_GUI_MENU_H

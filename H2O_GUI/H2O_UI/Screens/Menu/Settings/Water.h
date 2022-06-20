@@ -7,8 +7,10 @@
 
 #include "Settings.h"
 
-extern void drawWater();
-extern void clickWater();
+namespace UI {
+    void drawWater();
 
+    void clickWater();
+}
 
 #endif //H2O_GUI_WATER_H

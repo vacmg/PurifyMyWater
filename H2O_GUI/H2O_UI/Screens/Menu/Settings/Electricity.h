@@ -8,8 +8,10 @@
 
 #include "Settings.h"
 
-extern void clickElectricity();
-extern void drawElectricity();
+namespace UI {
+    void clickElectricity();
 
+    void drawElectricity();
+}
 
 #endif //H2O_GUI_ELECTRICITY_H
