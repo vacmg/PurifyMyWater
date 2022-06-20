@@ -6,16 +6,15 @@
 #define H2O_GUI_SETTINGS_H
 
 #include "../Menu.h"
-
 #include "Electricity.h"
 #include "Interface.h"
 #include "Temperature.h"
 #include "Water.h"
 
-namespace UI {
-    void drawSettings();
+void drawSettings();
 
-    void clickSettings();
-}
+void clickSettings();
+
+#include "Settings.cpp"
 
 #endif //H2O_GUI_SETTINGS_H

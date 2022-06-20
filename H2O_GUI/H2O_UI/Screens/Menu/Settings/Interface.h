@@ -7,10 +7,10 @@
 
 #include "Settings.h"
 
-namespace UI {
-    void drawInterface();
+void drawInterface();
 
-    void clickInterface();
-}
+void clickInterface();
+
+#include "Interface.cpp"
 
 #endif //H2O_GUI_INTERFACE_H

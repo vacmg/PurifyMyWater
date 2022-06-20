@@ -7,8 +7,8 @@
 
 #include "Screens.h"
 
-namespace UI {
-    void drawSplashScreen();
-}
+void drawSplashScreen();
+
+#include "Splash.cpp"
 
 #endif //H2O_GUI_SPLASH_H

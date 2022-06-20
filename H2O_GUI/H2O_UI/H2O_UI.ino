@@ -1,6 +1,6 @@
-#include "UI.h"
-
 #define DEBUG true
+
+#include "UI.h"
 
 //Main Functions
 
@@ -12,7 +12,7 @@ void setup()
     Serial.println(F("Connected"));
     delay(50);
 #endif
-    UI::UISetup();
+    UISetup();
 
     //todo Test code after this line
 
@@ -28,5 +28,5 @@ void setup()
 
 void loop()
 {
-    UI::UI();
+    UI();
 }

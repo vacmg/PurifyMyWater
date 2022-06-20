@@ -7,7 +7,6 @@
 
 #include <Arduino.h>
 
-namespace UI {
 // Hardware constants
 
 #define MAXCAPACITORSALLOWEDVOLTAGE 16
@@ -19,40 +18,40 @@ namespace UI {
 // Default Settings
 
 // Electricity settings
-    extern float STARTCHARGINGVOLTAGE; // STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE < STOPCHARGINGVOLTAGE
-    extern float STOPCHARGINGVOLTAGE; // STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE // leave at least 1 volt of margin between STARTCHARGINGVOLTAGE & STOPCHARGINGVOLTAGE
-    extern float STARTWORKINGVOLTAGE; // STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
-    extern float STOPWORKINGVOLTAGE; // MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1 // // leave at least 1 volt of margin between STOPWORKINGVOLTAGE && STARTCHARGINGVOLTAGE
+float STARTCHARGINGVOLTAGE = 13; // STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE < STOPCHARGINGVOLTAGE
+float STOPCHARGINGVOLTAGE = 15.75; // STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE // leave at least 1 volt of margin between STARTCHARGINGVOLTAGE & STOPCHARGINGVOLTAGE
+float STARTWORKINGVOLTAGE = 15; // STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
+float STOPWORKINGVOLTAGE = 12; // MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1 // // leave at least 1 volt of margin between STOPWORKINGVOLTAGE && STARTCHARGINGVOLTAGE
 
-    extern double DCAMPSENSITIVITY; //sensor sensitivity in Volts/Amps // 5.4A for 60w test load // No limits
-    extern double DCAMPZERO; // sensor voltage for 0 Amps current // No limits
+double DCAMPSENSITIVITY = 0.1135; //sensor sensitivity in Volts/Amps // 5.4A for 60w test load // No limits
+double DCAMPZERO = 2.4956; // sensor voltage for 0 Amps current // No limits
 
-    extern double ACAMPZERO; // sensor calibration correction value // No limits
-    extern double ACAMPSENSITIVITY; // sensor sensitivity in Volts/Amps // 0.25A for 60w test load // No limits
-    extern byte ACFREQUENCY; // AC signal frequency (Hz) 50 <= ACFREQUENCY <= 60
+double ACAMPZERO = -0.07157; // sensor calibration correction value // No limits
+double ACAMPSENSITIVITY = 0.033; // sensor sensitivity in Volts/Amps // 0.25A for 60w test load // No limits
+byte ACFREQUENCY = 50; // AC signal frequency (Hz) 50 <= ACFREQUENCY <= 60
 
-    extern float ESTIMATEDUVAMPERAGE; // Minimum estimated current that the UV light uses // 0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE // todo place real value
+float ESTIMATEDUVAMPERAGE = 1.0; // Minimum estimated current that the UV light uses // 0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE // todo place real value
 
 // Water settings
-    extern unsigned long WELLPUMPTIMEOUT; // Stored in ms, input in s (1s = 1000ms) // 0 < WELLPUMPTIMEOUT
-    extern unsigned long UVPUMPTIMEOUT; // Stored in ms, input in s (1s = 1000ms) // 0 < UVPUMPTIMEOUT
-    extern unsigned long ENDPUMPTIMEOUT; // Stored in ms, input in s (1s = 1000ms) // 0 < ENDPUMPTIMEOUT
-    extern unsigned long FILTERTIMEOUT; // Stored in ms, input in s (1s = 1000ms) // 0 < FILTERTIMEOUT
-    extern unsigned int UVPUMPFLOW; // L/H
+unsigned long WELLPUMPTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < WELLPUMPTIMEOUT
+unsigned long UVPUMPTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < UVPUMPTIMEOUT
+unsigned long ENDPUMPTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < ENDPUMPTIMEOUT
+unsigned long FILTERTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < FILTERTIMEOUT
+unsigned int UVPUMPFLOW = 55; // L/H
 
 // Temperature settings
-    extern unsigned long TEMPCHECKTIME; // Stored in ms, input in s (1s = 1000ms) // 0 < TEMPCHECKTIME
-    extern byte STOPWORKINGTEMP; // in Cº // 0 < STARTCASETEMP, STARTPSUTEMP < STOPWORKINGTEMP
-    extern byte STARTCASETEMP; // in Cº // 0 < STOPCASETEMP < STARTCASETEMP
-    extern byte STOPCASETEMP; // in Cº // 0 < STOPCASETEMP < STARTCASETEMP
-    extern byte STARTPSUTEMP; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
-    extern byte STOPPSUTEMP; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
+unsigned long TEMPCHECKTIME = 10000; // Stored in ms, input in s (1s = 1000ms) // 0 < TEMPCHECKTIME
+byte STOPWORKINGTEMP = 65; // in Cº // 0 < STARTCASETEMP, STARTPSUTEMP < STOPWORKINGTEMP
+byte STARTCASETEMP = 40; // in Cº // 0 < STOPCASETEMP < STARTCASETEMP
+byte STOPCASETEMP = 38; // in Cº // 0 < STOPCASETEMP < STARTCASETEMP
+byte STARTPSUTEMP = 40; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
+byte STOPPSUTEMP = 38; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
 
 #ifdef H2O_GUI
-    // Interface settings
-    enum Languages {ENGLISH = 0};
-    extern Languages LANGUAGE;
-    extern unsigned long DATAREFRESHPERIOD; // Stored in ms, input in s (1s = 1000ms) // 0 < DATAREFRESHPERIOD
+// Interface settings
+        enum Languages {ENGLISH = 0};
+        enum Languages LANGUAGE = ENGLISH;
+        unsigned long DATAREFRESHPERIOD = 5000; // Stored in ms, input in s (1s = 1000ms) // 0 < DATAREFRESHPERIOD
 #endif
 
 // Default Settings
@@ -68,6 +67,5 @@ namespace UI {
 #endif
 
 // Debug Functions
-}
 
 #endif //H2O_GUI_SHAREDDATA_H

@@ -7,10 +7,10 @@
 
 #include "../Menu.h"
 
-namespace UI {
-    void drawExtraFunctions();
+void drawExtraFunctions();
 
-    void clickExtraFunctions();
-}
+void clickExtraFunctions();
+
+#include "ExtraFunctions.cpp"
 
 #endif //H2O_GUI_EXTRAFUNCTIONS_H

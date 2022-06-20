@@ -4,9 +4,9 @@
 
 #include "Splash.h"
 
-namespace UI {
-    void drawSplashScreen() {
-        Picture bigLogo(157, 25, "PMWBL.bmp");
-        my_lcd.draw(&bigLogo);
-    }
+
+void drawSplashScreen()
+{
+    Picture bigLogo(157, 25, "PMWBL.bmp");
+    my_lcd.draw(&bigLogo);
 }

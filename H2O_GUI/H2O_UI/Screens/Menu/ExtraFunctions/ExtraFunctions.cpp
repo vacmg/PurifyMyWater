@@ -4,30 +4,28 @@
 
 #include "ExtraFunctions.h"
 
-namespace UI {
-    void drawExtraFunctions() {
-        titleLabel.setString("Extra Functions");
-        titleLabel.setFontSize(2);
-        my_lcd.draw(&title);
-        titleLabel.setFontSize(5);
-        byte fontSizes[6];
-        setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-        draw6ButtonsLayout(F("AC Power Supply"), F("DC Power Supply"), F("Install Wizard"), "ON/OFF", "ON/OFF", "Start",
-                           true, true, true, fontSizes);
-    }
+void drawExtraFunctions()
+{
+    titleLabel.setString("Extra Functions");
+    titleLabel.setFontSize(2);
+    my_lcd.draw(&title);
+    titleLabel.setFontSize(5);
+    byte fontSizes[6];
+    setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
+    draw6ButtonsLayout(F("AC Power Supply"), F("DC Power Supply"), F("Install Wizard"), "ON/OFF", "ON/OFF", "Start",true, true, true, fontSizes);
+}
 
-    void clickExtraFunctions() // Todo implement extrafunctions
+void clickExtraFunctions() // Todo implement extrafunctions
+{
+    /*if(btnx.isPressed())
     {
-        /*if(btnx.isPressed())
+        switch (page)
         {
-            switch (page)
-            {
-                case 1:
-                changeStatus(XXXXX);
-                break;
-                case x:
-                    ...
-            }
-        }*/
-    }
+            case 1:
+            changeStatus(XXXXX);
+            break;
+            case x:
+                ...
+        }
+    }*/
 }
