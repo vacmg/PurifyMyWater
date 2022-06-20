@@ -1,0 +1,191 @@
+"C:\Program Files\JetBrains\CLion 2022.1\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2022.1/bin/ninja/win/ninja.exe" -G Ninja -S A:\SSData\Proyectos\PurifyMyWater\Source\H2O_MASTER -B A:\SSData\Proyectos\PurifyMyWater\Source\H2O_MASTER\cmake-build-debug
+CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- The C compiler identification is GNU 7.3.0
+-- The CXX compiler identification is GNU 7.3.0
+CMake Deprecation Warning at cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+Call Stack (most recent call first):
+  C:/Program Files/JetBrains/CLion 2022.1/bin/cmake/win/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake:27 (include)
+  CMakeLists.txt:8 (project)
+
+
+-- Arduino SDK version 1.8.19: C:/Program Files (x86)/Arduino
+CMake Deprecation Warning at cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+Call Stack (most recent call first):
+  C:/Program Files/JetBrains/CLion 2022.1/bin/cmake/win/share/cmake-3.22/Modules/CMakeCInformation.cmake:66 (include)
+  CMakeLists.txt:8 (project)
+
+
+-- Detecting C compiler ABI info
+CMake Deprecation Warning at A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+Call Stack (most recent call first):
+  C:/Program Files/JetBrains/CLion 2022.1/bin/cmake/win/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake:27 (include)
+  A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
+
+
+CMake Deprecation Warning at A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+Call Stack (most recent call first):
+  C:/Program Files/JetBrains/CLion 2022.1/bin/cmake/win/share/cmake-3.22/Modules/CMakeCInformation.cmake:66 (include)
+  A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
+
+
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Program Files (x86)/Arduino/hardware/tools/avr/bin/avr-gcc.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+CMake Deprecation Warning at cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+Call Stack (most recent call first):
+  C:/Program Files/JetBrains/CLion 2022.1/bin/cmake/win/share/cmake-3.22/Modules/CMakeCXXInformation.cmake:65 (include)
+  CMakeLists.txt:8 (project)
+
+
+-- Detecting CXX compiler ABI info
+CMake Deprecation Warning at A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+Call Stack (most recent call first):
+  C:/Program Files/JetBrains/CLion 2022.1/bin/cmake/win/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake:27 (include)
+  A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
+
+
+CMake Deprecation Warning at A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake/Platform/Arduino.cmake:285 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+Call Stack (most recent call first):
+  C:/Program Files/JetBrains/CLion 2022.1/bin/cmake/win/share/cmake-3.22/Modules/CMakeCXXInformation.cmake:65 (include)
+  A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/CMakeTmp/CMakeLists.txt:4 (project)
+
+
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files (x86)/Arduino/hardware/tools/avr/bin/avr-g++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Generating H2O_MASTER
+-- Generating mega_OneWire for library OneWire
+-- Generating mega_OneWire_direct_gpio for library OneWire_direct_gpio
+-- Found library OneWire_direct_gpio needs mega_OneWire
+-- Found library OneWire_direct_gpio needs mega_OneWire
+-- Generating mega_OneWire_direct_regtype for library OneWire_direct_regtype
+-- Found library OneWire_direct_regtype needs mega_OneWire_direct_gpio
+-- Found library OneWire_direct_regtype needs mega_OneWire
+-- Found library OneWire_direct_regtype needs mega_OneWire_direct_gpio
+-- Found library OneWire needs mega_OneWire;mega_OneWire_direct_gpio;mega_OneWire_direct_regtype
+-- Generating mega_DallasTemperature for library DallasTemperature
+-- Generating mega_Filters for library Filters
+-- Generating mega_FilterDerivative for library FilterDerivative
+-- Generating mega_FilterOnePole for library FilterOnePole
+-- Found library FilterOnePole needs mega_FilterDerivative
+-- Found library FilterOnePole needs mega_FilterDerivative
+-- Generating mega_FloatDefine for library FloatDefine
+-- Found library FloatDefine needs mega_FilterOnePole
+-- Found library FloatDefine needs mega_FilterDerivative
+-- Found library FloatDefine needs mega_FilterOnePole
+-- Generating mega_FilterTwoPole for library FilterTwoPole
+-- Found library FilterTwoPole needs mega_FloatDefine
+-- Found library FilterTwoPole needs mega_FilterDerivative
+-- Found library FilterTwoPole needs mega_FilterOnePole
+-- Found library FilterTwoPole needs mega_FloatDefine
+-- Generating mega_RunningStatistics for library RunningStatistics
+-- Found library RunningStatistics needs mega_FilterTwoPole
+-- Found library RunningStatistics needs mega_FilterDerivative
+-- Found library RunningStatistics needs mega_FilterOnePole
+-- Found library RunningStatistics needs mega_FloatDefine
+-- Found library RunningStatistics needs mega_FilterTwoPole
+-- Found library FloatDefine needs mega_FilterDerivative;mega_FilterOnePole;mega_FloatDefine;mega_FilterTwoPole;mega_RunningStatistics
+-- Found library FilterOnePole needs mega_FilterDerivative;mega_FilterOnePole;mega_FloatDefine;mega_FilterTwoPole;mega_RunningStatistics
+-- Found library FilterOnePole needs mega_FilterTwoPole
+-- Found library FilterDerivative needs mega_FilterDerivative;mega_FilterOnePole;mega_FloatDefine;mega_FilterTwoPole;mega_RunningStatistics
+-- Found library FilterDerivative needs mega_FloatDefine
+-- Found library FilterDerivative needs mega_FilterTwoPole
+-- Found library Filters needs mega_FilterDerivative;mega_FilterOnePole;mega_FloatDefine;mega_FilterTwoPole;mega_RunningStatistics
+-- Found library Filters needs mega_FilterOnePole
+-- Found library Filters needs mega_FloatDefine
+-- Found library Filters needs mega_FilterTwoPole
+-- Using C:/Program Files (x86)/Arduino/hardware/tools/avr/bin/avr-objcopy.exe for converting firmware image to hex
+-- AVR Boards:
+--                   menu: 
+--                    yun: Arduino Y
+--                    uno: Arduino Uno
+--              diecimila: Arduino Duemilanove or Diecimila
+--                   nano: Arduino Nano
+--                   mega: Arduino Mega or Mega 2560
+--                megaADK: Arduino Mega ADK
+--               leonardo: Arduino Leonardo
+--            leonardoeth: Arduino Leonardo ETH
+--                  micro: Arduino Micro
+--                esplora: Arduino Esplora
+--                   mini: Arduino Mini
+--               ethernet: Arduino Ethernet
+--                    fio: Arduino Fio
+--                     bt: Arduino BT
+--             LilyPadUSB: LilyPad Arduino USB
+--                lilypad: LilyPad Arduino
+--                    pro: Arduino Pro or Pro Mini
+--               atmegang: Arduino NG or older
+--           robotControl: Arduino Robot Control
+--             robotMotor: Arduino Robot Motor
+--                  gemma: Arduino Gemma
+--     circuitplay32u4cat: Adafruit Circuit Playground
+--                yunmini: Arduino Y
+--                chiwawa: Arduino Industrial 101
+--                    one: Linino One
+--                unowifi: Arduino Uno WiFi
+-- 
+-- 
+-- AVR Programmers:
+--                     avrisp: AVR ISP
+--                 avrispmkii: AVRISP mkII
+--                 usbtinyisp: USBtinyISP
+--                 arduinoisp: ArduinoISP
+--              arduinoisporg: ArduinoISP.org
+--                     usbasp: USBasp
+--                   parallel: Parallel Programmer
+--               arduinoasisp: Arduino as ISP
+--     arduinoasispatmega32u4: Arduino as ISP (ATmega32U4)
+--                   usbGemma: Arduino Gemma
+--                  buspirate: BusPirate as ISP
+--                     stk500: Atmel STK500 development board
+--                   jtag3isp: Atmel JTAGICE3 (ISP mode)
+--                      jtag3: Atmel JTAGICE3 (JTAG mode)
+--                  atmel_ice: Atmel-ICE (AVR)
+-- 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug

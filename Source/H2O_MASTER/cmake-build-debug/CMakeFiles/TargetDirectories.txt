@@ -1,0 +1,15 @@
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/mega_CORE.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/mega_OneWire.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/mega_OneWire_direct_gpio.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/mega_OneWire_direct_regtype.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/mega_DallasTemperature.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/mega_Filters.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/mega_FilterDerivative.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/mega_FilterOnePole.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/mega_FloatDefine.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/mega_FilterTwoPole.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/mega_RunningStatistics.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/H2O_MASTER.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/H2O_MASTER-size.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/edit_cache.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_MASTER/cmake-build-debug/CMakeFiles/rebuild_cache.dir
