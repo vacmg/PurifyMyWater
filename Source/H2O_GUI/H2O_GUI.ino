@@ -23,7 +23,9 @@
 
 /*------------Config----------------*/
 
-#include "H2O_UI/UI.h"
+#include "UI/UI.h"
+#include "Communications/CommServer.h"
+
 
 //Main Functions
 
@@ -51,5 +53,5 @@ void setup()
 
 void loop()
 {
-    UI();
+    UILoop();
 }

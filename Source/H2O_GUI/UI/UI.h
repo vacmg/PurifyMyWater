@@ -160,7 +160,7 @@ void UISetup() {
 }
 
 
-void UI() {
+void UILoop() {
     switch (screenStatus) {
         case BOOTING:
             drawSplashScreen();
