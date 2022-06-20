@@ -1,0 +1,5 @@
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_GUI/cmake-build-debug/CMakeFiles/mega_CORE.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_GUI/cmake-build-debug/CMakeFiles/H2O_GUI.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_GUI/cmake-build-debug/CMakeFiles/H2O_GUI-size.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_GUI/cmake-build-debug/CMakeFiles/edit_cache.dir
+A:/SSData/Proyectos/PurifyMyWater/Source/H2O_GUI/cmake-build-debug/CMakeFiles/rebuild_cache.dir
