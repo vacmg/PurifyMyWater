@@ -59,11 +59,17 @@ byte STOPPSUTEMP = 38; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
 // Debug Functions
 
 #if DEBUG
-#define debug(data) Serial.println(data)
-#define changeStatus(newStatus) debug(String(F("Mode changed from '")) +String(modeToString(screenStatus))+String(F("' to '"))+String(modeToString(newStatus))+String(F("'"))); screenStatus = newStatus
+    #define changeStatus(newStatus) debug(String(F("Mode changed from '")) +String(modeToString(screenStatus))+String(F("' to '"))+String(modeToString(newStatus))+String(F("'"))); screenStatus = newStatus
 #else
-#define debug(data) ;
-#define changeStatus(newStatus) screenStatus = newStatus
+    #define changeStatus(newStatus) screenStatus = newStatus
+#endif
+
+#ifndef debug(data)
+#if DEBUG
+        #define debug(data) Serial.println(data)
+    #else
+        #define debug(data) ;
+    #endif
 #endif
 
 // Debug Functions
