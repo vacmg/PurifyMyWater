@@ -134,6 +134,7 @@ void setup(void)
   Serial.begin(9600);
   my_lcd.Init_LCD();
   Serial.println(my_lcd.Read_ID(), HEX);
+  my_lcd.Set_Rotation(0);
   my_lcd.Fill_Screen(BLACK);
   show_main_menu();
   current_color = RED;
@@ -172,6 +173,7 @@ comme:
   digitalWrite(13, LOW);
   pinMode(XM, OUTPUT);
   pinMode(YP, OUTPUT);
+  Serial.println(p.z);
   if (p.z > MINPRESSURE && p.z < MAXPRESSURE) 
   {
       if (p.y < (TS_MINY-5)) 

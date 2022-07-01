@@ -37,6 +37,7 @@
 
 #define TOUCH_ORIENTATION  0
 #define TITLE "TouchScreen.h Calibration"
+#define MEGA true
 
 //if the IC model is known or the modules is unreadable,you can use this constructed function
 LCDWIKI_KBV my_lcd(ST7796S,A3,A2,A1,A0,A4); //model,cs,cd,wr,rd,reset
@@ -107,6 +108,12 @@ void setup()
     Serial.println(TITLE);
     digitalWrite(A0, HIGH);
     pinMode(A0, OUTPUT);
+    #if MEGA
+  pinMode(13,INPUT);
+  pinMode(12,INPUT);
+  pinMode(11,INPUT);
+  pinMode(10,INPUT);
+  #endif
     my_lcd.Init_LCD();
     my_lcd.Set_Rotation(TOUCH_ORIENTATION);
     my_lcd.Fill_Screen(BLACK);
@@ -146,7 +153,7 @@ void readCoordinates()
         do
         {
             Read_Resistive();
-            // showpoint(tp);
+            // showpoint();
             if (tp.z > 20 && tp.z < 1000)
             {
                 tx += tp.x;

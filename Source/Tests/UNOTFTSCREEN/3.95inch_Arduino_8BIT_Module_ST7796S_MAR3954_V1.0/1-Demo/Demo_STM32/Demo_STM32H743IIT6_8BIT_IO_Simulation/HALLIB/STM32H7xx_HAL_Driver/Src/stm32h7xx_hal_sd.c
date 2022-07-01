@@ -316,7 +316,7 @@ HAL_StatusTypeDef HAL_SD_Init(SD_HandleTypeDef *hsd)
   }
   else
   {
-    /* Normal Speed mode, Nothing todo */
+    /* Normal Speed mode, Nothing to do */
   }
 #else
   if((hsd->SdCard.CardSpeed  == CARD_ULTRA_HIGH_SPEED) ||

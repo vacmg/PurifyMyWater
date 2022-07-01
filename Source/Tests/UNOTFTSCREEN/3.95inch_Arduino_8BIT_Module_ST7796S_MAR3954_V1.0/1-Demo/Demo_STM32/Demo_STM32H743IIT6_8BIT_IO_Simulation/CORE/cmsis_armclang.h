@@ -739,7 +739,7 @@ __attribute__((always_inline)) __STATIC_INLINE void __set_FPSCR(uint32_t fpscr)
   \param [in]    value  Value to reverse
   \return               Reversed value
  */
-#define __REV16          __builtin_bswap16                /* ToDo ARMCLANG: check if __builtin_bswap16 could be used */
+#define __REV16          __builtin_bswap16                /* To Do ARMCLANG: check if __builtin_bswap16 could be used */
 #if 0
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __REV16(uint32_t value)
 {
@@ -757,7 +757,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __REV16(uint32_t value)
   \param [in]    value  Value to reverse
   \return               Reversed value
  */
-                                                          /* ToDo ARMCLANG: check if __builtin_bswap16 could be used */
+                                                          /* To Do ARMCLANG: check if __builtin_bswap16 could be used */
 __attribute__((always_inline)) __STATIC_INLINE int32_t __REVSH(int32_t value)
 {
   int32_t result;
@@ -796,7 +796,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __ROR(uint32_t op1, uint
   \param [in]    value  Value to reverse
   \return               Reversed value
  */
-                                                          /* ToDo ARMCLANG: check if __builtin_arm_rbit is supported */
+                                                          /* To Do ARMCLANG: check if __builtin_arm_rbit is supported */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __RBIT(uint32_t value)
 {
   uint32_t result;
