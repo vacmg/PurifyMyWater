@@ -5,19 +5,17 @@
 #ifndef H2O_COMMUNICATIONS_H
 #define H2O_COMMUNICATIONS_H
 
-#define SCREENBAUDRATE 115200
 #define MAXMSGRETRIES 3
 #define MSGTIMEOUT 2500
-#define SCREENTIMEOUT 120000
 #define MAXMSGSIZE 60
-#define MAXRAWMSGSIZE 64
+#define MAXRAWMSGSIZE MAXMSGSIZE + 4 // 1(size)+1(crc)+1(\n terminator)+1(NULL)
+#define SEPARATOR ","
 
 #define ACK 6
 
-#define ID_REQUESTMESSAGE 1
-#define ID_REQUESTANSWERMESSAGE 2
-#define ID_SENDMESSAGE 3
-#define SEPARATOR ","
+#define REQUESTMESSAGE_ID 1
+#define REQUESTANSWERMESSAGE_ID 2
+#define SENDMESSAGE_ID 3
 
 #include <Arduino.h>
 
@@ -46,8 +44,8 @@ class Communications
 {
 public:
     // Application layer
-    static bool createSendMessage(char* payload, byte variableID, const char* value);
-    static bool extractSendMessage(const char* payload, char* variableID, char* value);
+    static bool createSendMessage(char* payload, const char* variableID, const char* value);
+    static bool extractSendMessage(char* payload, char* variableID, char* value);
     static bool createRequestAnswerMessage(char* payload, const char* variableID, const char* value, const char* functionID);
     static bool extractRequestAnswerMessage(char* payload, char* variableID, char* value, char* functionID);
     static bool createRequestMessage(char* payload, const char* variableID, const char* functionID);

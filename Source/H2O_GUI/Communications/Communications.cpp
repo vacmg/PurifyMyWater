@@ -13,29 +13,32 @@
  */
 
 // Application layer
-bool Communications::createSendMessage(char* payload, byte variableID, const char* value)
+bool Communications::createSendMessage(char* payload, const char* variableID, const char* value)
 {
     if(value == NULL || payload == NULL)
         return false;
-    payload[0] = ID_SENDMESSAGE; // ID sendMessage
-    payload[1] = variableID;
-    strcpy(&payload[2], value);
+    payload[0] = SENDMESSAGE_ID; // ID sendMessage
+    payload[1] = '\0'; // ensure strcat works (it will be replaced by strcat)
+    strcat(payload, variableID);
+    strcat(payload,SEPARATOR);
+    strcat(payload, value);
     return true;
 }
 
-bool Communications::extractSendMessage(const char* payload, char* variableID, char* value)
+bool Communications::extractSendMessage(char* payload, char* variableID, char* value)
 {
     if (value == NULL || payload == NULL)
         return false;
-    *variableID = payload[1];
-    strcpy(value, &payload[2]);
+    strcpy(variableID,strtok(&payload[1],SEPARATOR));
+    strcpy(value,strtok(NULL,SEPARATOR));
 }
 
 bool Communications::createRequestMessage(char* payload, const char* variableID, const char* functionID)
 {
     if(variableID == NULL || payload == NULL || functionID == NULL)
         return false;
-    payload[0] = ID_REQUESTMESSAGE;
+    payload[0] = REQUESTMESSAGE_ID;
+    payload[1] = '\0'; // ensure strcat works (it will be replaced by strcat)
     strcat(payload,variableID);
     strcat(payload,SEPARATOR);
     strcat(payload,functionID);
@@ -56,7 +59,8 @@ bool Communications::createRequestAnswerMessage(char* payload, const char* varia
     if (payload == NULL || value == NULL || variableID == NULL || functionID == NULL)
         return false;
 
-    payload[0] = ID_REQUESTANSWERMESSAGE;
+    payload[0] = REQUESTANSWERMESSAGE_ID;
+    payload[1] = '\0'; // ensure strcat works (it will be replaced by strcat)
     strcat(payload, SEPARATOR);
     strcat(payload, variableID);
     strcat(payload, SEPARATOR);
