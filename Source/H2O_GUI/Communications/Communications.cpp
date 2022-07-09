@@ -13,6 +13,8 @@
  */
 
 // Application layer
+
+// This function puts information together to create a sendMessage payload
 bool Communications::createSendMessage(char* payload, const char* variableID, const char* value)
 {
     if(value == NULL || payload == NULL)
@@ -25,6 +27,7 @@ bool Communications::createSendMessage(char* payload, const char* variableID, co
     return true;
 }
 
+// This function extracts information from a sendMessage payload
 bool Communications::extractSendMessage(char* payload, char* variableID, char* value)
 {
     if (value == NULL || payload == NULL)
@@ -33,27 +36,7 @@ bool Communications::extractSendMessage(char* payload, char* variableID, char* v
     strcpy(value,strtok(NULL,SEPARATOR));
 }
 
-bool Communications::createRequestMessage(char* payload, const char* variableID, const char* functionID)
-{
-    if(variableID == NULL || payload == NULL || functionID == NULL)
-        return false;
-    payload[0] = REQUESTMESSAGE_ID;
-    payload[1] = '\0'; // ensure strcat works (it will be replaced by strcat)
-    strcat(payload,variableID);
-    strcat(payload,SEPARATOR);
-    strcat(payload,functionID);
-    return true;
-}
-
-bool Communications::extractRequestMessage(char* payload, char* variableID, char* functionID)
-{
-    if(payload == NULL || variableID == NULL || functionID == NULL)
-        return false;
-    strcpy(variableID,strtok(&payload[1],SEPARATOR));
-    strcpy(functionID,strtok(NULL,SEPARATOR));
-    return true;
-}
-
+// This function puts information together to create a requestAnswerMessage payload
 bool Communications::createRequestAnswerMessage(char* payload, const char* variableID, const char* value, const char* functionID)
 {
     if (payload == NULL || value == NULL || variableID == NULL || functionID == NULL)
@@ -70,6 +53,7 @@ bool Communications::createRequestAnswerMessage(char* payload, const char* varia
     return true;
 }
 
+// This function extracts information from a requestAnswerMessage payload
 bool Communications::extractRequestAnswerMessage(char* payload, char* variableID, char* value, char* functionID)
 {
     if (payload == NULL || value == NULL || variableID == NULL || functionID == NULL)
@@ -81,14 +65,41 @@ bool Communications::extractRequestAnswerMessage(char* payload, char* variableID
     return true;
 }
 
+// This function puts information together to create a requestMessage payload
+bool Communications::createRequestMessage(char* payload, const char* variableID, const char* functionID)
+{
+    if(variableID == NULL || payload == NULL || functionID == NULL)
+        return false;
+    payload[0] = REQUESTMESSAGE_ID;
+    payload[1] = '\0'; // ensure strcat works (it will be replaced by strcat)
+    strcat(payload,variableID);
+    strcat(payload,SEPARATOR);
+    strcat(payload,functionID);
+    return true;
+}
+
+// This function extracts information from a requestMessage payload
+bool Communications::extractRequestMessage(char* payload, char* variableID, char* functionID)
+{
+    if(payload == NULL || variableID == NULL || functionID == NULL)
+        return false;
+    strcpy(variableID,strtok(&payload[1],SEPARATOR));
+    strcpy(functionID,strtok(NULL,SEPARATOR));
+    return true;
+}
+
 
 // Link layer
+
+// This function sends a message, waits for ACK & if timeout, it retries MAXMSGRETRIES of times
+// On success, it returns true, otherwise false.
 bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
 {
     byte payloadLength = strlen(payload);
     if(payloadLength>MAXMSGSIZE)
     {
         debug(Message(F("Payload exceeded maximum message size: ")+payloadLength+F(" > ")+MAXMSGSIZE));
+        return false;
     }
     char message[MAXRAWMSGSIZE];
     message[1] = payloadLength+1; // set size of the message
@@ -110,6 +121,7 @@ bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
     return successfulSend;
 }
 
+// This function gets a message, verifies & extract its payload, send an ACK if the message is valid & returns if success
 bool Communications::getMessage(char* payload, HardwareSerial* serial)
 {
     delay(100);
@@ -124,6 +136,8 @@ bool Communications::getMessage(char* payload, HardwareSerial* serial)
     return false;
 }
 
+// This function extracts the payload from a message & validates it against a precalculated CRC8
+// This function modifies the given input (message) removing CRC8 code & size bytes
 bool Communications::verifyMessage(char* message)
 {
     byte originCRC = message[0]; // Origin CRC code
@@ -131,7 +145,7 @@ bool Communications::verifyMessage(char* message)
     byte realCRC = CRC8((byte*) &message[1],size); // get CRC8 of [tam][message]
     for(byte i = 0; i<size;i++)
     {
-        message[i] = message [i+2];
+        message[i] = message [i+2]; // Delete CRC8 & size values from the payload
     }
     return originCRC==realCRC;
 }
