@@ -26,6 +26,12 @@ include_directories(Libraries/TouchScreen)
 include_directories(Libraries/SimpleLCDTouchScreen)
 include_directories(Shared)
 include_directories(UI)
+include_directories(UI/Core)
+include_directories(UI/Screens)
+include_directories(UI/Screens/Menu)
+include_directories(UI/Screens/Menu/Settings)
+include_directories(UI/Screens/Menu/ExtraFunctions)
+
 
 ### Additional settings to add non-standard or your own Arduino libraries.
 # For this example (Libraries will contain additional arduino libraries)
