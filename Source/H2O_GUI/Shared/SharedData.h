@@ -37,7 +37,7 @@ unsigned long WELLPUMPTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms)
 unsigned long UVPUMPTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < UVPUMPTIMEOUT
 unsigned long ENDPUMPTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < ENDPUMPTIMEOUT
 unsigned long FILTERTIMEOUT = 60000; // Stored in ms, input in s (1s = 1000ms) // 0 < FILTERTIMEOUT
-unsigned int UVPUMPFLOW = 55; // L/H
+float UVPUMPFLOW = 55; // L/H 0 < UVPUMPFLOW
 
 // Temperature settings
 unsigned long TEMPCHECKTIME = 10000; // Stored in ms, input in s (1s = 1000ms) // 0 < TEMPCHECKTIME

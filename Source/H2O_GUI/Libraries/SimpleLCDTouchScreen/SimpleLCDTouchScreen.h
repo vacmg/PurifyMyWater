@@ -1,20 +1,22 @@
 #ifndef _SIMPLE_LCDTOUCH_SCREEN_H_
 #define _SIMPLE_LCDTOUCH_SCREEN_H_
 
-#include <LCDWIKI_KBV.h>
-#include <LCDWIKI_GUI.h>
-#include <TouchScreen.h>
-#include <TouchScreenObject.h>
-#include <ScreenObject.h>
-#include <Line.h>
-#include <Label.h>
-#include <Rectangle.h>
-#include <RectangleButton.h>
-#include <RoundRectangle.h>
-#include <RoundRectangleButton.h>
-#include <Picture.h>
-#include <ScreenObjectWithPicture.h>
-#include <PictureButton.h>
+#include <SD.h>
+#include "LCDWIKI_KBV.h"
+#include "LCDWIKI_GUI.h"
+#include "TouchScreen.h"
+#include "TouchScreenObject.h"
+#include "ScreenObject.h"
+#include "Line.h"
+#include "Label.h"
+#include "Rectangle.h"
+#include "RectangleButton.h"
+#include "RoundRectangle.h"
+#include "RoundRectangleButton.h"
+#include "Picture.h"
+#include "ScreenObjectWithPicture.h"
+#include "PictureButton.h"
+#include "TextBox.h"
 
 class SimpleLCDTouchScreen: virtual public LCDWIKI_KBV
 {
@@ -28,6 +30,7 @@ public:
     bool draw(Rectangle* rectangle);
     bool draw(RoundRectangle* roundRectangle);
     bool draw(Picture* picture);
+    bool draw(TextBox* textBox);
 
 private:
     /*SD ACCESS*/

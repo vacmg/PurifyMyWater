@@ -19,7 +19,7 @@ void drawInterface()
             break;
         case 2:
             setFontSizeArray(fontSizes, 2, 2, 2, 2, 2, 2);
-            draw6ButtonsLayout(F("Refresh Period"), F("Reset"), "",(String) (((double) DATAREFRESHPERIOD) / 1000) + "s", "Perform Reset", "", true,true, false, fontSizes);
+            draw6ButtonsLayout(F("Refresh Period"), F("Reset"), "",(String) ((double) DATAREFRESHPERIOD/1000.0) + "s", "Perform Reset", "", true,true, false, fontSizes);
             break;
     }
 }
@@ -31,13 +31,14 @@ void clickInterface()
         switch (page)
         {
             case 2: // Refresh Period
-                double tempVal = getNumInput("Refresh Period", "s", DATAREFRESHPERIOD);
+                double tempVal = getNumInput("Refresh Period", "s", (double)DATAREFRESHPERIOD/1000.0);
+                debug(tempVal);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (tempVal > 0)
                     {
                         debug(String(F("DATAREFRESHPERIOD UPDATED: ")) + DATAREFRESHPERIOD + String(F(" --> ")) +tempVal);
-                        DATAREFRESHPERIOD = (long) tempVal * 1000;
+                        DATAREFRESHPERIOD = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
                 }

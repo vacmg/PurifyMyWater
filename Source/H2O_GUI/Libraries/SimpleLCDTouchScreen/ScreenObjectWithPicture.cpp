@@ -24,12 +24,7 @@ Picture* ScreenObjectWithPicture::getPicture()
 void ScreenObjectWithPicture::setPicture(Picture* picture)
 {
     this->picture = picture;
-    validPicture = true;
-}
-
-void ScreenObjectWithPicture::disablePicture()
-{
-    validPicture = false;
+    validPicture = picture != nullptr;
 }
 
 bool ScreenObjectWithPicture::isAValidPicture()

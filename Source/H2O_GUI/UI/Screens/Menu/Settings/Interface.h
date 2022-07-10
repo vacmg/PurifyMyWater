@@ -9,7 +9,7 @@
 
 void drawInterface();
 
-void clickInterface();
+void clickInterface(); // TODO implement language, screen rotation, screen calibration & reset
 
 #include "Interface.cpp"
 

@@ -21,15 +21,15 @@ void drawBackground()
 }
 
 //btn1 --> topLeft; btn2 --> topRight; btn3 --> bottomLeft; btn4 --> bottomRight
-void draw4ButtonsLayout(String topLeft, String topRight, String bottomLeft, String bottomRight, const byte* fontSize)
+void draw4ButtonsLayout(const String& topLeft, const String& topRight, const String& bottomLeft, const String& bottomRight, const byte* fontSize)
 {
-    bool validFontSize = fontSize!=NULL;
+    bool validFontSize = fontSize!=nullptr;
     if(validFontSize)
     {
-        if(fontSize[0] != 0) btn1.setDisableAutoSize(true);
-        if(fontSize[1] != 0) btn2.setDisableAutoSize(true);
-        if(fontSize[2] != 0) btn3.setDisableAutoSize(true);
-        if(fontSize[3] != 0) btn4.setDisableAutoSize(true);
+        if(fontSize[0] != 0) btn1.enableAutoSize(false);
+        if(fontSize[1] != 0) btn2.enableAutoSize(false);
+        if(fontSize[2] != 0) btn3.enableAutoSize(false);
+        if(fontSize[3] != 0) btn4.enableAutoSize(false);
     }
 
     // Top left button
@@ -39,7 +39,7 @@ void draw4ButtonsLayout(String topLeft, String topRight, String bottomLeft, Stri
     btn1.setCoords(30,120);
     btn1.setCoords1(230,200);
     my_lcd.draw(&btn1);
-    btn1.setDisableAutoSize(false);
+    btn1.enableAutoSize(true);
 
     // Top right button
     if (validFontSize)
@@ -48,7 +48,8 @@ void draw4ButtonsLayout(String topLeft, String topRight, String bottomLeft, Stri
     btn2.setCoords(250,120);
     btn2.setCoords1(440,200);
     my_lcd.draw(&btn2);
-    btn2.setDisableAutoSize(false);
+    btn2.enableAutoSize(true);
+;
 
     // Bottom left button
     if (validFontSize)
@@ -57,7 +58,8 @@ void draw4ButtonsLayout(String topLeft, String topRight, String bottomLeft, Stri
     btn3.setCoords(30,220);
     btn3.setCoords1(230,300);
     my_lcd.draw(&btn3);
-    btn3.setDisableAutoSize(false);
+    btn3.enableAutoSize(true);
+;
 
     // Bottom right button
     if (validFontSize)
@@ -66,7 +68,8 @@ void draw4ButtonsLayout(String topLeft, String topRight, String bottomLeft, Stri
     btn4.setCoords(250,220);
     btn4.setCoords1(440,300);
     my_lcd.draw(&btn4);
-    btn4.setDisableAutoSize(false);
+    btn4.enableAutoSize(true);
+;
 }
 
 //btn1 --> topLeft; btn2 --> topRight; btn3 --> bottomLeft; btn4 --> bottomRight
@@ -81,12 +84,12 @@ void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottom
     bool validFontSize = fontSize!=NULL;
     if(validFontSize)
     {
-        if(fontSize[0] != 0) btn1.setDisableAutoSize(true);
-        if(fontSize[1] != 0) btn2.setDisableAutoSize(true);
-        if(fontSize[2] != 0) btn3.setDisableAutoSize(true);
-        if(fontSize[3] != 0) btn4.setDisableAutoSize(true);
-        if(fontSize[4] != 0) btn5.setDisableAutoSize(true);
-        if(fontSize[5] != 0) btn6.setDisableAutoSize(true);
+        if(fontSize[0] != 0) btn1.enableAutoSize(false);
+        if(fontSize[1] != 0) btn2.enableAutoSize(false);
+        if(fontSize[2] != 0) btn3.enableAutoSize(false);
+        if(fontSize[3] != 0) btn4.enableAutoSize(false);
+        if(fontSize[4] != 0) btn5.enableAutoSize(false);
+        if(fontSize[5] != 0) btn6.enableAutoSize(false);
     }
     label.setString(topLeftBtn1.c_str());
     if (validFontSize)
@@ -94,6 +97,7 @@ void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottom
     btn1.setCoords(25,95);
     btn1.setCoords1(195,135);
     my_lcd.draw(&btn1);
+    btn1.enableAutoSize(true);
 
     label.setString(centerLeftBtn2.c_str());
     if (validFontSize)
@@ -101,6 +105,7 @@ void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottom
     btn2.setCoords(25,155);
     btn2.setCoords1(195,195);
     my_lcd.draw(&btn2);
+    btn2.enableAutoSize(true);
 
     label.setString(bottomLeftBtn3.c_str());
     if (validFontSize)
@@ -108,6 +113,7 @@ void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottom
     btn3.setCoords(25,215);
     btn3.setCoords1(195,255);
     my_lcd.draw(&btn3);
+    btn3.enableAutoSize(true);
 
     label.setString(topRightBtn4.c_str());
     if (validFontSize)
@@ -115,6 +121,7 @@ void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottom
     btn4.setCoords(280,95);
     btn4.setCoords1(450,135);
     my_lcd.draw(&btn4);
+    btn4.enableAutoSize(true);
 
     label.setString(centerRightBtn5.c_str());
     if (validFontSize)
@@ -122,6 +129,7 @@ void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottom
     btn5.setCoords(280,155);
     btn5.setCoords1(450,195);
     my_lcd.draw(&btn5);
+    btn5.enableAutoSize(true);
 
     label.setString(bottomRightBtn6.c_str());
     if (validFontSize)
@@ -129,13 +137,7 @@ void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottom
     btn6.setCoords(280,215);
     btn6.setCoords1(450,255);
     my_lcd.draw(&btn6);
-
-    btn1.setDisableAutoSize(false);
-    btn2.setDisableAutoSize(false);
-    btn3.setDisableAutoSize(false);
-    btn4.setDisableAutoSize(false);
-    btn5.setDisableAutoSize(false);
-    btn6.setDisableAutoSize(false);
+    btn6.enableAutoSize(true);
 
     if(topHelpBtn9)
     {
@@ -174,20 +176,23 @@ void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottom
 
         if(page>1)
         {
+            btn7.enableAutoSize(false);
+            label.setFontSize(3);
             label.setString("Previous");
             btn7.setCoords(35,278);
             btn7.setCoords1(190,308);
             my_lcd.draw(&btn7);
+            btn7.enableAutoSize(true);
         }
         if (page<maxPage)
         {
-            btn8.setDisableAutoSize(true);
+            btn8.enableAutoSize(false);
             label.setFontSize(3);
             label.setString("Next");
             btn8.setCoords(290,278);
             btn8.setCoords1(440,308);
             my_lcd.draw(&btn8);
-            btn8.setDisableAutoSize(false);
+            btn8.enableAutoSize(true);
         }
     }
 
@@ -202,71 +207,82 @@ void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottom
 void drawNumInput (String titleNumInput, String unit)
 {
     drawBackground();
-    title.setDisableAutoSize(true);
+    title.enableAutoSize(false);
     titleLabel.setString(titleNumInput.c_str()); // title
     titleLabel.setFontSize(2);
     my_lcd.draw(&title);
-    title.setDisableAutoSize(false);
+    title.enableAutoSize(true);
+;
 
     //NUMERIC BUTTONS//
     label.setString("1"); // Button number 1
     btn1.setCoords(40,155);
     btn1.setCoords1(100,205);
-    btn1.setDisableAutoSize(false);
+    btn1.enableAutoSize(true);
+;
     my_lcd.draw(&btn1);
 
     label.setString("2"); // Button number 2
     btn2.setCoords(125,155);
     btn2.setCoords1(185,205);
-    btn2.setDisableAutoSize(false);
+    btn2.enableAutoSize(true);
+;
     my_lcd.draw(&btn2);
 
     label.setString("3"); // Button number 3
     btn3.setCoords(210,155);
     btn3.setCoords1(270,205);
-    btn3.setDisableAutoSize(false);
+    btn3.enableAutoSize(true);
+;
     my_lcd.draw(&btn3);
 
     label.setString("4"); // Button number 4
     btn4.setCoords(295,155);
     btn4.setCoords1(355,205);
-    btn4.setDisableAutoSize(false);
+    btn4.enableAutoSize(true);
+;
     my_lcd.draw(&btn4);
 
     label.setString("5"); // Button number 5
     btn5.setCoords(380,155);
     btn5.setCoords1(440,205);
-    btn5.setDisableAutoSize(false);
+    btn5.enableAutoSize(true);
+;
     my_lcd.draw(&btn5);
 
     label.setString("6"); // Button number 6
     btn6.setCoords(40,215);
     btn6.setCoords1(100,265);
-    btn6.setDisableAutoSize(false);
+    btn6.enableAutoSize(true);
+;
     my_lcd.draw(&btn6);
 
     label.setString("7"); // Button number 7
     btn7.setCoords(125,215);
     btn7.setCoords1(185,265);
-    btn7.setDisableAutoSize(false);
+    btn7.enableAutoSize(true);
+;
     my_lcd.draw(&btn7);
 
     label.setString("8"); // Button number 8
     btn8.setCoords(210,215);
     btn8.setCoords1(270,265);
-    btn8.setDisableAutoSize(false);
+    btn8.enableAutoSize(true);
+;
     my_lcd.draw(&btn8);
 
     label.setString("9"); // Button number 9
     btn9.setCoords(295,215);
     btn9.setCoords1(355,265);
-    btn9.setDisableAutoSize(false);
+    btn9.enableAutoSize(true);
+;
     my_lcd.draw(&btn9);
 
     label.setString("0"); // Button number 0
     btn10.setCoords(380,215);
     btn10.setCoords1(440,265);
-    btn10.setDisableAutoSize(false);
+    btn10.enableAutoSize(true);
+;
     my_lcd.draw(&btn10);
 
     //AUXILIARY BUTTONS//

@@ -191,7 +191,7 @@ double getNumInput(String titleNumInput, String unit, double value, byte decimal
 
 double getNumInput(String titleNumInput, String unit, double value)
 {
-    getNumInput(titleNumInput,unit,value,2);
+    return getNumInput(titleNumInput,unit,value,2);
 }
 
 void setRotation(byte rotation)

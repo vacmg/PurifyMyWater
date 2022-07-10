@@ -15,7 +15,7 @@ void drawExtraFunctions()
     draw6ButtonsLayout(F("AC Power Supply"), F("DC Power Supply"), F("Install Wizard"), "ON/OFF", "ON/OFF", "Start",true, true, true, fontSizes);
 }
 
-void clickExtraFunctions() // Todo implement extrafunctions
+void clickExtraFunctions() // Todo implement extraFunctions
 {
     /*if(btnx.isPressed())
     {

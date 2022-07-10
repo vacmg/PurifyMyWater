@@ -243,13 +243,13 @@ void drawStatusBackground(bool dontFillScreen)
     drawStatusBackgroundPhoto();
 
     //Small logo
-    btn1.setDisableAutoSize(true);
+    btn1.enableAutoSize(false);
     label.setFontSize(2);
     label.setString("Menu"); // Label Menu
     btn1.setCoords(135, 234);
     btn1.setCoords1(260, 290);
     my_lcd.draw(&btn1);
-    btn1.setDisableAutoSize(false);
+    btn1.enableAutoSize(true);
 }
 
 void drawStatusBackground()
@@ -272,7 +272,7 @@ void drawStatusForeground(const char *voltage, const char *waterAmount)//TODO ad
     rectangle.setCoords1(440, 215);
     my_lcd.draw(&rectangle);
 
-    btn2.setDisableAutoSize(true);
+    btn2.enableAutoSize(false);
     label.setFontSize(2);
     btn2.setCoords(300, 234);
     btn2.setCoords1(420, 290);
@@ -293,7 +293,7 @@ void drawStatusForeground(const char *voltage, const char *waterAmount)//TODO ad
     }
     my_lcd.draw(&btn2);
     btn2.setSecondaryColor(Color(255, 255, 255));
-    btn2.setDisableAutoSize(false);
+    btn2.enableAutoSize(true);
 
     drawStatusColors(0, 0, 0, 0, 0, 0, 0, 0, 0);
 }

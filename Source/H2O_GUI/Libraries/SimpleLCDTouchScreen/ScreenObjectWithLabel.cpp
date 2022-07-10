@@ -6,12 +6,12 @@
 
 // TODO (feature) set alignment (left, center, right)
 
-ScreenObjectWithLabel::ScreenObjectWithLabel(int x, int y, Color mainColor, Label* label, bool disableAutoSize):ScreenObject(x, y, mainColor)
+ScreenObjectWithLabel::ScreenObjectWithLabel(int x, int y, Color mainColor, Label* label, bool autoSizeEnabled):ScreenObject(x, y, mainColor)
 {
     this->label = label;
     this->validLabel = true;
     this->margin = defaultMargin;
-    this->disableAutoSize = disableAutoSize;
+    this->autoSizeEnabled = autoSizeEnabled;
 }
 
 ScreenObjectWithLabel::ScreenObjectWithLabel(int x, int y, Color mainColor, Label* label):ScreenObject(x, y, mainColor)
@@ -19,7 +19,7 @@ ScreenObjectWithLabel::ScreenObjectWithLabel(int x, int y, Color mainColor, Labe
     this->label = label;
     this->validLabel = true;
     this->margin = defaultMargin;
-    this->disableAutoSize = false;
+    this->autoSizeEnabled = true;
 }
 
 ScreenObjectWithLabel::ScreenObjectWithLabel(int x, int y, Color mainColor):ScreenObject(x, y, mainColor)
@@ -27,15 +27,15 @@ ScreenObjectWithLabel::ScreenObjectWithLabel(int x, int y, Color mainColor):Scre
     this->label = nullptr;
     this->validLabel = false;
     this->margin = defaultMargin;
-    this->disableAutoSize = false;
+    this->autoSizeEnabled = true;
 }
 
-ScreenObjectWithLabel::ScreenObjectWithLabel()
+ScreenObjectWithLabel::ScreenObjectWithLabel():ScreenObject(0, 0, Color())
 {
     this->label = nullptr;
     this->validLabel = false;
     this->margin = defaultMargin;
-    this->disableAutoSize = false;
+    this->autoSizeEnabled = true;
 }
 
 Label* ScreenObjectWithLabel::getLabel()
@@ -51,12 +51,7 @@ bool ScreenObjectWithLabel::isAValidLabel()
 void ScreenObjectWithLabel::setLabel(Label* label)
 {
     this->label = label;
-    validLabel = true;
-}
-
-void ScreenObjectWithLabel::disableLabel()
-{
-    validLabel = false;
+    validLabel = label != nullptr;
 }
 
 // This function dynamically set rectangle's label position and font size
@@ -71,9 +66,17 @@ void ScreenObjectWithLabel::updateLabelLocation(uint8_t margin)
     int borderY = sizeY/margin;
     int wordSizeX = sizeX-2*borderX;
     int wordSizeY = sizeY-2*borderY;
-    int fontSizeX = wordSizeX/((wlen-1)*(blockSizeX+1)+blockSizeX);
-    int fontSizeY = wordSizeY/blockSizeY;
-    int fontSize = disableAutoSize ? getLabel()->getFontSize() : (fontSizeX<fontSizeY?fontSizeX:fontSizeY);
+    int fontSize;
+    if (autoSizeEnabled)
+    {
+        int fontSizeX = wordSizeX/((wlen-1)*(blockSizeX+1)+blockSizeX);
+        int fontSizeY = wordSizeY/blockSizeY;
+        fontSize = (fontSizeX<fontSizeY?fontSizeX:fontSizeY);
+    }
+    else
+    {
+        fontSize = getLabel()->getFontSize();
+    }
 
     wordSizeX = ((wlen-1)*(blockSizeX+1)+blockSizeX)*fontSize;
     wordSizeY = blockSizeY*fontSize;
@@ -108,13 +111,13 @@ void ScreenObjectWithLabel::setCoords1(int x, int y)
     updateLabelLocation(margin);
 }
 
-bool ScreenObjectWithLabel::isAutoSizeDisabled()
+bool ScreenObjectWithLabel::isAutoSizeEnabled()
 {
-    return disableAutoSize;
+    return autoSizeEnabled;
 }
 
-void ScreenObjectWithLabel::setDisableAutoSize(bool disableAutoSize)
+void ScreenObjectWithLabel::enableAutoSize(bool autoSizeEnabled)
 {
-    this->disableAutoSize = disableAutoSize;
+    this->autoSizeEnabled = autoSizeEnabled;
     updateLabelLocation(margin);
 }

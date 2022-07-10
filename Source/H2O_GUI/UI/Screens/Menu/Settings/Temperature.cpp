@@ -15,7 +15,7 @@ void drawTemperature()
     {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(F("Temp. Refresh Rate "), F("System Stop Temp."), F("PSU Fan Start Temp."),String(((double) TEMPCHECKTIME) / 1000) + "s",String((double) STOPWORKINGTEMP) + "C", String((double) STARTPSUTEMP) + "C",true, true, true, fontSizes);
+            draw6ButtonsLayout(F("Temp. Refresh Rate "), F("System Stop Temp."), F("PSU Fan Start Temp."),String(((double) TEMPCHECKTIME) / 1000.0) + "s",String((double) STOPWORKINGTEMP) + "C", String((double) STARTPSUTEMP) + "C",true, true, true, fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
@@ -32,13 +32,13 @@ void clickTemperature()
         switch (page)
         {
             case 1: // Temp. Refresh Rate
-                tempVal = getNumInput("Temp. Refresh Rate", "s", TEMPCHECKTIME);
+                tempVal = getNumInput("Temp. Refresh Rate", "s", (double)TEMPCHECKTIME/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (tempVal > 0)
                     {
                         debug(String(F("TEMPCHECKTIME UPDATED: ")) + TEMPCHECKTIME + String(F(" --> ")) +tempVal);
-                        TEMPCHECKTIME = tempVal * 1000;
+                        TEMPCHECKTIME = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
                 }
@@ -53,7 +53,7 @@ void clickTemperature()
                     if (tempVal > 0 && tempVal < STARTPSUTEMP)
                     {
                         debug(String(F("STOPPSUTEMP UPDATED: ")) + STOPPSUTEMP + String(F(" --> ")) +tempVal);
-                        STOPPSUTEMP = (double) tempVal;
+                        STOPPSUTEMP = (byte) tempVal;
                         // TODO send new setting
                     }
                 }
@@ -73,7 +73,7 @@ void clickTemperature()
                     if (tempVal > 0 && tempVal > STARTPSUTEMP && tempVal > STARTCASETEMP)
                     {
                         debug(String(F("STOPWORKINGTEMP UPDATED: ")) + STOPWORKINGTEMP + String(F(" --> ")) +tempVal);
-                        STOPWORKINGTEMP = (double) tempVal;
+                        STOPWORKINGTEMP = (byte) tempVal;
                         // TODO send new setting
                     }
                 }
@@ -88,7 +88,7 @@ void clickTemperature()
                     if (tempVal > 0 && tempVal > STOPCASETEMP && tempVal < STOPWORKINGTEMP)
                     {
                         debug(String(F("STARTCASETEMP UPDATED: ")) + STARTCASETEMP + String(F(" --> ")) +tempVal);
-                        STARTCASETEMP = (double) tempVal;
+                        STARTCASETEMP = (byte) tempVal;
                         // TODO send new setting
                     }
                 }
@@ -108,7 +108,7 @@ void clickTemperature()
                     if (tempVal > 0 && tempVal > STOPPSUTEMP && tempVal < STOPWORKINGTEMP)
                     {
                         debug(String(F("STARTPSUTEMP UPDATED: ")) + STARTPSUTEMP + String(F(" --> ")) +tempVal);
-                        STARTPSUTEMP = (double) tempVal;
+                        STARTPSUTEMP = (byte) tempVal;
                         // TODO send new setting
                     }
                 }
@@ -123,7 +123,7 @@ void clickTemperature()
                     if (tempVal > 0 && tempVal < STARTCASETEMP)
                     {
                         debug(String(F("STOPPSUTEMP UPDATED: ")) + STOPCASETEMP + String(F(" --> ")) +tempVal);
-                        STOPCASETEMP = (double) tempVal;
+                        STOPCASETEMP = (byte) tempVal;
                         // TODO send new setting
                     }
                 }

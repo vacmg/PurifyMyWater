@@ -15,6 +15,8 @@ SimpleLCDTouchScreen::SimpleLCDTouchScreen(uint16_t model, uint8_t cs, uint8_t c
 
 bool SimpleLCDTouchScreen::draw(Line* line)
 {
+    if(line == nullptr)
+        return false;
     Set_Draw_color(line->getMainColor().to565());
     Draw_Line(line->getx(),line->gety(),line->getx1(),line->gety1());
     return true;
@@ -22,6 +24,8 @@ bool SimpleLCDTouchScreen::draw(Line* line)
 
 bool SimpleLCDTouchScreen::draw(Label* label)
 {
+    if(label == nullptr)
+        return false;
     Set_Text_colour(label->getMainColor().to565());
     if (label->isAValidSecondaryColor())
     {
@@ -37,6 +41,8 @@ bool SimpleLCDTouchScreen::draw(Label* label)
 
 bool SimpleLCDTouchScreen::draw(Rectangle* rectangle)
 {
+    if(rectangle == nullptr)
+        return false;
     if(rectangle->isAValidSecondaryColor())
     {
         Set_Draw_color(rectangle->getSecondaryColor().to565());
@@ -54,6 +60,8 @@ bool SimpleLCDTouchScreen::draw(Rectangle* rectangle)
 
 bool SimpleLCDTouchScreen::draw(RoundRectangle* roundRectangle)
 {
+    if(roundRectangle == nullptr)
+        return false;
     if(roundRectangle->isAValidSecondaryColor())
     {
         Set_Draw_color(roundRectangle->getSecondaryColor().to565());
@@ -71,6 +79,8 @@ bool SimpleLCDTouchScreen::draw(RoundRectangle* roundRectangle)
 
 bool SimpleLCDTouchScreen::draw(Picture* picture)
 {
+    if(picture == nullptr)
+        return false;
     if(isSDReady)
     {
         File file = SD.open(picture->getPicturePath(),FILE_READ);
@@ -80,17 +90,92 @@ bool SimpleLCDTouchScreen::draw(Picture* picture)
         }
         else
         {
-            Label label(picture->getx(),picture->gety(),"Failure decoding .bmp",2,Color(255,255,255),Color(255,0,0));
+            Label label(picture->getx(),picture->gety(),String(F("Failure decoding .bmp")).c_str(),2,Color(255,255,255),Color(255,0,0));
             draw(&label);
             return false;
         }
     }
     else
     {
-        Label label(picture->getx(),picture->gety(),"Failure starting the SD card",2,Color(255,255,255),Color(255,0,0));
+        Label label(picture->getx(),picture->gety(),String(F("Failure starting the SD card")).c_str(),2,Color(255,255,255),Color(255,0,0));
         draw(&label);
         return false;
     }
+}
+
+bool SimpleLCDTouchScreen::draw(TextBox* textBox)
+{
+    if(textBox == nullptr)
+        return false;
+    if(!textBox->init() || !textBox->canBeDrawn())
+    {
+        Label label(textBox->getx(),textBox->gety(),String(F("Text does not fit or file is corrupted")).c_str(),2,Color(255,255,255),Color(255,0,0));
+        draw(&label);
+        return false;
+    }
+    if(textBox->isAValidRectangle())
+        draw(textBox->getFrame());
+
+    uint32_t xpx = textBox->getx1()-textBox->getx();
+    uint32_t ypx = textBox->gety1()-textBox->gety();
+
+    /*//TODO BEGIN remove this
+        Rectangle realRectangle(textBox->getx()+textBox->getMarginX(),textBox->gety()+textBox->getMarginY(),textBox->getx1()-textBox->getMarginX(),textBox->gety1()-textBox->getMarginY(), Color(255,0,0));
+        draw(&realRectangle);
+    //TODO END remove this*/
+
+    uint8_t font = textBox->getFontSize();
+    textBox->getLabel()->setFontSize(font);
+    uint16_t maxNumOfCharPerRow = textBox->charactersPerRow(xpx,font);
+    uint16_t maxNumOfRows = textBox->maxAmountOfRows(ypx, font);
+    uint16_t row = 0;
+    uint16_t pos = textBox->getBeginOffset();
+    uint32_t wordSize;
+    File file = SD.open(textBox->getTextPath(), FILE_READ);
+
+    char* nxWord = textBox->nextWord(&file,pos,textBox->getEndOffset(),&wordSize);
+    while (nxWord!= nullptr && row<maxNumOfRows) // For each line until the paragraph is read or numOfRows is exceeded
+    {
+        uint16_t charsReadInARow = 0;
+        bool maxCharPerLineExceeded = false;
+        char* line = (char*) calloc(maxNumOfCharPerRow, sizeof(char));
+        Label* label = textBox->getLabel();
+        label->setCoords((int)(textBox->getx()+textBox->getMarginX()),(int)(textBox->gety()+textBox->getMarginY()+((7*font)+textBox->getSpacing())*row)); // set the coords where to draw the string
+        while (nxWord!= nullptr && !maxCharPerLineExceeded) // For each word until the line is full or a \n is read
+        {
+            if(maxNumOfCharPerRow-charsReadInARow<(wordSize+1)) // If there is no enough free space
+            {
+                maxCharPerLineExceeded = true; // end line
+            }
+            else // If there is enough free space
+            {
+                strcat(line,nxWord); // Add the word to the line
+                charsReadInARow+=(wordSize+1); // wordSize + delimiter (1 char)
+                free(nxWord); // Free old pointer once it has been appended to the line
+
+                char terminator[2] = "";
+                terminator[0] = (char)file.read(); // get the delimiter as a string
+                terminator[1] = NULL;
+                if(terminator[0] == '\n') // If the delimiter is a \n, end line
+                    maxCharPerLineExceeded = true;
+                else
+                    strcat(line,terminator); // If the delimiter is a space, add it to the line
+                pos+=wordSize+1; // Move forward text pointer
+                nxWord = textBox->nextWord(&file,pos,textBox->getEndOffset(),&wordSize); // read next word
+            }
+        }
+        label->setString(line); // set the string to draw
+        draw(label);
+        free(line); // free line string after using it
+        row++;
+    }
+    file.close();
+    if(nxWord!= nullptr)
+    {
+        return false;
+    }
+    return true;
+
 }
 
 void SimpleLCDTouchScreen::Init_LCD()

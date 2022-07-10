@@ -530,7 +530,6 @@ endfunction()
 # see documentation at top
 #=============================================================================#
 function(GENERATE_AVR_FIRMWARE INPUT_NAME)
-    # TODO: This is not optimal!!!!
     message(STATUS "Generating ${INPUT_NAME}")
     parse_generator_arguments(${INPUT_NAME} INPUT
                               "NO_AUTOLIBS;MANUAL"            # Options
@@ -929,7 +928,6 @@ function(find_arduino_libraries VAR_NAME SRCS ARDLIBS)
     foreach(SRC ${SRCS})
 
         # Skipping generated files. They are, probably, not exist yet.
-        # TODO: Maybe it's possible to skip only really nonexisting files,
         # but then it wiil be less deterministic.
         get_source_file_property(_srcfile_generated ${SRC} GENERATED)
         # Workaround for sketches, which are marked as generated
@@ -1379,7 +1377,6 @@ function(setup_arduino_programmer_args BOARD_ID PROGRAMMER TARGET_NAME PORT AVRD
 
     list(APPEND AVRDUDE_ARGS "-C${ARDUINO_AVRDUDE_CONFIG_PATH}")
 
-    #TODO: Check mandatory settings before continuing
     if(NOT ${PROGRAMMER}.protocol)
         message(FATAL_ERROR "Missing ${PROGRAMMER}.protocol, aborting!")
     endif()

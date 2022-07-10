@@ -114,8 +114,7 @@ Label label(200, 10, "Menu", 3, Color(0, 0, 0)); //general label
 Rectangle rectangle(300, 234, 420, 290, Color(0, 0, 0), Color(255, 255, 255), &label);
 
 //Rectangle Buttons
-RectangleButton btn1(30, 120, 230, 200, Color(0, 0, 0), Color(255, 255, 255), &label,
-                     &ts); // todo disable autosize & enable again in the cases that is needed
+RectangleButton btn1(30, 120, 230, 200, Color(0, 0, 0), Color(255, 255, 255), &label,&ts);
 RectangleButton btn2(250, 120, 440, 200, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
 RectangleButton btn3(30, 220, 230, 300, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
 RectangleButton btn4(250, 220, 440, 300, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
@@ -160,8 +159,10 @@ void UISetup() {
 }
 
 
-void UILoop() {
-    switch (screenStatus) {
+void UILoop()
+{
+    switch (screenStatus)
+    {
         case BOOTING:
             drawSplashScreen();
             // Perform other boot stuff after this line
@@ -183,7 +184,9 @@ void UILoop() {
             {
                 drawStatusForeground("15.4V", "320L");
                 sw = false; // todo delete this
-            } else {
+            }
+            else
+            {
                 clickStatus();
             }
             break;
@@ -196,9 +199,12 @@ void UILoop() {
 
         case MENU:
             if (backBtn.isPressed()) // Go to LOADSTATUS
-            { debug(F("Back button pressed"));
+            {
+                debug(F("Back button pressed"));
                 changeStatus(LOADSTATUS);
-            } else {
+            }
+            else
+            {
                 clickMenu();
             }
             break;
@@ -213,7 +219,9 @@ void UILoop() {
             if (backBtn.isPressed()) // Go to LOADMENU
             { debug(F("Back button pressed"));
                 changeStatus(LOADMENU);
-            } else {
+            }
+            else
+            {
                 clickSettings();
             }
             break;
@@ -229,17 +237,23 @@ void UILoop() {
 
         case ELECTRICITY:
             if (backBtn.isPressed()) // Go to LOADSETTINGS
-            { debug(F("Back button pressed"));
+            {
+                debug(F("Back button pressed"));
                 changeStatus(LOADSETTINGS);
-            } else if (page > 1 && btn7.isPressed()) // Previous
-            { debug(F("Previous button pressed"));
+            }
+            else if (page > 1 && btn7.isPressed()) // Previous
+            {
+                debug(F("Previous button pressed"));
                 page--;
                 changeStatus(LOADPAGEELECTRICITY);
-            } else if (page < maxPage && btn8.isPressed()) // Next
-            { debug(F("Next button pressed"));
+            }
+            else if (page < maxPage && btn8.isPressed()) // Next
+            {
+                debug(F("Next button pressed"));
                 page++;
                 changeStatus(LOADPAGEELECTRICITY);
-            } else
+            }
+            else
                 clickElectricity();
             break;
 
@@ -256,19 +270,27 @@ void UILoop() {
             break;
 
         case INTERFACE:
-            if (backBtn.isPressed()) { debug(F("Back button pressed"));
+            if (backBtn.isPressed())
+            {
+                debug(F("Back button pressed"));
                 changeStatus(LOADSETTINGS);
                 // if back button is pressed you go to the previous page, so you start uploading the settings page
-            } else if (page < maxPage && btn8.isPressed()) // Next page
-            { debug(F("Next page button pressed"));
+            }
+            else if (page < maxPage && btn8.isPressed()) // Next page
+            {
+                debug(F("Next page button pressed"));
                 page++;
                 changeStatus(LOADPAGEINTERFACE);
                 // if you press this button, and it's not the last page, change to the next page and load the page by changing to LOADPAGEINTERFACE
-            } else if (page != 1 && btn7.isPressed()) { debug(F("Previous page button pressed"));
+            }
+            else if (page != 1 && btn7.isPressed())
+            {
+                debug(F("Previous page button pressed"));
                 page--;
                 changeStatus(LOADPAGEINTERFACE);
                 // if you press this button, and it's not the first page, change to the previous page and load the page by changing to LOADPAGEINTERFACE
-            } else
+            }
+            else
                 clickInterface();
             // if you click in one of the buttons of the page, you go to this function
             break;
@@ -283,20 +305,28 @@ void UILoop() {
             break;
 
         case TEMPERATURE:
-            if (backBtn.isPressed()) { debug(F("Back button pressed"));
+            if (backBtn.isPressed())
+            {
+                debug(F("Back button pressed"));
                 changeStatus(LOADSETTINGS);
                 // if back button is pressed you go to the previous page, so you start uploading the settings page
-            } else if (page < maxPage && btn8.isPressed()) // Next page
-            { debug(F("Next page button pressed"));
+            }
+            else if (page < maxPage && btn8.isPressed()) // Next page
+            {
+                debug(F("Next page button pressed"));
                 page++;
                 changeStatus(LOADPAGETEMPERATURE);
-            } else if (page > 1 && btn7.isPressed()) { debug(F("Previous page button pressed"));
+            }
+            else if (page > 1 && btn7.isPressed())
+            {
+                debug(F("Previous page button pressed"));
                 page--;
                 changeStatus(LOADPAGETEMPERATURE);
-            } else {
+            }
+            else
+            {
                 clickTemperature();
             }
-
             break;
 
         case LOADWATER:
@@ -309,17 +339,23 @@ void UILoop() {
             break;
         case WATER:
             if (backBtn.isPressed())    // Go to LOADSETTINGS
-            { debug(F("Back Page button pressed"));
+            {
+                debug(F("Back Page button pressed"));
                 changeStatus(LOADSETTINGS);
-            } else if (page < maxPage && btn8.isPressed())   // Go to LOADPAGEWATER on next page
-            { debug(F("Next page button pressed"));
+            }
+            else if (page < maxPage && btn8.isPressed())   // Go to LOADPAGEWATER on next page
+            {
+                debug(F("Next page button pressed"));
                 page++;
                 changeStatus(LOADPAGEWATER);
-            } else if (page > 1 && btn7.isPressed())    // Go to LOADPAGEWATER on previous page
-            { debug(F("Previous page button pressed"));
+            }
+            else if (page > 1 && btn7.isPressed())    // Go to LOADPAGEWATER on previous page
+            {
+                debug(F("Previous page button pressed"));
                 page--;
                 changeStatus(LOADPAGEWATER);
-            } else
+            }
+            else
                 clickWater();
             break;
 
@@ -330,17 +366,20 @@ void UILoop() {
             changeStatus(EXTRAFUNCTIONS);
             break;
         case EXTRAFUNCTIONS:
-            if (backBtn.isPressed()) { debug(F("Back Page button pressed"));
+            if (backBtn.isPressed())
+            {
+                debug(F("Back Page button pressed"));
                 changeStatus(LOADMENU);
-            } else {
-                clickExtraFunctions();
+            }
+            else
+            {
+                clickExtraFunctions(); // TODO implement extraFunctions logic
             }
             break;
-            //case LOADHELP:
+            //case LOADHELP: // TODO implement help menu
             //case HELP:
-            //case LOADENGINEERINGMODE:
+            //case LOADENGINEERINGMODE: // TODO implement engineering mode
             //case ENGINEERINGMODE:
-            //case LOADEXTRAFUNCTIONS:
     }
 }
 

@@ -13,7 +13,6 @@ class ScreenObjectWithPicture: virtual public ScreenObject
     ScreenObjectWithPicture();
     Picture* getPicture();
     void setPicture(Picture* picture);
-    void disablePicture();
     bool isAValidPicture();
 private:
     Picture* picture;

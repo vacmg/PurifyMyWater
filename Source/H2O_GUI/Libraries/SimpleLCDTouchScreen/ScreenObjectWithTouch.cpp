@@ -23,5 +23,6 @@ bool ScreenObjectWithTouch::isPressed()
 
 void ScreenObjectWithTouch::setTouchScreenObject(TouchScreenObject* ts)
 {
-    this->ts = ts;
+    if(ts != nullptr)
+        this->ts = ts;
 }
