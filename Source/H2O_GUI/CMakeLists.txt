@@ -20,16 +20,16 @@ set(${PROJECT_NAME}_SKETCH H2O_GUI.ino)
 ### Add project directories into the build
 # add_subdirectory()
 
-include_directories(libs/LCDWIKI_KBV)
-include_directories(libs/LCDWIKI_GUI)
-include_directories(libs/TouchScreen)
+include_directories(Libraries/LCDWIKI_KBV)
+include_directories(Libraries/LCDWIKI_GUI)
+include_directories(Libraries/TouchScreen)
+include_directories(Libraries/SimpleLCDTouchScreen)
 include_directories(Shared)
 include_directories(UI)
-include_directories(libs/SimpleLCDTouchScreen)
 
 ### Additional settings to add non-standard or your own Arduino libraries.
-# For this example (libs will contain additional arduino libraries)
-# An Arduino library my_lib will contain files in libs/my_lib/: my_lib.h, my_lib.cpp + any other cpp files
+# For this example (Libraries will contain additional arduino libraries)
+# An Arduino library my_lib will contain files in Libraries/my_lib/: my_lib.h, my_lib.cpp + any other cpp files
 # link_directories(${CMAKE_CURRENT_SOURCE_DIR}/)
 
 # For nested library sources replace ${LIB_NAME} with library name for each library

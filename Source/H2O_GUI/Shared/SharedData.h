@@ -48,7 +48,7 @@ byte STARTPSUTEMP = 40; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
 byte STOPPSUTEMP = 38; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
 
 #ifdef H2O_GUI
-// Interface settings
+// Interface settings //todo check whether this is sharedData or not
         enum Languages {ENGLISH = 0};
         enum Languages LANGUAGE = ENGLISH;
         unsigned long DATAREFRESHPERIOD = 5000; // Stored in ms, input in s (1s = 1000ms) // 0 < DATAREFRESHPERIOD

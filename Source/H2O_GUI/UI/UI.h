@@ -57,7 +57,7 @@
 
 enum BtnStatus mainSwitchSt = OFF;
 enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show splash screen
-byte ROTATION = 3;
+byte ROTATION = 1; // Set rotation of the screen
 
 #if SCREENHW == 35
 TouchScreenObject ts(9, A2, A3, 8, 300, 320, 480, (ROTATION + SCREEN35ROTATIONOFFSET) % 4, 177, 900, 157,
@@ -178,7 +178,7 @@ void UILoop() {
             changeStatus(STATUS);
             break;
 
-        case STATUS:
+        case STATUS: // todo implement real logic with real values
             if (sw) // todo delete this (change condition to update info labels)
             {
                 drawStatusForeground("15.4V", "320L");
