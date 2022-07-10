@@ -143,11 +143,15 @@ bool Communications::verifyMessage(char* message)
     byte originCRC = message[0]; // Origin CRC code
     byte size = message[1]; // size of [tam]+[message]
     byte realCRC = CRC8((byte*) &message[1],size); // get CRC8 of [tam][message]
-    for(byte i = 0; i<size;i++)
+    if(originCRC==realCRC) // If message is valid
     {
-        message[i] = message [i+2]; // Delete CRC8 & size values from the payload
+        for(byte i = 0; i<size;i++)
+        {
+            message[i] = message [i+2]; // Delete CRC8 & size values from the payload
+        }
+        return true;
     }
-    return originCRC==realCRC;
+    return false;
 }
 
 //This function returns a CRC8 Checksum code from an array of any size
