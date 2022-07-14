@@ -657,19 +657,19 @@ void clickStatus()
     }
     else if (btn2.isPressed())
     {
-        if (mainSwitchSt == ON)
+        if (purificationStatus == ON)
         {
             debug(F("Button OFF pressed"));
-            mainSwitchSt = OFF; // TODO send off command
+            purificationStatus = OFF; // TODO send off command
             drawStatusForeground("15.4V", "320L");
         }
-        else if (mainSwitchSt == OFF)
+        else if (purificationStatus == OFF)
         {
             debug(F("Button ON pressed"));
-            mainSwitchSt = ON; // TODO send on command
+            purificationStatus = ON; // TODO send on command
             drawStatusForeground("15.4V", "320L");
         }
-        else if (mainSwitchSt < 0)
+        else if (purificationStatus < 0)
         {
             debug(F("Button FAILURE pressed")); // TODO Draw ERROR message
         }

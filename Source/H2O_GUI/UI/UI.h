@@ -50,12 +50,7 @@
         LOADPAGETEMPERATURE,
         TEMPERATURE
     };
-// ON/OFF BTN STATUS
-    enum BtnStatus {
-        OFF = 0, ON = 1, ERROR = -1
-    };
 
-enum BtnStatus mainSwitchSt = OFF;
 enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show splash screen
 byte ROTATION = 1; // Set rotation of the screen
 

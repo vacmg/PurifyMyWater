@@ -15,6 +15,16 @@
 
 // Hardware constants
 
+// Global status
+
+// Purification status
+enum PurificationStatus {
+    OFF = 0, ON = 1, ERROR = -1
+};
+enum PurificationStatus purificationStatus = OFF;
+
+// Global status
+
 // Default Settings
 
 // Electricity settings
