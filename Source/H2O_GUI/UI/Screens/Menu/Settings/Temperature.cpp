@@ -15,11 +15,11 @@ void drawTemperature()
     {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(F("Temp. Refresh Rate "), F("System Stop Temp."), F("PSU Fan Start Temp."),String(((double) TEMPCHECKTIME) / 1000.0) + "s",String((double) STOPWORKINGTEMP) + "C", String((double) STARTPSUTEMP) + "C",true, true, true, fontSizes);
+            draw6ButtonsLayout(F("Temp. Refresh Rate "), F("System Stop Temp."), F("PSU Fan Start Temp."),String(((double) config.TEMPCHECKTIME) / 1000.0) + "s",String((double) config.STOPWORKINGTEMP) + "C", String((double) config.STARTPSUTEMP) + "C",true, true, true, fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(F("PSU Fan Stop Temp."), F("Case Fan Start Temp."), F("Case Fan Stop Temp."),String((double) STOPPSUTEMP) + "C", String((double) STARTCASETEMP) + "C",String((double) STOPCASETEMP) + "C", true, true, true, fontSizes);
+            draw6ButtonsLayout(F("PSU Fan Stop Temp."), F("Case Fan Start Temp."), F("Case Fan Stop Temp."),String((double) config.STOPPSUTEMP) + "C", String((double) config.STARTCASETEMP) + "C",String((double) config.STOPCASETEMP) + "C", true, true, true, fontSizes);
             break;
     }
 }
@@ -32,13 +32,13 @@ void clickTemperature()
         switch (page)
         {
             case 1: // Temp. Refresh Rate
-                tempVal = getNumInput("Temp. Refresh Rate", "s", (double)TEMPCHECKTIME/1000.0);
+                tempVal = getNumInput("Temp. Refresh Rate", "s", (double)config.TEMPCHECKTIME/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (tempVal > 0)
                     {
-                        debug(String(F("TEMPCHECKTIME UPDATED: ")) + TEMPCHECKTIME + String(F(" --> ")) +tempVal);
-                        TEMPCHECKTIME = (unsigned long)(tempVal * 1000);
+                        debug(String(F("TEMPCHECKTIME UPDATED: ")) + config.TEMPCHECKTIME + String(F(" --> ")) +tempVal);
+                        config.TEMPCHECKTIME = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
                 }
@@ -47,13 +47,13 @@ void clickTemperature()
                 break;
 
             case 2: //PSU Fan Stop Temp.
-                tempVal = getNumInput("PSU Fan Stop Temp.", "C", STOPPSUTEMP);
+                tempVal = getNumInput("PSU Fan Stop Temp.", "C", config.STOPPSUTEMP);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (tempVal > 0 && tempVal < STARTPSUTEMP)
+                    if (tempVal > 0 && tempVal < config.STARTPSUTEMP)
                     {
-                        debug(String(F("STOPPSUTEMP UPDATED: ")) + STOPPSUTEMP + String(F(" --> ")) +tempVal);
-                        STOPPSUTEMP = (byte) tempVal;
+                        debug(String(F("STOPPSUTEMP UPDATED: ")) + config.STOPPSUTEMP + String(F(" --> ")) +tempVal);
+                        config.STOPPSUTEMP = (byte) tempVal;
                         // TODO send new setting
                     }
                 }
@@ -67,13 +67,13 @@ void clickTemperature()
         switch (page)
         {
             case 1: // System Stop Temp.
-                tempVal = getNumInput("Temp. Refresh Rate", "C", STOPWORKINGTEMP);
+                tempVal = getNumInput("Temp. Refresh Rate", "C", config.STOPWORKINGTEMP);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (tempVal > 0 && tempVal > STARTPSUTEMP && tempVal > STARTCASETEMP)
+                    if (tempVal > 0 && tempVal > config.STARTPSUTEMP && tempVal > config.STARTCASETEMP)
                     {
-                        debug(String(F("STOPWORKINGTEMP UPDATED: ")) + STOPWORKINGTEMP + String(F(" --> ")) +tempVal);
-                        STOPWORKINGTEMP = (byte) tempVal;
+                        debug(String(F("STOPWORKINGTEMP UPDATED: ")) + config.STOPWORKINGTEMP + String(F(" --> ")) +tempVal);
+                        config.STOPWORKINGTEMP = (byte) tempVal;
                         // TODO send new setting
                     }
                 }
@@ -82,13 +82,13 @@ void clickTemperature()
                 break;
 
             case 2: // Case Fan Start Temp.
-                tempVal = getNumInput("Case Fan Start Temp.", "C", STARTCASETEMP);
+                tempVal = getNumInput("Case Fan Start Temp.", "C", config.STARTCASETEMP);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (tempVal > 0 && tempVal > STOPCASETEMP && tempVal < STOPWORKINGTEMP)
+                    if (tempVal > 0 && tempVal > config.STOPCASETEMP && tempVal < config.STOPWORKINGTEMP)
                     {
-                        debug(String(F("STARTCASETEMP UPDATED: ")) + STARTCASETEMP + String(F(" --> ")) +tempVal);
-                        STARTCASETEMP = (byte) tempVal;
+                        debug(String(F("STARTCASETEMP UPDATED: ")) + config.STARTCASETEMP + String(F(" --> ")) +tempVal);
+                        config.STARTCASETEMP = (byte) tempVal;
                         // TODO send new setting
                     }
                 }
@@ -102,13 +102,13 @@ void clickTemperature()
         switch (page)
         {
             case 1: // PSU Fan Start Temp.
-                tempVal = getNumInput("PSU Fan Start Temp.", "C", STARTPSUTEMP);
+                tempVal = getNumInput("PSU Fan Start Temp.", "C", config.STARTPSUTEMP);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (tempVal > 0 && tempVal > STOPPSUTEMP && tempVal < STOPWORKINGTEMP)
+                    if (tempVal > 0 && tempVal > config.STOPPSUTEMP && tempVal < config.STOPWORKINGTEMP)
                     {
-                        debug(String(F("STARTPSUTEMP UPDATED: ")) + STARTPSUTEMP + String(F(" --> ")) +tempVal);
-                        STARTPSUTEMP = (byte) tempVal;
+                        debug(String(F("STARTPSUTEMP UPDATED: ")) + config.STARTPSUTEMP + String(F(" --> ")) +tempVal);
+                        config.STARTPSUTEMP = (byte) tempVal;
                         // TODO send new setting
                     }
                 }
@@ -117,13 +117,13 @@ void clickTemperature()
                 break;
 
             case 2: //Case Fan Stop Temp.
-                tempVal = getNumInput("Case Fan Stop Temp.", "C", STOPCASETEMP);
+                tempVal = getNumInput("Case Fan Stop Temp.", "C", config.STOPCASETEMP);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (tempVal > 0 && tempVal < STARTCASETEMP)
+                    if (tempVal > 0 && tempVal < config.STARTCASETEMP)
                     {
-                        debug(String(F("STOPPSUTEMP UPDATED: ")) + STOPCASETEMP + String(F(" --> ")) +tempVal);
-                        STOPCASETEMP = (byte) tempVal;
+                        debug(String(F("STOPPSUTEMP UPDATED: ")) + config.STOPCASETEMP + String(F(" --> ")) +tempVal);
+                        config.STOPCASETEMP = (byte) tempVal;
                         // TODO send new setting
                     }
                 }

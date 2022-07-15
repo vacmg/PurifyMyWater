@@ -12,13 +12,13 @@ void clickWater()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput("Well Pump max time on", "s", (double)WELLPUMPTIMEOUT/1000.0);
+                tempVal = getNumInput("Well Pump max time on", "s", (double)config.WELLPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (0 < WELLPUMPTIMEOUT)// 0 < WELLPUMPTIMEOUT
+                    if (0 < config.WELLPUMPTIMEOUT)// 0 < WELLPUMPTIMEOUT
                     {
-                        debug(String(F("WELLPUMPTIMEOUT UPDATED: ")) + WELLPUMPTIMEOUT + String(F(" --> ")) +tempVal);
-                        WELLPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
+                        debug(String(F("WELLPUMPTIMEOUT UPDATED: ")) + config.WELLPUMPTIMEOUT + String(F(" --> ")) +tempVal);
+                        config.WELLPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
                 }
@@ -26,13 +26,13 @@ void clickWater()
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
             case 2:
-                tempVal = getNumInput("Filter max time on", "s", (double)FILTERTIMEOUT/1000.0);
+                tempVal = getNumInput("Filter max time on", "s", (double)config.FILTERTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (0 < FILTERTIMEOUT)// 0 < FILTERTIMEOUT
+                    if (0 < config.FILTERTIMEOUT)// 0 < FILTERTIMEOUT
                     {
-                        debug(String(F("FILTERTIMEOUT UPDATED: ")) + FILTERTIMEOUT + String(F(" --> ")) + tempVal);
-                        FILTERTIMEOUT = (unsigned long)(tempVal * 1000);
+                        debug(String(F("FILTERTIMEOUT UPDATED: ")) + config.FILTERTIMEOUT + String(F(" --> ")) + tempVal);
+                        config.FILTERTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
                 }
@@ -46,13 +46,13 @@ void clickWater()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput("UV Pump max time on", "s", (double)UVPUMPTIMEOUT/1000.0);
+                tempVal = getNumInput("UV Pump max time on", "s", (double)config.UVPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (0 < UVPUMPTIMEOUT)// 0 < UVPUMPTIMEOUT
+                    if (0 < config.UVPUMPTIMEOUT)// 0 < UVPUMPTIMEOUT
                     {
-                        debug(String(F("UVPUMPTIMEOUT UPDATED: ")) + UVPUMPTIMEOUT + String(F(" --> ")) + tempVal);
-                        UVPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
+                        debug(String(F("UVPUMPTIMEOUT UPDATED: ")) + config.UVPUMPTIMEOUT + String(F(" --> ")) + tempVal);
+                        config.UVPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
                 }
@@ -61,13 +61,13 @@ void clickWater()
                 break;
 
             case 2:
-                tempVal = getNumInput("UV Pump flow", "L/H", UVPUMPFLOW);
+                tempVal = getNumInput("UV Pump flow", "L/H", config.UVPUMPFLOW);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if(tempVal>=0) // 0 < UVPUMPFLOW
                     {
-                        debug(String(F("UVPUMPFLOW UPDATED: ")) + UVPUMPFLOW + String(F(" --> ")) + tempVal);
-                        UVPUMPFLOW = (float) tempVal;
+                        debug(String(F("UVPUMPFLOW UPDATED: ")) + config.UVPUMPFLOW + String(F(" --> ")) + tempVal);
+                        config.UVPUMPFLOW = (float) tempVal;
                         // TODO send new setting
                     }
 
@@ -82,13 +82,13 @@ void clickWater()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput("End Pump max time on", "s", (double)ENDPUMPTIMEOUT/1000.0);
+                tempVal = getNumInput("End Pump max time on", "s", (double)config.ENDPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (0 < ENDPUMPTIMEOUT)// 0 < ENDPUMPTIMEOUT
+                    if (0 < config.ENDPUMPTIMEOUT)// 0 < ENDPUMPTIMEOUT
                     {
-                        debug(String(F("ENDPUMPTIMEOUT UPDATED: ")) + ENDPUMPTIMEOUT + String(F(" --> ")) + tempVal);
-                        ENDPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
+                        debug(String(F("ENDPUMPTIMEOUT UPDATED: ")) + config.ENDPUMPTIMEOUT + String(F(" --> ")) + tempVal);
+                        config.ENDPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
                 }
@@ -111,11 +111,11 @@ void drawWater()
     {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(F("Well Pump max time ON"), F("UV Pump max time ON"), F("End Pump max time ON"),String(((double) WELLPUMPTIMEOUT) / 1000.0) + F("s"),String(((double) UVPUMPTIMEOUT) / 1000.0) + F("s"),String(((double) ENDPUMPTIMEOUT) / 1000.0) + F("s"), true, true, true, fontSizes);
+            draw6ButtonsLayout(F("Well Pump max time ON"), F("UV Pump max time ON"), F("End Pump max time ON"),String(((double) config.WELLPUMPTIMEOUT) / 1000.0) + F("s"),String(((double) config.UVPUMPTIMEOUT) / 1000.0) + F("s"),String(((double) config.ENDPUMPTIMEOUT) / 1000.0) + F("s"), true, true, true, fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(F("Filter max time ON"), F("UV Pump flow"), "",String(((double) FILTERTIMEOUT) / 1000.0) + F("s"), String(UVPUMPFLOW) + F("L/H"), "",true, true, true, fontSizes);
+            draw6ButtonsLayout(F("Filter max time ON"), F("UV Pump flow"), "",String(((double) config.FILTERTIMEOUT) / 1000.0) + F("s"), String(config.UVPUMPFLOW) + F("L/H"), "",true, true, true, fontSizes);
             break;
     }
 }
