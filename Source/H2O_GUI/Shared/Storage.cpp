@@ -4,6 +4,7 @@
 
 #include "Storage.h"
 
+// This function returns the crc32 value of the config structure stored in EEPROM
 unsigned long configCRC32()
 {
     const unsigned long crc_table[16] = {
@@ -27,6 +28,8 @@ unsigned long configCRC32()
     return crc;
 }
 
+// This function read Config stored in EEPROM & validates it against a CRC32 checksum precalculated
+// It returns true if the config is updated to RAM (checksum check was OK) and false otherwise
 bool readConfig()
 {
     unsigned long crc;
@@ -39,6 +42,7 @@ bool readConfig()
     return false;
 }
 
+// This function saves the current config to EEPROM with its respective CRC32 code to verify it later
 void updateConfig()
 {
     EEPROM.put(4, config);

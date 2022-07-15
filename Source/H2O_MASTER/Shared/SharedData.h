@@ -55,7 +55,7 @@ typedef struct Configuration {
 
 // This variable stores the system configuration
 
-Config config;
+Config config = {};
 
 void setDefaultConfig()
 {

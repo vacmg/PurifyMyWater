@@ -8,6 +8,16 @@
 #include "SharedData.h"
 #include <EEPROM.h>
 
+// This function returns the crc32 value of the config structure stored in EEPROM
+unsigned long configCRC32();
+
+// This function read Config stored in EEPROM & validates it against a CRC32 checksum precalculated
+// It returns true if the config is updated to RAM (checksum check was OK) and false otherwise
+bool readConfig();
+
+// This function saves the current config to EEPROM with its respective CRC32 code to verify it later
+void updateConfig();
+
 #include "Storage.cpp"
 
 
