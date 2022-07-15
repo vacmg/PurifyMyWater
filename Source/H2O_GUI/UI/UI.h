@@ -54,6 +54,10 @@
 enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show splash screen
 byte ROTATION = 1; // Set rotation of the screen
 
+enum Languages {ENGLISH = 0};
+enum Languages LANGUAGE = ENGLISH;
+unsigned long DATAREFRESHPERIOD = 5000; // Stored in ms, input in s (1s = 1000ms) // 0 < DATAREFRESHPERIOD
+
 #if SCREENHW == 35
 TouchScreenObject ts(9, A2, A3, 8, 300, 320, 480, (ROTATION + SCREEN35ROTATIONOFFSET) % 4, 177, 900, 157,
                      958); // for 3.5inch
