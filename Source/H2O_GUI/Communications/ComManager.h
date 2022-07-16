@@ -7,10 +7,10 @@
 
 #include "Communications.h"
 
-class CommServer
+class ComManager
 {
 public:
-    CommServer(HardwareSerial* serial);
+    ComManager(HardwareSerial* serial);
     void messageManager(); // Todo check if this should be private
     void commSetup();
     void commLoop();
@@ -20,6 +20,6 @@ private:
     HardwareSerial* serial;
 };
 
-
+#include "ComManager.cpp"
 
 #endif //H2O_MASTER_COMMSERVER_H

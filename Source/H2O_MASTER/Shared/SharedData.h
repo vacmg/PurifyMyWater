@@ -31,8 +31,8 @@ typedef struct Configuration {
     float STOPWORKINGVOLTAGE; // MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1 // // leave at least 1 volt of margin between STOPWORKINGVOLTAGE && STARTCHARGINGVOLTAGE
     double DCAMPSENSITIVITY; //sensor sensitivity in Volts/Amps // 5.4A for 60w test load // No limits
     double DCAMPZERO; // sensor voltage for 0 Amps current // No limits
-    double ACAMPZERO; // sensor calibration correction value // No limits
     double ACAMPSENSITIVITY; // sensor sensitivity in Volts/Amps // 0.25A for 60w test load // No limits
+    double ACAMPZERO; // sensor calibration correction value // No limits
     byte ACFREQUENCY; // AC signal frequency (Hz) 50 <= ACFREQUENCY <= 60
     float ESTIMATEDUVAMPERAGE; // Minimum estimated current that the UV light uses // 0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE // todo place real value
 
@@ -68,18 +68,49 @@ void setDefaultConfig()
 
 // Debug Functions
 
-#if DEBUG
-#define changeStatus(newStatus) debug(String(F("Mode changed from '")) +String(modeToString(screenStatus))+String(F("' to '"))+String(modeToString(newStatus))+String(F("'"))); screenStatus = newStatus
-#else
-#define changeStatus(newStatus) screenStatus = newStatus
-#endif
-
 #ifndef debug(data)
 #if DEBUG
 #define debug(data) Serial.println(data)
 #else
 #define debug(data) ;
 #endif
+#endif
+
+#if DEBUG
+#define changeStatus(newStatus) debug(String(F("Mode changed from '")) +String(modeToString(screenStatus))+String(F("' to '"))+String(modeToString(newStatus))+String(F("'"))); screenStatus = newStatus
+
+void printConfiguration()
+{
+    debug(F("Current config:"));
+    Serial.print(F("Purification status:\t"));Serial.println(config.purificationStatus);
+    Serial.print(F("STARTCHARGINGVOLTAGE:\t"));Serial.println(config.STARTCHARGINGVOLTAGE);
+    Serial.print(F("STOPCHARGINGVOLTAGE:\t"));Serial.println(config.STOPCHARGINGVOLTAGE);
+    Serial.print(F("STARTWORKINGVOLTAGE:\t"));Serial.println(config.STARTWORKINGVOLTAGE);
+    Serial.print(F("STOPWORKINGVOLTAGE:\t"));Serial.println(config.STOPWORKINGVOLTAGE);
+    Serial.print(F("DCAMPSENSITIVITY:\t"));Serial.println(config.DCAMPSENSITIVITY);
+    Serial.print(F("DCAMPZERO:\t"));Serial.println(config.DCAMPZERO);
+    Serial.print(F("ACAMPSENSITIVITY:\t"));Serial.println(config.ACAMPSENSITIVITY);
+    Serial.print(F("ACAMPZERO:\t"));Serial.println(config.ACAMPZERO);
+    Serial.print(F("ACFREQUENCY:\t"));Serial.println(config.ACFREQUENCY);
+    Serial.print(F("ESTIMATEDUVAMPERAGE:\t"));Serial.println(config.ESTIMATEDUVAMPERAGE);
+    Serial.print(F("WELLPUMPTIMEOUT:\t"));Serial.println(config.WELLPUMPTIMEOUT);
+    Serial.print(F("UVPUMPTIMEOUT:\t"));Serial.println(config.UVPUMPTIMEOUT);
+    Serial.print(F("ENDPUMPTIMEOUT:\t"));Serial.println(config.ENDPUMPTIMEOUT);
+    Serial.print(F("FILTERTIMEOUT:\t"));Serial.println(config.FILTERTIMEOUT);
+    Serial.print(F("UVPUMPFLOW:\t"));Serial.println(config.UVPUMPFLOW);
+    Serial.print(F("TEMPCHECKTIME:\t"));Serial.println(config.TEMPCHECKTIME);
+    Serial.print(F("STOPWORKINGTEMP:\t"));Serial.println(config.STOPWORKINGTEMP);
+    Serial.print(F("STARTCASETEMP:\t"));Serial.println(config.STARTCASETEMP);
+    Serial.print(F("STOPCASETEMP:\t"));Serial.println(config.STOPCASETEMP);
+    Serial.print(F("STARTPSUTEMP:\t"));Serial.println(config.STARTPSUTEMP);
+    Serial.print(F("STOPPSUTEMP:\t"));Serial.println(config.STOPPSUTEMP);
+    Serial.println();
+}
+
+#define debugConfig() printConfiguration()
+#else
+#define changeStatus(newStatus) screenStatus = newStatus
+#define debugConfig() ;
 #endif
 
 // Debug Functions
