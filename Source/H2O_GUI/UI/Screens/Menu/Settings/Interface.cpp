@@ -4,6 +4,7 @@
 
 #include "Interface.h"
 
+//This function set and draw the title, set the font size and draws the buttons in all pages.
 void drawInterface()
 {
     titleLabel.setString("Interface");
@@ -24,6 +25,8 @@ void drawInterface()
     }
 }
 
+//this function is used for select some value related to the interface and allows you to select between different
+//options each headland has.
 void clickInterface()
 {
     if (btn4.isPressed())

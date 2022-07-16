@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bdb68df2-297a-40f2-af82-1100f2615c80" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Menu.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Menu.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Menu.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Menu.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Electricity.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Electricity.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Electricity.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Electricity.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Interface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Interface.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Interface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Settings.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Settings.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Settings.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Settings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Temperature.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Temperature.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Temperature.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Temperature.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Water.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Water.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Water.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/H2O_GUI/UI/Screens/Menu/Settings/Water.h" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2C1wRC3O85WOtNrBfdSJeL9aAb8" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="cidr.known.project.marker" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bdb68df2-297a-40f2-af82-1100f2615c80" name="Changes" comment="" />
+      <created>1657983389740</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1657983389740</updated>
+      <workItem from="1657983393158" duration="147000" />
+      <workItem from="1657983566355" duration="3810000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
