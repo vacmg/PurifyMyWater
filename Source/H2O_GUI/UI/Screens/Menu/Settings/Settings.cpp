@@ -4,6 +4,7 @@
 
 #include "Settings.h"
 
+//This function set and draw the title, set the font size and draws the buttons.
 void drawSettings()
 {
     //Title Menu
@@ -15,6 +16,8 @@ void drawSettings()
     draw4ButtonsLayout(F("Electricity"), F("Water"), F("Interface"), F("Temperature"), fontSize);
 }
 
+//This function leads you to the four different settings you can manage. It works in a single page,
+//and after you pressed one of the four buttons, the function change the status to load page.
 void clickSettings()
 {
     if (btn1.isPressed()) // Go to LOADELECTRICITY

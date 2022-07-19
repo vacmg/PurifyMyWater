@@ -4,7 +4,7 @@
 
 #include "Menu.h"
 
-
+//This function set and draw the title, set the font size and draws the buttons.
 // Buttons mapped to: btn1 --> Settings, btn2 --> Help, btn3 --> Engineering Mode, btn4 --> Extra Functions
 void drawMenu()
 {
@@ -17,6 +17,8 @@ void drawMenu()
     draw4ButtonsLayout(F("Settings"), F("Help"), F("Engineering Mode"), F("Extra functions"), fontSize);
 }
 
+//This function switch pages after you click a button.
+//btn1 --> Settings, btn2 --> Help, btn3 --> Engineering Mode, btn4 --> Extra Functions.
 void clickMenu()
 {
     if (btn1.isPressed()) //Settings
