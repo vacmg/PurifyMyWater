@@ -24,8 +24,6 @@
 /*------------Config----------------*/
 
 #include "UI/UI.h"
-#include "Communications/ComManager.h"
-#include "Communications/Communications.h"
 
 
 //Main Functions

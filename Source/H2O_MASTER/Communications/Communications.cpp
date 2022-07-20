@@ -17,7 +17,7 @@
 // This function puts information together to create a sendMessage payload
 bool Communications::createSendMessage(char* payload, const char* variableID, const char* value)
 {
-    if(value == NULL || payload == NULL)
+    if(value == nullptr || payload == nullptr)
         return false;
     payload[0] = SENDMESSAGE_ID; // ID sendMessage
     payload[1] = '\0'; // ensure strcat works (it will be replaced by strcat)
@@ -30,16 +30,16 @@ bool Communications::createSendMessage(char* payload, const char* variableID, co
 // This function extracts information from a sendMessage payload
 bool Communications::extractSendMessage(char* payload, char* variableID, char* value)
 {
-    if (value == NULL || payload == NULL)
+    if (value == nullptr || payload == nullptr)
         return false;
     strcpy(variableID,strtok(&payload[1],SEPARATOR));
-    strcpy(value,strtok(NULL,SEPARATOR));
+    strcpy(value,strtok(nullptr,SEPARATOR));
 }
 
 // This function puts information together to create a requestAnswerMessage payload
 bool Communications::createRequestAnswerMessage(char* payload, const char* variableID, const char* value, const char* functionID)
 {
-    if (payload == NULL || value == NULL || variableID == NULL || functionID == NULL)
+    if (payload == nullptr || value == nullptr || variableID == nullptr || functionID == nullptr)
         return false;
 
     payload[0] = REQUESTANSWERMESSAGE_ID;
@@ -56,19 +56,19 @@ bool Communications::createRequestAnswerMessage(char* payload, const char* varia
 // This function extracts information from a requestAnswerMessage payload
 bool Communications::extractRequestAnswerMessage(char* payload, char* variableID, char* value, char* functionID)
 {
-    if (payload == NULL || value == NULL || variableID == NULL || functionID == NULL)
+    if (payload == nullptr || value == nullptr || variableID == nullptr || functionID == nullptr)
         return false;
 
     strcpy(variableID, strtok(&payload[1], SEPARATOR));
-    strcpy(value, strtok(NULL, SEPARATOR));
-    strcpy(functionID, strtok(NULL, SEPARATOR));
+    strcpy(value, strtok(nullptr, SEPARATOR));
+    strcpy(functionID, strtok(nullptr, SEPARATOR));
     return true;
 }
 
 // This function puts information together to create a requestMessage payload
 bool Communications::createRequestMessage(char* payload, const char* variableID, const char* functionID)
 {
-    if(variableID == NULL || payload == NULL || functionID == NULL)
+    if(variableID == nullptr || payload == nullptr || functionID == nullptr)
         return false;
     payload[0] = REQUESTMESSAGE_ID;
     payload[1] = '\0'; // ensure strcat works (it will be replaced by strcat)
@@ -81,10 +81,10 @@ bool Communications::createRequestMessage(char* payload, const char* variableID,
 // This function extracts information from a requestMessage payload
 bool Communications::extractRequestMessage(char* payload, char* variableID, char* functionID)
 {
-    if(payload == NULL || variableID == NULL || functionID == NULL)
+    if(payload == nullptr || variableID == nullptr || functionID == nullptr)
         return false;
     strcpy(variableID,strtok(&payload[1],SEPARATOR));
-    strcpy(functionID,strtok(NULL,SEPARATOR));
+    strcpy(functionID,strtok(nullptr,SEPARATOR));
     return true;
 }
 
@@ -96,12 +96,12 @@ bool Communications::extractRequestMessage(char* payload, char* variableID, char
 bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
 {
     byte payloadLength = strlen(payload);
-    if(payloadLength>MAXMSGSIZE)
+    if(payloadLength>MAXPAYLOADSIZE)
     {
-        debug(Message(F("Payload exceeded maximum message size: ")+payloadLength+F(" > ")+MAXMSGSIZE));
+        debug(Message(F("Payload exceeded maximum message size: ")+payloadLength+F(" > ")+MAXPAYLOADSIZE));
         return false;
     }
-    char message[MAXRAWMSGSIZE];
+    char message[MAXMSGSIZE];
     message[1] = payloadLength+1; // set size of the message
     strcpy(&message[2],payload); // copy payload to message
     strcat(message,"\n"); // Add \n terminator
@@ -110,7 +110,7 @@ bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
     bool successfulSend = false;
     for(byte i = 0; !successfulSend && i<MAXMSGRETRIES; i++)
     {
-        serial->write(message,payloadLength+3);//[CRC][size][payload]\n
+        serial->write(message,payloadLength+3); //[CRC][size][payload]\n
         unsigned long startTime = millis();
         while (!successfulSend && millis()-startTime<MSGTIMEOUT)
         {
@@ -125,7 +125,7 @@ bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
 bool Communications::getMessage(char* payload, HardwareSerial* serial)
 {
     delay(100);
-    serial->readBytesUntil('\n',payload,MAXRAWMSGSIZE); // [CRC][size][payload]
+    serial->readBytesUntil('\n',payload,MAXMSGSIZE); // [CRC][size][payload]
     flush(serial);
 
     if (verifyMessage(payload)) // if crc match expected crc

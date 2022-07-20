@@ -75,13 +75,13 @@ void draw4ButtonsLayout(const String& topLeft, const String& topRight, const Str
 //btn1 --> topLeft; btn2 --> topRight; btn3 --> bottomLeft; btn4 --> bottomRight
 void draw4ButtonsLayout(String topLeft, String topRight, String bottomLeft, String bottomRight)
 {
-    draw4ButtonsLayout(topLeft, topRight, bottomLeft, bottomRight, NULL);
+    draw4ButtonsLayout(topLeft, topRight, bottomLeft, bottomRight, nullptr);
 }
 
 // btn1 --> topLeft; btn2 --> centerLeft; btn3 --> bottomLeft; btn4 --> topRight; btn5 --> centerRight; btn6 --> bottomRight; btn7 --> Previous; btn8 --> Next; btn9 --> topHelp; btn10 --> centerHelp; btn11 --> bottomHelp; If fontSize = NULL, autoFontSize; len(fontSize) = 6
 void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottomLeftBtn3, String topRightBtn4, String centerRightBtn5, String bottomRightBtn6, bool topHelpBtn9, bool centerHelpBtn10, bool bottomHelpBtn11, const byte* fontSize)
 {
-    bool validFontSize = fontSize!=NULL;
+    bool validFontSize = fontSize!=nullptr;
     if(validFontSize)
     {
         if(fontSize[0] != 0) btn1.enableAutoSize(false);
@@ -201,7 +201,7 @@ void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottom
 // btn1 --> topLeft; btn2 --> centerLeft; btn3 --> bottomLeft; btn4 --> topRight; btn5 --> centerRight; btn6 --> bottomRight; btn7 --> Previous; btn8 --> Next; btn9 --> topHelp; btn10 --> centerHelp; btn11 --> bottomHelp
 void draw6ButtonsLayout(String topLeftBtn1, String centerLeftBtn2, String bottomLeftBtn3, String topRightBtn4, String centerRightBtn5, String bottomRightBtn6, bool topHelpBtn9, bool centerHelpBtn10, bool bottomHelpBtn11)
 {
-    draw6ButtonsLayout(topLeftBtn1,centerLeftBtn2,bottomLeftBtn3,topRightBtn4,centerRightBtn5,bottomRightBtn6,topHelpBtn9,centerHelpBtn10,bottomHelpBtn11,NULL);
+    draw6ButtonsLayout(topLeftBtn1,centerLeftBtn2,bottomLeftBtn3,topRightBtn4,centerRightBtn5,bottomRightBtn6,topHelpBtn9,centerHelpBtn10,bottomHelpBtn11,nullptr);
 }
 
 void drawNumInput (String titleNumInput, String unit)

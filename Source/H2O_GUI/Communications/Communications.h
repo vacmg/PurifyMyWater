@@ -7,8 +7,8 @@
 
 #define MAXMSGRETRIES 3
 #define MSGTIMEOUT 2500
-#define MAXMSGSIZE 60
-#define MAXRAWMSGSIZE MAXMSGSIZE + 4 // 1(size)+1(crc)+1(\n terminator)+1(NULL)
+#define MAXPAYLOADSIZE 60
+#define MAXMSGSIZE MAXPAYLOADSIZE + 4 // 1(size)+1(crc)+1(\n terminator)+1(NULL)
 #define SEPARATOR ","
 
 #define ACK 6

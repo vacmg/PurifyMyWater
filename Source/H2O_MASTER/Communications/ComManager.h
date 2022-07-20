@@ -10,7 +10,7 @@
 class ComManager
 {
 public:
-    ComManager(HardwareSerial* serial);
+    explicit ComManager(HardwareSerial* serial);
     void messageManager(); // Todo check if this should be private
     void commSetup();
     void commLoop();

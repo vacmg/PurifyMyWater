@@ -16,7 +16,7 @@ void ComManager::messageManager()
 {
     if(serial->available())
     {
-        char bufferSerial[MAXMSGSIZE] = "";
+        char bufferSerial[MAXPAYLOADSIZE] = "";
         char variableId[32] = "";
         char functionId[32] = "";
         char value[32] = "";
