@@ -6,6 +6,8 @@ Source/H2O_GUI/cmake-build-debug/
 Source/H2O_MASTER/.idea/
 Source/H2O_MASTER/__vm/
 Source/H2O_MASTER/cmake-build-debug/
+Source/H2O_GUI/resources/LanguageBuilder/.idea/
+Source/H2O_GUI/resources/LanguageBuilder/cmake-build-debug/
 .vscode/
 
 ## Ignore Visual Studio temporary files, build results, and

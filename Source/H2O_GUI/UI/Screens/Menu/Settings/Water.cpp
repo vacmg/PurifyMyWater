@@ -122,5 +122,6 @@ void drawWater()
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
             draw6ButtonsLayout(F("Filter max time ON"), F("UV Pump flow"), "",String(((double) config.FILTERTIMEOUT) / 1000.0) + F("s"), String(config.UVPUMPFLOW) + F("L/H"), "",true, true, true, fontSizes);
             break;
+        default:debug(F("Page selected is out of bounds (page>2 || page<0)"));
     }
 }

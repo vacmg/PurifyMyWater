@@ -22,6 +22,7 @@ void drawInterface()
             setFontSizeArray(fontSizes, 2, 2, 2, 2, 2, 2);
             draw6ButtonsLayout(F("Refresh Period"), F("Reset"), "",(String) ((double) DATAREFRESHPERIOD/1000.0) + "s", "Perform Reset", "", true,true, false, fontSizes);
             break;
+        default:debug(F("Page selected is out of bounds (page>2 || page<0)"));
     }
 }
 

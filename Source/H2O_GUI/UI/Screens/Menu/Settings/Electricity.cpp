@@ -82,7 +82,7 @@ void clickElectricity()
                     if (config.STARTCHARGINGVOLTAGE + 1 < tempVal && tempVal <MAXCAPACITORSALLOWEDVOLTAGE)// STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE
                     {
                         debug(String(F("STOPCHARGINGVOLTAGE UPDATED: ")) + config.STOPCHARGINGVOLTAGE + String(F(" --> ")) +tempVal);
-                        config.STOPCHARGINGVOLTAGE = tempVal;
+                        config.STOPCHARGINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -97,7 +97,7 @@ void clickElectricity()
                     if (MINSYSTEMALLOWEDVOLTAGE < tempVal && tempVal < config.STARTCHARGINGVOLTAGE - 1)// MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1
                     { debug(String(F("STOPWORKINGVOLTAGE UPDATED: ")) + config.STOPWORKINGVOLTAGE + String(F(" --> ")) +
                             tempVal);
-                        config.STOPWORKINGVOLTAGE = tempVal;
+                        config.STOPWORKINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -129,7 +129,7 @@ void clickElectricity()
                     if (0 < tempVal && tempVal < MAXUVAMPERAGE)//0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE
                     { debug(String(F("ESTIMATEDUVAMPERAGE UPDATED: ")) + config.ESTIMATEDUVAMPERAGE + String(F(" --> ")) +
                             tempVal);
-                        config.ESTIMATEDUVAMPERAGE = tempVal;
+                        config.ESTIMATEDUVAMPERAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -143,7 +143,7 @@ void clickElectricity()
                 {
                     if (50 < tempVal && tempVal < 60)// 50 <= ACFREQUENCY <= 60
                     { debug(String(F("ACFREQUENCY UPDATED: ")) + config.ACFREQUENCY + String(F(" --> ")) + tempVal);
-                        config.ACFREQUENCY = tempVal;
+                        config.ACFREQUENCY = (byte)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -192,5 +192,6 @@ void drawElectricity() // TODO get settings real value
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 1, 1);
             draw6ButtonsLayout(F("DC Ammeter Zero"), "", "", String(config.DCAMPZERO, 4), "", "", true, false, false,fontSizes);
             break;
+        default:debug(F("Page selected is out of bounds (page>4 || page<0)"));
     }
 }
