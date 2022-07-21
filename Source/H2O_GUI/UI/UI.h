@@ -143,7 +143,9 @@ bool sw = true; // todo delete this
 #include "Core/Core.h"
 #include "Screens/Screens.h"
 
-void UISetup() {
+void UISetup()
+{
+    debug(F("Starting UI...\n"));
     my_lcd.set_sd_cs(53);
     pinMode(13, INPUT);
     pinMode(12, INPUT);
@@ -155,6 +157,7 @@ void UISetup() {
 
     //my_lcd.Fill_Screen(0);
     my_lcd.Fill_Screen(Color(255, 255, 255).to565());
+    debug(F("UI Ready\n"));
 }
 
 
@@ -199,7 +202,7 @@ void UILoop()
         case MENU:
             if (backBtn.isPressed()) // Go to LOADSTATUS
             {
-                debug(F("Back button pressed"));
+                debug(F("Back button pressed\n"));
                 changeStatus(LOADSTATUS);
             }
             else
@@ -216,7 +219,8 @@ void UILoop()
 
         case SETTINGS:
             if (backBtn.isPressed()) // Go to LOADMENU
-            { debug(F("Back button pressed"));
+            {
+                debug(F("Back button pressed\n"));
                 changeStatus(LOADMENU);
             }
             else
@@ -229,7 +233,8 @@ void UILoop()
             page = 1;
             maxPage = 4;
             drawBackground();
-        case LOADPAGEELECTRICITY:debug(String(F("Loading page ")) + page + " / " + maxPage);
+        case LOADPAGEELECTRICITY:
+            debug(F("Loading page "));debug(page);debug(F(" / "));debug(maxPage)debug('\n');
             drawElectricity();
             changeStatus(ELECTRICITY);
             break;
@@ -237,18 +242,18 @@ void UILoop()
         case ELECTRICITY:
             if (backBtn.isPressed()) // Go to LOADSETTINGS
             {
-                debug(F("Back button pressed"));
+                debug(F("Back button pressed\n"));
                 changeStatus(LOADSETTINGS);
             }
             else if (page > 1 && btn7.isPressed()) // Previous
             {
-                debug(F("Previous button pressed"));
+                debug(F("Previous button pressed\n"));
                 page--;
                 changeStatus(LOADPAGEELECTRICITY);
             }
             else if (page < maxPage && btn8.isPressed()) // Next
             {
-                debug(F("Next button pressed"));
+                debug(F("Next button pressed\n"));
                 page++;
                 changeStatus(LOADPAGEELECTRICITY);
             }
@@ -263,7 +268,7 @@ void UILoop()
 
         case LOADPAGEINTERFACE:
             // in this case you draw the interface
-            debug(String(F("Loading page ")) + page + " / " + maxPage);
+            debug(F("Loading page "));debug(page);debug(F(" / "));debug(maxPage)debug('\n');
             drawInterface();
             changeStatus(INTERFACE);
             break;
@@ -271,20 +276,20 @@ void UILoop()
         case INTERFACE:
             if (backBtn.isPressed())
             {
-                debug(F("Back button pressed"));
+                debug(F("Back button pressed\n"));
                 changeStatus(LOADSETTINGS);
                 // if back button is pressed you go to the previous page, so you start uploading the settings page
             }
             else if (page < maxPage && btn8.isPressed()) // Next page
             {
-                debug(F("Next page button pressed"));
+                debug(F("Next page button pressed\n"));
                 page++;
                 changeStatus(LOADPAGEINTERFACE);
                 // if you press this button, and it's not the last page, change to the next page and load the page by changing to LOADPAGEINTERFACE
             }
             else if (page != 1 && btn7.isPressed())
             {
-                debug(F("Previous page button pressed"));
+                debug(F("Previous page button pressed\n"));
                 page--;
                 changeStatus(LOADPAGEINTERFACE);
                 // if you press this button, and it's not the first page, change to the previous page and load the page by changing to LOADPAGEINTERFACE
@@ -298,7 +303,8 @@ void UILoop()
             page = 1;
             maxPage = 2;
             drawBackground();
-        case LOADPAGETEMPERATURE:debug(String(F("Loading page ")) + page + " / " + maxPage);
+        case LOADPAGETEMPERATURE:
+            debug(F("Loading page "));debug(page);debug(F(" / "));debug(maxPage)debug('\n');
             drawTemperature();
             changeStatus(TEMPERATURE);
             break;
@@ -306,19 +312,19 @@ void UILoop()
         case TEMPERATURE:
             if (backBtn.isPressed())
             {
-                debug(F("Back button pressed"));
+                debug(F("Back button pressed\n"));
                 changeStatus(LOADSETTINGS);
                 // if back button is pressed you go to the previous page, so you start uploading the settings page
             }
             else if (page < maxPage && btn8.isPressed()) // Next page
             {
-                debug(F("Next page button pressed"));
+                debug(F("Next page button pressed\n"));
                 page++;
                 changeStatus(LOADPAGETEMPERATURE);
             }
             else if (page > 1 && btn7.isPressed())
             {
-                debug(F("Previous page button pressed"));
+                debug(F("Previous page button pressed\n"));
                 page--;
                 changeStatus(LOADPAGETEMPERATURE);
             }
@@ -332,25 +338,26 @@ void UILoop()
             page = 1;
             maxPage = 2;
             drawBackground();
-        case LOADPAGEWATER:debug(String(F("Loading page ")) + page + " / " + maxPage);
+        case LOADPAGEWATER:
+            debug(F("Loading page "));debug(page);debug(F(" / "));debug(maxPage)debug('\n');
             drawWater();
             changeStatus(WATER);
             break;
         case WATER:
             if (backBtn.isPressed())    // Go to LOADSETTINGS
             {
-                debug(F("Back Page button pressed"));
+                debug(F("Back Page button pressed\n"));
                 changeStatus(LOADSETTINGS);
             }
             else if (page < maxPage && btn8.isPressed())   // Go to LOADPAGEWATER on next page
             {
-                debug(F("Next page button pressed"));
+                debug(F("Next page button pressed\n"));
                 page++;
                 changeStatus(LOADPAGEWATER);
             }
             else if (page > 1 && btn7.isPressed())    // Go to LOADPAGEWATER on previous page
             {
-                debug(F("Previous page button pressed"));
+                debug(F("Previous page button pressed\n"));
                 page--;
                 changeStatus(LOADPAGEWATER);
             }
@@ -367,7 +374,7 @@ void UILoop()
         case EXTRAFUNCTIONS:
             if (backBtn.isPressed())
             {
-                debug(F("Back Page button pressed"));
+                debug(F("Back Page button pressed\n"));
                 changeStatus(LOADMENU);
             }
             else

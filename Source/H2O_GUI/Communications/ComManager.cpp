@@ -25,22 +25,22 @@ void ComManager::messageManager()
         {
             case REQUESTMESSAGE_ID:
                 Communications::extractRequestMessage(bufferSerial,variableId,functionId);
-				debug(F("REQUESTMESSAGE"));
+				debug(F("REQUESTMESSAGE\n"));
                 break;
             case REQUESTANSWERMESSAGE_ID:
                 Communications::extractRequestAnswerMessage(bufferSerial,variableId,value,functionId);
-				debug(F("REQUESTANSWERMESSAGE"));
+				debug(F("REQUESTANSWERMESSAGE\n"));
                 break;
             case SENDMESSAGE_ID:
                 Communications::extractSendMessage(bufferSerial,variableId,value);
-				debug(F("SENDMESSAGE"));
+				debug(F("SENDMESSAGE\n"));
                 break;
             default:
-                debug(String(F("Unknown message: "))+bufferSerial);
+                debug(F("Unknown message: "));debug(bufferSerial);debug('\n');
         }
-		debug(String(F("variableId: "))+variableId);
-		debug(String(F("functionId: "))+functionId);
-		debug(String(F("value: "))+value);
+		debug(F("variableId: "));debug(variableId);
+		debug(F("\nfunctionId: "));debug(functionId);
+		debug(F("\nvalue: "));debug(value);debug('\n');
     }
 }
 
