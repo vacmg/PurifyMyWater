@@ -34,13 +34,13 @@ void clickInterface()
         switch (page)
         {
             case 2: // Refresh Period
-                double tempVal = getNumInput("Refresh Period", "s", (double)DATAREFRESHPERIOD/1000.0);
+                double tempVal = getNumInput(F("Refresh Period"), F("s"), (double)DATAREFRESHPERIOD/1000.0);
                 debug(tempVal);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (tempVal > 0)
                     {
-                        debug(String(F("DATAREFRESHPERIOD UPDATED: ")) + DATAREFRESHPERIOD + String(F(" --> ")) +tempVal);
+                        debug(F("DATAREFRESHPERIOD UPDATED: "));debug(DATAREFRESHPERIOD);debug(F(" --> "));debug(tempVal);debug('\n');
                         DATAREFRESHPERIOD = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }

@@ -22,9 +22,9 @@ void setFontSizeArray(byte *fontSizeArray, byte tl, byte tr, byte bl, byte br)
     fontSizeArray[3] = br;
 }
 
-double getNumInput(String titleNumInput, String unit, double value, byte decimalPlaces)
+double getNumInput(const String& titleNumInput, const String& unit, double value, byte decimalPlaces)
 {
-    debug(String(F("getNumInput: ")) + titleNumInput + F(": ") + value + unit);
+    debug(F("getNumInput: "));debug(titleNumInput);debug(F(": "));debug(value);debug(unit);debug('\n');
     drawNumInput(titleNumInput, unit);
     char string[15];
     bool negative; // sign switch
@@ -143,13 +143,13 @@ double getNumInput(String titleNumInput, String unit, double value, byte decimal
             delay(200);
         }
         else if (backBtn.isPressed())
-        { debug(F("Back button pressed"));
+        { debug(F("Back button pressed\n"));
             exit = -1;
             delay(200);
         }
         else if (oKBtn.isPressed())
         {
-            debug(F("Ok button pressed"));
+            debug(F("Ok button pressed\n"));
             exit = 1;
             delay(200);
         }
@@ -181,15 +181,15 @@ double getNumInput(String titleNumInput, String unit, double value, byte decimal
 
     if (exit == 1)
     {
-        debug(String(F("getNumInput returned: ")) + atof(string));
+        debug(F("getNumInput returned: "));debug(atof(string));debug('\n');
         return atof(string);
     }
 
-    debug(F("getNumInput was cancelled"));
+    debug(F("getNumInput was cancelled\n"));
     return NAN;
 }
 
-double getNumInput(String titleNumInput, String unit, double value)
+double getNumInput(const String& titleNumInput, const String& unit, double value)
 {
     return getNumInput(titleNumInput,unit,value,2);
 }

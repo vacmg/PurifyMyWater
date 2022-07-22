@@ -30,14 +30,10 @@
 
 #ifndef debug(data)
     #if DEBUG
-        #define debug(data) Serial.println(data)
+        #define debug(data) Serial.print(data)
     #else
         #define debug(data) ;
     #endif
-#endif
-
-#ifndef Message(data)
-    #define Message(data) String(data).c_str()
 #endif
 
 class Communications

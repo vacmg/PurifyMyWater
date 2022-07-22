@@ -16,13 +16,13 @@ void clickElectricity()
         switch (page)
         {
             case 1: // Start charging voltage
-                tempVal = getNumInput("Start charging Voltage", "V", config.STARTCHARGINGVOLTAGE);
+                tempVal = getNumInput(F("Start charging Voltage"), F("V"), config.STARTCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (config.STOPWORKINGVOLTAGE < tempVal && tempVal < config.STOPCHARGINGVOLTAGE)
                     {
-                        debug(String(F("STARTCHARGINGVOLTAGE UPDATED: ")) + config.STARTCHARGINGVOLTAGE + String(F(" --> ")) + tempVal);
-                        config.STARTCHARGINGVOLTAGE = tempVal;
+                        debug(F("STARTCHARGINGVOLTAGE UPDATED: "));debug(config.STARTCHARGINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                        config.STARTCHARGINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -31,13 +31,13 @@ void clickElectricity()
                 break;
 
             case 2: //page 2
-                tempVal = getNumInput("Start Working Voltage", "V", config.STARTWORKINGVOLTAGE);
+                tempVal = getNumInput(F("Start Working Voltage"), F("V"), config.STARTWORKINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (config.STARTCHARGINGVOLTAGE < tempVal && tempVal < config.STOPCHARGINGVOLTAGE)// STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
                     {
-                        debug(String(F("STARTCHARGINGVOLTAGE UPDATED: ")) + config.STARTWORKINGVOLTAGE + String(F(" --> ")) +tempVal);
-                        config.STARTWORKINGVOLTAGE = tempVal;
+                        debug(F("STARTWORKINGVOLTAGE UPDATED: "));debug(config.STARTWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                        config.STARTWORKINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -46,10 +46,10 @@ void clickElectricity()
                 break;
 
             case 3:
-                tempVal = getNumInput("AC Ammeter Sensitivity", "", config.ACAMPSENSITIVITY,4);
+                tempVal = getNumInput(F("AC Ammeter Sensitivity"), F(""), config.ACAMPSENSITIVITY,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(String(F("ACAMPSENSITIVITY UPDATED: ")) + config.ACAMPSENSITIVITY + String(F(" --> ")) + tempVal);
+                    debug(F("ACAMPSENSITIVITY UPDATED: "));debug(config.ACAMPSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
                     config.ACAMPSENSITIVITY = tempVal;
                     // TODO send new setting
                 }
@@ -58,10 +58,10 @@ void clickElectricity()
                 break;
 
             case 4:
-                tempVal = getNumInput("DC Ammeter Zero", "", config.DCAMPZERO,4);
+                tempVal = getNumInput(F("DC Ammeter Zero"), F(""), config.DCAMPZERO,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(String(F(" UPDATED: DCAMPZERO")) + config.DCAMPZERO + String(F(" --> ")) + tempVal);
+                    debug(F(" UPDATED: DCAMPZERO"));debug(config.DCAMPZERO);debug(F(" --> "));debug(tempVal);debug('\n');
                     config.DCAMPZERO = tempVal;
                     // TODO send new setting
                 }
@@ -76,13 +76,13 @@ void clickElectricity()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput("Stop Charging Voltage", "V", config.STOPCHARGINGVOLTAGE);
+                tempVal = getNumInput(F("Stop Charging Voltage"), F("V"), config.STOPCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (config.STARTCHARGINGVOLTAGE + 1 < tempVal && tempVal <MAXCAPACITORSALLOWEDVOLTAGE)// STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE
                     {
-                        debug(String(F("STOPCHARGINGVOLTAGE UPDATED: ")) + config.STOPCHARGINGVOLTAGE + String(F(" --> ")) +tempVal);
-                        config.STOPCHARGINGVOLTAGE = tempVal;
+                        debug(F("STOPCHARGINGVOLTAGE UPDATED: "));debug(config.STOPCHARGINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                        config.STOPCHARGINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -91,13 +91,13 @@ void clickElectricity()
                 break;
 
             case 2:
-                tempVal = getNumInput("Stop Working Voltage", "V", config.STOPWORKINGVOLTAGE);
+                tempVal = getNumInput(F("Stop Working Voltage"), F("V"), config.STOPWORKINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (MINSYSTEMALLOWEDVOLTAGE < tempVal && tempVal < config.STARTCHARGINGVOLTAGE - 1)// MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1
-                    { debug(String(F("STOPWORKINGVOLTAGE UPDATED: ")) + config.STOPWORKINGVOLTAGE + String(F(" --> ")) +
-                            tempVal);
-                        config.STOPWORKINGVOLTAGE = tempVal;
+                    {
+                        debug(F("STOPWORKINGVOLTAGE UPDATED: "));debug(config.STOPWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                        config.STOPWORKINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -106,10 +106,10 @@ void clickElectricity()
                 break;
 
             case 3:
-                tempVal = getNumInput("AC Ammeter Zero", "", config.ACAMPZERO,4);
+                tempVal = getNumInput(F("AC Ammeter Zero"), F(""), config.ACAMPZERO,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(String(F("ACAMPZERO UPDATED: ")) + config.ACAMPZERO + String(F(" --> ")) + tempVal);
+                    debug(F("ACAMPZERO UPDATED: "));debug(config.ACAMPZERO);debug(F(" --> "));debug(tempVal);debug('\n');
                     config.ACAMPZERO = tempVal;
                     // TODO send new setting
                 }
@@ -123,13 +123,13 @@ void clickElectricity()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput("UV light est. Current", "A", config.ESTIMATEDUVAMPERAGE);
+                tempVal = getNumInput(F("UV light est. Current"), F("A"), config.ESTIMATEDUVAMPERAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (0 < tempVal && tempVal < MAXUVAMPERAGE)//0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE
-                    { debug(String(F("ESTIMATEDUVAMPERAGE UPDATED: ")) + config.ESTIMATEDUVAMPERAGE + String(F(" --> ")) +
-                            tempVal);
-                        config.ESTIMATEDUVAMPERAGE = tempVal;
+                    {
+                        debug(F("ESTIMATEDUVAMPERAGE UPDATED: "));debug(config.ESTIMATEDUVAMPERAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                        config.ESTIMATEDUVAMPERAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -138,12 +138,13 @@ void clickElectricity()
                 break;
 
             case 2:
-                tempVal = getNumInput("AC Inverter Frequency", "Hz", config.ACFREQUENCY);
+                tempVal = getNumInput(F("AC Inverter Frequency"), F("Hz"), config.ACFREQUENCY);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (50 < tempVal && tempVal < 60)// 50 <= ACFREQUENCY <= 60
-                    { debug(String(F("ACFREQUENCY UPDATED: ")) + config.ACFREQUENCY + String(F(" --> ")) + tempVal);
-                        config.ACFREQUENCY = tempVal;
+                    {
+                        debug(F("ACFREQUENCY UPDATED: "));debug(config.ACFREQUENCY);debug(F(" --> "));debug(tempVal);debug('\n');
+                        config.ACFREQUENCY = (byte)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -152,9 +153,10 @@ void clickElectricity()
                 break;
 
             case 3:
-                tempVal = getNumInput("DC Ammeter Sensitivity", "", config.DCAMPSENSITIVITY,4);
+                tempVal = getNumInput(F("DC Ammeter Sensitivity"), F(""), config.DCAMPSENSITIVITY,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
-                { debug(String(F("DCAMPSENSITIVITY UPDATED: ")) + config.DCAMPSENSITIVITY + String(F(" --> ")) + tempVal);
+                {
+                    debug(F("DCAMPSENSITIVITY UPDATED: "));debug(config.DCAMPSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
                     config.DCAMPSENSITIVITY = tempVal;
                     // TODO send new setting
                 }

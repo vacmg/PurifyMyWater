@@ -13,6 +13,7 @@
 /*------------Config----------------*/
 
 #define DEBUG true
+#define dDEBUG true
 #define ONLYVITALACTIVITYALLOWED false
 #define TEMPERATURE true
 #define OVERRRIDEMAXVOLTAGE false // useful to check some functions without powering all the system
@@ -450,7 +451,7 @@ void raise(byte error, const String& possibleExplanation)
         delay(1000);
         voltControl();
         #if DEBUG
-            debug(String(F("RAISE --- CRITICAL Error ")) + error + String(F(": ")) + possibleExplanation);
+            debug(F("RAISE --- CRITICAL Error "));debug(error);debug(F(": "));debug(possibleExplanation);debug('\n');
             delay(2000);
         #endif
 
@@ -467,8 +468,10 @@ void raise(byte error, const String& possibleExplanation)
     }
     else
     {
-        debug(String(F("RAISE --- Error ")) + error + String(F(": ")) + possibleExplanation);
-        delay(3000);
+        #if DEBUG
+            debug(F("RAISE --- CRITICAL Error "));debug(error);debug(F(": "));debug(possibleExplanation);debug('\n');
+            delay(3000);
+        #endif
         switch (mode) // set back normal color
         {
         case TRANSITIONTOIDLE:
@@ -530,7 +533,7 @@ void disconnectEverything()
     output(endPump, 0);
     output(UVRelay, 0);
     output(filterRelay, 0);
-    debug(F("DisconnectEverything - Done"));
+    debug(F("DisconnectEverything - Done\n"));
 }
 
 /*------------Error Control-------------*/
@@ -546,7 +549,7 @@ void updateServer()
     {
     case SCREENNOTCONNECTED:
     case SCREENSHUTTINGDOWN:
-        debug(F("UpdateServer - Screen shutting down"));
+        debug(F("UpdateServer - Screen shutting down\n"));
         //TODO send shutdown command, wait for answer and disconnect the screen
         Serial1.end();
         screenStatus = SCREENOFF;
@@ -557,18 +560,18 @@ void updateServer()
         delay(1000);
         break;
     case SCREENSTARTING:
-        debug(F("UpdateServer - Screen starting..."));
+        debug(F("UpdateServer - Screen starting...\n"));
         output(screenRelay, 1);
         delay(1000);
         Serial1.begin(SCREENBAUDRATE);
-        debug(F("UpdateServer - Connecting to screen..."));
+        debug(F("UpdateServer - Connecting to screen...\n"));
         screenStatus = SCREENCONNECTING;
         handshakeRetries = 0;
         break;
     case SCREENCONNECTING:
         if (doServerHandshake())
         {
-            debug(F("UpdateServer - Screen ready"));
+            debug(F("UpdateServer - Screen ready\n"));
             screenStatus = SCREENON;
         }
         else if (++handshakeRetries >= MAXHANDSHAKERETRIES)
@@ -624,7 +627,7 @@ void setup()
 #if DEBUG
     Serial.begin(115200);
     delay(500);
-    debug(F("Setup - Booting..."));
+    debug(F("Setup - Booting...\n"));
 #endif
   
     pinMode(redLed, OUTPUT);
@@ -692,7 +695,7 @@ void setup()
     #if TEMPERATURE
         tempControl();
     #endif
-    debug(String(F("Setup - Waiting for ")) + (config.STARTCHARGINGVOLTAGE - 1) + String(F(" V")));
+    debug(F("Setup - Waiting for "));debug(config.STARTCHARGINGVOLTAGE - 1);debug(F(" V\n"));
     waitForVoltage(config.STARTCHARGINGVOLTAGE - 1);
 #endif
     output(voltRelay, 0);
@@ -702,7 +705,7 @@ void setup()
     inputStats.setWindowSecs(40.0F / config.ACFREQUENCY);     //Set AC Ammeter frequency
 
     mode = 0;
-    debug(F("Setup - Ready"));
+    debug(F("Setup - Ready\n"));
 }
 
 #if DEBUG
