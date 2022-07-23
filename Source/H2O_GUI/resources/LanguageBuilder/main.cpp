@@ -2,18 +2,48 @@
 #include <stdio.h>
 #include "ArduinoJson.h"
 
+#define JSON 0
+#define PRETTY 1
+#define MSGPACK 2
+
+#define MODE PRETTY
+
 char data[50000];
 char filename[200] = "DEF.lan";
 StaticJsonDocument<50000> langs;
 
 void serialize()
 {
+#if MODE == PRETTY
     ArduinoJson6194_71::serializeJsonPretty(langs,data, sizeof(data));
+#elif MODE == JSON
+    ArduinoJson6194_71::serializeJson(langs,data, sizeof(data));
+#elif MODE == MSGPACK
+    ArduinoJson6194_71::serializeMsgPack(langs,data, sizeof(data));
+#endif
     std::cout << data << std::endl;
     FILE* file = fopen(filename,"w");
     fwrite(data,sizeof(char), strlen(data),file);
     fclose(file);
     langs.clear();
+}
+
+void deserialize(char* fname)
+{
+    FILE* file = fopen(fname,"r");
+    int i = 0;
+    memset(data,0,50000);
+    while (!feof(file))
+    {
+        data[i]=(char)fgetc(file);
+        i++;
+    }
+#if MODE == PRETTY || MODE == JSON
+    ArduinoJson6194_71::deserializeJson(langs,data);
+#elif MODE == MSGPACK
+    ArduinoJson6194_71::deserializeMsgPack(langs,data);
+#endif
+    std::cout << langs.memoryUsage() << std::endl;
 }
 
 
@@ -22,6 +52,7 @@ void english()
 {
     strcpy(filename,"../EN.lan");
 
+    langs["Utils"]["memoryUsage"] = 9999; // automatically set
     langs["Utils"]["SwitchStatus"]["ON"] = "ON";
     langs["Utils"]["SwitchStatus"]["OFF"] = "OFF";
 
@@ -88,7 +119,12 @@ void english()
     langs["Menu"]["ExtraFunctions"]["ACPSU"] = "AC Power Supply";
     langs["Menu"]["ExtraFunctions"]["DCPSU"] = "DC Power Supply";
 
+    size_t memUsage = langs.memoryUsage();
+    std::cout << memUsage << std::endl;
+    langs["Utils"]["memoryUsage"] = memUsage;
+
     serialize();
+    deserialize(filename);
 }
 
 int main()

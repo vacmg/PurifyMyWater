@@ -205,3 +205,28 @@ void setRotation(byte rotation)
     ts.setRotation(rotation);
 #endif
 }
+
+bool loadLanguage() // TODO remove test codew
+{
+    char filename[15]; // aux buffer to read filemane from progmem // Max size of any locale
+    strcpy_P(filename, (char *)pgm_read_word(&(langsFilenames[LANGUAGE]))); // Read filename from progmem
+
+    debug(filename);
+    debug(SD.exists(filename));
+    File langFile = SD.open(filename,FILE_READ);
+    debug(langFile);
+    debug(langFile.isDirectory());debug(langFile.available());
+
+
+    DeserializationError error = deserializeJson(lang, langFile);
+    langFile.close();debug(lang.memoryUsage());
+    if(error)
+    {
+        debug(F("Error loading language: "));debug(error.f_str());debug('\n');
+        return false;
+    }
+
+    strcpy(filename,lang[F("Status")][F("Title")]);
+    debug(filename);
+    return true;
+}

@@ -81,7 +81,7 @@ void setDefaultConfig()
 
 void printConfiguration()
 {
-    debug(F("Current config:"));
+    debug(F("\nCurrent config:"));
     Serial.print(F("Purification status:\t"));Serial.println(config.purificationStatus);
     Serial.print(F("STARTCHARGINGVOLTAGE:\t"));Serial.println(config.STARTCHARGINGVOLTAGE);
     Serial.print(F("STOPCHARGINGVOLTAGE:\t"));Serial.println(config.STOPCHARGINGVOLTAGE);

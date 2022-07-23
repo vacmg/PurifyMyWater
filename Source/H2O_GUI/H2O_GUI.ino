@@ -36,6 +36,9 @@ void setup()
     Serial.println(F("Connected"));
     delay(50);
 #endif
+
+    setDefaultConfig();
+
     UISetup();
 
     //todo Test code after this line

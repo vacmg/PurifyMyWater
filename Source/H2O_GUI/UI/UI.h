@@ -6,6 +6,8 @@
 #include <LCDWIKI_KBV.h>
 #include <LCDWIKI_GUI.h>
 #include <TouchScreen.h>
+#include <ArduinoJson.h>
+#include <SD.h>
 #include <SimpleLCDTouchScreen.h>
 
 #ifndef H2O_GUI_UI_H
@@ -52,10 +54,16 @@
     };
 
 enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show splash screen
-byte ROTATION = 1; // Set rotation of the screen
+byte ROTATION = 3; // Set rotation of the screen
 
 enum Languages {ENGLISH = 0};
 enum Languages LANGUAGE = ENGLISH;
+StaticJsonDocument<3000> lang; // TODO adjust size
+
+
+const char englishFilename[] PROGMEM = "Locales/EN.lan"; // Store in program memory each filename
+const char *const langsFilenames[] PROGMEM = {englishFilename}; // Access each filename from an array
+
 unsigned long DATAREFRESHPERIOD = 5000; // Stored in ms, input in s (1s = 1000ms) // 0 < DATAREFRESHPERIOD
 
 #if SCREENHW == 35
@@ -155,6 +163,8 @@ void UISetup() {
 
     //my_lcd.Fill_Screen(0);
     my_lcd.Fill_Screen(Color(255, 255, 255).to565());
+
+    debug(loadLanguage()); // TODO remove this
 }
 
 

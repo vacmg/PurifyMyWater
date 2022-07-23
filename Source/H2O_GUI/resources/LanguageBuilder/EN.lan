@@ -1,5 +1,6 @@
 {
   "Utils": {
+    "memoryUsage": 2336,
     "SwitchStatus": {
       "ON": "ON",
       "OFF": "OFF"
