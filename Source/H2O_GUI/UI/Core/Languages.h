@@ -5,7 +5,7 @@
 #ifndef H2O_GUI_LANGUAGES_H
 #define H2O_GUI_LANGUAGES_H
 
-enum stringTypes{STRON = 0, STROFF};
+enum stringTypes{ON_STR = 0, OFF_STR};
 
 const char EN_ON[] PROGMEM = "ON";
 const char EN_OFF[] PROGMEM = "OFF";
