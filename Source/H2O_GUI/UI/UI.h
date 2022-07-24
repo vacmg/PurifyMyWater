@@ -58,11 +58,6 @@ byte ROTATION = 3; // Set rotation of the screen
 
 enum Languages {ENGLISH = 0};
 enum Languages LANGUAGE = ENGLISH;
-StaticJsonDocument<3000> lang; // TODO adjust size
-
-
-const char englishFilename[] PROGMEM = "Locales/EN.lan"; // Store in program memory each filename
-const char *const langsFilenames[] PROGMEM = {englishFilename}; // Access each filename from an array
 
 unsigned long DATAREFRESHPERIOD = 5000; // Stored in ms, input in s (1s = 1000ms) // 0 < DATAREFRESHPERIOD
 

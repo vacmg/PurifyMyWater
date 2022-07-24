@@ -9,5 +9,6 @@
 
 #include "Layouts.h"
 #include "Utils.h"
+#include "Languages.h"
 
 #endif //H2O_GUI_CORE_H
