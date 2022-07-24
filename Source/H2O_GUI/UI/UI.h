@@ -6,8 +6,6 @@
 #include <LCDWIKI_KBV.h>
 #include <LCDWIKI_GUI.h>
 #include <TouchScreen.h>
-#include <ArduinoJson.h>
-#include <SD.h>
 #include <SimpleLCDTouchScreen.h>
 
 #ifndef H2O_GUI_UI_H
@@ -158,8 +156,6 @@ void UISetup() {
 
     //my_lcd.Fill_Screen(0);
     my_lcd.Fill_Screen(Color(255, 255, 255).to565());
-
-    debug(loadLanguage()); // TODO remove this
 }
 
 
