@@ -54,8 +54,9 @@
 enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show splash screen
 byte ROTATION = 3; // Set rotation of the screen
 
-enum Languages {ENGLISH = 0};
+enum Languages {ENGLISH = 0, SPANISH = 1};
 enum Languages LANGUAGE = ENGLISH;
+#include "Languages/Languages.h"
 
 unsigned long DATAREFRESHPERIOD = 5000; // Stored in ms, input in s (1s = 1000ms) // 0 < DATAREFRESHPERIOD
 
@@ -94,7 +95,7 @@ const char mode23[] PROGMEM = "LOADPAGETEMPERATURE";
 const char mode24[] PROGMEM = "TEMPERATURE";
 
 const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24};
-char printModeBuff[20]; // Max size of any modeX string
+char printModeBuff[20] = ""; // Max size of any modeX string
 char* modeToString(ScreenStatus status)
 {
     strcpy_P(printModeBuff, (char *)pgm_read_word(&(modeTable[status])));
