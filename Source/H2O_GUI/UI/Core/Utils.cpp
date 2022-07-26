@@ -194,8 +194,9 @@ double getNumInput(const String& titleNumInput, const String& unit, double value
     return getNumInput(titleNumInput,unit,value,2);
 }
 
-void setRotation(byte rotation)
+void setRotation(enum Rotation rotation)
 {
+    debug(F("Rotation set to "));debug(rotationToString(rotation));debug('\n');
 #if SCREENHW == 35
     my_lcd.Set_Rotation(rotation);
     ts.setRotation((rotation + SCREEN35ROTATIONOFFSET) % 4);

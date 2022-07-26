@@ -77,12 +77,23 @@ void setDefaultConfig()
 #endif
 
 #if DEBUG
-    #define changeStatus(newStatus) debug(F("Mode changed from '"));debug(modeToString(screenStatus));debug(F("' to '"));debug(modeToString(newStatus));debug(F("'\n"))); screenStatus = newStatus
+    char debugBuff[50] = "";
+
+    const char purificationStatusOFF_STR[] PROGMEM = "OFF";
+    const char purificationStatusON_STR[] PROGMEM = "ON";
+
+    const char *const debugConfigTable[] PROGMEM = {purificationStatusOFF_STR, purificationStatusON_STR};
+
+    char* purificationStatusToString(enum PurificationStatus status)
+    {
+        strcpy_P(debugBuff, (char *)pgm_read_word(&(debugConfigTable[status])));
+        return debugBuff;
+    }
 
     void printConfiguration()
     {
         debug(F("Current config:\n"));
-        Serial.print(F("Purification status:\t"));Serial.println(config.purificationStatus);
+        Serial.print(F("Purification status:\t"));Serial.println(purificationStatusToString(config.purificationStatus));
         Serial.print(F("STARTCHARGINGVOLTAGE:\t"));Serial.println(config.STARTCHARGINGVOLTAGE);
         Serial.print(F("STOPCHARGINGVOLTAGE:\t"));Serial.println(config.STOPCHARGINGVOLTAGE);
         Serial.print(F("STARTWORKINGVOLTAGE:\t"));Serial.println(config.STARTWORKINGVOLTAGE);
@@ -109,7 +120,6 @@ void setDefaultConfig()
 
     #define debugConfig() printConfiguration()
 #else
-    #define changeStatus(newStatus) screenStatus = newStatus
     #define debugConfig() ;
 #endif
 

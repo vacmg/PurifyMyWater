@@ -38,7 +38,10 @@ void setup()
 #endif
     UISetup();
 
+    debug('\n');
     //todo Test code after this line
+
+
 
     //while (true); // TODO delete or comment this
 
