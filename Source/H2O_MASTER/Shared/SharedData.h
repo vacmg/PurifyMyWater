@@ -29,10 +29,10 @@ typedef struct Configuration {
     float STOPCHARGINGVOLTAGE; // STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE // leave at least 1 volt of margin between STARTCHARGINGVOLTAGE & STOPCHARGINGVOLTAGE
     float STARTWORKINGVOLTAGE; // STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
     float STOPWORKINGVOLTAGE; // MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1 // // leave at least 1 volt of margin between STOPWORKINGVOLTAGE && STARTCHARGINGVOLTAGE
-    double DCAMPSENSITIVITY; //sensor sensitivity in Volts/Amps // 5.4A for 60w test load // No limits
-    double DCAMPZERO; // sensor voltage for 0 Amps current // No limits
-    double ACAMPSENSITIVITY; // sensor sensitivity in Volts/Amps // 0.25A for 60w test load // No limits
-    double ACAMPZERO; // sensor calibration correction value // No limits
+    double DCAMMSENSITIVITY; //sensor sensitivity in Volts/Amps // 5.4A for 60w test load // No limits
+    double DCAMMZERO; // sensor voltage for 0 Amps current // No limits
+    double ACAMMSENSITIVITY; // sensor sensitivity in Volts/Amps // 0.25A for 60w test load // No limits
+    double ACAMMZERO; // sensor calibration correction value // No limits
     byte ACFREQUENCY; // AC signal frequency (Hz) 50 <= ACFREQUENCY <= 60
     float ESTIMATEDUVAMPERAGE; // Minimum estimated current that the UV light uses // 0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE // todo place real value
 
@@ -98,10 +98,10 @@ void setDefaultConfig()
         Serial.print(F("STOPCHARGINGVOLTAGE:\t"));Serial.println(config.STOPCHARGINGVOLTAGE);
         Serial.print(F("STARTWORKINGVOLTAGE:\t"));Serial.println(config.STARTWORKINGVOLTAGE);
         Serial.print(F("STOPWORKINGVOLTAGE:\t"));Serial.println(config.STOPWORKINGVOLTAGE);
-        Serial.print(F("DCAMPSENSITIVITY:\t"));Serial.println(config.DCAMPSENSITIVITY);
-        Serial.print(F("DCAMPZERO:\t"));Serial.println(config.DCAMPZERO);
-        Serial.print(F("ACAMPSENSITIVITY:\t"));Serial.println(config.ACAMPSENSITIVITY);
-        Serial.print(F("ACAMPZERO:\t"));Serial.println(config.ACAMPZERO);
+        Serial.print(F("DCAMPSENSITIVITY:\t"));Serial.println(config.DCAMMSENSITIVITY);
+        Serial.print(F("DCAMPZERO:\t"));Serial.println(config.DCAMMZERO);
+        Serial.print(F("ACAMPSENSITIVITY:\t"));Serial.println(config.ACAMMSENSITIVITY);
+        Serial.print(F("ACAMPZERO:\t"));Serial.println(config.ACAMMZERO);
         Serial.print(F("ACFREQUENCY:\t"));Serial.println(config.ACFREQUENCY);
         Serial.print(F("ESTIMATEDUVAMPERAGE:\t"));Serial.println(config.ESTIMATEDUVAMPERAGE);
         Serial.print(F("WELLPUMPTIMEOUT:\t"));Serial.println(config.WELLPUMPTIMEOUT);

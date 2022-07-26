@@ -26,7 +26,7 @@ void clickElectricity()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
@@ -41,31 +41,31 @@ void clickElectricity()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 3:
-                tempVal = getNumInput(F("AC Ammeter Sensitivity"), F(""), config.ACAMPSENSITIVITY,4);
+                tempVal = getNumInput(F("AC Ammeter Sensitivity"), F(""), config.ACAMMSENSITIVITY,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     debug(F("ACAMPSENSITIVITY UPDATED: "));debug(config.ACAMPSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
-                    config.ACAMPSENSITIVITY = tempVal;
+                    config.ACAMMSENSITIVITY = tempVal;
                     // TODO send new setting
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 4:
-                tempVal = getNumInput(F("DC Ammeter Zero"), F(""), config.DCAMPZERO,4);
+                tempVal = getNumInput(F("DC Ammeter Zero"), F(""), config.DCAMMZERO,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     debug(F(" UPDATED: DCAMPZERO"));debug(config.DCAMPZERO);debug(F(" --> "));debug(tempVal);debug('\n');
-                    config.DCAMPZERO = tempVal;
+                    config.DCAMMZERO = tempVal;
                     // TODO send new setting
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
@@ -86,7 +86,7 @@ void clickElectricity()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
@@ -101,19 +101,19 @@ void clickElectricity()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 3:
-                tempVal = getNumInput(F("AC Ammeter Zero"), F(""), config.ACAMPZERO,4);
+                tempVal = getNumInput(F("AC Ammeter Zero"), F(""), config.ACAMMZERO,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     debug(F("ACAMPZERO UPDATED: "));debug(config.ACAMPZERO);debug(F(" --> "));debug(tempVal);debug('\n');
-                    config.ACAMPZERO = tempVal;
+                    config.ACAMMZERO = tempVal;
                     // TODO send new setting
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
@@ -133,7 +133,7 @@ void clickElectricity()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
@@ -148,19 +148,19 @@ void clickElectricity()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 3:
-                tempVal = getNumInput(F("DC Ammeter Sensitivity"), F(""), config.DCAMPSENSITIVITY,4);
+                tempVal = getNumInput(F("DC Ammeter Sensitivity"), F(""), config.DCAMMSENSITIVITY,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     debug(F("DCAMPSENSITIVITY UPDATED: "));debug(config.DCAMPSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
-                    config.DCAMPSENSITIVITY = tempVal;
+                    config.DCAMMSENSITIVITY = tempVal;
                     // TODO send new setting
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
@@ -188,11 +188,11 @@ void drawElectricity() // TODO get settings real value
             break;
         case 3:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(F("AC Ammeter Sensitivity"), F("AC Ammeter Zero"), F("DC Ammeter Sensitivity"),String(config.ACAMPSENSITIVITY, 4), String(config.ACAMPZERO, 4), String(config.DCAMPSENSITIVITY, 4), true,true, true, fontSizes);
+            draw6ButtonsLayout(F("AC Ammeter Sensitivity"), F("AC Ammeter Zero"), F("DC Ammeter Sensitivity"),String(config.ACAMMSENSITIVITY, 4), String(config.ACAMMZERO, 4), String(config.DCAMMSENSITIVITY, 4), true,true, true, fontSizes);
             break;
         case 4:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 1, 1);
-            draw6ButtonsLayout(F("DC Ammeter Zero"), "", "", String(config.DCAMPZERO, 4), "", "", true, false, false,fontSizes);
+            draw6ButtonsLayout(F("DC Ammeter Zero"), "", "", String(config.DCAMMZERO, 4), "", "", true, false, false,fontSizes);
             break;
     }
 }

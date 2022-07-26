@@ -22,7 +22,7 @@ void clickExtraFunctions() // Todo implement extraFunctions
         switch (page)
         {
             case 1:
-            changeStatus(XXXXX);
+            changeScreenStatus(XXXXX);
             break;
             case x:
                 ...

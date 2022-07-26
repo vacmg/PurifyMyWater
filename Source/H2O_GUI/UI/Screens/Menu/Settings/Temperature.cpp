@@ -47,7 +47,7 @@ void clickTemperature()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGETEMPERATURE); // reload page with new config value
+                changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
@@ -62,7 +62,7 @@ void clickTemperature()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGETEMPERATURE); // reload page with new config value
+                changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
@@ -82,7 +82,7 @@ void clickTemperature()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGETEMPERATURE); // reload page with new config value
+                changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
@@ -97,7 +97,7 @@ void clickTemperature()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGETEMPERATURE); // reload page with new config value
+                changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
@@ -117,7 +117,7 @@ void clickTemperature()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGETEMPERATURE); // reload page with new config value
+                changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
@@ -132,7 +132,7 @@ void clickTemperature()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGETEMPERATURE); // reload page with new config value
+                changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }

@@ -26,7 +26,7 @@ void clickWater()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEWATER); // reload page with new config value
+                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
             case 2:
@@ -40,7 +40,7 @@ void clickWater()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEWATER); // reload page with new config value
+                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
@@ -60,7 +60,7 @@ void clickWater()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEWATER); // reload page with new config value
+                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
@@ -76,7 +76,7 @@ void clickWater()
                     }
 
                 }
-                changeStatus(LOADPAGEWATER); // reload page with new config value
+                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
@@ -96,7 +96,7 @@ void clickWater()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEWATER); // reload page with new config value
+                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }

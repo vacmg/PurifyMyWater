@@ -23,21 +23,21 @@ void clickSettings()
     if (btn1.isPressed()) // Go to LOADELECTRICITY
     {
         debug(F("Electricity button pressed\n"));
-        changeStatus(LOADELECTRICITY);
+        changeScreenStatus(LOADELECTRICITY);
     }
     else if (btn2.isPressed()) // Go to LOADWATER
     {
         debug(F("Water button pressed\n"));
-        changeStatus(LOADWATER);
+        changeScreenStatus(LOADWATER);
     }
     else if (btn3.isPressed()) // Go to LOADINTERFACE
     {
         debug(F("Interface button pressed\n"));
-        changeStatus(LOADINTERFACE);
+        changeScreenStatus(LOADINTERFACE);
     }
     else if (btn4.isPressed()) // Go to LOADTEMPERATURE
     {
         debug(F("Temperature button pressed\n"));
-        changeStatus(LOADTEMPERATURE);
+        changeScreenStatus(LOADTEMPERATURE);
     }
 }

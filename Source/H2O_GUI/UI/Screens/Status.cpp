@@ -654,7 +654,7 @@ void clickStatus()
 {
     if (btn1.isPressed()) {
         debug(F("Button MENU pressed\n"));
-        changeStatus(LOADMENU);
+        changeScreenStatus(LOADMENU);
     }
     else if (btn2.isPressed())
     {

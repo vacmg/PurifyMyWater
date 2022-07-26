@@ -45,7 +45,7 @@ void clickInterface()
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEINTERFACE); // reload page with new config value
+                changeScreenStatus(LOADPAGEINTERFACE); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
