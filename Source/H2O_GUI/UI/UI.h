@@ -54,7 +54,7 @@
 enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show splash screen
 byte ROTATION = 3; // Set rotation of the screen
 
-enum Languages {ENGLISH = 0, SPANISH = 1};
+enum Languages {ENGLISH = 0, SPANISH = 1, FRENCH = 2};
 enum Languages LANGUAGE = ENGLISH;
 #include "Languages/Languages.h"
 
