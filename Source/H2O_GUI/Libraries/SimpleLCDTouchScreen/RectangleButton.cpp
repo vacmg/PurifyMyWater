@@ -9,7 +9,7 @@ RectangleButton::RectangleButton(int x, int y, int x1, int y1, Color mainColor, 
 
 }
 
-RectangleButton::RectangleButton(int x, int y, int x1, int y1, Color mainColor, Color secondaryColor, Label* label, bool disableAutoSize, TouchScreenObject* ts): Rectangle(x, y, x1, y1, mainColor, secondaryColor, label, disableAutoSize), ScreenObjectWithTouch(x, y, x1, y1, mainColor, ts), ScreenObjectWithLabel(x,y,mainColor,label, disableAutoSize), ScreenObjectWithSecondaryColor(x,y,mainColor,secondaryColor), ScreenObjectWithXtraCoords(x,y,x1,y1,mainColor), ScreenObject(x,y,mainColor)
+RectangleButton::RectangleButton(int x, int y, int x1, int y1, Color mainColor, Color secondaryColor, Label* label, bool autoSizeEnabled, TouchScreenObject* ts): Rectangle(x, y, x1, y1, mainColor, secondaryColor, label, autoSizeEnabled), ScreenObjectWithTouch(x, y, x1, y1, mainColor, ts), ScreenObjectWithLabel(x,y,mainColor,label, autoSizeEnabled), ScreenObjectWithSecondaryColor(x,y,mainColor,secondaryColor), ScreenObjectWithXtraCoords(x,y,x1,y1,mainColor), ScreenObject(x,y,mainColor)
 {
 
 }
@@ -24,7 +24,7 @@ RectangleButton::RectangleButton(int x, int y, int x1, int y1, Color mainColor, 
 
 }
 
-RectangleButton::RectangleButton(int x, int y, int x1, int y1, Color mainColor, Label* label, bool disableAutoSize, TouchScreenObject* ts): Rectangle(x,y,x1,y1,mainColor,label, disableAutoSize), ScreenObjectWithTouch(x, y, x1, y1, mainColor, ts), ScreenObjectWithLabel(x,y,mainColor,label, disableAutoSize), ScreenObjectWithSecondaryColor(x,y,mainColor), ScreenObjectWithXtraCoords(x,y,x1,y1,mainColor), ScreenObject(x,y,mainColor)
+RectangleButton::RectangleButton(int x, int y, int x1, int y1, Color mainColor, Label* label, bool autoSizeEnabled, TouchScreenObject* ts): Rectangle(x,y,x1,y1,mainColor,label, autoSizeEnabled), ScreenObjectWithTouch(x, y, x1, y1, mainColor, ts), ScreenObjectWithLabel(x,y,mainColor,label, autoSizeEnabled), ScreenObjectWithSecondaryColor(x,y,mainColor), ScreenObjectWithXtraCoords(x,y,x1,y1,mainColor), ScreenObject(x,y,mainColor)
 {
 
 }
