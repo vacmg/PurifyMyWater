@@ -36,6 +36,9 @@ void setup()
     debug(F("Connected\n"));
     delay(50);
 #endif
+
+    setDefaultConfig();
+
     UISetup();
 
     debug('\n');

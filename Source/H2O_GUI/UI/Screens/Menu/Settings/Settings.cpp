@@ -8,12 +8,12 @@
 void drawSettings()
 {
     //Title Menu
-    titleLabel.setString("Settings");
+    titleLabel.setString(getString(Settings_Title_STR));
     my_lcd.draw(&title);
     //Layout4Buttons
     byte fontSize[4];
     setFontSizeArray(fontSize, 2, 2, 2, 2);
-    draw4ButtonsLayout(F("Electricity"), F("Water"), F("Interface"), F("Temperature"), fontSize);
+    draw4ButtonsLayout(getString(Settings_ElectricityBtn_STR), getString(Settings_WaterBtn_STR), getString(Settings_InterfaceBtn_STR),getString(Settings_TemperatureBtn_STR), fontSize);
 }
 
 //This function leads you to the four different settings you can manage. It works in a single page,

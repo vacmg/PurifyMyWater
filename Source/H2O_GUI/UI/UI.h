@@ -55,8 +55,10 @@ enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in o
 enum Rotation {LANDSCAPE = 1, INVERTED_LANDSCAPE = 3};
 enum Rotation ROTATION = LANDSCAPE; // Set rotation of the screen
 
-enum Languages {ENGLISH = 0};
+enum Languages {ENGLISH = 0, SPANISH = 1, FRENCH = 2};
 enum Languages LANGUAGE = ENGLISH;
+#include "Languages/Languages.h"
+
 unsigned long DATAREFRESHPERIOD = 5000; // Stored in ms, input in s (1s = 1000ms) // 0 < DATAREFRESHPERIOD
 
 #if SCREENHW == 35
@@ -154,8 +156,9 @@ RectangleButton btn11(250, 220, 440, 300, Color(0, 0, 0), Color(255, 255, 255), 
 
 // Frequently used ScreenObjects
 RectangleButton backBtn(20, 20, 60, 60, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
-Label titleLabel(0, 0, "Menu", 5, Color(0), Color(255, 255, 255));
-Rectangle title(65, 5, 415, 75, Color(0xFFFF),/*Color(255,0,0),*/&titleLabel, false);
+
+Label titleLabel(0, 0, "", 5, Color(0), Color(255, 255, 255));
+Rectangle title(65, 5, 415, 75, Color(0xFFFF),&titleLabel, true);
 
 //Rectangle Button GetNumInput
 RectangleButton oKBtn(250, 270, 410, 310, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);

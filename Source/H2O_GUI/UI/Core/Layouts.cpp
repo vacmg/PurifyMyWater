@@ -178,7 +178,7 @@ void draw6ButtonsLayout(const String& topLeftBtn1, const String& centerLeftBtn2,
         {
             btn7.enableAutoSize(false);
             label.setFontSize(3);
-            label.setString("Previous");
+            label.setString(getString(Previous_STR));
             btn7.setCoords(35,278);
             btn7.setCoords1(190,308);
             my_lcd.draw(&btn7);
@@ -188,7 +188,7 @@ void draw6ButtonsLayout(const String& topLeftBtn1, const String& centerLeftBtn2,
         {
             btn8.enableAutoSize(false);
             label.setFontSize(3);
-            label.setString("Next");
+            label.setString(getString(Next_STR));
             btn8.setCoords(290,278);
             btn8.setCoords1(440,308);
             my_lcd.draw(&btn8);
@@ -285,12 +285,12 @@ void drawNumInput (const String& titleNumInput, const String& unit)
     my_lcd.draw(&btn10);
 
     //AUXILIARY BUTTONS//
-    label.setString("Delete"); // Button Delete
+    label.setString(getString(Delete_STR)); // Button Delete
     btn11.setCoords(60,270);
     btn11.setCoords1(230,310);
     my_lcd.draw(&btn11);
 
-    label.setString("OK"); // Button OK
+    label.setString(getString(OK_STR)); // Button OK
     my_lcd.draw(&oKBtn);
 
     label.setString("."); // Button DOT

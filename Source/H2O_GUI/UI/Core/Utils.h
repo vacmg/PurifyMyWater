@@ -13,6 +13,8 @@ double getNumInput(const String& titleNumInput, const String& unit, double value
 double getNumInput(const String& titleNumInput, const String& unit, double value);
 void setRotation(byte rotation);
 
+bool loadLanguage();
+
 #include "Utils.cpp"
 
 #endif //H2O_GUI_UTILS_H

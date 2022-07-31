@@ -16,7 +16,7 @@ void clickWater()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput(F("Well Pump max time on"), F("s"), (double)config.WELLPUMPTIMEOUT/1000.0);
+                tempVal = getNumInput(getString(Water_WellPumpMaxTimeON_STR), F("s"), (double)config.WELLPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (0 < config.WELLPUMPTIMEOUT)// 0 < WELLPUMPTIMEOUT
@@ -30,7 +30,7 @@ void clickWater()
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
             case 2:
-                tempVal = getNumInput(F("Filter max time on"), F("s"), (double)config.FILTERTIMEOUT/1000.0);
+                tempVal = getNumInput(getString(Water_FilterMaxTimeON_STR), F("s"), (double)config.FILTERTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (0 < config.FILTERTIMEOUT)// 0 < FILTERTIMEOUT
@@ -50,7 +50,7 @@ void clickWater()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput(F("UV Pump max time on"), F("s"), (double)config.UVPUMPTIMEOUT/1000.0);
+                tempVal = getNumInput(getString(Water_UVPumpMaxTimeON_STR), F("s"), (double)config.UVPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (0 < config.UVPUMPTIMEOUT)// 0 < UVPUMPTIMEOUT
@@ -65,7 +65,7 @@ void clickWater()
                 break;
 
             case 2:
-                tempVal = getNumInput(F("UV Pump flow"), F("L/H"), config.UVPUMPFLOW);
+                tempVal = getNumInput(getString(Water_UVPumpFlow_STR), F("L/H"), config.UVPUMPFLOW);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if(tempVal>=0) // 0 < UVPUMPFLOW
@@ -86,7 +86,7 @@ void clickWater()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput(F("End Pump max time on"), F("s"), (double)config.ENDPUMPTIMEOUT/1000.0);
+                tempVal = getNumInput(getString(Water_EndPumpMaxTimeON_STR), F("s"), (double)config.ENDPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (0 < config.ENDPUMPTIMEOUT)// 0 < ENDPUMPTIMEOUT
@@ -107,7 +107,7 @@ void clickWater()
 //This function set and draw the title, set the font size and draws the buttons in all pages.
 void drawWater()
 {
-    titleLabel.setString("Water Settings");
+    titleLabel.setString(getString(Water_Title_STR));
     titleLabel.setFontSize(2);
     my_lcd.draw(&title);
     titleLabel.setFontSize(5);
@@ -116,11 +116,12 @@ void drawWater()
     {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(F("Well Pump max time ON"), F("UV Pump max time ON"), F("End Pump max time ON"),String(((double) config.WELLPUMPTIMEOUT) / 1000.0) + F("s"),String(((double) config.UVPUMPTIMEOUT) / 1000.0) + F("s"),String(((double) config.ENDPUMPTIMEOUT) / 1000.0) + F("s"), true, true, true, fontSizes);
+            draw6ButtonsLayout(getString(Water_WellPumpMaxTimeON_STR), getString(Water_UVPumpMaxTimeON_STR), getString(Water_EndPumpMaxTimeON_STR),String(((double) config.WELLPUMPTIMEOUT) / 1000.0) + F("s"),String(((double) config.UVPUMPTIMEOUT) / 1000.0) + F("s"),String(((double) config.ENDPUMPTIMEOUT) / 1000.0) + F("s"), true, true, true, fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(F("Filter max time ON"), F("UV Pump flow"), "",String(((double) config.FILTERTIMEOUT) / 1000.0) + F("s"), String(config.UVPUMPFLOW) + F("L/H"), "",true, true, true, fontSizes);
+            draw6ButtonsLayout(getString(Water_FilterMaxTimeON_STR), getString(Water_UVPumpFlow_STR), "",String(((double) config.FILTERTIMEOUT) / 1000.0) + F("s"), String(config.UVPUMPFLOW) + F("L/H"), "",true, true, true, fontSizes);
             break;
+        default:debug(F("Page selected is out of bounds (page>2 || page<0)"));
     }
 }

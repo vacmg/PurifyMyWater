@@ -16,7 +16,7 @@ void clickElectricity()
         switch (page)
         {
             case 1: // Start charging voltage
-                tempVal = getNumInput(F("Start charging Voltage"), F("V"), config.STARTCHARGINGVOLTAGE);
+                tempVal = getNumInput(getString(Electricity_StartChargingVoltage_STR), F("V"), config.STARTCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (config.STOPWORKINGVOLTAGE < tempVal && tempVal < config.STOPCHARGINGVOLTAGE)
@@ -31,7 +31,7 @@ void clickElectricity()
                 break;
 
             case 2: //page 2
-                tempVal = getNumInput(F("Start Working Voltage"), F("V"), config.STARTWORKINGVOLTAGE);
+                tempVal = getNumInput(getString(Electricity_StartWorkingVoltage_STR), F("V"), config.STARTWORKINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (config.STARTCHARGINGVOLTAGE < tempVal && tempVal < config.STOPCHARGINGVOLTAGE)// STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
@@ -46,7 +46,7 @@ void clickElectricity()
                 break;
 
             case 3:
-                tempVal = getNumInput(F("AC Ammeter Sensitivity"), F(""), config.ACAMMSENSITIVITY,4);
+                tempVal = getNumInput(getString(Electricity_ACAmmeterSensitivity_STR), F(""), config.ACAMPSENSITIVITY,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     debug(F("ACAMPSENSITIVITY UPDATED: "));debug(config.ACAMPSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
@@ -58,7 +58,7 @@ void clickElectricity()
                 break;
 
             case 4:
-                tempVal = getNumInput(F("DC Ammeter Zero"), F(""), config.DCAMMZERO,4);
+                tempVal = getNumInput(getString(Electricity_DCAmmeterZero_STR), F(""), config.DCAMPZERO,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     debug(F(" UPDATED: DCAMPZERO"));debug(config.DCAMPZERO);debug(F(" --> "));debug(tempVal);debug('\n');
@@ -76,7 +76,7 @@ void clickElectricity()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput(F("Stop Charging Voltage"), F("V"), config.STOPCHARGINGVOLTAGE);
+                tempVal = getNumInput(getString(Electricity_StopChargingVoltage_STR), F("V"), config.STOPCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (config.STARTCHARGINGVOLTAGE + 1 < tempVal && tempVal <MAXCAPACITORSALLOWEDVOLTAGE)// STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE
@@ -91,7 +91,7 @@ void clickElectricity()
                 break;
 
             case 2:
-                tempVal = getNumInput(F("Stop Working Voltage"), F("V"), config.STOPWORKINGVOLTAGE);
+                tempVal = getNumInput(getString(Electricity_StopWorkingVoltage_STR), F("V"), config.STOPWORKINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (MINSYSTEMALLOWEDVOLTAGE < tempVal && tempVal < config.STARTCHARGINGVOLTAGE - 1)// MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1
@@ -106,7 +106,7 @@ void clickElectricity()
                 break;
 
             case 3:
-                tempVal = getNumInput(F("AC Ammeter Zero"), F(""), config.ACAMMZERO,4);
+                tempVal = getNumInput(getString(Electricity_ACAmmeterZero_STR), F(""), config.ACAMPZERO,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     debug(F("ACAMPZERO UPDATED: "));debug(config.ACAMPZERO);debug(F(" --> "));debug(tempVal);debug('\n');
@@ -123,7 +123,7 @@ void clickElectricity()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput(F("UV light est. Current"), F("A"), config.ESTIMATEDUVAMPERAGE);
+                tempVal = getNumInput(getString(Electricity_UVCurrent_STR), F("A"), config.ESTIMATEDUVAMPERAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (0 < tempVal && tempVal < MAXUVAMPERAGE)//0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE
@@ -138,7 +138,7 @@ void clickElectricity()
                 break;
 
             case 2:
-                tempVal = getNumInput(F("AC Inverter Frequency"), F("Hz"), config.ACFREQUENCY);
+                tempVal = getNumInput(getString(Electricity_ACInverterFrequency_STR), F("Hz"), config.ACFREQUENCY);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (50 < tempVal && tempVal < 60)// 50 <= ACFREQUENCY <= 60
@@ -153,7 +153,7 @@ void clickElectricity()
                 break;
 
             case 3:
-                tempVal = getNumInput(F("DC Ammeter Sensitivity"), F(""), config.DCAMMSENSITIVITY,4);
+                tempVal = getNumInput(getString(Electricity_DCAmmeterSensitivity_STR), F(""), config.DCAMPSENSITIVITY,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     debug(F("DCAMPSENSITIVITY UPDATED: "));debug(config.DCAMPSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
@@ -171,7 +171,7 @@ void clickElectricity()
 void drawElectricity() // TODO get settings real value
 {
     //Title electricity
-    titleLabel.setString("Electricity Settings");
+    titleLabel.setString(getString(Electricity_Title_STR));
     titleLabel.setFontSize(2);
     my_lcd.draw(&title);
     titleLabel.setFontSize(5);
@@ -180,19 +180,20 @@ void drawElectricity() // TODO get settings real value
     {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(F("Start Charging Voltage"), F("Stop Charging Voltage"), F("UV light est. Current"),String(config.STARTCHARGINGVOLTAGE) + F("V"), String(config.STOPCHARGINGVOLTAGE) + F("V"),String(config.ESTIMATEDUVAMPERAGE) + F("A"), true, true, true, fontSizes);
+            draw6ButtonsLayout(getString(Electricity_StartChargingVoltage_STR), getString(Electricity_StopChargingVoltage_STR), getString(Electricity_UVCurrent_STR),String(config.STARTCHARGINGVOLTAGE) + F("V"), String(config.STOPCHARGINGVOLTAGE) + F("V"),String(config.ESTIMATEDUVAMPERAGE) + F("A"), true, true, true, fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(F("Start Working Voltage"), F("Stop Working Voltage"), F("AC Inverter Frequency"),String(config.STARTWORKINGVOLTAGE) + F("V"), String(config.STOPWORKINGVOLTAGE) + F("V"),String(config.ACFREQUENCY) + F("Hz"), true, true, true, fontSizes);
+            draw6ButtonsLayout(getString(Electricity_StartWorkingVoltage_STR), getString(Electricity_StopWorkingVoltage_STR),getString(Electricity_ACInverterFrequency_STR),String(config.STARTWORKINGVOLTAGE) + F("V"), String(config.STOPWORKINGVOLTAGE) + F("V"),String(config.ACFREQUENCY) + F("Hz"), true, true, true, fontSizes);
             break;
         case 3:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(F("AC Ammeter Sensitivity"), F("AC Ammeter Zero"), F("DC Ammeter Sensitivity"),String(config.ACAMMSENSITIVITY, 4), String(config.ACAMMZERO, 4), String(config.DCAMMSENSITIVITY, 4), true,true, true, fontSizes);
+            draw6ButtonsLayout(getString(Electricity_ACAmmeterSensitivity_STR), getString(Electricity_ACAmmeterZero_STR),getString(Electricity_DCAmmeterSensitivity_STR),String(config.ACAMPSENSITIVITY, 4), String(config.ACAMPZERO, 4), String(config.DCAMPSENSITIVITY, 4), true,true, true, fontSizes);
             break;
         case 4:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 1, 1);
-            draw6ButtonsLayout(F("DC Ammeter Zero"), "", "", String(config.DCAMMZERO, 4), "", "", true, false, false,fontSizes);
+            draw6ButtonsLayout(getString(Electricity_DCAmmeterZero_STR), "", "", String(config.DCAMPZERO, 4), "", "", true, false, false,fontSizes);
             break;
+        default: debug(F("Page selected is out of bounds (page>4 || page<0)"));
     }
 }

@@ -629,7 +629,9 @@ void setup()
     delay(500);
     debug(F("Setup - Booting...\n"));
 #endif
-  
+
+    setDefaultConfig();
+
     pinMode(redLed, OUTPUT);
     pinMode(blueLed, OUTPUT);
     pinMode(greenLed, OUTPUT);
