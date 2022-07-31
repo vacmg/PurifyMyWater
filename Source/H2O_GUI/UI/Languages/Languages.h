@@ -7,7 +7,7 @@
 
 #include "../UI.h"
 
-enum StringIDs{Lang_STR = 0, ON_STR, OFF_STR, // Utils
+enum StringIDs{Lang_STR = 0, ON_STR, OFF_STR, Previous_STR, Next_STR, Delete_STR, OK_STR, // Utils
     Status_Title_STR, StatusBtn_Error_STR, MenuBtn_STR, // Status
     Menu_Title_STR, HelpBtn_STR, EngineeringBtn_STR, SettingsBtn_STR, ExtraFunctionsBtn, // Menu
     ExtraFunctions_Title_STR, ExtraFunctions_InstallWizard_STR, ExtraFunctions_StartInstallWizard_STR, ExtraFunctions_ACPSU_STR, ExtraFunctions_DCPSU_STR, // ExtraFunctions

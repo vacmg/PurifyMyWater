@@ -9,12 +9,12 @@
 void drawMenu()
 {
     //Title Menu
-    titleLabel.setString("Menu");
+    titleLabel.setString(getString(Menu_Title_STR));
     my_lcd.draw(&title);
     //Layout4Buttons
     byte fontSize[4];
     setFontSizeArray(fontSize, 2, 2, 2, 2);
-    draw4ButtonsLayout(F("Settings"), F("Help"), F("Engineering Mode"), F("Extra functions"), fontSize);
+    draw4ButtonsLayout(getString(SettingsBtn_STR), getString(HelpBtn_STR), getString(EngineeringBtn_STR), getString(ExtraFunctionsBtn), fontSize);
 }
 
 //This function switch pages after you click a button.

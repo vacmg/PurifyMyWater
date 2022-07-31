@@ -131,7 +131,7 @@ RectangleButton btn11(250, 220, 440, 300, Color(0, 0, 0), Color(255, 255, 255), 
 
 // Frequently used ScreenObjects
 RectangleButton backBtn(20, 20, 60, 60, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
-Label titleLabel(0, 0, "Menu", 5, Color(0), Color(255, 255, 255));
+Label titleLabel(0, 0, "", 5, Color(0), Color(255, 255, 255));
 Rectangle title(65, 5, 415, 75, Color(0xFFFF),/*Color(255,0,0),*/&titleLabel, true);
 
 //Rectangle Button GetNumInput

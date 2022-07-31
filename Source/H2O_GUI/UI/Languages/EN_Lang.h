@@ -11,6 +11,10 @@
 const char EN_LANG_STR[] PROGMEM = "English";
 const char EN_ON_STR[] PROGMEM = "ON";
 const char EN_OFF_STR[] PROGMEM = "OFF";
+const char EN_Previous_STR[] PROGMEM = "Previous";
+const char EN_Next_STR[] PROGMEM = "Next";
+const char EN_Delete_STR[] PROGMEM = "Delete";
+const char EN_OK_STR[] PROGMEM = "OK";
 
 // Status
 const char EN_Status_Title_STR[] PROGMEM = "Status";
@@ -81,7 +85,7 @@ const char EN_Electricity_DCAmmeterSensitivity_STR[] PROGMEM = "DC Ammeter Sensi
 const char EN_Electricity_DCAmmeterZero_STR[] PROGMEM = "DC Ammeter Zero";
 
 
-const char *const langEN[] PROGMEM = {EN_LANG_STR,EN_ON_STR, EN_OFF_STR,
+const char *const langEN[] PROGMEM = {EN_LANG_STR,EN_ON_STR, EN_OFF_STR, EN_Previous_STR, EN_Next_STR,EN_Delete_STR, EN_OK_STR, // Utils
                                       EN_Status_Title_STR, EN_StatusBtn_Error_STR, EN_MenuBtn_STR, // Status
                                       EN_Menu_Title_STR, EN_HelpBtn_STR, EN_EngineeringBtn_STR, EN_SettingsBtn_STR, EN_ExtraFunctionsBtn, // Menu
                                       EN_ExtraFunctions_Title_STR, EN_ExtraFunctions_InstallWizard_STR, EN_ExtraFunctions_StartInstallWizard_STR, EN_ExtraFunctions_ACPSU_STR, EN_ExtraFunctions_DCPSU_STR, // ExtraFunctions

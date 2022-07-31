@@ -231,7 +231,7 @@ void drawStatusBackground(bool dontFillScreen)
     //Label loading(165,85,"Loading...",3,Color(0,70,200));
     //my_lcd.draw(&loading);
 
-    titleLabel.setString("Status"); // Title
+    titleLabel.setString(getString(Status_Title_STR)); // Title
     my_lcd.draw(&title);
     Picture logoPhoto(400, 10, "PMWSL.bmp"); // logo
     my_lcd.draw(&logoPhoto);
@@ -245,7 +245,7 @@ void drawStatusBackground(bool dontFillScreen)
     //Small logo
     btn1.enableAutoSize(false);
     label.setFontSize(2);
-    label.setString("Menu"); // Label Menu
+    label.setString(getString(MenuBtn_STR)); // Label Menu
     btn1.setCoords(135, 234);
     btn1.setCoords1(260, 290);
     my_lcd.draw(&btn1);
@@ -278,17 +278,17 @@ void drawStatusForeground(const char *voltage, const char *waterAmount)//TODO ad
     btn2.setCoords1(420, 290);
     if (currentError != NoError) // ERROR
     {
-        label.setString("FAILURE");
+        label.setString(getString(StatusBtn_Error_STR));
         btn2.setSecondaryColor(Color(239, 127, 26));
     }
     else if (config.purificationStatus == OFF) // OFF
     {
-        label.setString("OFF");
+        label.setString(getString(OFF_STR));
         btn2.setSecondaryColor(Color(176, 54, 20));
     }
     else // ON
     {
-        label.setString("ON");
+        label.setString(getString(ON_STR));
         btn2.setSecondaryColor(Color(20, 150, 44));
     }
     my_lcd.draw(&btn2);

@@ -7,7 +7,7 @@
 //This function set and draw the title, set the font size and draws the buttons in all pages.
 void drawInterface()
 {
-    titleLabel.setString("Interface");
+    titleLabel.setString(getString(Interface_Title_STR));
     titleLabel.setFontSize(2);
     my_lcd.draw(&title);
     titleLabel.setFontSize(5);
@@ -16,11 +16,11 @@ void drawInterface()
     {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 1, 1, 1);
-            draw6ButtonsLayout(F("Language"), F("Screen Rotation"), F("Screen Calibration"), F("English"),F("Inverted Landscape"), F("Calibrate"), true, true, true, fontSizes);
+            draw6ButtonsLayout(getString(Interface_LanguageTitle_STR), getString(Interface_RotationTitle_STR),getString(Interface_CalibrationTitle_STR), F("English"),getString(Interface_RotationInvertedLandscape_STR), getString(Interface_CalibrationStart_STR), true, true, true, fontSizes); // TODO implement interface logic
             break;
         case 2:
             setFontSizeArray(fontSizes, 2, 2, 2, 2, 2, 2);
-            draw6ButtonsLayout(F("Refresh Period"), F("Reset"), "",(String) ((double) DATAREFRESHPERIOD/1000.0) + "s", "Perform Reset", "", true,true, false, fontSizes);
+            draw6ButtonsLayout(getString(Interface_RefreshInterval_STR), getString(Interface_ResetTitle_STR), "",(String) ((double) DATAREFRESHPERIOD/1000.0) + "s", getString(Interface_ResetStart_STR), "", true,true, false, fontSizes);
             break;
         default:debug(F("Page selected is out of bounds (page>2 || page<0)"));
     }
@@ -35,7 +35,7 @@ void clickInterface()
         switch (page)
         {
             case 2: // Refresh Period
-                double tempVal = getNumInput("Refresh Period", "s", (double)DATAREFRESHPERIOD/1000.0);
+                double tempVal = getNumInput(getString(Interface_RefreshInterval_STR), "s", (double)DATAREFRESHPERIOD/1000.0);
                 debug(tempVal);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {

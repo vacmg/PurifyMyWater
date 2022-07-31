@@ -7,7 +7,7 @@
 //This function set and draw the title, set the font size and draws the buttons in all pages.
 void drawTemperature()
 {
-    titleLabel.setString("Temperature");
+    titleLabel.setString(getString(Temp_Title_STR));
     titleLabel.setFontSize(2);
     my_lcd.draw(&title);
     titleLabel.setFontSize(5);
@@ -16,11 +16,11 @@ void drawTemperature()
     {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(F("Temp. Refresh Rate"), F("System Stop Temp."), F("PSU Fan Start Temp."),String(((double) config.TEMPCHECKTIME) / 1000.0) + "s",String((double) config.STOPWORKINGTEMP) + "C", String((double) config.STARTPSUTEMP) + "C",true, true, true, fontSizes);
+            draw6ButtonsLayout(getString(Temp_RefreshInterval_STR), getString(Temp_SystemStopTemp_STR), getString(Temp_PSUFanStartTemp_STR),String(((double) config.TEMPCHECKTIME) / 1000.0) + "s",String((double) config.STOPWORKINGTEMP) + "C", String((double) config.STARTPSUTEMP) + "C",true, true, true, fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(F("PSU Fan Stop Temp."), F("Case Fan Start Temp."), F("Case Fan Stop Temp."),String((double) config.STOPPSUTEMP) + "C", String((double) config.STARTCASETEMP) + "C",String((double) config.STOPCASETEMP) + "C", true, true, true, fontSizes);
+            draw6ButtonsLayout(getString(Temp_PSUFanStopTemp_STR), getString(Temp_CaseFanStartTemp_STR), getString(Temp_CaseFanStopTemp_STR),String((double) config.STOPPSUTEMP) + "C", String((double) config.STARTCASETEMP) + "C",String((double) config.STOPCASETEMP) + "C", true, true, true, fontSizes);
             break;
         default:debug(F("Page selected is out of bounds (page>2 || page<0)"));
     }
@@ -38,7 +38,7 @@ void clickTemperature()
         switch (page)
         {
             case 1: // Temp. Refresh Rate
-                tempVal = getNumInput("Temp. Refresh Rate", "s", (double)config.TEMPCHECKTIME/1000.0);
+                tempVal = getNumInput(getString(Temp_RefreshInterval_STR), "s", (double)config.TEMPCHECKTIME/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (tempVal > 0)
@@ -53,7 +53,7 @@ void clickTemperature()
                 break;
 
             case 2: //PSU Fan Stop Temp.
-                tempVal = getNumInput("PSU Fan Stop Temp.", "C", config.STOPPSUTEMP);
+                tempVal = getNumInput(getString(Temp_PSUFanStopTemp_STR), "C", config.STOPPSUTEMP);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (tempVal > 0 && tempVal < config.STARTPSUTEMP)
@@ -73,7 +73,7 @@ void clickTemperature()
         switch (page)
         {
             case 1: // System Stop Temp.
-                tempVal = getNumInput("Temp. Refresh Rate", "C", config.STOPWORKINGTEMP);
+                tempVal = getNumInput(getString(Temp_RefreshInterval_STR), "C", config.STOPWORKINGTEMP);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (tempVal > 0 && tempVal > config.STARTPSUTEMP && tempVal > config.STARTCASETEMP)
@@ -88,7 +88,7 @@ void clickTemperature()
                 break;
 
             case 2: // Case Fan Start Temp.
-                tempVal = getNumInput("Case Fan Start Temp.", "C", config.STARTCASETEMP);
+                tempVal = getNumInput(getString(Temp_CaseFanStartTemp_STR), "C", config.STARTCASETEMP);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (tempVal > 0 && tempVal > config.STOPCASETEMP && tempVal < config.STOPWORKINGTEMP)
@@ -108,7 +108,7 @@ void clickTemperature()
         switch (page)
         {
             case 1: // PSU Fan Start Temp.
-                tempVal = getNumInput("PSU Fan Start Temp.", "C", config.STARTPSUTEMP);
+                tempVal = getNumInput(getString(Temp_PSUFanStartTemp_STR), "C", config.STARTPSUTEMP);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (tempVal > 0 && tempVal > config.STOPPSUTEMP && tempVal < config.STOPWORKINGTEMP)
@@ -123,7 +123,7 @@ void clickTemperature()
                 break;
 
             case 2: //Case Fan Stop Temp.
-                tempVal = getNumInput("Case Fan Stop Temp.", "C", config.STOPCASETEMP);
+                tempVal = getNumInput(getString(Temp_CaseFanStopTemp_STR), "C", config.STOPCASETEMP);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (tempVal > 0 && tempVal < config.STARTCASETEMP)
