@@ -52,7 +52,8 @@
     };
 
 enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show splash screen
-byte ROTATION = 3; // Set rotation of the screen
+enum Rotation {LANDSCAPE = 1, INVERTED_LANDSCAPE = 3};
+enum Rotation ROTATION = LANDSCAPE; // Set rotation of the screen
 
 enum Languages {ENGLISH = 0, SPANISH = 1, FRENCH = 2};
 enum Languages LANGUAGE = ENGLISH;
@@ -68,6 +69,9 @@ TouchScreenObject ts(8,A3,A2,9,300,320,480,ROTATION,924,111,58,935); // rx is th
 #endif
 
 #if DEBUG
+
+#define changeScreenStatus(newStatus) debug(F("screenStatus changed from '"));debug(modeToString(screenStatus));debug(F("' to '"));debug(modeToString(newStatus));debug(F("'\n")); screenStatus = newStatus
+
 const char mode0[] PROGMEM = "BOOTING"; // in order (BOOTING = 0 ---> mode0 = "BOOTING" --> modeTable[0] = mode0)
 const char mode1[] PROGMEM = "LOADSTATUS";
 const char mode2[] PROGMEM = "STATUS";
@@ -95,12 +99,33 @@ const char mode23[] PROGMEM = "LOADPAGETEMPERATURE";
 const char mode24[] PROGMEM = "TEMPERATURE";
 
 const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24};
-char printModeBuff[20] = ""; // Max size of any modeX string
+
 char* modeToString(ScreenStatus status)
 {
-    strcpy_P(printModeBuff, (char *)pgm_read_word(&(modeTable[status])));
-    return printModeBuff;
+    strcpy_P(debugBuff, (char *)pgm_read_word(&(modeTable[status])));
+    return debugBuff;
 }
+
+const char rotationLandscape_STR[] PROGMEM = "Landscape";
+const char rotationInvertedLandscape_STR[] PROGMEM = "Inverted landscape";
+
+const char *const debugUITable[] PROGMEM = {rotationLandscape_STR, rotationInvertedLandscape_STR};
+
+char* rotationToString(enum Rotation rotation)
+{
+    strcpy_P(debugBuff, (char *)pgm_read_word(&(debugUITable[rotation==LANDSCAPE?0:1])));
+    return debugBuff;
+}
+
+#ifdef debugConfig()
+#undef debugConfig()
+// TODO change debug(LANGUAGE); to debug(getString(Lang_STR)); in the line below
+#define debugConfig() printConfiguration(); debug(F("Rotation: ")); debug(rotationToString(ROTATION)); debug(F("\nLanguage: ")); debug(LANGUAGE); debug(F("\nDATAREFRESHPERIOD: ")); debug(DATAREFRESHPERIOD); debug('\n')
+#endif
+#else
+
+#define changeScreenStatus(newStatus) screenStatus = newStatus
+
 #endif
 
 //Global Variables
@@ -131,12 +156,13 @@ RectangleButton btn11(250, 220, 440, 300, Color(0, 0, 0), Color(255, 255, 255), 
 
 // Frequently used ScreenObjects
 RectangleButton backBtn(20, 20, 60, 60, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
+
 Label titleLabel(0, 0, "", 5, Color(0), Color(255, 255, 255));
-Rectangle title(65, 5, 415, 75, Color(0xFFFF),/*Color(255,0,0),*/&titleLabel, true);
+Rectangle title(65, 5, 415, 75, Color(0xFFFF),&titleLabel, true);
 
 //Rectangle Button GetNumInput
 RectangleButton oKBtn(250, 270, 410, 310, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
-RectangleButton dotBtn(425, 95, 475, 145, Color(0, 0, 0), Color(255, 255, 255), &label, true, &ts);
+RectangleButton dotBtn(425, 95, 475, 145, Color(0, 0, 0), Color(255, 255, 255), &label, false, &ts);
 RectangleButton signBtn(5, 95, 55, 145, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
 //Global Variables End
 
@@ -145,8 +171,13 @@ bool sw = true; // todo delete this
 #include "Core/Core.h"
 #include "Screens/Screens.h"
 
-void UISetup() {
-    my_lcd.set_sd_cs(53);
+
+void UISetup()
+{
+    debug(F("Starting UI...\n"));
+    my_lcd.set_sd_cs(53); // Set SD pin
+
+    // Set touchScreen pins as input
     pinMode(13, INPUT);
     pinMode(12, INPUT);
     pinMode(11, INPUT);
@@ -157,6 +188,7 @@ void UISetup() {
 
     //my_lcd.Fill_Screen(0);
     my_lcd.Fill_Screen(Color(255, 255, 255).to565());
+    debug(F("UI Ready\n"));
 }
 
 
@@ -171,13 +203,13 @@ void UILoop()
             // Perform other boot stuff before this line
             sw = true; // todo delete this
             drawStatusBackground(true);
-            changeStatus(STATUS);
+            changeScreenStatus(STATUS);
             break;
 
         case LOADSTATUS:
             sw = true; // todo delete this
             drawStatusBackground();
-            changeStatus(STATUS);
+            changeScreenStatus(STATUS);
             break;
 
         case STATUS: // todo implement real logic with real values
@@ -195,14 +227,14 @@ void UILoop()
         case LOADMENU:
             drawBackground();
             drawMenu();
-            changeStatus(MENU);
+            changeScreenStatus(MENU);
             break;
 
         case MENU:
             if (backBtn.isPressed()) // Go to LOADSTATUS
             {
-                debug(F("Back button pressed"));
-                changeStatus(LOADSTATUS);
+                debug(F("Back button pressed\n"));
+                changeScreenStatus(LOADSTATUS);
             }
             else
             {
@@ -213,13 +245,14 @@ void UILoop()
         case LOADSETTINGS:
             drawBackground();
             drawSettings();
-            changeStatus(SETTINGS);
+            changeScreenStatus(SETTINGS);
             break;
 
         case SETTINGS:
             if (backBtn.isPressed()) // Go to LOADMENU
-            { debug(F("Back button pressed"));
-                changeStatus(LOADMENU);
+            {
+                debug(F("Back button pressed\n"));
+                changeScreenStatus(LOADMENU);
             }
             else
             {
@@ -231,28 +264,29 @@ void UILoop()
             page = 1;
             maxPage = 4;
             drawBackground();
-        case LOADPAGEELECTRICITY:debug(String(F("Loading page ")) + page + " / " + maxPage);
+        case LOADPAGEELECTRICITY:
+            debug(F("Loading page "));debug(page);debug(F(" / "));debug(maxPage);debug('\n');
             drawElectricity();
-            changeStatus(ELECTRICITY);
+            changeScreenStatus(ELECTRICITY);
             break;
 
         case ELECTRICITY:
             if (backBtn.isPressed()) // Go to LOADSETTINGS
             {
-                debug(F("Back button pressed"));
-                changeStatus(LOADSETTINGS);
+                debug(F("Back button pressed\n"));
+                changeScreenStatus(LOADSETTINGS);
             }
             else if (page > 1 && btn7.isPressed()) // Previous
             {
-                debug(F("Previous button pressed"));
+                debug(F("Previous button pressed\n"));
                 page--;
-                changeStatus(LOADPAGEELECTRICITY);
+                changeScreenStatus(LOADPAGEELECTRICITY);
             }
             else if (page < maxPage && btn8.isPressed()) // Next
             {
-                debug(F("Next button pressed"));
+                debug(F("Next button pressed\n"));
                 page++;
-                changeStatus(LOADPAGEELECTRICITY);
+                changeScreenStatus(LOADPAGEELECTRICITY);
             }
             else
                 clickElectricity();
@@ -265,30 +299,30 @@ void UILoop()
 
         case LOADPAGEINTERFACE:
             // in this case you draw the interface
-            debug(String(F("Loading page ")) + page + " / " + maxPage);
+            debug(F("Loading page "));debug(page);debug(F(" / "));debug(maxPage);debug('\n');
             drawInterface();
-            changeStatus(INTERFACE);
+            changeScreenStatus(INTERFACE);
             break;
 
         case INTERFACE:
             if (backBtn.isPressed())
             {
-                debug(F("Back button pressed"));
-                changeStatus(LOADSETTINGS);
+                debug(F("Back button pressed\n"));
+                changeScreenStatus(LOADSETTINGS);
                 // if back button is pressed you go to the previous page, so you start uploading the settings page
             }
             else if (page < maxPage && btn8.isPressed()) // Next page
             {
-                debug(F("Next page button pressed"));
+                debug(F("Next page button pressed\n"));
                 page++;
-                changeStatus(LOADPAGEINTERFACE);
+                changeScreenStatus(LOADPAGEINTERFACE);
                 // if you press this button, and it's not the last page, change to the next page and load the page by changing to LOADPAGEINTERFACE
             }
             else if (page != 1 && btn7.isPressed())
             {
-                debug(F("Previous page button pressed"));
+                debug(F("Previous page button pressed\n"));
                 page--;
-                changeStatus(LOADPAGEINTERFACE);
+                changeScreenStatus(LOADPAGEINTERFACE);
                 // if you press this button, and it's not the first page, change to the previous page and load the page by changing to LOADPAGEINTERFACE
             }
             else
@@ -300,29 +334,30 @@ void UILoop()
             page = 1;
             maxPage = 2;
             drawBackground();
-        case LOADPAGETEMPERATURE:debug(String(F("Loading page ")) + page + " / " + maxPage);
+        case LOADPAGETEMPERATURE:
+            debug(F("Loading page "));debug(page);debug(F(" / "));debug(maxPage);debug('\n');
             drawTemperature();
-            changeStatus(TEMPERATURE);
+            changeScreenStatus(TEMPERATURE);
             break;
 
         case TEMPERATURE:
             if (backBtn.isPressed())
             {
-                debug(F("Back button pressed"));
-                changeStatus(LOADSETTINGS);
+                debug(F("Back button pressed\n"));
+                changeScreenStatus(LOADSETTINGS);
                 // if back button is pressed you go to the previous page, so you start uploading the settings page
             }
             else if (page < maxPage && btn8.isPressed()) // Next page
             {
-                debug(F("Next page button pressed"));
+                debug(F("Next page button pressed\n"));
                 page++;
-                changeStatus(LOADPAGETEMPERATURE);
+                changeScreenStatus(LOADPAGETEMPERATURE);
             }
             else if (page > 1 && btn7.isPressed())
             {
-                debug(F("Previous page button pressed"));
+                debug(F("Previous page button pressed\n"));
                 page--;
-                changeStatus(LOADPAGETEMPERATURE);
+                changeScreenStatus(LOADPAGETEMPERATURE);
             }
             else
             {
@@ -334,27 +369,28 @@ void UILoop()
             page = 1;
             maxPage = 2;
             drawBackground();
-        case LOADPAGEWATER:debug(String(F("Loading page ")) + page + " / " + maxPage);
+        case LOADPAGEWATER:
+            debug(F("Loading page "));debug(page);debug(F(" / "));debug(maxPage);debug('\n');
             drawWater();
-            changeStatus(WATER);
+            changeScreenStatus(WATER);
             break;
         case WATER:
             if (backBtn.isPressed())    // Go to LOADSETTINGS
             {
-                debug(F("Back Page button pressed"));
-                changeStatus(LOADSETTINGS);
+                debug(F("Back Page button pressed\n"));
+                changeScreenStatus(LOADSETTINGS);
             }
             else if (page < maxPage && btn8.isPressed())   // Go to LOADPAGEWATER on next page
             {
-                debug(F("Next page button pressed"));
+                debug(F("Next page button pressed\n"));
                 page++;
-                changeStatus(LOADPAGEWATER);
+                changeScreenStatus(LOADPAGEWATER);
             }
             else if (page > 1 && btn7.isPressed())    // Go to LOADPAGEWATER on previous page
             {
-                debug(F("Previous page button pressed"));
+                debug(F("Previous page button pressed\n"));
                 page--;
-                changeStatus(LOADPAGEWATER);
+                changeScreenStatus(LOADPAGEWATER);
             }
             else
                 clickWater();
@@ -364,13 +400,13 @@ void UILoop()
             drawBackground();
             page = 0;
             drawExtraFunctions();
-            changeStatus(EXTRAFUNCTIONS);
+            changeScreenStatus(EXTRAFUNCTIONS);
             break;
         case EXTRAFUNCTIONS:
             if (backBtn.isPressed())
             {
-                debug(F("Back Page button pressed"));
-                changeStatus(LOADMENU);
+                debug(F("Back Page button pressed\n"));
+                changeScreenStatus(LOADMENU);
             }
             else
             {

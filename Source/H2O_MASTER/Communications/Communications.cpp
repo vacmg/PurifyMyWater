@@ -98,7 +98,7 @@ bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
     byte payloadLength = strlen(payload);
     if(payloadLength>MAXPAYLOADSIZE)
     {
-        debug(Message(F("Payload exceeded maximum message size: ")+payloadLength+F(" > ")+MAXPAYLOADSIZE));
+        debug(F("Payload exceeded maximum message size: "));debug(payloadLength);debug(F(" > "));debug(MAXPAYLOADSIZE);debug('\n');
         return false;
     }
     char message[MAXMSGSIZE];

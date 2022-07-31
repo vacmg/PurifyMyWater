@@ -33,7 +33,7 @@ void setup()
 #if DEBUG
     Serial.begin(115200);
     delay(200);
-    Serial.println(F("Connected"));
+    debug(F("Connected\n"));
     delay(50);
 #endif
 
@@ -41,6 +41,7 @@ void setup()
 
     UISetup();
 
+    debug('\n');
     //todo Test code after this line
 
 
@@ -49,10 +50,8 @@ void setup()
 
     //todo Test code before this line
 
-#if DEBUG
-    Serial.println(F("\nSetup Done\n"));
+    debug(F("\nSetup Done\n\n"));
     delay(50);
-#endif
 }
 
 void loop()

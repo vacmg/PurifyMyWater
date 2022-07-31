@@ -16,31 +16,31 @@ void clickWater()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput(getString(Water_WellPumpMaxTimeON_STR), "s", (double)config.WELLPUMPTIMEOUT/1000.0);
+                tempVal = getNumInput(getString(Water_WellPumpMaxTimeON_STR), F("s"), (double)config.WELLPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (0 < config.WELLPUMPTIMEOUT)// 0 < WELLPUMPTIMEOUT
                     {
-                        debug(String(F("WELLPUMPTIMEOUT UPDATED: ")) + config.WELLPUMPTIMEOUT + String(F(" --> ")) +tempVal);
+                        debug(F("WELLPUMPTIMEOUT UPDATED: "));debug(config.WELLPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
                         config.WELLPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEWATER); // reload page with new config value
+                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
             case 2:
-                tempVal = getNumInput(getString(Water_FilterMaxTimeON_STR), "s", (double)config.FILTERTIMEOUT/1000.0);
+                tempVal = getNumInput(getString(Water_FilterMaxTimeON_STR), F("s"), (double)config.FILTERTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (0 < config.FILTERTIMEOUT)// 0 < FILTERTIMEOUT
                     {
-                        debug(String(F("FILTERTIMEOUT UPDATED: ")) + config.FILTERTIMEOUT + String(F(" --> ")) + tempVal);
+                        debug(F("FILTERTIMEOUT UPDATED: "));debug(config.FILTERTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
                         config.FILTERTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEWATER); // reload page with new config value
+                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
@@ -50,33 +50,33 @@ void clickWater()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput(getString(Water_UVPumpMaxTimeON_STR), "s", (double)config.UVPUMPTIMEOUT/1000.0);
+                tempVal = getNumInput(getString(Water_UVPumpMaxTimeON_STR), F("s"), (double)config.UVPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (0 < config.UVPUMPTIMEOUT)// 0 < UVPUMPTIMEOUT
                     {
-                        debug(String(F("UVPUMPTIMEOUT UPDATED: ")) + config.UVPUMPTIMEOUT + String(F(" --> ")) + tempVal);
+                        debug(F("UVPUMPTIMEOUT UPDATED: "));debug(config.UVPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
                         config.UVPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEWATER); // reload page with new config value
+                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 2:
-                tempVal = getNumInput(getString(Water_UVPumpFlow_STR), "L/H", config.UVPUMPFLOW);
+                tempVal = getNumInput(getString(Water_UVPumpFlow_STR), F("L/H"), config.UVPUMPFLOW);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if(tempVal>=0) // 0 < UVPUMPFLOW
                     {
-                        debug(String(F("UVPUMPFLOW UPDATED: ")) + config.UVPUMPFLOW + String(F(" --> ")) + tempVal);
+                        debug(F("UVPUMPFLOW UPDATED: "));debug(config.UVPUMPFLOW);debug(F(" --> "));debug(tempVal);debug('\n');
                         config.UVPUMPFLOW = (float) tempVal;
                         // TODO send new setting
                     }
 
                 }
-                changeStatus(LOADPAGEWATER); // reload page with new config value
+                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
@@ -86,17 +86,17 @@ void clickWater()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput(getString(Water_EndPumpMaxTimeON_STR), "s", (double)config.ENDPUMPTIMEOUT/1000.0);
+                tempVal = getNumInput(getString(Water_EndPumpMaxTimeON_STR), F("s"), (double)config.ENDPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (0 < config.ENDPUMPTIMEOUT)// 0 < ENDPUMPTIMEOUT
                     {
-                        debug(String(F("ENDPUMPTIMEOUT UPDATED: ")) + config.ENDPUMPTIMEOUT + String(F(" --> ")) + tempVal);
+                        debug(F("ENDPUMPTIMEOUT UPDATED: "));debug(config.ENDPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
                         config.ENDPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEWATER); // reload page with new config value
+                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }

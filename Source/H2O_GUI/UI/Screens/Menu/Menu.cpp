@@ -23,22 +23,22 @@ void clickMenu()
 {
     if (btn1.isPressed()) //Settings
     {
-        debug(F("Settings button pressed"));
-        changeStatus(LOADSETTINGS);
+        debug(F("Settings button pressed\n"));
+        changeScreenStatus(LOADSETTINGS);
     }
     else if (btn2.isPressed()) //Help
     {
-        debug(F("Help button pressed"));
-        changeStatus(LOADHELP);
+        debug(F("Help button pressed\n"));
+        changeScreenStatus(LOADHELP);
     }
     else if (btn3.isPressed()) //Engineering Mode
     {
-        debug(F("Engineering mode button pressed"));
-        changeStatus(LOADENGINEERINGMODE);
+        debug(F("Engineering mode button pressed\n"));
+        changeScreenStatus(LOADENGINEERINGMODE);
     }
     else if (btn4.isPressed()) //Extra Functions
     {
-        debug(F("Extra functions button pressed"));
-        changeStatus(LOADEXTRAFUNCTIONS);
+        debug(F("Extra functions button pressed\n"));
+        changeScreenStatus(LOADEXTRAFUNCTIONS);
     }
 }

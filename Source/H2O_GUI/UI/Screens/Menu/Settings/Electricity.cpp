@@ -16,56 +16,56 @@ void clickElectricity()
         switch (page)
         {
             case 1: // Start charging voltage
-                tempVal = getNumInput(getString(Electricity_StartChargingVoltage_STR), "V", config.STARTCHARGINGVOLTAGE);
+                tempVal = getNumInput(getString(Electricity_StartChargingVoltage_STR), F("V"), config.STARTCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (config.STOPWORKINGVOLTAGE < tempVal && tempVal < config.STOPCHARGINGVOLTAGE)
                     {
-                        debug(String(F("STARTCHARGINGVOLTAGE UPDATED: ")) + config.STARTCHARGINGVOLTAGE + String(F(" --> ")) + tempVal);
-                        config.STARTCHARGINGVOLTAGE = tempVal;
+                        debug(F("STARTCHARGINGVOLTAGE UPDATED: "));debug(config.STARTCHARGINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                        config.STARTCHARGINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 2: //page 2
-                tempVal = getNumInput(getString(Electricity_StartWorkingVoltage_STR), "V", config.STARTWORKINGVOLTAGE);
+                tempVal = getNumInput(getString(Electricity_StartWorkingVoltage_STR), F("V"), config.STARTWORKINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (config.STARTCHARGINGVOLTAGE < tempVal && tempVal < config.STOPCHARGINGVOLTAGE)// STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
                     {
-                        debug(String(F("STARTCHARGINGVOLTAGE UPDATED: ")) + config.STARTWORKINGVOLTAGE + String(F(" --> ")) +tempVal);
-                        config.STARTWORKINGVOLTAGE = tempVal;
+                        debug(F("STARTWORKINGVOLTAGE UPDATED: "));debug(config.STARTWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                        config.STARTWORKINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 3:
-                tempVal = getNumInput(getString(Electricity_ACAmmeterSensitivity_STR), "", config.ACAMPSENSITIVITY,4);
+                tempVal = getNumInput(getString(Electricity_ACAmmeterSensitivity_STR), F(""), config.ACAMPSENSITIVITY,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(String(F("ACAMPSENSITIVITY UPDATED: ")) + config.ACAMPSENSITIVITY + String(F(" --> ")) + tempVal);
-                    config.ACAMPSENSITIVITY = tempVal;
+                    debug(F("ACAMPSENSITIVITY UPDATED: "));debug(config.ACAMPSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
+                    config.ACAMMSENSITIVITY = tempVal;
                     // TODO send new setting
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 4:
-                tempVal = getNumInput(getString(Electricity_DCAmmeterZero_STR), "", config.DCAMPZERO,4);
+                tempVal = getNumInput(getString(Electricity_DCAmmeterZero_STR), F(""), config.DCAMPZERO,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(String(F(" UPDATED: DCAMPZERO")) + config.DCAMPZERO + String(F(" --> ")) + tempVal);
-                    config.DCAMPZERO = tempVal;
+                    debug(F(" UPDATED: DCAMPZERO"));debug(config.DCAMPZERO);debug(F(" --> "));debug(tempVal);debug('\n');
+                    config.DCAMMZERO = tempVal;
                     // TODO send new setting
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
@@ -76,44 +76,44 @@ void clickElectricity()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput(getString(Electricity_StopChargingVoltage_STR), "V", config.STOPCHARGINGVOLTAGE);
+                tempVal = getNumInput(getString(Electricity_StopChargingVoltage_STR), F("V"), config.STOPCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (config.STARTCHARGINGVOLTAGE + 1 < tempVal && tempVal <MAXCAPACITORSALLOWEDVOLTAGE)// STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE
                     {
-                        debug(String(F("STOPCHARGINGVOLTAGE UPDATED: ")) + config.STOPCHARGINGVOLTAGE + String(F(" --> ")) +tempVal);
+                        debug(F("STOPCHARGINGVOLTAGE UPDATED: "));debug(config.STOPCHARGINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
                         config.STOPCHARGINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 2:
-                tempVal = getNumInput(getString(Electricity_StopWorkingVoltage_STR), "V", config.STOPWORKINGVOLTAGE);
+                tempVal = getNumInput(getString(Electricity_StopWorkingVoltage_STR), F("V"), config.STOPWORKINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (MINSYSTEMALLOWEDVOLTAGE < tempVal && tempVal < config.STARTCHARGINGVOLTAGE - 1)// MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1
-                    { debug(String(F("STOPWORKINGVOLTAGE UPDATED: ")) + config.STOPWORKINGVOLTAGE + String(F(" --> ")) +
-                            tempVal);
+                    {
+                        debug(F("STOPWORKINGVOLTAGE UPDATED: "));debug(config.STOPWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
                         config.STOPWORKINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 3:
-                tempVal = getNumInput(getString(Electricity_ACAmmeterZero_STR), "", config.ACAMPZERO,4);
+                tempVal = getNumInput(getString(Electricity_ACAmmeterZero_STR), F(""), config.ACAMPZERO,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(String(F("ACAMPZERO UPDATED: ")) + config.ACAMPZERO + String(F(" --> ")) + tempVal);
-                    config.ACAMPZERO = tempVal;
+                    debug(F("ACAMPZERO UPDATED: "));debug(config.ACAMPZERO);debug(F(" --> "));debug(tempVal);debug('\n');
+                    config.ACAMMZERO = tempVal;
                     // TODO send new setting
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
@@ -123,42 +123,44 @@ void clickElectricity()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput(getString(Electricity_UVCurrent_STR), "A", config.ESTIMATEDUVAMPERAGE);
+                tempVal = getNumInput(getString(Electricity_UVCurrent_STR), F("A"), config.ESTIMATEDUVAMPERAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (0 < tempVal && tempVal < MAXUVAMPERAGE)//0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE
-                    { debug(String(F("ESTIMATEDUVAMPERAGE UPDATED: ")) + config.ESTIMATEDUVAMPERAGE + String(F(" --> ")) +
-                            tempVal);
+                    {
+                        debug(F("ESTIMATEDUVAMPERAGE UPDATED: "));debug(config.ESTIMATEDUVAMPERAGE);debug(F(" --> "));debug(tempVal);debug('\n');
                         config.ESTIMATEDUVAMPERAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 2:
-                tempVal = getNumInput(getString(Electricity_ACInverterFrequency_STR), "Hz", config.ACFREQUENCY);
+                tempVal = getNumInput(getString(Electricity_ACInverterFrequency_STR), F("Hz"), config.ACFREQUENCY);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (50 < tempVal && tempVal < 60) // 50 <= ACFREQUENCY <= 60
-                    { debug(String(F("ACFREQUENCY UPDATED: ")) + config.ACFREQUENCY + String(F(" --> ")) + tempVal);
+                    if (50 < tempVal && tempVal < 60)// 50 <= ACFREQUENCY <= 60
+                    {
+                        debug(F("ACFREQUENCY UPDATED: "));debug(config.ACFREQUENCY);debug(F(" --> "));debug(tempVal);debug('\n');
                         config.ACFREQUENCY = (byte)tempVal;
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 3:
-                tempVal = getNumInput(getString(Electricity_DCAmmeterSensitivity_STR), "", config.DCAMPSENSITIVITY,4);
+                tempVal = getNumInput(getString(Electricity_DCAmmeterSensitivity_STR), F(""), config.DCAMPSENSITIVITY,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
-                { debug(String(F("DCAMPSENSITIVITY UPDATED: ")) + config.DCAMPSENSITIVITY + String(F(" --> ")) + tempVal);
-                    config.DCAMPSENSITIVITY = tempVal;
+                {
+                    debug(F("DCAMPSENSITIVITY UPDATED: "));debug(config.DCAMPSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
+                    config.DCAMMSENSITIVITY = tempVal;
                     // TODO send new setting
                 }
-                changeStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
@@ -192,6 +194,6 @@ void drawElectricity() // TODO get settings real value
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 1, 1);
             draw6ButtonsLayout(getString(Electricity_DCAmmeterZero_STR), "", "", String(config.DCAMPZERO, 4), "", "", true, false, false,fontSizes);
             break;
-        default:debug(F("Page selected is out of bounds (page>4 || page<0)"));
+        default: debug(F("Page selected is out of bounds (page>4 || page<0)"));
     }
 }

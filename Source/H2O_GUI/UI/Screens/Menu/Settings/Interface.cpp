@@ -35,18 +35,18 @@ void clickInterface()
         switch (page)
         {
             case 2: // Refresh Period
-                double tempVal = getNumInput(getString(Interface_RefreshInterval_STR), "s", (double)DATAREFRESHPERIOD/1000.0);
+                double tempVal = getNumInput(getString(Interface_RefreshInterval_STR), F("s"), (double)DATAREFRESHPERIOD/1000.0);
                 debug(tempVal);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (tempVal > 0)
                     {
-                        debug(String(F("DATAREFRESHPERIOD UPDATED: ")) + DATAREFRESHPERIOD + String(F(" --> ")) +tempVal);
+                        debug(F("DATAREFRESHPERIOD UPDATED: "));debug(DATAREFRESHPERIOD);debug(F(" --> "));debug(tempVal);debug('\n');
                         DATAREFRESHPERIOD = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
                 }
-                changeStatus(LOADPAGEINTERFACE); // reload page with new config value
+                changeScreenStatus(LOADPAGEINTERFACE); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }

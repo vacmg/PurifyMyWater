@@ -260,7 +260,7 @@ void drawStatusBackground()
 // Draw voltage & amount of purified water
 void drawStatusForeground(const char *voltage, const char *waterAmount)//TODO add water levels & other indicators
 {
-    debug("Voltage: " + String(voltage) + "\tWater amount: " + waterAmount);
+    debug("Voltage: ");debug(voltage);debug("\tWater amount: ");debug(waterAmount);debug('\n');
 
     label.setString(voltage);
     rectangle.setCoords(20, 115);
@@ -652,24 +652,25 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
 
 void clickStatus()
 {
-    if (btn1.isPressed()) { debug(F("Button MENU pressed"));
-        changeStatus(LOADMENU);
+    if (btn1.isPressed()) {
+        debug(F("Button MENU pressed\n"));
+        changeScreenStatus(LOADMENU);
     }
     else if (btn2.isPressed())
     {
         if (currentError != NoError)
         {
-            debug(F("Button FAILURE pressed")); // TODO Draw ERROR message
+            debug(F("Button FAILURE pressed\n")); // TODO Draw ERROR message
         }
         else if (config.purificationStatus == ON)
         {
-            debug(F("Button OFF pressed"));
+            debug(F("Button OFF pressed\n"));
             config.purificationStatus = OFF; // TODO send off command
             drawStatusForeground("15.4V", "320L");
         }
         else if (config.purificationStatus == OFF)
         {
-            debug(F("Button ON pressed"));
+            debug(F("Button ON pressed\n"));
             config.purificationStatus = ON; // TODO send on command
             drawStatusForeground("15.4V", "320L");
         }
