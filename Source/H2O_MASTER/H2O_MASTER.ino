@@ -631,8 +631,8 @@ void setup()
     debug(F("Setup - Booting...\n"));
 #endif
 
-#if !USEVOLATILECONFIG
-    debug(F("Using volatile settings (DEBUG MODE)"));
+#if USEVOLATILECONFIG
+    debug(F("Using volatile settings (DEBUG MODE)\n"));
 #endif
 
 #if SETDEFAULTCONFIG

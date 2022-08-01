@@ -15,7 +15,8 @@ enum StringIDs{Lang_STR = 0, ON_STR, OFF_STR, Previous_STR, Next_STR, Delete_STR
     Water_Title_STR, Water_WellPumpMaxTimeON_STR, Water_UVPumpMaxTimeON_STR, Water_EndPumpMaxTimeON_STR, Water_FilterMaxTimeON_STR, Water_UVPumpFlow_STR, // Water
     Temp_Title_STR, Temp_RefreshInterval_STR, Temp_SystemStopTemp_STR, Temp_PSUFanStartTemp_STR, Temp_PSUFanStopTemp_STR, Temp_CaseFanStartTemp_STR, Temp_CaseFanStopTemp_STR, // Temperature
     Interface_Title_STR, Interface_RefreshInterval_STR, Interface_LanguageTitle_STR, Interface_RotationTitle_STR, Interface_RotationLandscape_STR, Interface_RotationInvertedLandscape_STR, Interface_CalibrationTitle_STR, Interface_CalibrationStart_STR, Interface_ResetTitle_STR, Interface_ResetStart_STR, // Interface
-    Electricity_Title_STR, Electricity_UVCurrent_STR, Electricity_StartChargingVoltage_STR, Electricity_StopChargingVoltage_STR, Electricity_StartWorkingVoltage_STR, Electricity_StopWorkingVoltage_STR, Electricity_ACInverterFrequency_STR, Electricity_ACAmmeterSensitivity_STR, Electricity_ACAmmeterZero_STR, Electricity_DCAmmeterSensitivity_STR, Electricity_DCAmmeterZero_STR // Electricity
+    Electricity_Title_STR, Electricity_UVCurrent_STR, Electricity_StartChargingVoltage_STR, Electricity_StopChargingVoltage_STR, Electricity_StartWorkingVoltage_STR, Electricity_StopWorkingVoltage_STR, Electricity_ACInverterFrequency_STR, Electricity_ACAmmeterSensitivity_STR, Electricity_ACAmmeterZero_STR, Electricity_DCAmmeterSensitivity_STR, Electricity_DCAmmeterZero_STR, // Electricity
+    Language_Title_STR // Language
 };
 
 #include "EN_Lang.h"
@@ -28,6 +29,9 @@ char languageBuff[50] = ""; // Max size of any language string
 
 // Returns the string identified by the id in the language selected by enum Languages LANGUAGE variable
 char* getString(enum StringIDs stringId);
+
+// Returns the string identified by the id in the language selected by the specified language
+char* getString(enum StringIDs stringId, Languages language);
 
 #include "Languages.cpp"
 

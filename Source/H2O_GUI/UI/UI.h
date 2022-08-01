@@ -40,6 +40,9 @@
         LOADINTERFACE,
         LOADPAGEINTERFACE,
         INTERFACE,
+        LOADLANGUAGE,
+        LOADPAGELANGUAGE,
+        LANGUAGE,
         LOADWATER,
         LOADPAGEWATER,
         WATER,
@@ -82,14 +85,17 @@ const char mode15[] PROGMEM = "ELECTRICITY";
 const char mode16[] PROGMEM = "LOADINTERFACE";
 const char mode17[] PROGMEM = "LOADPAGEINTERFACE";
 const char mode18[] PROGMEM = "INTERFACE";
-const char mode19[] PROGMEM = "LOADWATER";
-const char mode20[] PROGMEM = "LOADPAGEWATER";
-const char mode21[] PROGMEM = "WATER";
-const char mode22[] PROGMEM = "LOADTEMPERATURE";
-const char mode23[] PROGMEM = "LOADPAGETEMPERATURE";
-const char mode24[] PROGMEM = "TEMPERATURE";
+const char mode19[] PROGMEM = "LOADLANGUAGE";
+const char mode20[] PROGMEM = "LOADPAGELANGUAGE";
+const char mode21[] PROGMEM = "LANGUAGE";
+const char mode22[] PROGMEM = "LOADWATER";
+const char mode23[] PROGMEM = "LOADPAGEWATER";
+const char mode24[] PROGMEM = "WATER";
+const char mode25[] PROGMEM = "LOADTEMPERATURE";
+const char mode26[] PROGMEM = "LOADPAGETEMPERATURE";
+const char mode27[] PROGMEM = "TEMPERATURE";
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27};
 
 char* modeToString(ScreenStatus status)
 {
@@ -172,8 +178,8 @@ void UISetup()
     pinMode(11, INPUT);
     pinMode(10, INPUT);
 
-#if !USEVOLATILECONFIG
-    debug(F("Using volatile UI settings (DEBUG MODE)"));
+#if USEVOLATILECONFIG
+    debug(F("Using volatile UI settings (DEBUG MODE)\n"));
 #endif
 
 #if SETDEFAULTSCREENCONFIG
@@ -191,6 +197,8 @@ void UISetup()
     else
         debug(F("UI configuration successfully load\n"));
 #endif
+
+    debug(F("Using language: ")); debug(getString(Lang_STR));debug('\n');
 
 
     my_lcd.Init_LCD();
@@ -337,6 +345,44 @@ void UILoop()
             }
             else
                 clickInterface();
+            // if you click in one of the buttons of the page, you go to this function
+            break;
+
+        case LOADLANGUAGE:
+            page = 1;
+            maxPage = 1;
+            drawBackground();
+
+        case LOADPAGELANGUAGE:
+            // in this case you draw the interface
+            debug(F("Loading page "));debug(page);debug(F(" / "));debug(maxPage);debug('\n');
+            drawLanguage();
+            changeScreenStatus(LANGUAGE);
+            break;
+
+        case LANGUAGE:
+            if (backBtn.isPressed())
+            {
+                debug(F("Back button pressed\n"));
+                changeScreenStatus(LOADINTERFACE);
+                // if back button is pressed you go to the previous page, so you start uploading the settings page
+            }
+            else if (page < maxPage && btn8.isPressed()) // Next page
+            {
+                debug(F("Next page button pressed\n"));
+                page++;
+                changeScreenStatus(LOADPAGELANGUAGE);
+                // if you press this button, and it's not the last page, change to the next page and load the page by changing to LOADPAGEINTERFACE
+            }
+            else if (page != 1 && btn7.isPressed())
+            {
+                debug(F("Previous page button pressed\n"));
+                page--;
+                changeScreenStatus(LOADPAGELANGUAGE);
+                // if you press this button, and it's not the first page, change to the previous page and load the page by changing to LOADPAGEINTERFACE
+            }
+            else
+                clickLanguage();
             // if you click in one of the buttons of the page, you go to this function
             break;
 

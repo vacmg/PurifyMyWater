@@ -16,10 +16,10 @@ void drawInterface()
     {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 1, 1, 1);
-            draw6ButtonsLayout(getString(Interface_LanguageTitle_STR), getString(Interface_RotationTitle_STR),getString(Interface_CalibrationTitle_STR), F("English"),getString(screenConfig.ROTATION==LANDSCAPE?Interface_RotationLandscape_STR:Interface_RotationInvertedLandscape_STR), getString(Interface_CalibrationStart_STR), true, true, true, fontSizes); // TODO implement interface logic
+            draw6ButtonsLayout(getString(Interface_LanguageTitle_STR), getString(Interface_RotationTitle_STR),getString(Interface_CalibrationTitle_STR),getString(Lang_STR),getString(screenConfig.ROTATION==LANDSCAPE?Interface_RotationLandscape_STR:Interface_RotationInvertedLandscape_STR), getString(Interface_CalibrationStart_STR), true, true, true, fontSizes); // TODO implement interface logic
             break;
         case 2:
-            setFontSizeArray(fontSizes, 2, 2, 2, 2, 2, 2);
+            setFontSizeArray(fontSizes, 1, 2, 2, 2, 2, 2);
             draw6ButtonsLayout(getString(Interface_RefreshInterval_STR), getString(Interface_ResetTitle_STR), "",(String) ((double) screenConfig.DATAREFRESHPERIOD/1000.0) + "s", getString(Interface_ResetStart_STR), "", true,true, false, fontSizes);
             break;
         default:debug(F("Page selected is out of bounds (page>2 || page<0)"));
@@ -34,7 +34,8 @@ void clickInterface()
     {
         switch (page)
         {
-            case 1: // Language // TODO language screen
+            case 1: // Language
+            changeScreenStatus(LOADLANGUAGE);
                 break;
             case 2: // Refresh Period
                 double tempVal = getNumInput(getString(Interface_RefreshInterval_STR), F("s"), (double)screenConfig.DATAREFRESHPERIOD/1000.0);

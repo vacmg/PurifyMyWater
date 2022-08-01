@@ -10,7 +10,7 @@
 // TODO translate to French
 
 // Utils
-const char FR_LANG_STR[] PROGMEM = "English";
+const char FR_LANG_STR[] PROGMEM = "Francais";
 const char FR_ON_STR[] PROGMEM = "ON";
 const char FR_OFF_STR[] PROGMEM = "OFF";
 const char FR_Previous_STR[] PROGMEM = "Previous";
@@ -86,6 +86,10 @@ const char FR_Electricity_ACAmmeterZero_STR[] PROGMEM = "AC Ammeter Zero";
 const char FR_Electricity_DCAmmeterSensitivity_STR[] PROGMEM = "DC Ammeter Sensitivity";
 const char FR_Electricity_DCAmmeterZero_STR[] PROGMEM = "DC Ammeter Zero";
 
+// Language
+const char FR_Language_Title_STR[] PROGMEM = "Select a language";
+
+
 
 const char *const langFR[] PROGMEM = {FR_LANG_STR,FR_ON_STR, FR_OFF_STR, FR_Previous_STR, FR_Next_STR, FR_Delete_STR,FR_OK_STR, // Utils
                                       FR_Status_Title_STR, FR_StatusBtn_Error_STR, FR_MenuBtn_STR, // Status
@@ -95,7 +99,8 @@ const char *const langFR[] PROGMEM = {FR_LANG_STR,FR_ON_STR, FR_OFF_STR, FR_Prev
                                       FR_Water_Title_STR, FR_Water_WellPumpMaxTimeON_STR, FR_Water_UVPumpMaxTimeON_STR, FR_Water_EndPumpMaxTimeON_STR, FR_Water_FilterMaxTimeON_STR, FR_Water_UVPumpFlow_STR, // Water
                                       FR_Temp_Title_STR, FR_Temp_RefreshInterval_STR, FR_Temp_SystemStopTemp_STR, FR_Temp_PSUFanStartTemp_STR, FR_Temp_PSUFanStopTemp_STR, FR_Temp_CaseFanStartTemp_STR, FR_Temp_CaseFanStopTemp_STR, // Temperature
                                       FR_Interface_Title_STR, FR_Interface_RefreshInterval_STR, FR_Interface_LanguageTitle_STR, FR_Interface_RotationTitle_STR, FR_Interface_RotationLandscape_STR, FR_Interface_RotationInvertedLandscape_STR, FR_Interface_CalibrationTitle_STR, FR_Interface_CalibrationStart_STR, FR_Interface_ResetTitle_STR, FR_Interface_ResetStart_STR, // Interface
-                                      FR_Electricity_Title_STR, FR_Electricity_UVCurrent_STR, FR_Electricity_StartChargingVoltage_STR, FR_Electricity_StopChargingVoltage_STR, FR_Electricity_StartWorkingVoltage_STR, FR_Electricity_StopWorkingVoltage_STR, FR_Electricity_ACInverterFrequency_STR, FR_Electricity_ACAmmeterSensitivity_STR, FR_Electricity_ACAmmeterZero_STR, FR_Electricity_DCAmmeterSensitivity_STR, FR_Electricity_DCAmmeterZero_STR // Electricity
+                                      FR_Electricity_Title_STR, FR_Electricity_UVCurrent_STR, FR_Electricity_StartChargingVoltage_STR, FR_Electricity_StopChargingVoltage_STR, FR_Electricity_StartWorkingVoltage_STR, FR_Electricity_StopWorkingVoltage_STR, FR_Electricity_ACInverterFrequency_STR, FR_Electricity_ACAmmeterSensitivity_STR, FR_Electricity_ACAmmeterZero_STR, FR_Electricity_DCAmmeterSensitivity_STR, FR_Electricity_DCAmmeterZero_STR, // Electricity
+                                      FR_Language_Title_STR // Language
 
 }; // Follow the same order as enum StringIDs (Languages.h)
 

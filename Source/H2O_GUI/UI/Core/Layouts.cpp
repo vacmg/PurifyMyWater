@@ -180,8 +180,8 @@ void draw6ButtonsLayout(const String& topLeftBtn1, const String& centerLeftBtn2,
             btn7.enableAutoSize(false);
             label.setFontSize(3);
             label.setString(getString(Previous_STR));
-            btn7.setCoords(35,278);
-            btn7.setCoords1(190,308);
+            btn7.setCoords(25,278);
+            btn7.setCoords1(200,308);
             my_lcd.draw(&btn7);
             btn7.enableAutoSize(true);
         }
@@ -190,8 +190,8 @@ void draw6ButtonsLayout(const String& topLeftBtn1, const String& centerLeftBtn2,
             btn8.enableAutoSize(false);
             label.setFontSize(3);
             label.setString(getString(Next_STR));
-            btn8.setCoords(290,278);
-            btn8.setCoords1(440,308);
+            btn8.setCoords(280,278); // (290,278);
+            btn8.setCoords1(450,308); // (440,308);
             my_lcd.draw(&btn8);
             btn8.enableAutoSize(true);
         }
