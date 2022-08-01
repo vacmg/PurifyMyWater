@@ -7,6 +7,6 @@
 // Returns the string identified by the id in the language selected by enum Languages LANGUAGE variable
 char* getString(enum StringIDs stringId)
 {
-        return strcpy_P(languageBuff, (const char*) pgm_read_word( &((const uint16_t*) pgm_read_word(&langs[LANGUAGE])) [stringId] )); // Internal pgm_read_word gets the array (16 but address) which holds the strings in the specified language & external pgm_read_word gets the desired string from the current language array
+        return strcpy_P(languageBuff, (const char*) pgm_read_word( &((const uint16_t*) pgm_read_word(&langs[screenConfig.LANGUAGE])) [stringId] )); // Internal pgm_read_word gets the array (16 but address) which holds the strings in the specified language & external pgm_read_word gets the desired string from the current language array
 }
 

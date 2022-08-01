@@ -2,20 +2,17 @@
 // Created by Víctor on 16/06/2022.
 //
 
+#ifndef H2O_GUI_UI_H
+#define H2O_GUI_UI_H
+
 #include <Arduino.h>
 #include <LCDWIKI_KBV.h>
 #include <LCDWIKI_GUI.h>
 #include <TouchScreen.h>
 #include <SimpleLCDTouchScreen.h>
 
-#ifndef H2O_GUI_UI_H
-#define H2O_GUI_UI_H
-
-#ifndef H2O_GUI // H2O_GUI ID for shared files // todo check if it is necessary
-    #define H2O_GUI true
-#endif
-
 #include "../Shared/SharedData.h"
+#include "Settings/ScreenSettings.h"
 
 #define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
@@ -50,22 +47,16 @@
         LOADPAGETEMPERATURE,
         TEMPERATURE
     };
+enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show the splash screen
 
-enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show splash screen
-enum Rotation {LANDSCAPE = 1, INVERTED_LANDSCAPE = 3};
-enum Rotation ROTATION = LANDSCAPE; // Set rotation of the screen
 
-enum Languages {ENGLISH = 0, SPANISH = 1, FRENCH = 2};
-enum Languages LANGUAGE = ENGLISH;
 #include "Languages/Languages.h"
 
-unsigned long DATAREFRESHPERIOD = 5000; // Stored in ms, input in s (1s = 1000ms) // 0 < DATAREFRESHPERIOD
-
 #if SCREENHW == 35
-TouchScreenObject ts(9, A2, A3, 8, 300, 320, 480, (ROTATION + SCREEN35ROTATIONOFFSET) % 4, 177, 900, 157,
+TouchScreenObject ts(9, A2, A3, 8, 300, 320, 480, (screenConfig.ROTATION + SCREEN35ROTATIONOFFSET) % 4, 177, 900, 157,
                      958); // for 3.5inch
 #elif SCREENHW == 39
-TouchScreenObject ts(8,A3,A2,9,300,320,480,ROTATION,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
+TouchScreenObject ts(8,A3,A2,9,300,320,480,screenConfig.ROTATION,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
 #endif
 
 #if DEBUG
@@ -119,8 +110,7 @@ char* rotationToString(enum Rotation rotation)
 
 #ifdef debugConfig()
 #undef debugConfig()
-// TODO change debug(LANGUAGE); to debug(getString(Lang_STR)); in the line below
-#define debugConfig() printConfiguration(); debug(F("Rotation: ")); debug(rotationToString(ROTATION)); debug(F("\nLanguage: ")); debug(LANGUAGE); debug(F("\nDATAREFRESHPERIOD: ")); debug(DATAREFRESHPERIOD); debug('\n')
+#define debugConfig() printConfiguration(); debug(F("Rotation: ")); debug(rotationToString(screenConfig.ROTATION)); debug(F("\nLanguage: ")); debug(getString(Lang_STR)); debug(F("\nDATAREFRESHPERIOD: ")); debug(screenConfig.DATAREFRESHPERIOD); debug('\n')
 #endif
 #else
 
@@ -129,7 +119,6 @@ char* rotationToString(enum Rotation rotation)
 #endif
 
 //Global Variables
-char auxBuffer[32] = ""; // TODO when using progmem, use it as a buffer to print each label
 
 byte page = 0;
 byte maxPage = 0;
@@ -158,7 +147,7 @@ RectangleButton btn11(250, 220, 440, 300, Color(0, 0, 0), Color(255, 255, 255), 
 RectangleButton backBtn(20, 20, 60, 60, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
 
 Label titleLabel(0, 0, "", 5, Color(0), Color(255, 255, 255));
-Rectangle title(65, 5, 415, 75, Color(0xFFFF),&titleLabel, true);
+Rectangle title(65, 5, 415, 75, Color(0xFFFF),&titleLabel, false);
 
 //Rectangle Button GetNumInput
 RectangleButton oKBtn(250, 270, 410, 310, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
@@ -183,8 +172,29 @@ void UISetup()
     pinMode(11, INPUT);
     pinMode(10, INPUT);
 
+#if !USEVOLATILECONFIG
+    debug(F("Using volatile UI settings (DEBUG MODE)"));
+#endif
+
+#if SETDEFAULTSCREENCONFIG
+    debug(F("Using default UI configuration (DEBUG MODE)\n"));
+    setDefaultScreenConfig(); // load default settings
+    updateScreenConfig(); // save default settings to EEPROM
+#else
+    if(!readScreenConfig()) // Try to read screenConfig, if failure, load default
+    {
+        debug(F("Failure loading UI configuration, restoring to default...\t"));
+        setDefaultScreenConfig(); // load default settings
+        updateScreenConfig(); // save default settings to EEPROM
+        debug(F("Done\n"));
+    }
+    else
+        debug(F("UI configuration successfully load\n"));
+#endif
+
+
     my_lcd.Init_LCD();
-    setRotation(ROTATION);
+    setRotation(screenConfig.ROTATION);
 
     //my_lcd.Fill_Screen(0);
     my_lcd.Fill_Screen(Color(255, 255, 255).to565());

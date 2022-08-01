@@ -13,8 +13,9 @@
 /*------------Config----------------*/
 
 #define DEBUG true
-#define dDEBUG true
-#define ONLYVITALACTIVITYALLOWED false
+#define USEVOLATILECONFIG true // used to disable EEPROM writes due to saving configuration in persistent storage
+#define SETDEFAULTCONFIG false // used to set the config to the default config
+#define ONLYVITALACTIVITYALLOWED false // used to disable purification routines
 #define TEMPERATURE true
 #define OVERRRIDEMAXVOLTAGE false // useful to check some functions without powering all the system
 
@@ -23,7 +24,7 @@
 /*------------Libraries-------------*/
 
 #include "Shared/SharedData.h"
-#include "Shared/Storage.h"
+#include "Storage/Storage.h"
 #include <Filters.h>
 
 #if TEMPERATURE
@@ -39,7 +40,7 @@
 #define UNEXPECTEDBEHAVIORERROR 00 // The code is being executed in an unwanted way (a bug is being detected) // error code 00
 
 #if TEMPERATURE
-    #define TEMPSENSORSAMOUNTERROR 10 // Some temp sensors are not properly connected to the onewire bus // error code 10
+    #define TEMPSENSORSAMOUNTERROR 10 // Some temp sensors are not properly connected to the one-wire bus // error code 10
     #define EXTREMEHOTTEMPERROR 11 // Control system temperatures are extremely high, and it is dangerous to operate // error code 11
 #endif
 
@@ -399,7 +400,7 @@ float getDCAmps(int samples)
     for (int i = 0; i < samples; i++)
     {
         sensorVolts = analogRead(mainAmpSensor) * (5.0 / 1023.0); // sensor reading
-        current = current + (sensorVolts - config.DCAMPZERO) / config.DCAMPSENSITIVITY; // Process input to get Amperage
+        current = current + (sensorVolts - config.DCAMMZERO) / config.DCAMMSENSITIVITY; // Process input to get Amperage
     }
     current = current / samples;
     return(current >= 0 ? (float)current : 0);
@@ -408,7 +409,7 @@ float getDCAmps(int samples)
 // This function uses all the data logged by logACAmps() and calculates an RMS Amperage value for the UV sensor
 float getACAmps()
 {
-    double amps = config.ACAMPZERO + config.ACAMPSENSITIVITY * inputStats.sigma();
+    double amps = config.ACAMMZERO + config.ACAMMSENSITIVITY * inputStats.sigma();
     return(amps >= 0 ? (float)amps : 0); // calculate RMS Amperage
 }
 
@@ -630,7 +631,25 @@ void setup()
     debug(F("Setup - Booting...\n"));
 #endif
 
-    setDefaultConfig();
+#if !USEVOLATILECONFIG
+    debug(F("Using volatile settings (DEBUG MODE)"));
+#endif
+
+#if SETDEFAULTCONFIG
+    debug(F("Using default configuration (DEBUG MODE)\n"));
+    setDefaultConfig(); // load default settings
+    updateConfig(); // save default settings to EEPROM
+#else
+    if(!readConfig()) // Try to read config, if failure, load default
+    {
+        debug(F("Failure loading configuration, restoring to default...\t"));
+        setDefaultConfig(); // load default settings
+        updateConfig(); // save default settings to EEPROM
+        debug(F("Done\n"));
+    }
+    else
+        debug(F("Configuration successfully load\n"));
+#endif
 
     pinMode(redLed, OUTPUT);
     pinMode(blueLed, OUTPUT);
@@ -642,7 +661,7 @@ void setup()
     byte num = sensors.getDeviceCount();
     if (num != 3)
     {
-        raise(TEMPSENSORSAMOUNTERROR, String(F("Setup - Less than 3 sensors were connected.\nNumber of sensors detected: "))+num);
+        raise(TEMPSENSORSAMOUNTERROR, String(F("Setup - A different amount from 3 sensors were connected.\nNumber of sensors detected: "))+num);
     }
 #endif
 

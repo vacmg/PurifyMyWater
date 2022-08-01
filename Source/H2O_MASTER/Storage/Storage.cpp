@@ -15,7 +15,7 @@ unsigned long configCRC32()
     };
     unsigned long crc = ~0L;
 
-    for (int index = 4 ; index < sizeof (config)+4; index++)
+    for (unsigned int index = 4 ; index < sizeof (config)+4; index++)
     {
 
         crc = crc_table[(crc ^ EEPROM[index]) & 0x0f] ^ (crc >> 4);
@@ -45,7 +45,9 @@ bool readConfig()
 // This function saves the current config to EEPROM with its respective CRC32 code to verify it later
 void updateConfig()
 {
+#if !USEVOLATILECONFIG
     EEPROM.put(4, config);
     unsigned long crc = configCRC32();
     EEPROM.put(0, crc);
+#endif
 }

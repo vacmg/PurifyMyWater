@@ -167,6 +167,7 @@ void draw6ButtonsLayout(const String& topLeftBtn1, const String& centerLeftBtn2,
         Rectangle auxRec(0,268,480,320,Color(0), Color(255,255,255)); // Rectangle auxRec(229,284,249,304,Color(0),&label);
         my_lcd.draw(&auxRec);
 
+        char auxBuffer[3];
         sprintf(auxBuffer,"%d",page);
         label.setString(auxBuffer);
         auxRec.setCoords(229,284);

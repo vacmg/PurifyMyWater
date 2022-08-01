@@ -5,7 +5,7 @@
 #ifndef H2O_GUI_STORAGE_H
 #define H2O_GUI_STORAGE_H
 
-#include "SharedData.h"
+#include "Shared/SharedData.h"
 #include <EEPROM.h>
 
 // This function returns the crc32 value of the config structure stored in EEPROM

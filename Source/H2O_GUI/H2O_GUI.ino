@@ -11,6 +11,8 @@
 /*------------Config----------------*/
 
 #define DEBUG true
+#define SETDEFAULTSCREENCONFIG false
+#define USEVOLATILECONFIG true
 
 #define SCREENBAUDRATE 115200
 #define SCREENALWAYSON 1 // TODO auto on/off
@@ -37,9 +39,9 @@ void setup()
     delay(50);
 #endif
 
-    setDefaultConfig();
-
     UISetup();
+
+    setDefaultConfig(); // TODO read config from master
 
     debug('\n');
     //todo Test code after this line

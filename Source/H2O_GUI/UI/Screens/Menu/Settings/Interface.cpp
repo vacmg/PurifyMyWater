@@ -16,11 +16,11 @@ void drawInterface()
     {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 1, 1, 1);
-            draw6ButtonsLayout(getString(Interface_LanguageTitle_STR), getString(Interface_RotationTitle_STR),getString(Interface_CalibrationTitle_STR), F("English"),getString(Interface_RotationInvertedLandscape_STR), getString(Interface_CalibrationStart_STR), true, true, true, fontSizes); // TODO implement interface logic
+            draw6ButtonsLayout(getString(Interface_LanguageTitle_STR), getString(Interface_RotationTitle_STR),getString(Interface_CalibrationTitle_STR), F("English"),getString(screenConfig.ROTATION==LANDSCAPE?Interface_RotationLandscape_STR:Interface_RotationInvertedLandscape_STR), getString(Interface_CalibrationStart_STR), true, true, true, fontSizes); // TODO implement interface logic
             break;
         case 2:
             setFontSizeArray(fontSizes, 2, 2, 2, 2, 2, 2);
-            draw6ButtonsLayout(getString(Interface_RefreshInterval_STR), getString(Interface_ResetTitle_STR), "",(String) ((double) DATAREFRESHPERIOD/1000.0) + "s", getString(Interface_ResetStart_STR), "", true,true, false, fontSizes);
+            draw6ButtonsLayout(getString(Interface_RefreshInterval_STR), getString(Interface_ResetTitle_STR), "",(String) ((double) screenConfig.DATAREFRESHPERIOD/1000.0) + "s", getString(Interface_ResetStart_STR), "", true,true, false, fontSizes);
             break;
         default:debug(F("Page selected is out of bounds (page>2 || page<0)"));
     }
@@ -34,20 +34,34 @@ void clickInterface()
     {
         switch (page)
         {
+            case 1: // Language // TODO language screen
+                break;
             case 2: // Refresh Period
-                double tempVal = getNumInput(getString(Interface_RefreshInterval_STR), F("s"), (double)DATAREFRESHPERIOD/1000.0);
+                double tempVal = getNumInput(getString(Interface_RefreshInterval_STR), F("s"), (double)screenConfig.DATAREFRESHPERIOD/1000.0);
                 debug(tempVal);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (tempVal > 0)
                     {
-                        debug(F("DATAREFRESHPERIOD UPDATED: "));debug(DATAREFRESHPERIOD);debug(F(" --> "));debug(tempVal);debug('\n');
-                        DATAREFRESHPERIOD = (unsigned long)(tempVal * 1000);
-                        // TODO send new setting
+                        debug(F("DATAREFRESHPERIOD UPDATED: "));debug(screenConfig.DATAREFRESHPERIOD);debug(F(" --> "));debug(tempVal);debug('\n');
+                        screenConfig.DATAREFRESHPERIOD = (unsigned long)(tempVal * 1000);
+                        updateScreenConfig();
                     }
                 }
                 changeScreenStatus(LOADPAGEINTERFACE); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+                break;
+        }
+    }
+    else if (btn5.isPressed())
+    {
+        switch (page)
+        {
+            case 1: // Rotation
+                screenConfig.ROTATION = (screenConfig.ROTATION==LANDSCAPE?INVERTED_LANDSCAPE:LANDSCAPE); // Change rotation variable
+                updateScreenConfig();
+                setRotation(screenConfig.ROTATION); // Set the rotation in the screen & touch module
+                changeScreenStatus(LOADINTERFACE); // Reload interface menu to repaint the screen
                 break;
         }
     }

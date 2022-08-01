@@ -98,10 +98,10 @@ void setDefaultConfig()
         Serial.print(F("STOPCHARGINGVOLTAGE:\t"));Serial.println(config.STOPCHARGINGVOLTAGE);
         Serial.print(F("STARTWORKINGVOLTAGE:\t"));Serial.println(config.STARTWORKINGVOLTAGE);
         Serial.print(F("STOPWORKINGVOLTAGE:\t"));Serial.println(config.STOPWORKINGVOLTAGE);
-        Serial.print(F("DCAMPSENSITIVITY:\t"));Serial.println(config.DCAMMSENSITIVITY);
-        Serial.print(F("DCAMPZERO:\t"));Serial.println(config.DCAMMZERO);
-        Serial.print(F("ACAMPSENSITIVITY:\t"));Serial.println(config.ACAMMSENSITIVITY);
-        Serial.print(F("ACAMPZERO:\t"));Serial.println(config.ACAMMZERO);
+        Serial.print(F("DCAMMSENSITIVITY:\t"));Serial.println(config.DCAMMSENSITIVITY);
+        Serial.print(F("DCAMMZERO:\t"));Serial.println(config.DCAMMZERO);
+        Serial.print(F("ACAMMSENSITIVITY:\t"));Serial.println(config.ACAMMSENSITIVITY);
+        Serial.print(F("ACAMMZERO:\t"));Serial.println(config.ACAMMZERO);
         Serial.print(F("ACFREQUENCY:\t"));Serial.println(config.ACFREQUENCY);
         Serial.print(F("ESTIMATEDUVAMPERAGE:\t"));Serial.println(config.ESTIMATEDUVAMPERAGE);
         Serial.print(F("WELLPUMPTIMEOUT:\t"));Serial.println(config.WELLPUMPTIMEOUT);
@@ -124,7 +124,5 @@ void setDefaultConfig()
 #endif
 
 // Debug Functions
-
-#include "Storage.h"
 
 #endif //H2O_GUI_SHAREDDATA_H

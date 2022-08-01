@@ -1,11 +1,19 @@
 //
-// Created by Víctor on 20/06/2022.
+// Created by Victor on 01/08/2022.
 //
 
-#include "Storage.h"
+#include "ScreenSettings.h"
+
+// This function set default screenConfig parameters
+void setDefaultScreenConfig()
+{
+    screenConfig.ROTATION = INVERTED_LANDSCAPE;
+    screenConfig.LANGUAGE = ENGLISH;
+    screenConfig.DATAREFRESHPERIOD = 5000;
+}
 
 // This function returns the crc32 value of the config structure stored in EEPROM
-unsigned long configCRC32()
+unsigned long screenConfigCRC32()
 {
     const unsigned long crc_table[16] = {
             0x00000000, 0x1db71064, 0x3b6e20c8, 0x26d930ac,
@@ -15,7 +23,7 @@ unsigned long configCRC32()
     };
     unsigned long crc = ~0L;
 
-    for (int index = 4 ; index < sizeof (config)+4; index++)
+    for (unsigned int index = 4 ; index < sizeof (screenConfig)+4; index++) // screenConfig starts at position 4
     {
 
         crc = crc_table[(crc ^ EEPROM[index]) & 0x0f] ^ (crc >> 4);
@@ -30,22 +38,24 @@ unsigned long configCRC32()
 
 // This function read Config stored in EEPROM & validates it against a CRC32 checksum precalculated
 // It returns true if the config is updated to RAM (checksum check was OK) and false otherwise
-bool readConfig()
+bool readScreenConfig()
 {
     unsigned long crc;
     EEPROM.get(0,crc);
-    if(crc == configCRC32())
+    if(crc == screenConfigCRC32())
     {
-        EEPROM.get(4, config);
+        EEPROM.get(4, screenConfig); // screenConfig is at position 4
         return true;
     }
     return false;
 }
 
 // This function saves the current config to EEPROM with its respective CRC32 code to verify it later
-void updateConfig()
+void updateScreenConfig()
 {
-    EEPROM.put(4, config);
-    unsigned long crc = configCRC32();
+#if !USEVOLATILECONFIG
+    EEPROM.put(4, screenConfig); // save screenConfig at position 4
+    unsigned long crc = screenConfigCRC32();
     EEPROM.put(0, crc);
+#endif
 }

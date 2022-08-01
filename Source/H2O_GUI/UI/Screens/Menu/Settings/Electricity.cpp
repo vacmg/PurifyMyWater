@@ -46,10 +46,10 @@ void clickElectricity()
                 break;
 
             case 3:
-                tempVal = getNumInput(getString(Electricity_ACAmmeterSensitivity_STR), F(""), config.ACAMPSENSITIVITY,4);
+                tempVal = getNumInput(getString(Electricity_ACAmmeterSensitivity_STR), F(""), config.ACAMMSENSITIVITY,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(F("ACAMPSENSITIVITY UPDATED: "));debug(config.ACAMPSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
+                    debug(F("ACAMMSENSITIVITY UPDATED: "));debug(config.ACAMMSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
                     config.ACAMMSENSITIVITY = tempVal;
                     // TODO send new setting
                 }
@@ -58,10 +58,10 @@ void clickElectricity()
                 break;
 
             case 4:
-                tempVal = getNumInput(getString(Electricity_DCAmmeterZero_STR), F(""), config.DCAMPZERO,4);
+                tempVal = getNumInput(getString(Electricity_DCAmmeterZero_STR), F(""), config.DCAMMZERO,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(F(" UPDATED: DCAMPZERO"));debug(config.DCAMPZERO);debug(F(" --> "));debug(tempVal);debug('\n');
+                    debug(F(" UPDATED: DCAMMZERO"));debug(config.DCAMMZERO);debug(F(" --> "));debug(tempVal);debug('\n');
                     config.DCAMMZERO = tempVal;
                     // TODO send new setting
                 }
@@ -106,10 +106,10 @@ void clickElectricity()
                 break;
 
             case 3:
-                tempVal = getNumInput(getString(Electricity_ACAmmeterZero_STR), F(""), config.ACAMPZERO,4);
+                tempVal = getNumInput(getString(Electricity_ACAmmeterZero_STR), F(""), config.ACAMMZERO,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(F("ACAMPZERO UPDATED: "));debug(config.ACAMPZERO);debug(F(" --> "));debug(tempVal);debug('\n');
+                    debug(F("ACAMMZERO UPDATED: "));debug(config.ACAMMZERO);debug(F(" --> "));debug(tempVal);debug('\n');
                     config.ACAMMZERO = tempVal;
                     // TODO send new setting
                 }
@@ -153,10 +153,10 @@ void clickElectricity()
                 break;
 
             case 3:
-                tempVal = getNumInput(getString(Electricity_DCAmmeterSensitivity_STR), F(""), config.DCAMPSENSITIVITY,4);
+                tempVal = getNumInput(getString(Electricity_DCAmmeterSensitivity_STR), F(""), config.DCAMMSENSITIVITY,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(F("DCAMPSENSITIVITY UPDATED: "));debug(config.DCAMPSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
+                    debug(F("DCAMMSENSITIVITY UPDATED: "));debug(config.DCAMMSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
                     config.DCAMMSENSITIVITY = tempVal;
                     // TODO send new setting
                 }
@@ -188,11 +188,11 @@ void drawElectricity() // TODO get settings real value
             break;
         case 3:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(getString(Electricity_ACAmmeterSensitivity_STR), getString(Electricity_ACAmmeterZero_STR),getString(Electricity_DCAmmeterSensitivity_STR),String(config.ACAMPSENSITIVITY, 4), String(config.ACAMPZERO, 4), String(config.DCAMPSENSITIVITY, 4), true,true, true, fontSizes);
+            draw6ButtonsLayout(getString(Electricity_ACAmmeterSensitivity_STR), getString(Electricity_ACAmmeterZero_STR),getString(Electricity_DCAmmeterSensitivity_STR),String(config.ACAMMSENSITIVITY, 4), String(config.ACAMMZERO, 4), String(config.DCAMMSENSITIVITY, 4), true,true, true, fontSizes);
             break;
         case 4:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 1, 1);
-            draw6ButtonsLayout(getString(Electricity_DCAmmeterZero_STR), "", "", String(config.DCAMPZERO, 4), "", "", true, false, false,fontSizes);
+            draw6ButtonsLayout(getString(Electricity_DCAmmeterZero_STR), "", "", String(config.DCAMMZERO, 4), "", "", true, false, false,fontSizes);
             break;
         default: debug(F("Page selected is out of bounds (page>4 || page<0)"));
     }
