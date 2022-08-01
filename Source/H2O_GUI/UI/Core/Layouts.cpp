@@ -306,3 +306,46 @@ void drawNumInput (const String& titleNumInput, const String& unit)
     Rectangle outputUnit(370,95,420,145,Color(),Color(255,255,255),&unitLabel);
     my_lcd.draw(&outputUnit);
 }
+
+void popUp (const String& alertHeader, const String& alertMessage)
+{
+    //local variables
+    RoundRectangle rectanglePopUp(100,90, 380,300,5, Color(0, 0, 0), Color(255, 255, 255));
+    RoundRectangleButton btn12 (100,250, 380,300,5, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
+    Rectangle header (140,95, 340,140, Color(255, 255, 255), Color(255, 255, 255),&label);
+    Rectangle Message (101,140, 379,299, Color(255, 255, 255), Color(255, 255, 255),&label); //TODO Cuadrarlo bien. Posiblemente cambiarlo por textBox
+    my_lcd.draw(&rectanglePopUp);
+
+    label.setString(alertMessage.c_str());
+    my_lcd.draw(&Message);
+
+    label.setString(alertHeader.c_str());
+    my_lcd.draw(&header);
+
+    label.setString("OK");
+    my_lcd.draw(&btn12);
+}
+
+void popUpYesNo(const String& alertHeader, const String& alertMessage)
+{
+    //local variables
+    RoundRectangle rectanglePopUp(100,90, 380,300,5, Color(0, 0, 0), Color(255, 255, 255));
+    RoundRectangleButton btn12 (100,250, 240,300,5, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
+    RoundRectangleButton btn13 (240,250, 380,300,5, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
+    Rectangle header (105,95, 375,150, Color(255, 255, 255), Color(255, 255, 255),&label);
+    Rectangle Message (101,140, 379,299, Color(255, 255, 255), Color(255, 255, 255),&label);
+
+    my_lcd.draw(&rectanglePopUp);
+
+    label.setString(alertMessage.c_str());
+    my_lcd.draw(&Message);
+
+    label.setString(alertHeader.c_str());
+    my_lcd.draw(&header);
+
+    label.setString("YES");
+    my_lcd.draw(&btn12);
+
+    label.setString("NO");
+    my_lcd.draw(&btn13);
+}
