@@ -46,9 +46,11 @@ void setup()
     debug('\n');
     //todo Test code after this line
 
+    drawBackground();
+    drawMenu();
+    drawPopup("patataAlerta", F("test.txt"));
 
-
-    //while (true); // TODO delete or comment this
+    while (true); // TODO delete or comment this
 
     //todo Test code before this line
 

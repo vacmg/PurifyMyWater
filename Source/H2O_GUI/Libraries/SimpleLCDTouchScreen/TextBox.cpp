@@ -4,7 +4,7 @@
 
 #include "TextBox.h"
 
-TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, uint16_t marginX, uint16_t marginY, Rectangle* frame, Label *label, uint32_t beginOffset, uint32_t endOffset): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),frame), ScreenObjectWithLabel(x,y,Color(),label,true)
+TextBox::TextBox(int x, int y, int x1, int y1, const char* textPath, byte spacing, uint16_t marginX, uint16_t marginY, Rectangle* frame, Label *label, uint32_t beginOffset, uint32_t endOffset): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),frame), ScreenObjectWithLabel(x,y,Color(),label,true)
 {
     this->textPath = textPath;
     this->spacing = spacing;
@@ -16,7 +16,7 @@ TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, uin
     this->marginY = marginY;
 }
 
-TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, Rectangle* frame, Label *label, uint32_t beginOffset, uint32_t endOffset): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),frame), ScreenObjectWithLabel(x,y,Color(),label,true)
+TextBox::TextBox(int x, int y, int x1, int y1, const char* textPath, byte spacing, Rectangle* frame, Label *label, uint32_t beginOffset, uint32_t endOffset): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),frame), ScreenObjectWithLabel(x,y,Color(),label,true)
 {
     this->textPath = textPath;
     this->spacing = spacing;
@@ -28,7 +28,7 @@ TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, Rec
     this->marginY = 10;
 }
 
-TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, Rectangle* frame, Label *label, uint32_t beginOffset, uint32_t endOffset): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),frame), ScreenObjectWithLabel(x,y,Color(),label,true)
+TextBox::TextBox(int x, int y, int x1, int y1, const char* textPath, Rectangle* frame, Label *label, uint32_t beginOffset, uint32_t endOffset): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),frame), ScreenObjectWithLabel(x,y,Color(),label,true)
 {
     this->textPath = textPath;
     this->spacing = 7;
@@ -40,7 +40,7 @@ TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, Rectangle* frame,
     this->marginY = 10;
 }
 
-TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, Rectangle* frame, Label *label): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),frame), ScreenObjectWithLabel(x,y,Color(),label,true)
+TextBox::TextBox(int x, int y, int x1, int y1, const char* textPath, byte spacing, Rectangle* frame, Label *label): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),frame), ScreenObjectWithLabel(x,y,Color(),label,true)
 {
     this->textPath = textPath;
     this->spacing = spacing;
@@ -52,7 +52,7 @@ TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, Rec
     this->marginY = 10;
 }
 
-TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, uint16_t marginX, uint16_t marginY, Rectangle* frame, Label *label): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),frame), ScreenObjectWithLabel(x,y,Color(),label,true)
+TextBox::TextBox(int x, int y, int x1, int y1, const char* textPath, byte spacing, uint16_t marginX, uint16_t marginY, Rectangle* frame, Label *label): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),frame), ScreenObjectWithLabel(x,y,Color(),label,true)
 {
     this->textPath = textPath;
     this->spacing = spacing;
@@ -64,7 +64,7 @@ TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, uin
     this->marginY = marginY;
 }
 
-TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, Rectangle* frame, Label *label): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),frame), ScreenObjectWithLabel(x,y,Color(),label,true)
+TextBox::TextBox(int x, int y, int x1, int y1, const char* textPath, Rectangle* frame, Label *label): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),frame), ScreenObjectWithLabel(x,y,Color(),label,true)
 {
     this->textPath = textPath;
     this->spacing = 7;
@@ -76,7 +76,7 @@ TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, Rectangle* frame,
     this->marginY = 10;
 }
 
-TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, uint16_t marginX, uint16_t marginY, Label *label, uint32_t beginOffset, uint32_t endOffset): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),nullptr), ScreenObjectWithLabel(x,y,Color(),label,true)
+TextBox::TextBox(int x, int y, int x1, int y1, const char* textPath, byte spacing, uint16_t marginX, uint16_t marginY, Label *label, uint32_t beginOffset, uint32_t endOffset): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),nullptr), ScreenObjectWithLabel(x,y,Color(),label,true)
 {
     this->textPath = textPath;
     this->spacing = spacing;
@@ -88,7 +88,7 @@ TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, uin
     this->marginY = marginY;
 }
 
-TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, Label *label, uint32_t beginOffset, uint32_t endOffset): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),nullptr), ScreenObjectWithLabel(x,y,Color(),label,true)
+TextBox::TextBox(int x, int y, int x1, int y1, const char* textPath, byte spacing, Label *label, uint32_t beginOffset, uint32_t endOffset): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),nullptr), ScreenObjectWithLabel(x,y,Color(),label,true)
 {
     this->textPath = textPath;
     this->spacing = spacing;
@@ -100,7 +100,7 @@ TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, Lab
     this->marginY = 10;
 }
 
-TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, Label *label, uint32_t beginOffset, uint32_t endOffset): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),nullptr), ScreenObjectWithLabel(x,y,Color(),label,true)
+TextBox::TextBox(int x, int y, int x1, int y1, const char* textPath, Label *label, uint32_t beginOffset, uint32_t endOffset): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),nullptr), ScreenObjectWithLabel(x,y,Color(),label,true)
 {
     this->textPath = textPath;
     this->spacing = 7;
@@ -112,7 +112,7 @@ TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, Label *label, uin
     this->marginY = 10;
 }
 
-TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, Label *label): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),nullptr), ScreenObjectWithLabel(x,y,Color(),label,true)
+TextBox::TextBox(int x, int y, int x1, int y1, const char* textPath, byte spacing, Label *label): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),nullptr), ScreenObjectWithLabel(x,y,Color(),label,true)
 {
     this->textPath = textPath;
     this->spacing = spacing;
@@ -124,7 +124,7 @@ TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, Lab
     this->marginY = 10;
 }
 
-TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, uint16_t marginX, uint16_t marginY, Label *label): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),nullptr), ScreenObjectWithLabel(x,y,Color(),label,true)
+TextBox::TextBox(int x, int y, int x1, int y1, const char* textPath, byte spacing, uint16_t marginX, uint16_t marginY, Label *label): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),nullptr), ScreenObjectWithLabel(x,y,Color(),label,true)
 {
     this->textPath = textPath;
     this->spacing = spacing;
@@ -136,7 +136,7 @@ TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, byte spacing, uin
     this->marginY = marginY;
 }
 
-TextBox::TextBox(int x, int y, int x1, int y1, char* textPath, Label *label): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),nullptr), ScreenObjectWithLabel(x,y,Color(),label,true)
+TextBox::TextBox(int x, int y, int x1, int y1, const char* textPath, Label *label): ScreenObject(x,y,Color()), ScreenObjectWithXtraCoords(x,y,x1,y1,Color()), ScreenObjectWithRectangle(x,y,Color(),nullptr), ScreenObjectWithLabel(x,y,Color(),label,true)
 {
     this->textPath = textPath;
     this->spacing = 7;
@@ -324,7 +324,7 @@ Rectangle *TextBox::getFrame()
     return ScreenObjectWithRectangle::getRectangle();
 }
 
-char *TextBox::getTextPath()
+const char *TextBox::getTextPath()
 {
     return textPath;
 }
