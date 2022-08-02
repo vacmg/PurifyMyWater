@@ -5,6 +5,8 @@
 #ifndef H2O_GUI_LANGUAGE_H
 #define H2O_GUI_LANGUAGE_H
 
+#include "Interface.h"
+
 //This function set and draw the title, set the font size and draws the buttons in all pages.
 void drawLanguage();
 
