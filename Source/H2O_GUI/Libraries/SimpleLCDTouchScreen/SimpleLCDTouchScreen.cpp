@@ -105,7 +105,12 @@ bool SimpleLCDTouchScreen::draw(Picture* picture)
 
 bool SimpleLCDTouchScreen::draw(TextBox* textBox)
 {
-    if(textBox == nullptr)
+    return draw(textBox, textBox->getFontSize());
+}
+
+bool SimpleLCDTouchScreen::draw(TextBox* textBox, uint8_t font)
+{
+    if(textBox == nullptr || font<1)
         return false;
     if(!textBox->init() || !textBox->canBeDrawn())
     {
@@ -124,7 +129,6 @@ bool SimpleLCDTouchScreen::draw(TextBox* textBox)
         draw(&realRectangle);
     //TODO END remove this*/
 
-    uint8_t font = textBox->getFontSize();
     textBox->getLabel()->setFontSize(font);
     uint16_t maxNumOfCharPerRow = textBox->charactersPerRow(xpx,font);
     uint16_t maxNumOfRows = textBox->maxAmountOfRows(ypx, font);
@@ -150,17 +154,23 @@ bool SimpleLCDTouchScreen::draw(TextBox* textBox)
             else // If there is enough free space
             {
                 strcat(line,nxWord); // Add the word to the line
-                charsReadInARow+=(wordSize+1); // wordSize + delimiter (1 char)
+                charsReadInARow+=wordSize; // Add the word to the line // wordSize
                 free(nxWord); // Free old pointer once it has been appended to the line
 
-                char terminator[2] = "";
-                terminator[0] = (char)file.read(); // get the delimiter as a string
-                terminator[1] = NULL;
-                if(terminator[0] == '\n') // If the delimiter is a \n, end line
-                    maxCharPerLineExceeded = true;
+                if(file.available()) // If there is a delimiter
+                {
+                    charsReadInARow+=1; // Add the word to the line // delimiter (1 char)
+                    char terminator[2] = "";
+                    terminator[0] = (char)file.read(); // get the delimiter as a string
+                    terminator[1] = NULL;
+                    if(terminator[0] == '\n') // If the delimiter is a \n, end line
+                        maxCharPerLineExceeded = true;
+                    else // If it is the end of the file
+                        strcat(line,terminator); // If the delimiter is a space, add it to the line
+                    pos+=wordSize+1; // Move forward text pointer
+                }
                 else
-                    strcat(line,terminator); // If the delimiter is a space, add it to the line
-                pos+=wordSize+1; // Move forward text pointer
+                    pos+=wordSize; // Move forward text pointer
                 nxWord = textBox->nextWord(&file,pos,textBox->getEndOffset(),&wordSize); // read next word
             }
         }
@@ -175,7 +185,6 @@ bool SimpleLCDTouchScreen::draw(TextBox* textBox)
         return false;
     }
     return true;
-
 }
 
 void SimpleLCDTouchScreen::Init_LCD()

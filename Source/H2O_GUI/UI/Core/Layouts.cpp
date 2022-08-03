@@ -309,74 +309,39 @@ void drawNumInput (const String& titleNumInput, const String& unit)
 
 void drawPopup(const String& headerText, const String& messagePath)
 {
-    Rectangle popupFrame(100,90, 380,310,Color(0, 0, 0), Color(240, 240, 240));
-    Rectangle header (101,91, 379,135, Color(255, 0, 0), &label);
+    Rectangle popupFrame(60,90, 420,310,Color(0, 0, 0), Color(240, 240, 240));
+    Rectangle header (61,91, 419,135, Color(0, 0, 0), &label);
     Label messageLabel(0,0,"",5,Color(0,0,0)); // Change here message text color
-    TextBox message(101,136, 379,280,messagePath.c_str(),&messageLabel);
-
-    message.printAll(&Serial);
-    Serial.println();
-    message.print(&Serial);
+    TextBox message(61,136, 419,280,messagePath.c_str(),&messageLabel);
 
     my_lcd.draw(&popupFrame);
     label.setString(headerText.c_str());
     my_lcd.draw(&header);
     my_lcd.draw(&message);
+}
 
-    btn1.setCoords(101,281);
-    btn1.setCoords1(379,309);
-    label.setString(getString(OK_STR));
+void drawOkPopup(const String& headerText, const String& messagePath, const String& btnText)
+{
+    drawPopup(headerText,messagePath);
+    btn1.setCoords(61,281);
+    btn1.setCoords1(419,309);
+    label.setString(btnText.c_str());
     my_lcd.draw(&btn1);
+}
 
-    btn1.setCoords(101,281);
+void drawBoolPopup(const String& headerText, const String& messagePath, const String& btnTrueText, const String& btnFalseText)
+{
+    drawPopup(headerText,messagePath);
+    btn1.setCoords(61,281);
     btn1.setCoords1(240,309);
+    btn1.setSecondaryColor(240,240,240);
     btn2.setCoords(241,281);
-    btn2.setCoords1(379,309);
-    label.setString(getString(YES_STR));
+    btn2.setCoords1(419,309);
+    btn2.setSecondaryColor(240,240,240);
+    label.setString(btnTrueText.c_str());
     my_lcd.draw(&btn1);
-    label.setString(getString(NO_STR));
+    btn1.setSecondaryColor(255,255,255);
+    label.setString(btnFalseText.c_str());
     my_lcd.draw(&btn2);
-}
-
-void popUp (const String& alertHeader, const String& alertMessage)
-{
-    //local variables
-    RoundRectangle rectanglePopUp(100,90, 380,300,5, Color(0, 0, 0), Color(255, 255, 255));
-    RoundRectangleButton btn12 (100,250, 380,300,5, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
-    Rectangle header (140,95, 340,140, Color(255,0,0), &label);
-    Rectangle Message (101,140, 379,299, Color(255,0,0), &label); //TODO Cuadrarlo bien. Posiblemente cambiarlo por textBox
-    my_lcd.draw(&rectanglePopUp);
-
-    label.setString(alertMessage.c_str());
-    my_lcd.draw(&Message);
-
-    label.setString(alertHeader.c_str());
-    my_lcd.draw(&header);
-
-    label.setString("OK");
-    my_lcd.draw(&btn12);
-}
-
-void popUpYesNo(const String& alertHeader, const String& alertMessage)
-{
-    //local variables
-    Rectangle rectanglePopUp(100,90, 380,310,Color(0, 0, 0), Color(240, 240, 240));
-    RectangleButton btn12 (101,281, 240,309, Color(255, 0, 0),  &label, &ts);
-    RectangleButton btn13 (241,281, 379,309, Color(0, 255, 0),  &label, &ts);
-    Rectangle header (101,91, 379,135, Color(255, 0, 0), &label);
-    Rectangle Message (101,136, 379,280, Color(0, 0, 255), &label);
-
-    my_lcd.draw(&rectanglePopUp);
-
-    label.setString(alertMessage.c_str());
-    my_lcd.draw(&Message);
-
-    label.setString(alertHeader.c_str());
-    my_lcd.draw(&header);
-
-    label.setString("YES");
-    my_lcd.draw(&btn12);
-
-    label.setString("NO");
-    my_lcd.draw(&btn13);
+    btn2.setSecondaryColor(255,255,255);
 }

@@ -31,6 +31,8 @@ public:
     TextBox(int x, int y, int x1, int y1, const char* textPath, byte spacing, uint16_t marginX, uint16_t marginY, Label *label, uint32_t beginOffset, uint32_t endOffset);
 
     char* nextWord(File* file, uint32_t start, uint32_t end, uint32_t* length);
+    bool printAsDrawn(HardwareSerial* serial, uint8_t font);
+    bool printAsDrawn(HardwareSerial* serial);
     bool printAll(HardwareSerial* serial);
     bool print(HardwareSerial* serial);
     bool init();

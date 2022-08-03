@@ -48,7 +48,7 @@ void setup()
 
     drawBackground();
     drawMenu();
-    drawPopup("patataAlerta", F("test.txt"));
+    drawBoolPopup("patataAlerta", F("test.txt"), getString(YES_STR),getString(NO_STR));
 
     while (true); // TODO delete or comment this
 

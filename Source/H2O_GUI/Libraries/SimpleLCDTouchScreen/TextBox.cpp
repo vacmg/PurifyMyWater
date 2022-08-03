@@ -155,19 +155,16 @@ TextBox::TextBox(int x, int y, int x1, int y1, const char* textPath, Label *labe
  */
 char* TextBox::nextWord(File* file, uint32_t start, uint32_t end, uint32_t* length)
 {
-    if(!init())
+    if(!init() || start>=end)
         return nullptr;
+
     file->seek(start);
     while (file->available() && file->position()<end) // look for terminators
     {
         char character = (char)file->read();
         if(character == ' ' || character == '\n')
-            end = file->position()-1;
-        else if(file->position()==end)
-            return nullptr;
+            end = file->position()-1; // if the end of the word is detected, mark it as the end
     }
-    if(!file->available())
-        return nullptr;
 
     char* word = (char*)malloc((end-start+1)* sizeof(char)); // WARNING: Dynamic allocation, be careful with memory leaks
     if(word == nullptr)
@@ -224,11 +221,17 @@ uint8_t TextBox::calculateFontSize()
                     }
                     else // If there is enough free space
                     {
-                        pos+=wordSize+1; // Move forward text pointer
-                        charsReadInARow+=(wordSize+1); // Add the word to the line // wordSize + delimiter (1 char)
+                        pos+=wordSize; // Move forward text pointer
+                        charsReadInARow+=wordSize; // Add the word to the line // wordSize
                         free(nxWord);
-                        if(file.read() == '\n') // If the delimiter is a \n, end line
-                            maxCharPerLineExceeded = true;
+                        if(file.available())
+                        {
+                            pos+=1; // Move forward text pointer
+                            charsReadInARow+=1; // Add the word to the line // delimiter (1 char)
+                            if(file.read() == '\n') // If the delimiter is a \n, end line
+                                maxCharPerLineExceeded = true;
+                        }
+
                         nxWord = nextWord(&file,pos,endOffset,&wordSize); // read next word
                     }
                 }
@@ -353,14 +356,94 @@ bool TextBox::print(HardwareSerial* serial)
     serial->print(F("Printing file: "));
     serial->println(file.name());
     serial->println();
-    file.seek(beginOffset);
+
+    /*file.seek(beginOffset);
 
     while (file.available() && file.position()<endOffset)
     {
         serial->print((char)file.read());
     }
     file.close();
-    serial->println();
+    serial->println();*/
+
+
+    uint32_t len = 0;
+    uint32_t pos = beginOffset;
+    char* nxWord = nextWord(&file,pos,endOffset,&len);
+    while (nxWord!= nullptr)
+    {
+        serial->print(nxWord);
+        if(file.available())
+        {
+            serial->print((char)file.read()); // la ultima vez esto da error
+        }
+        pos+=len+1; // Move forward text pointer
+        free(nxWord);
+        nxWord = nextWord(&file,pos,endOffset,&len);
+    }
+
+    return validFile;
+}
+
+bool TextBox::printAsDrawn(HardwareSerial* serial)
+{
+    return printAsDrawn(serial,getFontSize());
+}
+
+bool TextBox::printAsDrawn(HardwareSerial* serial, uint8_t font)
+{
+    if(!init() || !canBeDrawn() || font<1)
+        return false;
+
+    uint32_t xpx = getx1()-getx();
+    uint32_t ypx = gety1()-gety();
+    uint16_t maxNumOfCharPerRow = charactersPerRow(xpx,font);
+    uint16_t maxNumOfRows = maxAmountOfRows(ypx, font);
+    uint16_t row = 0;
+    uint16_t pos = beginOffset;
+    uint32_t wordSize;
+    File file = SD.open(textPath, FILE_READ);
+
+    char* nxWord = nextWord(&file,pos,endOffset,&wordSize);
+    while (nxWord!= nullptr && row<maxNumOfRows) // For each line until the paragraph is read or numOfRows is exceeded
+    {
+        uint16_t charsReadInARow = 0;
+        bool maxCharPerLineExceeded = false;
+        char* line = (char*) calloc(maxNumOfCharPerRow, sizeof(char));
+        while (nxWord!= nullptr && !maxCharPerLineExceeded) // For each word until the line is full or a \n is read
+        {
+            if(maxNumOfCharPerRow-charsReadInARow<(wordSize+1)) // If there is no enough free space
+            {
+                maxCharPerLineExceeded = true; // end line
+            }
+            else // If there is enough free space
+            {
+                strcat(line,nxWord); // Add the word to the line
+                charsReadInARow+=wordSize; // Add the word to the line // wordSize
+                free(nxWord); // Free old pointer once it has been appended to the line
+
+                if(file.available()) // If there is a delimiter
+                {
+                    charsReadInARow+=1; // Add the word to the line // delimiter (1 char)
+                    char terminator[2] = "";
+                    terminator[0] = (char)file.read(); // get the delimiter as a string
+                    terminator[1] = NULL;
+                    if(terminator[0] == '\n') // If the delimiter is a \n, end line
+                        maxCharPerLineExceeded = true;
+                    else // If it is the end of the file
+                        strcat(line,terminator); // If the delimiter is a space, add it to the line
+                    pos+=wordSize+1; // Move forward text pointer
+                }
+                else
+                    pos+=wordSize; // Move forward text pointer
+                nxWord = nextWord(&file,pos,endOffset,&wordSize); // read next word
+            }
+        }
+        serial->println(line);
+        free(line); // free line string after using it
+        row++;
+    }
+    file.close();
     return validFile;
 }
 

@@ -31,6 +31,8 @@ public:
     bool draw(RoundRectangle* roundRectangle);
     bool draw(Picture* picture);
     bool draw(TextBox* textBox);
+    bool draw(TextBox* textBox, uint8_t font);
+
 
 private:
     /*SD ACCESS*/
