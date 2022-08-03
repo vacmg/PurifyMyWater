@@ -320,16 +320,18 @@ void drawPopup(const String& headerText, const String& messagePath)
     my_lcd.draw(&message);
 }
 
-void drawOkPopup(const String& headerText, const String& messagePath, const String& btnText)
+void drawOkPopup(const String& headerText, const String& messagePath, const String& btn1Text)
 {
     drawPopup(headerText,messagePath);
     btn1.setCoords(61,281);
     btn1.setCoords1(419,309);
-    label.setString(btnText.c_str());
+    btn1.setSecondaryColor(240,240,240);
+    label.setString(btn1Text.c_str());
     my_lcd.draw(&btn1);
+    btn1.setSecondaryColor(255,255,255);
 }
 
-void drawBoolPopup(const String& headerText, const String& messagePath, const String& btnTrueText, const String& btnFalseText)
+void drawBoolPopup(const String& headerText, const String& messagePath, const String& btn1TrueText, const String& btn2FalseText)
 {
     drawPopup(headerText,messagePath);
     btn1.setCoords(61,281);
@@ -338,10 +340,10 @@ void drawBoolPopup(const String& headerText, const String& messagePath, const St
     btn2.setCoords(241,281);
     btn2.setCoords1(419,309);
     btn2.setSecondaryColor(240,240,240);
-    label.setString(btnTrueText.c_str());
+    label.setString(btn1TrueText.c_str());
     my_lcd.draw(&btn1);
     btn1.setSecondaryColor(255,255,255);
-    label.setString(btnFalseText.c_str());
+    label.setString(btn2FalseText.c_str());
     my_lcd.draw(&btn2);
     btn2.setSecondaryColor(255,255,255);
 }
