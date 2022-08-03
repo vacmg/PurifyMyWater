@@ -102,4 +102,10 @@ const char *const langEN[] PROGMEM = {EN_LANG_STR,EN_ON_STR, EN_OFF_STR, EN_Prev
 
 }; // Follow the same order as enum StringIDs (Languages.h)
 
+
+// const char EN_XXX_PATH[] PROGMEM = "xxxx";
+
+
+const char *const pathEN[] PROGMEM = {}; // Follow the same order as enum PathIDs (Languages.h)
+
 #endif //H2O_GUI_EN_LANG_H

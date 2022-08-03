@@ -33,6 +33,16 @@ char* getString(enum StringIDs stringId);
 // Returns the string identified by the id in the language selected by the specified language
 char* getString(enum StringIDs stringId, Languages language);
 
+enum PathIDs{};
+
+const char* const* const paths[] PROGMEM = {pathEN, pathES, pathFR}; // Follow the same order as enum Languages (UI.h)
+
+// Returns the path to a localized file identified by the id in the language selected by enum Languages LANGUAGE variable
+char* getPath(enum PathIDs pathID);
+
+// Returns the path to a localized file identified by the id in the language selected by the specified language
+char* getPath(enum PathIDs pathID, Languages language);
+
 #include "Languages.cpp"
 
 #endif //H2O_GUI_LANGUAGES_H
