@@ -14,8 +14,8 @@ void draw6ButtonsLayout(const String& topLeftBtn1, const String& centerLeftBtn2,
 void drawNumInput(const String& titleNumInput, const String& unit);
 
 void drawPopup(const String& headerText, const String& messagePath);
-void drawOkPopup(const String& headerText, const String& messagePath, const String& btnText);
-void drawBoolPopup(const String& headerText, const String& messagePath, const String& btnTrueText, const String& btnFalseText);
+void drawOkPopup(const String& headerText, const String& messagePath, const String& btn1Text);
+void drawBoolPopup(const String& headerText, const String& messagePath, const String& btn1TrueText, const String& btn2FalseText);
 
 #include "Layouts.cpp"
 
