@@ -11,13 +11,17 @@ class ComManager
 {
 public:
     explicit ComManager(HardwareSerial* serial);
-    void messageManager(); // Todo check if this should be private
     void commSetup();
     void commLoop();
     bool sendMessage(const char* payload);
 
 private:
     HardwareSerial* serial;
+
+    void messageManager();
+    void sendMessageHandler(char* buffer);
+    void requestMessageHandler(char* buffer);
+    void requestAnswerMessageHandler(char* buffer);
 };
 
 #include "ComManager.cpp"
