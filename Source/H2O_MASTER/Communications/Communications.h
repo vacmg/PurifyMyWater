@@ -18,6 +18,7 @@
 #define SENDMESSAGE_ID 3
 
 #include <Arduino.h>
+#include "../Shared/SharedData.h"
 
 /*
  * Message structure:
