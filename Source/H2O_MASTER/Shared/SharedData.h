@@ -9,6 +9,8 @@
 
 // Hardware constants
 
+enum VariableIDs {Version};
+
 enum Errors {NoError = 0}; // Used to process different errors
 
 #define MAXCAPACITORSALLOWEDVOLTAGE 16
