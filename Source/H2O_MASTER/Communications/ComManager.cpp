@@ -16,47 +16,32 @@ void ComManager::messageManager()
 {
     if(serial->available())
     {
-        char serialBuffer[MAXPAYLOADSIZE] = "";
+        char bufferSerial[MAXPAYLOADSIZE] = "";
         char variableId[32] = "";
         char functionId[32] = "";
         char value[32] = "";
-        Communications::getMessage(serialBuffer,serial);
-        switch (serialBuffer[0])
+        Communications::getMessage(bufferSerial,serial);
+        switch (bufferSerial[0])
         {
             case REQUESTMESSAGE_ID:
-                requestMessageHandler(serialBuffer);
+                Communications::extractRequestMessage(bufferSerial,variableId,functionId);
 				debug(F("REQUESTMESSAGE\n"));
                 break;
             case REQUESTANSWERMESSAGE_ID:
-                Communications::extractRequestAnswerMessage(serialBuffer,variableId,value,functionId);
+                Communications::extractRequestAnswerMessage(bufferSerial,variableId,value,functionId);
 				debug(F("REQUESTANSWERMESSAGE\n"));
                 break;
             case SENDMESSAGE_ID:
-                Communications::extractSendMessage(serialBuffer,variableId,value);
+                Communications::extractSendMessage(bufferSerial,variableId,value);
 				debug(F("SENDMESSAGE\n"));
                 break;
             default:
-                debug(F("Unknown message: "));debug(serialBuffer);debug('\n');
+                debug(F("Unknown message: "));debug(bufferSerial);debug('\n');
         }
 		debug(F("variableId: "));debug(variableId);
 		debug(F("\nfunctionId: "));debug(functionId);
 		debug(F("\nvalue: "));debug(value);debug('\n');
     }
-}
-
-void sendMessageHandler(char* buffer)
-{
-
-}
-
-void requestMessageHandler(char* buffer)
-{
-    //Communications::extractRequestMessage(buffer,variableId,functionId);
-}
-
-void requestAnswerMessageHandler(char* buffer)
-{
-
 }
 
 void ComManager::commLoop() // TODO server function

@@ -11,10 +11,17 @@
 /*------------Config----------------*/
 
 #define DEBUG true
-#define DISABLEUI false
-#define DISABLECOMM false
 #define SETDEFAULTSCREENCONFIG false
 #define USEVOLATILECONFIG true
+
+#define SCREENBAUDRATE 115200
+#define SCREENALWAYSON 1 // TODO auto on/off
+#define MAXMESSAGERETRIES 3
+#define MAXHANDSHAKERETRIES 3
+#define HANDSHAKETIMEOUT 10000
+#define MSGTIMEOUT 2500
+#define SCREENTIMEOUT 120000
+
 
 /*------------Config----------------*/
 
@@ -32,9 +39,7 @@ void setup()
     delay(50);
 #endif
 
-#if !DISABLEUI
     UISetup();
-#endif
 
     setDefaultConfig(); // TODO read config from master
 
@@ -53,7 +58,5 @@ void setup()
 
 void loop()
 {
-#if !DISABLEUI
     UILoop();
-#endif
 }
