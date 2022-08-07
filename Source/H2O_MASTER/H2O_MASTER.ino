@@ -10,6 +10,8 @@
 
 #include <Arduino.h>
 
+char VERSION[] PROGMEM = "2.0-alpha-1";
+
 /*------------Config----------------*/
 
 #define DEBUG true
@@ -104,8 +106,8 @@ void readAllSensors()
     float ACAmps;
     ACAmps = getACAmps();
 
-    float temp[3];
 #if TEMPERATURE
+    float temp[3];
     getSensorsTemp(temp);
 #endif
     bool escreenSensor;

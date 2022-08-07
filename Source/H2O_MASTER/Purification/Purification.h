@@ -8,13 +8,11 @@
 /*------------Libraries-------------*/
 
 #include <Arduino.h>
-
 #include "../Shared/SharedData.h"
-
 #include <Filters.h>
 
 #if TEMPERATURE
-#include <OneWire.h>
+    #include <OneWire.h>
     #include <DallasTemperature.h>
 #endif
 
@@ -25,7 +23,7 @@
 #define UNEXPECTEDBEHAVIORERROR 00 // The code is being executed in an unwanted way (a bug is being detected) // error code 00
 
 #if TEMPERATURE
-#define TEMPSENSORSAMOUNTERROR 10 // Some temp sensors are not properly connected to the one-wire bus // error code 10
+    #define TEMPSENSORSAMOUNTERROR 10 // Some temp sensors are not properly connected to the one-wire bus // error code 10
     #define EXTREMEHOTTEMPERROR 11 // Control system temperatures are extremely high, and it is dangerous to operate // error code 11
 #endif
 
@@ -43,12 +41,12 @@ void purificationSetup();
 void purificationLoop();
 
 #if DEBUG
-void readAllSensors();
+    void readAllSensors();
 #endif
 
 #if TEMPERATURE
-void tempControl();
-void getSensorsTemp(float* temp);
+    void tempControl();
+    void getSensorsTemp(float* temp);
 #endif
 
 void disconnectEverything();
@@ -127,8 +125,11 @@ const byte blueLed = 11;
 
 const byte screenRelay = 47;
 
-bool pumpSt[4] = { false, false, false, false }; // Used to store the status of each pump and also the filter where true is on and false is off // { well, UV, end, filter }
-unsigned long pumpPrevMillis[4] = { 0,0,0,0 }; // Used to check for PUMPTIMEOUTERROR // pumpPrevMillis[1] also stores UV working start time // { well, UV, end, filter }
+// Used to check for PUMPTIMEOUTERROR
+unsigned long wellPumpPrevMillis = 0;
+unsigned long UVPumpPrevMillis = 0; // UVPumpPrevMillis also stores UV working start time
+unsigned long endPumpPrevMillis = 0;
+unsigned long filterPumpPrevMillis = 0;
 
 typedef struct ledAnimation
 {
@@ -175,7 +176,6 @@ DallasTemperature sensors(&oneWire);
 byte mode = TRANSITIONTOIDLE; // Working mode is changed using this variable // TODO use enum instead of byte
 unsigned long UVMillis = 0;
 unsigned long workingTime = 0; // Time that UV pump is working (in ms) // Used to calculate the amount of purified water
-double purifiedWater = 0.00; // Amount of water purified since the start of the machine (in L)
 
 /*------------Other-----------------*/
 

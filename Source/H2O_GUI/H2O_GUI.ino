@@ -6,7 +6,9 @@
     Author:     vacmg
 */
 
-//todo add eeprom config
+#include <Arduino.h>
+
+char VERSION[] PROGMEM = "2.0-alpha-1";
 
 /*------------Config----------------*/
 

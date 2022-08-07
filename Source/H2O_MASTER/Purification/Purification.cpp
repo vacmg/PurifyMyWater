@@ -141,7 +141,7 @@ float loadOffset()
     //float formula = load * 0.00 - 1.00; // no load // 0A
 
     // Using some known pairs of current and difference from real to arduino measured voltage, here we used least square roots to approximate to the formula of a straight line
-    float formula = -0.9487 - (0.0453 * load); // f(I)=-0.9487-0.0453*I
+    float formula = -0.9487F - (0.0453F * load); // f(I)=-0.9487-0.0453*I
     return formula;
 }
 
@@ -296,19 +296,19 @@ void errorCheck()
     }
 
     // Check for pumps timeout
-    if (pumpSt[0] && millis() > pumpPrevMillis[0] + config.WELLPUMPTIMEOUT)
+    if (data.wellPumpSt && millis() > wellPumpPrevMillis + config.WELLPUMPTIMEOUT)
     {
         raise(PUMPTIMEOUTERROR, String(F("Well pump has been working for more than ")) + String(config.WELLPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the well pump's circuit")));
     }
-    if (pumpSt[1] && millis() > pumpPrevMillis[1] + config.UVPUMPTIMEOUT)
+    if (data.UVPumpSt && millis() > UVPumpPrevMillis + config.UVPUMPTIMEOUT)
     {
         raise(PUMPTIMEOUTERROR, String(F("UV pump has been working for more than ")) + String(config.UVPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in UV the pump's circuit")));
     }
-    if (pumpSt[2] && millis() > pumpPrevMillis[2] + config.ENDPUMPTIMEOUT)
+    if (data.endPumpSt && millis() > endPumpPrevMillis + config.ENDPUMPTIMEOUT)
     {
         raise(PUMPTIMEOUTERROR, String(F("Well pump has been working for more than ")) + String(config.ENDPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the end pump's circuit")));
     }
-    if (pumpSt[3] && millis() > pumpPrevMillis[3] + config.FILTERTIMEOUT)
+    if (data.filterPumpSt && millis() > filterPumpPrevMillis + config.FILTERTIMEOUT)
     {
         raise(PUMPTIMEOUTERROR, String(F("Filter has been working for more than ")) + String(config.FILTERTIMEOUT) + String(F("ms. Either the filter doesn't work or there is a leakage in the filter's circuit")));
     }
@@ -325,6 +325,11 @@ void disconnectEverything()
     output(endPump, 0);
     output(UVRelay, 0);
     output(filterRelay, 0);
+    data.wellPumpSt = false;
+    data.UVPumpSt = false;
+    data.endPumpSt = false;
+    data.filterPumpSt = false;
+
     debug(F("DisconnectEverything - Done\n"));
 }
 
@@ -523,27 +528,27 @@ void purificationLoop()
             output(UVRelay, 0);
             output(voltSSRelay, 1);
             setColor(UNDERVOLTAGECOLOR);
-            for (byte i = 0; i < 3; i++)
-            {
-                pumpSt[i] = false;
-            }
+            data.wellPumpSt = false;
+            data.UVPumpSt = false;
+            data.endPumpSt = false;
+            data.filterPumpSt = false;
             mode = IDLE;
             break;
 
         case IDLE: // OFF
-#if !OVERRRIDEMAXVOLTAGE
+            #if !OVERRRIDEMAXVOLTAGE
             if (voltRead() > config.STARTWORKINGVOLTAGE)
-#endif
+            #endif
                 mode = TRANSITIONTOPUMPSWORKING;
             break;
 
         case TRANSITIONTOPUMPSWORKING: // Transition to Pumps Working
             output(ACInverter, 0);
             setColor(WORKINGCOLOR);
-            for (byte i = 0; i < 3; i++)
-            {
-                pumpSt[i] = false;
-            }
+            data.wellPumpSt = false;
+            data.UVPumpSt = false;
+            data.endPumpSt = false;
+            data.filterPumpSt = false;
             mode = PUMPSWORKING;
             break;
 
@@ -553,25 +558,25 @@ void purificationLoop()
                 mode = TRANSITIONTOIDLE;
 #endif
 
-            if (!pumpSt[0] && !digitalRead(highSurfaceBuoy) && digitalRead(secBuoy))
+            if (!data.wellPumpSt && !digitalRead(highSurfaceBuoy) && digitalRead(secBuoy))
             {
                 output(wellPump, 1);
-                pumpPrevMillis[0] = millis();
-                pumpSt[0] = true;
+                wellPumpPrevMillis = millis();
+                data.wellPumpSt = true;
             }
 
 
-            if (pumpSt[0] && (digitalRead(highSurfaceBuoy) || !digitalRead(secBuoy)))
+            if (data.wellPumpSt && (digitalRead(highSurfaceBuoy) || !digitalRead(secBuoy)))
             {
                 output(wellPump, 0);
-                pumpSt[0] = false;
+                data.wellPumpSt = false;
             }
 
 
             if (!digitalRead(lowFilteredBuoy) && digitalRead(highSurfaceBuoy))
                 mode = TRANSITIONTOFILTERWORKING;
 
-            if (!pumpSt[1] && !digitalRead(highPurifiedBuoy) && digitalRead(lowFilteredBuoy))
+            if (!data.UVPumpSt && !digitalRead(highPurifiedBuoy) && digitalRead(lowFilteredBuoy))
             {
                 output(ACInverter, 1);
                 delay(250);
@@ -590,41 +595,41 @@ void purificationLoop()
                     raise(UVLIGHTNOTWORKINGERROR, String(F("The UV amperage sensor detected "))+String(amps)+String(F("A. The UV light must be either broken or disconnected. Check the connections and if it persists, replace the UV light")));
                 }
 
-                pumpPrevMillis[1] = millis();
-                UVMillis = pumpPrevMillis[1];
+                UVPumpPrevMillis = millis();
+                UVMillis = UVPumpPrevMillis;
                 output(UVPump, 1);
-                pumpSt[1] = true;
+                data.UVPumpSt = true;
             }
-            if (pumpSt[1]) // if UV is on and each 800ms
+            if (data.UVPumpSt) // if UV is on and each 800ms
             {
                 workingTime += millis() - UVMillis; // Add this time to workingTime
-                purifiedWater = (workingTime * config.UVPUMPFLOW) / 3600000.00; // calculate the amount of purified water
+                data.purifiedWater = ((float)workingTime * config.UVPUMPFLOW) / 3600000.00; // calculate the amount of purified water
                 UVMillis = millis();
             }
 
-            if (pumpSt[1] && (!digitalRead(lowFilteredBuoy) || digitalRead(highPurifiedBuoy)))
+            if (data.UVPumpSt && (!digitalRead(lowFilteredBuoy) || digitalRead(highPurifiedBuoy)))
             {
                 output(UVPump, 0);
                 workingTime += millis() - UVMillis; // Add this time to workingTime
-                purifiedWater = (workingTime * config.UVPUMPFLOW) / 3600000.00; // calculate the amount of purified water
+                data.purifiedWater = ((float)workingTime * config.UVPUMPFLOW) / 3600000.00; // calculate the amount of purified water
                 delay(1000);
                 output(UVRelay, 0);
                 delay(250);
                 output(ACInverter, 0);
-                pumpSt[1] = false;
+                data.UVPumpSt = false;
             }
 
-            if (!pumpSt[2] && !digitalRead(endBuoy) && digitalRead(lowPurifiedBuoy))
+            if (!data.endPumpSt && !digitalRead(endBuoy) && digitalRead(lowPurifiedBuoy))
             {
                 output(endPump, 1);
-                pumpPrevMillis[2] = millis();
-                pumpSt[2] = true;
+                endPumpPrevMillis = millis();
+                data.endPumpSt = true;
             }
 
-            if (pumpSt[2] && (!digitalRead(lowPurifiedBuoy) || digitalRead(endBuoy)))
+            if (data.endPumpSt && (!digitalRead(lowPurifiedBuoy) || digitalRead(endBuoy)))
             {
                 output(endPump, 0);
-                pumpSt[2] = false;
+                data.endPumpSt = false;
             }
 
             break;
@@ -643,8 +648,8 @@ void purificationLoop()
 #endif
 
             waitForVoltage(config.STARTWORKINGVOLTAGE);
-            pumpSt[3] = true;
-            pumpPrevMillis[3] = millis();
+            data.filterPumpSt = true;
+            filterPumpPrevMillis = millis();
             output(filterRelay, 1);
 
             mode = FILTERWORKING;
@@ -659,7 +664,7 @@ void purificationLoop()
             if (digitalRead(highFilteredBuoy) || !digitalRead(lowSurfaceBuoy))
             {
                 output(filterRelay, 0);
-                pumpSt[3] = false;
+                data.filterPumpSt = false;
                 mode = TRANSITIONTOPUMPSWORKING;
             }
             break;
