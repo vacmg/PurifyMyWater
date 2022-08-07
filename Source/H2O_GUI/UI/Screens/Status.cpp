@@ -276,12 +276,12 @@ void drawStatusForeground(const char *voltage, const char *waterAmount)//TODO ad
     label.setFontSize(2);
     btn2.setCoords(300, 234);
     btn2.setCoords1(420, 290);
-    if (currentError != NoError) // ERROR
+    if (data.currentError != NoError) // ERROR
     {
         label.setString(getString(StatusBtn_Error_STR));
         btn2.setSecondaryColor(Color(239, 127, 26));
     }
-    else if (config.purificationStatus == OFF) // OFF
+    else if (config.systemStatus == SYSTEM_OFF) // OFF
     {
         label.setString(getString(OFF_STR));
         btn2.setSecondaryColor(Color(176, 54, 20));
@@ -658,20 +658,20 @@ void clickStatus()
     }
     else if (btn2.isPressed())
     {
-        if (currentError != NoError)
+        if (data.currentError != NoError)
         {
             debug(F("Button FAILURE pressed\n")); // TODO Draw ERROR message
         }
-        else if (config.purificationStatus == ON)
+        else if (config.systemStatus == SYSTEM_ON)
         {
             debug(F("Button OFF pressed\n"));
-            config.purificationStatus = OFF; // TODO send off command
+            config.systemStatus = SYSTEM_OFF; // TODO send off command
             drawStatusForeground("15.4V", "320L");
         }
-        else if (config.purificationStatus == OFF)
+        else if (config.systemStatus == SYSTEM_OFF)
         {
             debug(F("Button ON pressed\n"));
-            config.purificationStatus = ON; // TODO send on command
+            config.systemStatus = SYSTEM_ON; // TODO send on command
             drawStatusForeground("15.4V", "320L");
         }
         delay(500);

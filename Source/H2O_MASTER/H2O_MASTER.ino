@@ -6,19 +6,19 @@
     Author:     vacmg
 */
 
-//todo add eeprom config
-
 #include <Arduino.h>
-
-char VERSION[] PROGMEM = "2.0-alpha-1";
 
 /*------------Config----------------*/
 
 #define DEBUG true
-#define USEVOLATILECONFIG true // used to disable EEPROM writes due to saving configuration in persistent storage
+
+#define USEVOLATILECONFIG true // used to disable EEPROM writes due to saving configuration in the persistent storage
 #define SETDEFAULTCONFIG false // used to set the config to the default config
-#define ONLYVITALACTIVITYALLOWED false // used to disable purification routines
-#define TEMPERATURE true
+
+#define DISABLEHARDWARECHECKS false // used to disable check routines to detect faulty hardware
+#define DISABLEPURIFICATION false // used to disable purification control systems
+#define DISABLETEMPERATURE false // used to disable temperature control systems
+
 #define OVERRRIDEMAXVOLTAGE false // useful to check some functions without powering all the system
 
 /*------------Config----------------*/
@@ -27,12 +27,23 @@ char VERSION[] PROGMEM = "2.0-alpha-1";
 
 #include "Shared/SharedData.h"
 #include "Storage/Storage.h"
-#include "Purification/Purification.h"
+#include "SystemControl/Core/Core.h"
+#if !DISABLETEMPERATURE
+#include "SystemControl/Temperature.h"
+#endif
+#if !DISABLEPURIFICATION
+#include "SystemControl/Purification.h"
+#endif
 #include <Filters.h>
 
 /*------------Libraries-------------*/
 
-// The setup() function runs once each time the micro-controller starts
+
+#if DEBUG
+void readAllSensors();
+#endif
+
+// The setup() function runs once each time the microcontroller starts
 // This function starts serial communication if defined, configures every input and output, set any other variable that needs to and waits for enough voltage in the capacitors to start operating
 void setup()
 {
@@ -62,7 +73,13 @@ void setup()
         debug(F("Configuration successfully load\n"));
 #endif
 
+    coreSetup();
+#if !DISABLETEMPERATURE
+    tempSetup();
+#endif
+#if !DISABLEPURIFICATION
     purificationSetup();
+#endif
 
     debug(F("Setup - Ready\n"));
 }
@@ -83,7 +100,13 @@ void loop()
         readAllSensors(); // temporal debug function
     #endif // DEBUG
 
+    coreLoop();
+#if !DISABLETEMPERATURE
+    tempLoop();
+#endif
+#if !DISABLEPURIFICATION
     purificationLoop();
+#endif
 
     #if DEBUG
         perf = millis() - prevmillis;
@@ -106,7 +129,7 @@ void readAllSensors()
     float ACAmps;
     ACAmps = getACAmps();
 
-#if TEMPERATURE
+#if !DISABLETEMPERATURE
     float temp[3];
     getSensorsTemp(temp);
 #endif

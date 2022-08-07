@@ -6,6 +6,7 @@
 #define H2O_MASTER_COMMSERVER_H
 
 #include "Communications.h"
+#include "../Shared/SharedData.h"
 
 class ComManager
 {

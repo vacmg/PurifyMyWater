@@ -4,9 +4,6 @@
 
 #include "ComManager.h"
 
-// TODO remove this
-#define debug(data) Serial.println(data)
-
 ComManager::ComManager(HardwareSerial* serial)
 {
     this->serial = serial;

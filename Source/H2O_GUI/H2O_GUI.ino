@@ -8,20 +8,22 @@
 
 #include <Arduino.h>
 
-char VERSION[] PROGMEM = "2.0-alpha-1";
-
 /*------------Config----------------*/
 
 #define DEBUG true
-#define DISABLEUI false
-#define DISABLECOMM false
-#define SETDEFAULTSCREENCONFIG false
-#define USEVOLATILECONFIG true
+
+#define DISABLEUI false  // used to disable the UI screen module
+#define DISABLECOMM false // used to disable communications module
+
+#define SETDEFAULTSCREENCONFIG false // used to set the screenConfig to the default screenConfig
+#define USEVOLATILECONFIG true // used to disable EEPROM writes due to saving configuration in the persistent storage
 
 /*------------Config----------------*/
 
+#include "Shared/SharedData.h"
+#if !DISABLEUI
 #include "UI/UI.h"
-
+#endif
 
 //Main Functions
 
