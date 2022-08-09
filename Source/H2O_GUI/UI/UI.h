@@ -195,7 +195,12 @@ void UISetup()
         debug(F("Done\n"));
     }
     else
+    {
+#if USEVOLATILECONFIG
+        setDefaultScreenConfig();
+#endif
         debug(F("UI configuration successfully load\n"));
+    }
 #endif
 
     debug(F("Using language: ")); debug(getString(Lang_STR));debug('\n');

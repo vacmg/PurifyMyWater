@@ -46,11 +46,7 @@ void setup()
     debug('\n');
     //todo Test code after this line
 
-    drawBackground();
-    drawMenu();
-    drawBoolPopup("patataAlerta", F("test.txt"), getString(YES_STR),getString(NO_STR));
-
-    while (true); // TODO delete or comment this
+    //while (true); // TODO delete or comment this
 
     //todo Test code before this line
 
