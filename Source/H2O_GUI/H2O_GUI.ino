@@ -12,7 +12,7 @@
 
 #define DEBUG true
 
-#define DISABLEUI false  // used to disable the UI screen module
+#define DISABLEUI true  // used to disable the UI screen module
 #define DISABLECOMM false // used to disable communications module
 
 #define SETDEFAULTSCREENCONFIG false // used to set the screenConfig to the default screenConfig
@@ -21,6 +21,8 @@
 /*------------Config----------------*/
 
 #include "Shared/SharedData.h"
+#include "Communications/ComManager.h"
+
 #if !DISABLEUI
 #include "UI/UI.h"
 #endif
@@ -32,7 +34,9 @@ void setup()
 #if DEBUG
     Serial.begin(115200);
     delay(200);
-    debug(F("Connected\n"));
+    debug(F("Setup - Booting...\n"));
+    delay(50);
+    debug(F("Purification system version: "));debug((__FlashStringHelper*)VERSION);debug(F("\n\n"));
     delay(50);
 #endif
 
@@ -45,13 +49,24 @@ void setup()
     debug('\n');
     //todo Test code after this line
 
+    //ComManager comManager(&Serial1);
+    //comManager.commSetup();
 
+    Serial1.begin(9600);
+    Serial.println("Starting mirror mode\n");
+    while (true)
+    {
+        if(Serial1.available())
+        {
+            Serial.write(Serial1.read());
+        }
+    }
 
     //while (true); // TODO delete or comment this
 
     //todo Test code before this line
 
-    debug(F("\nSetup Done\n\n"));
+    debug(F("Setup - Ready\n\n"));
     delay(50);
 }
 

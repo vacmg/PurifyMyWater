@@ -15,9 +15,9 @@
 #define USEVOLATILECONFIG true // used to disable EEPROM writes due to saving configuration in the persistent storage
 #define SETDEFAULTCONFIG false // used to set the config to the default config
 
-#define DISABLEHARDWARECHECKS false // used to disable check routines to detect faulty hardware
-#define DISABLEPURIFICATION false // used to disable purification control systems
-#define DISABLETEMPERATURE false // used to disable temperature control systems
+#define DISABLEHARDWARECHECKS true // used to disable check routines to detect faulty hardware
+#define DISABLEPURIFICATION true // used to disable purification control systems
+#define DISABLETEMPERATURE true // used to disable temperature control systems
 
 #define OVERRRIDEMAXVOLTAGE false // useful to check some functions without powering all the system
 
@@ -27,6 +27,7 @@
 
 #include "Shared/SharedData.h"
 #include "Storage/Storage.h"
+#include "Communications/ComManager.h"
 #include "SystemControl/Core/Core.h"
 #if !DISABLETEMPERATURE
 #include "SystemControl/Temperature.h"
@@ -49,8 +50,11 @@ void setup()
 {
 #if DEBUG
     Serial.begin(115200);
-    delay(500);
+    delay(200);
     debug(F("Setup - Booting...\n"));
+    delay(50);
+    debug(F("Purification system version: "));debug((__FlashStringHelper*)VERSION);debug(F("\n\n"));
+    delay(50);
 #endif
 
 #if USEVOLATILECONFIG
@@ -70,7 +74,12 @@ void setup()
         debug(F("Done\n"));
     }
     else
+    {
+#if USEVOLATILECONFIG
+        setDefaultConfig();
+#endif
         debug(F("Configuration successfully load\n"));
+    }
 #endif
 
     coreSetup();
@@ -81,7 +90,16 @@ void setup()
     purificationSetup();
 #endif
 
-    debug(F("Setup - Ready\n"));
+//todo Test code after this line
+
+    ComManager comManager(&Serial1);
+    comManager.commSetup();
+
+    //while (true); // TODO delete or comment this
+
+    //todo Test code before this line
+
+    debug(F("Setup - Ready\n\n"));
 }
 
 #if DEBUG
