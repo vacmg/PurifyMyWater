@@ -11,6 +11,8 @@
 
 // Utils
 const char ES_LANG_STR[] PROGMEM = "Espanol";
+const char ES_YES_STR[] PROGMEM = "YES";
+const char ES_NO_STR[] PROGMEM = "NO";
 const char ES_ON_STR[] PROGMEM = "ON";
 const char ES_OFF_STR[] PROGMEM = "OFF";
 const char ES_Previous_STR[] PROGMEM = "Anterior";
@@ -91,7 +93,7 @@ const char ES_Language_Title_STR[] PROGMEM = "Select a language";
 
 
 
-const char *const langES[] PROGMEM = {ES_LANG_STR,ES_ON_STR, ES_OFF_STR, ES_Previous_STR, ES_Next_STR,ES_Delete_STR, ES_OK_STR, // Utils
+const char *const langES[] PROGMEM = {ES_LANG_STR,ES_YES_STR,ES_NO_STR,ES_ON_STR, ES_OFF_STR, ES_Previous_STR, ES_Next_STR,ES_Delete_STR, ES_OK_STR, // Utils
                                       ES_Status_Title_STR, ES_StatusBtn_Error_STR, ES_MenuBtn_STR, // Status
                                       ES_Menu_Title_STR, ES_HelpBtn_STR, ES_EngineeringBtn_STR, ES_SettingsBtn_STR, ES_ExtraFunctionsBtn, // Menu
                                       ES_ExtraFunctions_Title_STR, ES_ExtraFunctions_InstallWizard_STR, ES_ExtraFunctions_StartInstallWizard_STR, ES_ExtraFunctions_ACPSU_STR, ES_ExtraFunctions_DCPSU_STR, // ExtraFunctions

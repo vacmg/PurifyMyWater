@@ -194,6 +194,38 @@ double getNumInput(const String& titleNumInput, const String& unit, double value
     return getNumInput(titleNumInput,unit,value,2);
 }
 
+void okPopup(const String& headerText, const String& messagePath, const String& btn1Text)
+{
+    drawOkPopup(headerText,messagePath,btn1Text);
+
+    bool buttonPressed = false;
+    while (!buttonPressed)
+    {
+        if(btn1.isPressed())
+        {
+            buttonPressed = true;
+        }
+    }
+}
+bool boolPopup(const String& headerText, const String& messagePath, const String& btn1TrueText, const String& btn2FalseText)
+{
+    drawBoolPopup(headerText,messagePath,btn1TrueText,btn2FalseText);
+
+    char buttonPressed = -1;
+    while (buttonPressed == -1)
+    {
+        if(btn1.isPressed())
+        {
+            buttonPressed = 1;
+        }
+        else if(btn2.isPressed())
+        {
+            buttonPressed = 0;
+        }
+    }
+    return buttonPressed==1;
+}
+
 void setRotation(enum Rotation rotation)
 {
     debug(F("Rotation set to "));debug(rotationToString(rotation));debug('\n');

@@ -11,9 +11,11 @@ void setFontSizeArray(byte* fontSizeArray, byte tl, byte cl, byte bl, byte tr, b
 void setFontSizeArray(byte* fontSizeArray, byte tl, byte tr, byte bl, byte br);
 double getNumInput(const String& titleNumInput, const String& unit, double value, byte decimalPlaces);
 double getNumInput(const String& titleNumInput, const String& unit, double value);
-void setRotation(byte rotation);
 
-bool loadLanguage();
+void okPopup(const String& headerText, const String& messagePath, const String& btn1Text);
+bool boolPopup(const String& headerText, const String& messagePath, const String& btn1TrueText, const String& btn2FalseText);
+
+void setRotation(enum Rotation rotation);
 
 #include "Utils.cpp"
 

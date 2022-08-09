@@ -306,3 +306,44 @@ void drawNumInput (const String& titleNumInput, const String& unit)
     Rectangle outputUnit(370,95,420,145,Color(),Color(255,255,255),&unitLabel);
     my_lcd.draw(&outputUnit);
 }
+
+void drawPopup(const String& headerText, const String& messagePath)
+{
+    Rectangle popupFrame(60,90, 420,310,Color(0, 0, 0), Color(240, 240, 240));
+    Rectangle header (61,91, 419,135, Color(0, 0, 0), &label);
+    Label messageLabel(0,0,"",5,Color(0,0,0)); // Change here message text color
+    TextBox message(61,136, 419,280,messagePath.c_str(),&messageLabel);
+
+    my_lcd.draw(&popupFrame);
+    label.setString(headerText.c_str());
+    my_lcd.draw(&header);
+    my_lcd.draw(&message);
+}
+
+void drawOkPopup(const String& headerText, const String& messagePath, const String& btn1Text)
+{
+    drawPopup(headerText,messagePath);
+    btn1.setCoords(61,281);
+    btn1.setCoords1(419,309);
+    btn1.setSecondaryColor(240,240,240);
+    label.setString(btn1Text.c_str());
+    my_lcd.draw(&btn1);
+    btn1.setSecondaryColor(255,255,255);
+}
+
+void drawBoolPopup(const String& headerText, const String& messagePath, const String& btn1TrueText, const String& btn2FalseText)
+{
+    drawPopup(headerText,messagePath);
+    btn1.setCoords(61,281);
+    btn1.setCoords1(240,309);
+    btn1.setSecondaryColor(240,240,240);
+    btn2.setCoords(241,281);
+    btn2.setCoords1(419,309);
+    btn2.setSecondaryColor(240,240,240);
+    label.setString(btn1TrueText.c_str());
+    my_lcd.draw(&btn1);
+    btn1.setSecondaryColor(255,255,255);
+    label.setString(btn2FalseText.c_str());
+    my_lcd.draw(&btn2);
+    btn2.setSecondaryColor(255,255,255);
+}
