@@ -86,7 +86,6 @@ bool Communications::extractRequestMessage(char* payload, enum VariableIDs* vari
     return true;
 }
 
-
 // Link layer
 
 // This function sends a message, waits for ACK & if timeout, it retries MAXMSGRETRIES of times
@@ -100,6 +99,7 @@ bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
         return false;
     }
     char message[MAXMSGSIZE];
+    message[0] = 1; // This avoids strcat placing the '\n' in message[0] (this will only happen if message[0] is 0 (memory is not automatically cleared))
     message[1] = payloadLength+1; // set size of the message
     strcpy(&message[2],payload); // copy payload to message
     strcat(message,"\n"); // Add \n terminator
