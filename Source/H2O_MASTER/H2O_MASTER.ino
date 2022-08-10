@@ -53,7 +53,7 @@ void setup()
     delay(200);
     debug(F("Setup - Booting...\n"));
     delay(50);
-    debug(F("Purification system version: "));debug((__FlashStringHelper*)VERSION);debug(F("\n\n"));
+    debug(F("PurifyMyWater System version: "));debug((__FlashStringHelper*)VERSION);debug(F("\n\n"));
     delay(50);
 #endif
 
@@ -94,12 +94,17 @@ void setup()
 
     ComManager comManager(&Serial1);
     //comManager.commSetup();
-    Serial1.begin(9600);
+    Serial1.begin(115200);
+
+    /*char payload[MAXPAYLOADSIZE] = "";
+    Communications::createSendMessage(payload,VERSION_ID,"patata.3");
+    debug(Communications::sendMessage(payload,&Serial1));//*/
+
     while (!comManager.doHandshake())
     {
         debug(F("Handshake failed\n"));
     }
-    debug(F("Successful handshake"));
+    debug(F("Successful handshake"));//*/
 
     while (true); // TODO delete or comment this
 

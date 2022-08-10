@@ -36,7 +36,7 @@ void setup()
     delay(200);
     debug(F("Setup - Booting...\n"));
     delay(50);
-    debug(F("Purification system version: "));debug((__FlashStringHelper*)VERSION);debug(F("\n\n"));
+    debug(F("PurifyMyWater UI version: "));debug((__FlashStringHelper*)VERSION);debug(F("\n\n"));
     delay(50);
 #endif
 
@@ -51,15 +51,34 @@ void setup()
 
     ComManager comManager(&Serial1);
     //comManager.commSetup();
-    Serial1.begin(9600);
+    Serial1.begin(115200);
+
+    /*char patata[MAXPAYLOADSIZE] = "";
+    VariableIDs variableID;
+    FunctionIDs functionID;
+    byte step;
+    char value[16];
+    while (true)
+    {
+        if(Serial1.available())
+        {
+            debug(Communications::getMessage(patata,&Serial1));debug('\n');
+            Serial.println(patata);
+            Communications::extractRequestMessage(patata,&variableID,&functionID,&step);
+            Serial.println(step);
+            delay(1000);
+        }
+
+    }//*/
+
     while (!comManager.doHandshake())
     {
         debug(F("Handshake failed\n"));
     }
-    debug(F("Successful handshake"));
+    debug(F("Successful handshake"));//*/
 
-    /*
-    Serial.println("Starting mirror mode\n");
+
+    /*Serial.println("Starting mirror mode\n");
     while (true)
     {
         if(Serial1.available())
