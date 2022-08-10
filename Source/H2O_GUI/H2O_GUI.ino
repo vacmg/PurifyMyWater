@@ -49,10 +49,16 @@ void setup()
     debug('\n');
     //todo Test code after this line
 
-    //ComManager comManager(&Serial1);
+    ComManager comManager(&Serial1);
     //comManager.commSetup();
-
     Serial1.begin(9600);
+    while (!comManager.doHandshake())
+    {
+        debug(F("Handshake failed\n"));
+    }
+    debug(F("Successful handshake"));
+
+    /*
     Serial.println("Starting mirror mode\n");
     while (true)
     {
@@ -60,9 +66,9 @@ void setup()
         {
             Serial.write(Serial1.read());
         }
-    }
+    }//*/
 
-    //while (true); // TODO delete or comment this
+    while (true); // TODO delete or comment this
 
     //todo Test code before this line
 

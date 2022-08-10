@@ -15,76 +15,74 @@
 // Application layer
 
 // This function puts information together to create a sendMessage payload
-bool Communications::createSendMessage(char* payload, const char* variableID, const char* value)
+bool Communications::createSendMessage(char* payload, enum VariableIDs variableID, const char* value)
 {
     if(value == nullptr || payload == nullptr)
         return false;
     payload[0] = SENDMESSAGE_ID; // ID sendMessage
-    payload[1] = '\0'; // ensure strcat works (it will be replaced by strcat)
-    strcat(payload, variableID);
-    strcat(payload,SEPARATOR);
+    payload[1] = variableID;
+    payload[2] = '\0'; // ensure strcat works (it will be replaced by strcat)
     strcat(payload, value);
     return true;
 }
 
 // This function extracts information from a sendMessage payload
-bool Communications::extractSendMessage(char* payload, char* variableID, char* value)
+bool Communications::extractSendMessage(char* payload, enum VariableIDs* variableID, char* value)
 {
-    if (value == nullptr || payload == nullptr)
+    if (value == nullptr || payload == nullptr || variableID == nullptr)
         return false;
-    strcpy(variableID,strtok(&payload[1],SEPARATOR));
-    strcpy(value,strtok(nullptr,SEPARATOR));
+    *variableID = (VariableIDs)payload[1];
+    strcpy(value,&payload[2]);
 }
 
 // This function puts information together to create a requestAnswerMessage payload
-bool Communications::createRequestAnswerMessage(char* payload, const char* variableID, const char* value, const char* functionID)
+bool Communications::createRequestAnswerMessage(char* payload, enum VariableIDs variableID, const char* value, enum FunctionIDs functionID, byte step)
 {
-    if (payload == nullptr || value == nullptr || variableID == nullptr || functionID == nullptr)
+    if (payload == nullptr || value == nullptr)
         return false;
 
     payload[0] = REQUESTANSWERMESSAGE_ID;
-    payload[1] = '\0'; // ensure strcat works (it will be replaced by strcat)
-    strcat(payload, SEPARATOR);
-    strcat(payload, variableID);
-    strcat(payload, SEPARATOR);
+    payload[1] = variableID;
+    payload[2] = functionID;
+    payload[3] = step;
+    payload[4] = '\0'; // ensure strcat works (it will be replaced by strcat)
     strcat(payload, value);
-    strcat(payload, SEPARATOR);
-    strcat(payload, functionID);
     return true;
 }
 
 // This function extracts information from a requestAnswerMessage payload
-bool Communications::extractRequestAnswerMessage(char* payload, char* variableID, char* value, char* functionID)
+bool Communications::extractRequestAnswerMessage(char* payload, enum VariableIDs* variableID, char* value, enum FunctionIDs* functionID, byte* step)
 {
     if (payload == nullptr || value == nullptr || variableID == nullptr || functionID == nullptr)
         return false;
-
-    strcpy(variableID, strtok(&payload[1], SEPARATOR));
-    strcpy(value, strtok(nullptr, SEPARATOR));
-    strcpy(functionID, strtok(nullptr, SEPARATOR));
+    *variableID = (VariableIDs)payload[1];
+    *functionID = (FunctionIDs)payload[2];
+    *step = payload[3];
+    strcpy(value, &payload[4]);
     return true;
 }
 
 // This function puts information together to create a requestMessage payload
-bool Communications::createRequestMessage(char* payload, const char* variableID, const char* functionID)
+bool Communications::createRequestMessage(char* payload, enum VariableIDs variableID, enum FunctionIDs functionID, byte step)
 {
-    if(variableID == nullptr || payload == nullptr || functionID == nullptr)
+    if(payload == nullptr)
         return false;
     payload[0] = REQUESTMESSAGE_ID;
-    payload[1] = '\0'; // ensure strcat works (it will be replaced by strcat)
-    strcat(payload,variableID);
-    strcat(payload,SEPARATOR);
-    strcat(payload,functionID);
+    payload[1] = variableID;
+    payload[2] = functionID;
+    payload[3] = step;
+    payload[4] = '\0';
     return true;
 }
 
 // This function extracts information from a requestMessage payload
-bool Communications::extractRequestMessage(char* payload, char* variableID, char* functionID)
+bool Communications::extractRequestMessage(char* payload, enum VariableIDs* variableID, enum FunctionIDs* functionID, byte* step)
 {
     if(payload == nullptr || variableID == nullptr || functionID == nullptr)
         return false;
-    strcpy(variableID,strtok(&payload[1],SEPARATOR));
-    strcpy(functionID,strtok(nullptr,SEPARATOR));
+    *variableID = (VariableIDs)payload[1];
+    *functionID = (FunctionIDs)payload[2];
+    *step = payload[3];
     return true;
 }
 

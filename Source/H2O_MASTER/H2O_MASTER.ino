@@ -93,9 +93,15 @@ void setup()
 //todo Test code after this line
 
     ComManager comManager(&Serial1);
-    comManager.commSetup();
+    //comManager.commSetup();
+    Serial1.begin(9600);
+    while (!comManager.doHandshake())
+    {
+        debug(F("Handshake failed\n"));
+    }
+    debug(F("Successful handshake"));
 
-    //while (true); // TODO delete or comment this
+    while (true); // TODO delete or comment this
 
     //todo Test code before this line
 

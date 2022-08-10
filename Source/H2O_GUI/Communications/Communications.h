@@ -8,7 +8,8 @@
 #define MAXMSGRETRIES 3
 #define MSGTIMEOUT 2500
 #define MAXPAYLOADSIZE 60
-#define MAXMSGSIZE MAXPAYLOADSIZE + 4 // 1(size)+1(crc)+1(\n terminator)+1(NULL)
+
+#define MAXMSGSIZE MAXPAYLOADSIZE + 4 // payload+1(size)+1(crc)+1(\n terminator)+1(NULL) // Arduino Serial buffers have 64 bytes by default, to use more space (up to 256B), use #define SERIAL_TX_BUFFER_SIZE xx & SERIAL_RX_BUFFER_SIZE
 #define SEPARATOR ","
 
 #define ACK 6
@@ -18,6 +19,7 @@
 #define SENDMESSAGE_ID 3
 
 #include <Arduino.h>
+#include "../Shared/SharedData.h"
 
 /*
  * Message structure:
@@ -42,22 +44,22 @@ public:
     // Application layer
 
     // This function puts information together to create a sendMessage payload
-    static bool createSendMessage(char* payload, const char* variableID, const char* value);
+    static bool createSendMessage(char* payload, enum VariableIDs variableID, const char* value);
 
     // This function extracts information from a sendMessage payload
-    static bool extractSendMessage(char* payload, char* variableID, char* value);
+    static bool extractSendMessage(char* payload, enum VariableIDs* variableID, char* value);
 
     // This function puts information together to create a requestAnswerMessage payload
-    static bool createRequestAnswerMessage(char* payload, const char* variableID, const char* value, const char* functionID);
+    static bool createRequestAnswerMessage(char* payload, enum VariableIDs variableID, const char* value, enum FunctionIDs functionID, byte step);
 
     // This function extracts information from a requestAnswerMessage payload
-    static bool extractRequestAnswerMessage(char* payload, char* variableID, char* value, char* functionID);
+    static bool extractRequestAnswerMessage(char* payload, enum VariableIDs* variableID, char* value, enum FunctionIDs* functionID, byte* step);
 
     // This function puts information together to create a requestMessage payload
-    static bool createRequestMessage(char* payload, const char* variableID, const char* functionID);
+    static bool createRequestMessage(char* payload, enum VariableIDs variableID, enum FunctionIDs functionID, byte step);
 
     // This function extracts information from a requestMessage payload
-    static bool extractRequestMessage(char* payload, char* variableID, char* functionID);
+    static bool extractRequestMessage(char* payload, enum VariableIDs* variableID, enum FunctionIDs* functionID, byte* step);
 
     // Link layer
 

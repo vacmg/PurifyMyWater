@@ -17,12 +17,17 @@
 
 // Global data types
 
-const char VERSION[] PROGMEM = "v2-alpha-1";
+#define MAXVERSIONSIZE 16
+const char VERSION[] PROGMEM = "v2-alpha-1"; // MAXIMUN size is 16 bytes
 
+// It must have less than 255 members
 enum VariableIDs {VERSION_ID, // Other
         currentError_ID, voltage_ID, ACUVAmps_ID, DCAmps_ID, purifiedWater_ID, wellPumpSt_ID, UVPumpSt_ID, endPumpSt_ID, filterPumpSt_ID, secBuoySt_ID, lowSurfaceBuoySt_ID, highSurfaceBuoySt_ID, lowFilteredBuoySt_ID, highFilteredBuoySt_ID, lowPurifiedBuoySt_ID, highPurifiedBuoySt_ID, endBuoySt_ID, screenSensorSt_ID, // Data
     purificationStatus_ID, workingMode_ID, STARTCHARGINGVOLTAGE_ID, STOPCHARGINGVOLTAGE_ID, STARTWORKINGVOLTAGE_ID, STOPWORKINGVOLTAGE_ID, DCAMMSENSITIVITY_ID, DCAMMZERO_ID, ACAMMSENSITIVITY_ID, ACAMMZERO_ID, ACFREQUENCY_ID, ESTIMATEDUVAMPERAGE_ID, WELLPUMPTIMEOUT_ID, UVPUMPTIMEOUT_ID, ENDPUMPTIMEOUT_ID, FILTERTIMEOUT_ID, UVPUMPFLOW_ID, TEMPCHECKTIME_ID, STOPWORKINGTEMP_ID, STARTCASETEMP_ID, STOPCASETEMP_ID, STARTPSUTEMP_ID, STOPPSUTEMP_ID // Config
 };
+
+// It must have less than 255 members
+enum FunctionIDs {Handshake_ID};
 
 enum Errors {NoError = 0, BuoyIncongruenceError, PumpTimeoutError,
         UVLightNotWorkingError, ScreenNotConnectedError, TempSensorsAmountError,
@@ -33,7 +38,7 @@ enum SystemStatus {SYSTEM_OFF = 0, SYSTEM_ON = 1}; // This struct stores if the 
 enum WorkingMode {Purification_Mode, DCPSU_Mode, ACPSU_Mode}; // This struct stores the system working mode which can be the default purification mode and some alternative uses of the system
 
 // This struct stores all the system configuration
-typedef struct Configuration // TODO create a toStr & toStruct functions to send the whole config
+typedef struct Configuration // TODO create a toStr & toStruct functions to send the whole config (union?)
 {
     enum SystemStatus systemStatus; // Used to store whether the purification system is on or off
     enum WorkingMode workingMode; // Used to store the current system mode
