@@ -57,7 +57,7 @@ char ComManager::handshakeLoop(char* message, char* version, char* otherVersion)
                 case REQUESTANSWERMESSAGE_ID: // If it is the answer of our request, return 1
                     if(Communications::extractRequestAnswerMessage(message,&variableID,otherVersion,&functionID,&step))
                     {
-                        if(variableID==VERSION_ID)
+                        if(variableID==VERSION_ID && functionID == Handshake_ID)
                         {
                             return 1;
                         }
@@ -66,7 +66,7 @@ char ComManager::handshakeLoop(char* message, char* version, char* otherVersion)
                 case REQUESTMESSAGE_ID: // if it is the request of the other MCU, proccess the request and return -1
                     if(Communications::extractRequestMessage(message,&variableID,&functionID,&step))
                     {
-                        if(variableID==VERSION_ID)
+                        if(variableID==VERSION_ID && functionID == Handshake_ID)
                         {
                             if(Communications::createRequestAnswerMessage(message,variableID,version,functionID,step))
                                 if(sendMessage(message))
