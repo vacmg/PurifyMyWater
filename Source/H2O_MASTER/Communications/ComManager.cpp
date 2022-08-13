@@ -47,7 +47,7 @@ char ComManager::handshakeLoop(char* message, char* version, char* otherVersion)
 {
     if(serial->available())
     {
-        if(Communications::getMessage(message,serial)) // If a message is received
+        if(Communications::getQuickMessage(message,serial)) // If a message is received
         {
             enum VariableIDs variableID;
             enum FunctionIDs functionID;
@@ -69,7 +69,7 @@ char ComManager::handshakeLoop(char* message, char* version, char* otherVersion)
                         if(variableID==VERSION_ID && functionID == Handshake_ID)
                         {
                             if(Communications::createRequestAnswerMessage(message,variableID,version,functionID,step))
-                                if(sendMessage(message))
+                                if(sendQuickMessage(message))
                                     return -1;
                         }
                     }
@@ -87,7 +87,8 @@ bool ComManager::doHandshake()
     char message[MAXPAYLOADSIZE];
     if(Communications::createRequestMessage(message,VERSION_ID,Handshake_ID,1))
     {
-        sendMessage(message); // Send handshake request
+        sendQuickMessage(message); // Send handshake request
+        //TODO modificar funcion para no colapsar al enviar a la vez 2 mensajes (usar los quick)
 
         // Get VERSION to RAM (it is stored in PROGMEM)
         char version[MAXVERSIONSIZE];
@@ -161,4 +162,9 @@ void ComManager::requestAnswerMessageMasterHandler(char* buffer)
 bool ComManager::sendMessage(const char *payload)
 {
     return Communications::sendMessage(payload,serial);
+}
+
+bool ComManager::sendQuickMessage(const char* payload)
+{
+    return Communications::sendQuickMessage(payload,serial);
 }

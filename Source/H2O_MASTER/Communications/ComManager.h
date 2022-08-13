@@ -19,6 +19,7 @@ public:
     bool commDisabler();
     void commLoop();
     bool sendMessage(const char* payload);
+    bool sendQuickMessage(const char* payload);
 
     bool doHandshake();
 

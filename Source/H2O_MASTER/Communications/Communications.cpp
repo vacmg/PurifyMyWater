@@ -134,6 +134,36 @@ bool Communications::getMessage(char* payload, HardwareSerial* serial)
     return false;
 }
 
+// This function sends a message
+// On success, it returns true, otherwise false.
+bool Communications::sendQuickMessage(const char* payload, HardwareSerial* serial)
+{
+    byte payloadLength = strlen(payload);
+    if(payloadLength>MAXPAYLOADSIZE)
+    {
+        debug(F("Payload exceeded maximum message size: "));debug(payloadLength);debug(F(" > "));debug(MAXPAYLOADSIZE);debug('\n');
+        return false;
+    }
+    char message[MAXMSGSIZE];
+    message[0] = 1; // This avoids strcat placing the '\n' in message[0] (this will only happen if message[0] is 0 (memory is not automatically cleared))
+    message[1] = payloadLength+1; // set size of the message
+    strcpy(&message[2],payload); // copy payload to message
+    strcat(message,"\n"); // Add \n terminator
+    message[0] = CRC8((byte*)&message[1],message[1]); // set CRC of the message
+
+    serial->write(message,payloadLength+3); //[CRC][size][payload]\n
+    return true;
+}
+
+// This function gets a message, verifies & extract its payload & returns true if the message is valid
+bool Communications::getQuickMessage(char* payload, HardwareSerial* serial)
+{
+    delay(100);
+    serial->readBytesUntil('\n',payload,MAXMSGSIZE); // [CRC][size][payload]
+
+    return verifyMessage(payload); // if crc match expected crc
+}
+
 // This function extracts the payload from a message & validates it against a precalculated CRC8
 // This function modifies the given input (message) removing CRC8 code & size bytes
 bool Communications::verifyMessage(char* message)
