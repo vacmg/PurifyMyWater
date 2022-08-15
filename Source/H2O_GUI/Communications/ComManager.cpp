@@ -4,13 +4,16 @@
 
 #include "ComManager.h"
 
-ComManager::ComManager(HardwareSerial* serial)
+ComManager::ComManager(HardwareSerial* serial, void (*sendMessageHandler)(enum VariableIDs variableID, char* value), void (*requestMessageHandler)(enum VariableIDs variableID, enum FunctionIDs functionID, byte step), void (*requestAnswerMessageHandler)(enum VariableIDs variableID, char* value, enum FunctionIDs functionID, byte step))
 {
     this->serial = serial;
     this->enabled = false;
+    this->sendMessageHandler = sendMessageHandler;
+    this->requestMessageHandler = requestMessageHandler;
+    this->requestAnswerMessageHandler = requestAnswerMessageHandler;
 }
 
-bool ComManager::commSetup() // TODO start communications
+bool ComManager::commSetup()
 {
     if(!enabled)
     {
@@ -33,7 +36,7 @@ bool ComManager::commSetup() // TODO start communications
     else return true;
 }
 
-bool ComManager::commDisabler() // TODO end communications
+bool ComManager::commDisabler()
 {
     if(enabled)
     {
@@ -130,63 +133,56 @@ bool ComManager::doHandshake()
 }
 
 void ComManager::commLoop()
-{/*
+{
     if(enabled && serial->available())
     {
         char serialBuffer[MAXPAYLOADSIZE] = "";
+        enum VariableIDs variableID;
+        enum FunctionIDs functionID;
+        byte step;
+        char value[MAXVALUESIZE];
         if(Communications::getMessage(serialBuffer,serial))
         {
             switch (serialBuffer[0])
             {
                 case REQUESTMESSAGE_ID:
-                    requestMessageMasterHandler(serialBuffer);
+                    Communications::extractRequestMessage(serialBuffer,&variableID,&functionID,&step);
+                    requestMessageHandler(variableID,functionID,step);
                     debug(F("REQUESTMESSAGE\n"));
                     break;
                 case REQUESTANSWERMESSAGE_ID:
-                    requestAnswerMessageMasterHandler(serialBuffer);
+                    Communications::extractRequestAnswerMessage(serialBuffer,&variableID,value,&functionID,&step);
+                    requestAnswerMessageHandler(variableID,value,functionID,step);
                     debug(F("REQUESTANSWERMESSAGE\n"));
                     break;
                 case SENDMESSAGE_ID:
-                    sendMessageMasterHandler(serialBuffer);
+                    Communications::extractSendMessage(serialBuffer,&variableID,value);
+                    sendMessageHandler(variableID,value);
                     debug(F("SENDMESSAGE\n"));
                     break;
                 default:
                     debug(F("Unknown message: "));debug(serialBuffer);debug('\n');
             }
         }
-    }*/
+    }
 }
 
-void ComManager::sendMessageMasterHandler(char* buffer)
-{
-
-}
-
-void ComManager::requestMessageMasterHandler(char* buffer)
-{
-    //Communications::extractRequestMessage(buffer,variableId,functionId);
-}
-
-void ComManager::requestAnswerMessageMasterHandler(char* buffer)
-{
-
-}
 
 bool ComManager::sendMessage(const char *payload)
 {
-    return Communications::sendMessage(payload,serial);
+    return enabled && Communications::sendMessage(payload,serial);
 }
 
 bool ComManager::sendQuickMessage(const char* payload)
 {
-    return Communications::sendQuickMessage(payload,serial) && await();
+    return enabled && Communications::sendQuickMessage(payload,serial) && await();
 }
 
 bool ComManager::flush()
 {
-    return Communications::flush(serial);
+    return enabled && Communications::flush(serial);
 }
 bool ComManager::await()
 {
-    return Communications::await(serial);
+    return enabled && Communications::await(serial);
 }
