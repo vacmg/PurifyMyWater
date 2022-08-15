@@ -18,6 +18,7 @@
 #define DISABLEHARDWARECHECKS true // used to disable check routines to detect faulty hardware
 #define DISABLEPURIFICATION true // used to disable purification control systems
 #define DISABLETEMPERATURE true // used to disable temperature control systems
+#define DISABLECOMM false // used to disable GUI management & Communications
 
 #define OVERRRIDEMAXVOLTAGE false // useful to check some functions without powering all the system
 
@@ -27,13 +28,18 @@
 
 #include "Shared/SharedData.h"
 #include "Storage/Storage.h"
-#include "Communications/ComManager.h"
 #include "SystemControl/Core/Core.h"
 #if !DISABLETEMPERATURE
 #include "SystemControl/Temperature.h"
 #endif
 #if !DISABLEPURIFICATION
 #include "SystemControl/Purification.h"
+#endif
+#if !DISABLECOMM
+#include "Communications/ComManager.h"
+#include "GUICommHandlers/GUICommHandlers.h"
+#else
+// TODO create ';' macros to disable communication functions
 #endif
 #include <Filters.h>
 
@@ -90,11 +96,7 @@ void setup()
     purificationSetup();
 #endif
 
-//todo Test code after this line
-
-    ComManager comManager(&Serial1);
-    comManager.commSetup();
-
+    //todo Test code after this line
 
 
 
@@ -118,7 +120,6 @@ void loop()
 {
     #if DEBUG
         prevmillis = millis();
-        readAllSensors(); // temporal debug function
     #endif // DEBUG
 
     coreLoop();
@@ -133,29 +134,3 @@ void loop()
         perf = millis() - prevmillis;
     #endif
 }
-
-#if DEBUG
-void readAllSensors()
-{
-    bool esecBuoy, elowSurfaceBuoy, ehighSurfaceBuoy, elowFilteredBuoy, ehighFilteredBuoy, elowPurifiedBuoy, ehighPurifiedBuoy, eendBuoy;
-    esecBuoy = digitalRead(secBuoy);
-    elowSurfaceBuoy = digitalRead(lowSurfaceBuoy);
-    ehighSurfaceBuoy = digitalRead(highSurfaceBuoy);
-    elowFilteredBuoy = digitalRead(lowFilteredBuoy);
-    ehighFilteredBuoy = digitalRead(highFilteredBuoy);
-    elowPurifiedBuoy = digitalRead(lowPurifiedBuoy);
-    ehighPurifiedBuoy = digitalRead(highPurifiedBuoy);
-    eendBuoy = digitalRead(endBuoy);
-
-    float ACAmps;
-    ACAmps = getACAmps();
-
-#if !DISABLETEMPERATURE
-    float temp[3];
-    getSensorsTemp(temp);
-#endif
-    bool escreenSensor;
-    escreenSensor = digitalRead(screenSensor);
-    1 + 1; //todo remove this :D en serio
-}
-#endif

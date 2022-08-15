@@ -13,7 +13,7 @@
 #define DEBUG true
 
 #define DISABLEUI true  // used to disable the UI screen module
-#define DISABLECOMM false // used to disable communications module
+#define DISABLECOMM false // used to disable communications module // TODO implement it
 
 #define SETDEFAULTSCREENCONFIG false // used to set the screenConfig to the default screenConfig
 #define USEVOLATILECONFIG true // used to disable EEPROM writes due to saving configuration in the persistent storage
@@ -47,9 +47,6 @@ void setup()
     setDefaultConfig(); // TODO read config from master
 
     //todo Test code after this line
-
-    ComManager comManager(&Serial1);
-    comManager.commSetup();
 
 
 

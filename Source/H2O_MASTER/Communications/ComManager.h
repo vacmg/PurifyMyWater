@@ -14,7 +14,7 @@
 class ComManager
 {
 public:
-    explicit ComManager(HardwareSerial* serial);
+    ComManager(HardwareSerial* serial, void (*sendMessageHandler)(enum VariableIDs variableID, char* value), void (*requestMessageHandler)(enum VariableIDs variableID, enum FunctionIDs functionID, byte step), void (*requestAnswerMessageHandler)(enum VariableIDs variableID, char* value, enum FunctionIDs functionID, byte step));
     bool commSetup();
     bool commDisabler();
     void commLoop();
@@ -27,13 +27,14 @@ public:
 private:
     HardwareSerial* serial;
     bool enabled;
+    void (*sendMessageHandler)(enum VariableIDs variableID, char* value);
+    void (*requestMessageHandler)(enum VariableIDs variableID, enum FunctionIDs functionID, byte step);
+    void (*requestAnswerMessageHandler)(enum VariableIDs variableID, char* value, enum FunctionIDs functionID, byte step);
 
     bool checkCompatibleVersions(char* v1, char* v2);
     bool doHandshake();
 
-    void sendMessageMasterHandler(char* buffer);
-    void requestMessageMasterHandler(char* buffer);
-    void requestAnswerMessageMasterHandler(char* buffer);
+
 };
 
 #include "ComManager.cpp"

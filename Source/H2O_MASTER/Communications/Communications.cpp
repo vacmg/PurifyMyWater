@@ -17,7 +17,7 @@
 // This function puts information together to create a sendMessage payload
 bool Communications::createSendMessage(char* payload, enum VariableIDs variableID, const char* value)
 {
-    if(value == nullptr || payload == nullptr)
+    if(value == nullptr || strlen(value)>MAXVALUESIZE-1 || payload == nullptr)
         return false;
     payload[0] = SENDMESSAGE_ID; // ID sendMessage
     payload[1] = variableID;
@@ -27,7 +27,7 @@ bool Communications::createSendMessage(char* payload, enum VariableIDs variableI
 }
 
 // This function extracts information from a sendMessage payload
-bool Communications::extractSendMessage(char* payload, enum VariableIDs* variableID, char* value)
+bool Communications::extractSendMessage(const char* payload, enum VariableIDs* variableID, char* value)
 {
     if (value == nullptr || payload == nullptr || variableID == nullptr)
         return false;
@@ -39,7 +39,7 @@ bool Communications::extractSendMessage(char* payload, enum VariableIDs* variabl
 // This function puts information together to create a requestAnswerMessage payload
 bool Communications::createRequestAnswerMessage(char* payload, enum VariableIDs variableID, const char* value, enum FunctionIDs functionID, byte step)
 {
-    if (payload == nullptr || value == nullptr || step<1)
+    if (payload == nullptr || value == nullptr || strlen(value)>MAXVALUESIZE-1 || step<1)
         return false;
 
     payload[0] = REQUESTANSWERMESSAGE_ID;
@@ -52,7 +52,7 @@ bool Communications::createRequestAnswerMessage(char* payload, enum VariableIDs 
 }
 
 // This function extracts information from a requestAnswerMessage payload
-bool Communications::extractRequestAnswerMessage(char* payload, enum VariableIDs* variableID, char* value, enum FunctionIDs* functionID, byte* step)
+bool Communications::extractRequestAnswerMessage(const char* payload, enum VariableIDs* variableID, char* value, enum FunctionIDs* functionID, byte* step)
 {
     if (payload == nullptr || value == nullptr || variableID == nullptr || functionID == nullptr)
         return false;
@@ -77,7 +77,7 @@ bool Communications::createRequestMessage(char* payload, enum VariableIDs variab
 }
 
 // This function extracts information from a requestMessage payload
-bool Communications::extractRequestMessage(char* payload, enum VariableIDs* variableID, enum FunctionIDs* functionID, byte* step)
+bool Communications::extractRequestMessage(const char* payload, enum VariableIDs* variableID, enum FunctionIDs* functionID, byte* step)
 {
     if(payload == nullptr || variableID == nullptr || functionID == nullptr)
         return false;
