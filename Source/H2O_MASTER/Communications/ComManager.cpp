@@ -170,19 +170,19 @@ void ComManager::commLoop()
 
 bool ComManager::sendMessage(const char *payload)
 {
-    return Communications::sendMessage(payload,serial);
+    return enabled && Communications::sendMessage(payload,serial);
 }
 
 bool ComManager::sendQuickMessage(const char* payload)
 {
-    return Communications::sendQuickMessage(payload,serial) && await();
+    return enabled && Communications::sendQuickMessage(payload,serial) && await();
 }
 
 bool ComManager::flush()
 {
-    return Communications::flush(serial);
+    return enabled && Communications::flush(serial);
 }
 bool ComManager::await()
 {
-    return Communications::await(serial);
+    return enabled && Communications::await(serial);
 }

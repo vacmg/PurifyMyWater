@@ -78,6 +78,27 @@ ledAnimation defaultErrorAnimation = { 500,2,0,{{255,0,0},{0,0,0}} };
 
 /*------------Output----------------*/
 
+// This class handles Screen power management
+class ScreenPowerManager
+{
+public:
+    ScreenPowerManager(byte screenRelay, unsigned long shutdownDelayMs);
+    void setScreen(bool status);
+    void forceScreen(bool status);
+    bool isScreenOn();
+    void loop();
+
+private:
+    byte screenRelay;
+    unsigned long shutdownDelayMs;
+    unsigned long screenPowerMillis;
+    bool screenSt;
+    bool desiredScreenSt;
+    bool changing;
+};
+
+ScreenPowerManager screenPowerManager(screenRelay,10000); // This object handles Screen power management
+
 // This function is used to perform animations on the RGB status led.
 // If an animation is loaded in currentAnimation and this function is called everytime, the animation will be displayed on the LED
 void updateAnimation();

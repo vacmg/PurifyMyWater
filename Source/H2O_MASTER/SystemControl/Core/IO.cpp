@@ -6,6 +6,59 @@
 
 /*------------Output Control------------*/
 
+// This class handles Screen power management
+ScreenPowerManager::ScreenPowerManager(byte screenRelay, unsigned long shutdownDelayMs)
+{
+    this->screenSt = false;
+    this->desiredScreenSt = false;
+    this->screenRelay = screenRelay;
+    this->shutdownDelayMs = shutdownDelayMs;
+    this->screenPowerMillis = 0;
+    this->changing = false;
+}
+
+void ScreenPowerManager::setScreen(bool status)
+{
+    desiredScreenSt = status;
+    if(status == 1)
+    {
+        output(screenRelay,1);
+        screenSt = 1;
+    }
+}
+
+void ScreenPowerManager::forceScreen(bool status)
+{
+    desiredScreenSt = status;
+    screenSt = status;
+    output(screenRelay,status);
+}
+
+void ScreenPowerManager::loop()
+{
+    if(!changing && screenSt!=desiredScreenSt) // if not changing, and it should
+    {
+        screenPowerMillis = millis();
+        changing = true;
+    }
+    else if (changing && screenSt==desiredScreenSt) // If change was cancelled
+    {
+        changing = false;
+    }
+    else if(changing && screenPowerMillis+shutdownDelayMs<millis()) // if change is about to be performed
+    {
+        output(screenRelay,0);
+        screenSt = desiredScreenSt;
+        changing = false;
+    }
+}
+
+bool ScreenPowerManager::isScreenOn()
+{
+    return screenSt;
+}
+
+
 // Depending on the hardware used, relays are activated with high or low signals.
 // To maintain readability, in this function we set what kind of signal we need to activate those relays.
 // A true value means that the circuit is closed whereas a false means that the circuit is opened.
