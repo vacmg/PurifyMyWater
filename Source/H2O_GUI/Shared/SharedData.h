@@ -21,7 +21,7 @@
 const char VERSION[] PROGMEM = "v2-alpha-1"; // MAXIMUN size is 16 bytes
 
 // It must have a maximum of 254 members
-enum VariableIDs {VERSION_ID = 1, // Other
+enum VariableIDs {VERSION_ID = 1, OK_CMD, // Other messages/commands are self-contained here
         currentError_ID, voltage_ID, ACUVAmps_ID, DCAmps_ID, purifiedWater_ID, wellPumpSt_ID, UVPumpSt_ID, endPumpSt_ID, filterPumpSt_ID, secBuoySt_ID, lowSurfaceBuoySt_ID, highSurfaceBuoySt_ID, lowFilteredBuoySt_ID, highFilteredBuoySt_ID, lowPurifiedBuoySt_ID, highPurifiedBuoySt_ID, endBuoySt_ID, screenSensorSt_ID, // Data
     purificationStatus_ID, workingMode_ID, STARTCHARGINGVOLTAGE_ID, STOPCHARGINGVOLTAGE_ID, STARTWORKINGVOLTAGE_ID, STOPWORKINGVOLTAGE_ID, DCAMMSENSITIVITY_ID, DCAMMZERO_ID, ACAMMSENSITIVITY_ID, ACAMMZERO_ID, ACFREQUENCY_ID, ESTIMATEDUVAMPERAGE_ID, WELLPUMPTIMEOUT_ID, UVPUMPTIMEOUT_ID, ENDPUMPTIMEOUT_ID, FILTERTIMEOUT_ID, UVPUMPFLOW_ID, TEMPCHECKTIME_ID, STOPWORKINGTEMP_ID, STARTCASETEMP_ID, STOPCASETEMP_ID, STARTPSUTEMP_ID, STOPPSUTEMP_ID // Config
 };
@@ -31,7 +31,8 @@ enum FunctionIDs {Handshake_ID = 1};
 
 enum Errors {NoError = 0, BuoyIncongruenceError, PumpTimeoutError,
         UVLightNotWorkingError, ScreenNotConnectedError, TempSensorsAmountError,
-        HotTempError}; // Used to process different errors
+        HotTempError,
+        HandshakeError, MCUsIncompatibleVersionError}; // Used to process different errors
 
 enum SystemStatus {SYSTEM_OFF = 0, SYSTEM_ON = 1}; // This struct stores if the system is working or not (think about it like a master switch)
 
@@ -139,6 +140,26 @@ void setDefaultConfig()
 #endif
 
 #if DEBUG
+
+    bool printArray(const char* array, unsigned int len)
+    {
+        for(int i = 0;i<len;i++)
+        {
+            unsigned char c = array[i];
+            if(c<10)
+            {
+                Serial.print("00");
+            }
+            else if (c<100)
+            {
+                Serial.print("0");
+            }
+            Serial.print((char)c,DEC);
+            Serial.print(F(" "));
+        }
+        return true;
+}
+
     char debugBuff[50] = "";
 
     const char systemStatusOFF_STR[] PROGMEM = "OFF";

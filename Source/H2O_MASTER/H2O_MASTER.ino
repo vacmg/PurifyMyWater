@@ -49,7 +49,7 @@ void readAllSensors();
 void setup()
 {
 #if DEBUG
-    Serial.begin(115200);
+    Serial.begin(9600);
     delay(200);
     debug(F("Setup - Booting...\n"));
     delay(50);
@@ -93,18 +93,10 @@ void setup()
 //todo Test code after this line
 
     ComManager comManager(&Serial1);
-    //comManager.commSetup();
-    Serial1.begin(115200);
+    comManager.commSetup();
 
-    /*char payload[MAXPAYLOADSIZE] = "";
-    Communications::createSendMessage(payload,VERSION_ID,"patata.3");
-    debug(Communications::sendMessage(payload,&Serial1));//*/
 
-    while (!comManager.doHandshake())
-    {
-        debug(F("Handshake failed\n"));
-    }
-    debug(F("Successful handshake"));//*/
+
 
     while (true); // TODO delete or comment this
 

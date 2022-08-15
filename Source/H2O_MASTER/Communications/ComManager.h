@@ -9,7 +9,7 @@
 #include "../Shared/SharedData.h"
 
 #define COMMANAGERBAUDRATE 9600
-#define HANDSHAKETIMEOUT 3000
+#define HANDSHAKETIMEOUT 5000
 
 class ComManager
 {
@@ -21,14 +21,15 @@ public:
     bool sendMessage(const char* payload);
     bool sendQuickMessage(const char* payload);
 
-    bool doHandshake();
+    bool flush();
+    bool await();
 
 private:
     HardwareSerial* serial;
     bool enabled;
 
     bool checkCompatibleVersions(char* v1, char* v2);
-    char handshakeLoop(char* message, char* version, char* otherVersion);
+    bool doHandshake();
 
     void sendMessageMasterHandler(char* buffer);
     void requestMessageMasterHandler(char* buffer);

@@ -33,6 +33,7 @@ bool Communications::extractSendMessage(char* payload, enum VariableIDs* variabl
         return false;
     *variableID = (VariableIDs)payload[1];
     strcpy(value,&payload[2]);
+    return true;
 }
 
 // This function puts information together to create a requestAnswerMessage payload
@@ -122,14 +123,51 @@ bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
 // This function gets a message, verifies & extract its payload, send an ACK if the message is valid & returns if success
 bool Communications::getMessage(char* payload, HardwareSerial* serial)
 {
-    delay(100);
-    serial->readBytesUntil('\n',payload,MAXMSGSIZE); // [CRC][size][payload]
-    flush(serial);
-
-    if (verifyMessage(payload)) // if crc match expected crc
+    if(serial->available())
     {
-        serial->write(ACK);
-        return true;
+        delay(100);
+        serial->readBytesUntil('\n',payload,MAXMSGSIZE); // [CRC][size][payload]
+        flush(serial);
+
+        if (verifyMessage(payload)) // if crc match expected crc
+        {
+            serial->write(ACK);
+            return true;
+        }
+    }
+    return false;
+}
+
+// This function sends a message
+// On success, it returns true, otherwise false.
+bool Communications::sendQuickMessage(const char* payload, HardwareSerial* serial)
+{
+    byte payloadLength = strlen(payload);
+    if(payloadLength>MAXPAYLOADSIZE)
+    {
+        debug(F("Payload exceeded maximum message size: "));debug(payloadLength);debug(F(" > "));debug(MAXPAYLOADSIZE);debug('\n');
+        return false;
+    }
+    char message[MAXMSGSIZE];
+    message[0] = 1; // This avoids strcat placing the '\n' in message[0] (this will only happen if message[0] is 0 (memory is not automatically cleared))
+    message[1] = payloadLength+1; // set size of the message
+    strcpy(&message[2],payload); // copy payload to message
+    strcat(message,"\n"); // Add \n terminator
+    message[0] = CRC8((byte*)&message[1],message[1]); // set CRC of the message
+
+    serial->write(message,payloadLength+3); //[CRC][size][payload]\n
+    return true;
+}
+
+// This function gets a message, verifies & extract its payload & returns true if the message is valid
+bool Communications::getQuickMessage(char* payload, HardwareSerial* serial)
+{
+    if(serial->available())
+    {
+        delay(100);
+        serial->readBytesUntil('\n',payload,MAXMSGSIZE); // [CRC][size][payload]
+
+        return verifyMessage(payload); // if crc match expected crc
     }
     return false;
 }
@@ -176,10 +214,18 @@ byte Communications::CRC8(const byte* data, size_t dataLength)
 }
 
 // This function flushes an input HardwareSerial and discards all data on the input buffer
-void Communications::flush(HardwareSerial* serial)
+bool Communications::flush(HardwareSerial* serial)
 {
     while (serial->available())
     {
         serial->read();
     }
+    return true;
+}
+
+// This function awaits for the HardwareSerial object to transmit all the data pending in the internal output buffer
+bool Communications::await(HardwareSerial* serial)
+{
+    serial->flush();
+    return true;
 }

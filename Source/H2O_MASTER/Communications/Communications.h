@@ -78,7 +78,10 @@ public:
     static bool getQuickMessage(char* payload, HardwareSerial* serial);
 
     // This function flushes an input HardwareSerial and discards all data on the input buffer
-    static void flush(HardwareSerial* serial);
+    static bool flush(HardwareSerial* serial);
+
+    // This function awaits for the HardwareSerial object to transmit all the data pending in the internal output buffer
+    static bool await(HardwareSerial* serial);
 
 private:
     // This function extracts the payload from a message & validates it against a precalculated CRC8

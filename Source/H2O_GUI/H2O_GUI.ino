@@ -32,7 +32,7 @@
 void setup()
 {
 #if DEBUG
-    Serial.begin(115200);
+    Serial.begin(9600);
     delay(200);
     debug(F("Setup - Booting...\n"));
     delay(50);
@@ -46,46 +46,12 @@ void setup()
 
     setDefaultConfig(); // TODO read config from master
 
-    debug('\n');
     //todo Test code after this line
 
     ComManager comManager(&Serial1);
-    //comManager.commSetup();
-    Serial1.begin(115200);
-
-    /*char patata[MAXPAYLOADSIZE] = "";
-    VariableIDs variableID;
-    FunctionIDs functionID;
-    byte step;
-    char value[16];
-    while (true)
-    {
-        if(Serial1.available())
-        {
-            debug(Communications::getMessage(patata,&Serial1));debug('\n');
-            Serial.println(patata);
-            Communications::extractRequestMessage(patata,&variableID,&functionID,&step);
-            Serial.println(step);
-            delay(1000);
-        }
-
-    }//*/
-
-    while (!comManager.doHandshake())
-    {
-        debug(F("Handshake failed\n"));
-    }
-    debug(F("Successful handshake"));//*/
+    comManager.commSetup();
 
 
-    /*Serial.println("Starting mirror mode\n");
-    while (true)
-    {
-        if(Serial1.available())
-        {
-            Serial.write(Serial1.read());
-        }
-    }//*/
 
     while (true); // TODO delete or comment this
 

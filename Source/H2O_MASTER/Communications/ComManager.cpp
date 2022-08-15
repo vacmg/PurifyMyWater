@@ -16,13 +16,21 @@ bool ComManager::commSetup() // TODO start communications
     {
         serial->begin(COMMANAGERBAUDRATE);
         delay(100);
+        flush();
+        delay(50);
         if(doHandshake())
         {
             enabled = true;
+            debug(F("Successful handshake\n"));
+            return true;
         }
         else
+        {
             serial->end();
+            return false;
+        }
     }
+    else return true;
 }
 
 bool ComManager::commDisabler() // TODO end communications
@@ -32,51 +40,25 @@ bool ComManager::commDisabler() // TODO end communications
         serial->end();
         enabled = false;
     }
+    return true;
 }
 
-bool ComManager::checkCompatibleVersions(char* v1, char* v2)
+bool ComManager::checkCompatibleVersions(char* localVersion, char* otherVersion)
 {
-    v1 = strtok(v1,"."); // Get v1 major version
-    v2 = strtok(v2,"."); // Get v2 major version
-    return strcmp(v1,v2)==0; // Compare major versions
-}
-
-// This function is a little implementation of commLoop() which only handles handshake communication
-// It returns 0 if nothing happened, 1 if other's version has arrived, and -1 if other's request for our version have arrived
-char ComManager::handshakeLoop(char* message, char* version, char* otherVersion)
-{
-    if(serial->available())
+    debug(F("localVersion:      "));debug(localVersion);debug('\n');
+    debug(F("otherVersion:      "));debug(otherVersion);debug('\n');
+    localVersion = strtok(localVersion,"."); // Get localVersion major version
+    otherVersion = strtok(otherVersion,"."); // Get otherVersion major version
+    /*debug(F("localMajorVersion: "));debug(localVersion);debug('\n');
+    debug(F("otherMajorVersion: "));debug(otherVersion);debug('\n');*/
+    bool res = strcmp(localVersion,otherVersion)==0; // Compare major versions
+    if(!res)
     {
-        if(Communications::getQuickMessage(message,serial)) // If a message is received
-        {
-            enum VariableIDs variableID;
-            enum FunctionIDs functionID;
-            byte step;
-            switch (message[0])
-            {
-                case REQUESTANSWERMESSAGE_ID: // If it is the answer of our request, return 1
-                    if(Communications::extractRequestAnswerMessage(message,&variableID,otherVersion,&functionID,&step))
-                    {
-                        if(variableID==VERSION_ID && functionID == Handshake_ID)
-                        {
-                            return 1;
-                        }
-                    }
-                    break;
-                case REQUESTMESSAGE_ID: // if it is the request of the other MCU, proccess the request and return -1
-                    if(Communications::extractRequestMessage(message,&variableID,&functionID,&step))
-                    {
-                        if(variableID==VERSION_ID && functionID == Handshake_ID)
-                        {
-                            if(Communications::createRequestAnswerMessage(message,variableID,version,functionID,step))
-                                if(sendQuickMessage(message))
-                                    return -1;
-                        }
-                    }
-            }
-        }
+        debug(F("Handshake Error: MCUs are incompatible\n"));
+        data.currentError = MCUsIncompatibleVersionError;
     }
-    return 0;
+
+    return res;
 }
 
 // This function performs the handshake to ensure the connection is working properly & both MCUs have compatible software
@@ -84,35 +66,66 @@ char ComManager::handshakeLoop(char* message, char* version, char* otherVersion)
 // During the handshake, the system is able to answer the other MCU handshake request
 bool ComManager::doHandshake()
 {
-    char message[MAXPAYLOADSIZE];
-    if(Communications::createRequestMessage(message,VERSION_ID,Handshake_ID,1))
+    char ourVersion[MAXVERSIONSIZE];
+    char otherVersion[MAXVERSIONSIZE];
+    strcpy_P(ourVersion,VERSION);
+    char okMsg[3];
+    char ourVersionMsg[MAXVERSIONSIZE+2];
+
+    if(Communications::createSendMessage(ourVersionMsg,VERSION_ID,ourVersion)
+    && Communications::createSendMessage(okMsg,OK_CMD,""))
     {
-        sendQuickMessage(message); // Send handshake request
-        //TODO modificar funcion para no colapsar al enviar a la vez 2 mensajes (usar los quick)
-
-        // Get VERSION to RAM (it is stored in PROGMEM)
-        char version[MAXVERSIONSIZE];
-        strcpy_P(version,VERSION);
-        char otherVersion[MAXVERSIONSIZE]; // Reserve space for the other version string
-
-        bool requestAnswered = false;
-        bool versionSent = false;
+        debug(F("Performing handshake...\n"));
+        bool okSent = false, okReceived = false;
+        char receivedMsg[MAXMSGSIZE] = "";
+        char receivedData[MAXVERSIONSIZE] = "";
         unsigned long handshakeMillis = millis();
-        while ((!requestAnswered || !versionSent) && handshakeMillis+HANDSHAKETIMEOUT<millis()) // Check for answer or timeout
+
+        while ((!okSent || !okReceived) && handshakeMillis+HANDSHAKETIMEOUT>millis())
         {
-            char res = handshakeLoop(message,version,otherVersion); // Get the other's version & send our version
-            if(res == 1)
+            sendQuickMessage(ourVersionMsg);
+            while (Communications::getQuickMessage(receivedMsg,serial))
             {
-                requestAnswered = true; // We have the other's version
+                if (receivedMsg[0] == SENDMESSAGE_ID)
+                {
+                    enum VariableIDs cmdID;
+                    if (Communications::extractSendMessage(receivedMsg,&cmdID,receivedData))
+                    {
+                        if(cmdID == VERSION_ID)
+                        {
+                            //debug(F("OK Sent\n"));
+                            strcpy(otherVersion,receivedData);
+                            sendQuickMessage(okMsg);
+                            okSent = true;
+                        }
+                        else if(cmdID == OK_CMD)
+                        {
+                            //debug(F("OK Received\n"));
+                            okReceived = true;
+                        }
+                    }
+                }
+                //debug(F("okSent: "));debug(okSent);debug('\n');
+                //debug(F("okReceived: "));debug(okReceived);debug(F("\n\n"));
             }
-            else if(res == -1)
-            {
-                versionSent = true; // The other MCU has our version
-            }
+            delay(250);
         }
-        if(requestAnswered && versionSent) // if both have both versions, that check should give the same result
-            return checkCompatibleVersions(otherVersion,version);
+        flush();
+        if(okReceived && okSent)
+        {
+            //debug(F("Both MCUs have other's version\n"));
+            return checkCompatibleVersions(ourVersion,otherVersion);
+        }
+        else
+        {
+            debug(F("Handshake Error: Timeout\n"));
+        }
     }
+    else
+    {
+        debug(F("Handshake Error: Cannot create messages\n"));
+    }
+    data.currentError = HandshakeError;
     return false;
 }
 
@@ -166,5 +179,14 @@ bool ComManager::sendMessage(const char *payload)
 
 bool ComManager::sendQuickMessage(const char* payload)
 {
-    return Communications::sendQuickMessage(payload,serial);
+    return Communications::sendQuickMessage(payload,serial) && await();
+}
+
+bool ComManager::flush()
+{
+    return Communications::flush(serial);
+}
+bool ComManager::await()
+{
+    return Communications::await(serial);
 }

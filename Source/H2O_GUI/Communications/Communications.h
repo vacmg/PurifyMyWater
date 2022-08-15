@@ -67,11 +67,21 @@ public:
     // On success, it returns true, otherwise false.
     static bool sendMessage(const char* payload, HardwareSerial* serial);
 
-    // This function gets a message, verifies & extract its payload, send an ACK if the message is valid & returns if success
+    // This function gets a message, verifies & extract its payload, send an ACK if the message is valid & returns true if success
     static bool getMessage(char* payload, HardwareSerial* serial);
 
+    // This function sends a message
+    // On success, it returns true, otherwise false.
+    static bool sendQuickMessage(const char* payload, HardwareSerial* serial);
+
+    // This function gets a message, verifies & extract its payload & returns true if the message is valid
+    static bool getQuickMessage(char* payload, HardwareSerial* serial);
+
     // This function flushes an input HardwareSerial and discards all data on the input buffer
-    static void flush(HardwareSerial* serial);
+    static bool flush(HardwareSerial* serial);
+
+    // This function awaits for the HardwareSerial object to transmit all the data pending in the internal output buffer
+    static bool await(HardwareSerial* serial);
 
 private:
     // This function extracts the payload from a message & validates it against a precalculated CRC8
