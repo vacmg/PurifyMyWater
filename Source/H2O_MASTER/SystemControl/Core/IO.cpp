@@ -71,16 +71,16 @@ void output(byte pin, bool value)
     switch (pin)
     {
         case wellPump:
-            data.wellPumpSt = value;
+            dataStorage.data.wellPumpSt = value;
             break;
         case UVPump:
-            data.UVPumpSt = value;
+            dataStorage.data.UVPumpSt = value;
             break;
         case endPump:
-            data.endPumpSt = value;
+            dataStorage.data.endPumpSt = value;
             break;
         case filterRelay:
-            data.filterPumpSt = value;
+            dataStorage.data.filterPumpSt = value;
             break;
     }
     digitalWrite(pin, value);
@@ -141,14 +141,14 @@ bool readDigitalSensor(byte pin)
 // This function gets all buoys current status
 void getBuoyStatus()
 {
-    data.secBuoySt = readDigitalSensor(secBuoy);
-    data.lowSurfaceBuoySt = readDigitalSensor(lowSurfaceBuoy);
-    data.highSurfaceBuoySt = readDigitalSensor(highSurfaceBuoy);
-    data.lowFilteredBuoySt = readDigitalSensor(lowFilteredBuoy);
-    data.highFilteredBuoySt = readDigitalSensor(highFilteredBuoy);
-    data.lowPurifiedBuoySt = readDigitalSensor(lowPurifiedBuoy);
-    data.highPurifiedBuoySt = readDigitalSensor(highPurifiedBuoy);
-    data.endBuoySt = readDigitalSensor(endBuoy);
+    dataStorage.data.secBuoySt = readDigitalSensor(secBuoy);
+    dataStorage.data.lowSurfaceBuoySt = readDigitalSensor(lowSurfaceBuoy);
+    dataStorage.data.highSurfaceBuoySt = readDigitalSensor(highSurfaceBuoy);
+    dataStorage.data.lowFilteredBuoySt = readDigitalSensor(lowFilteredBuoy);
+    dataStorage.data.highFilteredBuoySt = readDigitalSensor(highFilteredBuoy);
+    dataStorage.data.lowPurifiedBuoySt = readDigitalSensor(lowPurifiedBuoy);
+    dataStorage.data.highPurifiedBuoySt = readDigitalSensor(highPurifiedBuoy);
+    dataStorage.data.endBuoySt = readDigitalSensor(endBuoy);
 }
 
 /*------------Input Control-------------*/

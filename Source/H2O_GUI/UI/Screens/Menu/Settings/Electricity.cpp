@@ -16,13 +16,13 @@ void clickElectricity()
         switch (page)
         {
             case 1: // Start charging voltage
-                tempVal = getNumInput(getString(Electricity_StartChargingVoltage_STR), F("V"), config.STARTCHARGINGVOLTAGE);
+                tempVal = getNumInput(getString(Electricity_StartChargingVoltage_STR), F("V"), configStorage.config.STARTCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (config.STOPWORKINGVOLTAGE < tempVal && tempVal < config.STOPCHARGINGVOLTAGE)
+                    if (configStorage.config.STOPWORKINGVOLTAGE < tempVal && tempVal < configStorage.config.STOPCHARGINGVOLTAGE)
                     {
-                        debug(F("STARTCHARGINGVOLTAGE UPDATED: "));debug(config.STARTCHARGINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
-                        config.STARTCHARGINGVOLTAGE = (float)tempVal;
+                        debug(F("STARTCHARGINGVOLTAGE UPDATED: "));debug(configStorage.config.STARTCHARGINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                        configStorage.config.STARTCHARGINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -31,13 +31,13 @@ void clickElectricity()
                 break;
 
             case 2: //page 2
-                tempVal = getNumInput(getString(Electricity_StartWorkingVoltage_STR), F("V"), config.STARTWORKINGVOLTAGE);
+                tempVal = getNumInput(getString(Electricity_StartWorkingVoltage_STR), F("V"), configStorage.config.STARTWORKINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (config.STARTCHARGINGVOLTAGE < tempVal && tempVal < config.STOPCHARGINGVOLTAGE)// STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
+                    if (configStorage.config.STARTCHARGINGVOLTAGE < tempVal && tempVal < configStorage.config.STOPCHARGINGVOLTAGE)// STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
                     {
-                        debug(F("STARTWORKINGVOLTAGE UPDATED: "));debug(config.STARTWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
-                        config.STARTWORKINGVOLTAGE = (float)tempVal;
+                        debug(F("STARTWORKINGVOLTAGE UPDATED: "));debug(configStorage.config.STARTWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                        configStorage.config.STARTWORKINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -46,11 +46,11 @@ void clickElectricity()
                 break;
 
             case 3:
-                tempVal = getNumInput(getString(Electricity_ACAmmeterSensitivity_STR), F(""), config.ACAMMSENSITIVITY,4);
+                tempVal = getNumInput(getString(Electricity_ACAmmeterSensitivity_STR), F(""), configStorage.config.ACAMMSENSITIVITY,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(F("ACAMMSENSITIVITY UPDATED: "));debug(config.ACAMMSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
-                    config.ACAMMSENSITIVITY = tempVal;
+                    debug(F("ACAMMSENSITIVITY UPDATED: "));debug(configStorage.config.ACAMMSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
+                    configStorage.config.ACAMMSENSITIVITY = tempVal;
                     // TODO send new setting
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
@@ -58,11 +58,11 @@ void clickElectricity()
                 break;
 
             case 4:
-                tempVal = getNumInput(getString(Electricity_DCAmmeterZero_STR), F(""), config.DCAMMZERO,4);
+                tempVal = getNumInput(getString(Electricity_DCAmmeterZero_STR), F(""), configStorage.config.DCAMMZERO,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(F(" UPDATED: DCAMMZERO"));debug(config.DCAMMZERO);debug(F(" --> "));debug(tempVal);debug('\n');
-                    config.DCAMMZERO = tempVal;
+                    debug(F(" UPDATED: DCAMMZERO"));debug(configStorage.config.DCAMMZERO);debug(F(" --> "));debug(tempVal);debug('\n');
+                    configStorage.config.DCAMMZERO = tempVal;
                     // TODO send new setting
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
@@ -76,13 +76,13 @@ void clickElectricity()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput(getString(Electricity_StopChargingVoltage_STR), F("V"), config.STOPCHARGINGVOLTAGE);
+                tempVal = getNumInput(getString(Electricity_StopChargingVoltage_STR), F("V"), configStorage.config.STOPCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (config.STARTCHARGINGVOLTAGE + 1 < tempVal && tempVal <MAXCAPACITORSALLOWEDVOLTAGE)// STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE
+                    if (configStorage.config.STARTCHARGINGVOLTAGE + 1 < tempVal && tempVal <MAXCAPACITORSALLOWEDVOLTAGE)// STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE
                     {
-                        debug(F("STOPCHARGINGVOLTAGE UPDATED: "));debug(config.STOPCHARGINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
-                        config.STOPCHARGINGVOLTAGE = (float)tempVal;
+                        debug(F("STOPCHARGINGVOLTAGE UPDATED: "));debug(configStorage.config.STOPCHARGINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                        configStorage.config.STOPCHARGINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -91,10 +91,10 @@ void clickElectricity()
                 break;
 
             case 2:
-                tempVal = getNumInput(getString(Electricity_StopWorkingVoltage_STR), F("V"), config.STOPWORKINGVOLTAGE);
+                tempVal = getNumInput(getString(Electricity_StopWorkingVoltage_STR), F("V"), configStorage.config.STOPWORKINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (MINSYSTEMALLOWEDVOLTAGE < tempVal && tempVal < config.STARTCHARGINGVOLTAGE - 1)// MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1
+                    if (MINSYSTEMALLOWEDVOLTAGE < tempVal && tempVal < configStorage.config.STARTCHARGINGVOLTAGE - 1)// MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1
                     {
                         debug(F("STOPWORKINGVOLTAGE UPDATED: "));debug(config.STOPWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
                         config.STOPWORKINGVOLTAGE = (float)tempVal;

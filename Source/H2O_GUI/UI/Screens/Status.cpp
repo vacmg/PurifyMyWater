@@ -276,12 +276,12 @@ void drawStatusForeground(const char *voltage, const char *waterAmount)//TODO ad
     label.setFontSize(2);
     btn2.setCoords(300, 234);
     btn2.setCoords1(420, 290);
-    if (data.currentError != NoError) // ERROR
+    if (dataStorage.data.currentError != NoError) // ERROR
     {
         label.setString(getString(StatusBtn_Error_STR));
         btn2.setSecondaryColor(Color(239, 127, 26));
     }
-    else if (config.systemStatus == SYSTEM_OFF) // OFF
+    else if (configStorage.config.systemStatus == SYSTEM_OFF) // OFF
     {
         label.setString(getString(OFF_STR));
         btn2.setSecondaryColor(Color(176, 54, 20));
@@ -658,20 +658,20 @@ void clickStatus()
     }
     else if (btn2.isPressed())
     {
-        if (data.currentError != NoError)
+        if (dataStorage.data.currentError != NoError)
         {
             debug(F("Button FAILURE pressed\n")); // TODO Draw ERROR message
         }
-        else if (config.systemStatus == SYSTEM_ON)
+        else if (configStorage.config.systemStatus == SYSTEM_ON)
         {
             debug(F("Button OFF pressed\n"));
-            config.systemStatus = SYSTEM_OFF; // TODO send off command
+            configStorage.config.systemStatus = SYSTEM_OFF; // TODO send off command
             drawStatusForeground("15.4V", "320L");
         }
-        else if (config.systemStatus == SYSTEM_OFF)
+        else if (configStorage.config.systemStatus == SYSTEM_OFF)
         {
             debug(F("Button ON pressed\n"));
-            config.systemStatus = SYSTEM_ON; // TODO send on command
+            configStorage.config.systemStatus = SYSTEM_ON; // TODO send on command
             drawStatusForeground("15.4V", "320L");
         }
         delay(500);

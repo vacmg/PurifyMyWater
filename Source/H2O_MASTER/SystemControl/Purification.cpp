@@ -8,9 +8,9 @@
 // This is the purification setup code, which sets the system to a well known status to start with the purification
 void purificationSetup()
 {
-    debug(F("Setup - Waiting for "));debug(config.STARTCHARGINGVOLTAGE - 1);debug(F(" V\n"));
+    debug(F("Setup - Waiting for "));debug(configStorage.config.STARTCHARGINGVOLTAGE - 1);debug(F(" V\n"));
     output(voltRelay, 1);
-    waitForVoltage(config.STARTCHARGINGVOLTAGE - 1);
+    waitForVoltage(configStorage.config.STARTCHARGINGVOLTAGE - 1);
     output(voltRelay, 0);
 }
 
@@ -35,7 +35,7 @@ void purificationLoop()
 
         case IDLE: // OFF
             #if !OVERRRIDEMAXVOLTAGE
-            if (voltRead() > config.STARTWORKINGVOLTAGE)
+            if (voltRead() > configStorage.config.STARTWORKINGVOLTAGE)
             #endif
                 purificationStatus = TRANSITIONTOPUMPSWORKING;
             break;
@@ -48,27 +48,27 @@ void purificationLoop()
 
         case PUMPSWORKING: // Pumps Working
             #if !OVERRRIDEMAXVOLTAGE
-            if (voltRead() < config.STOPWORKINGVOLTAGE)
+            if (voltRead() < configStorage.config.STOPWORKINGVOLTAGE)
                 purificationStatus = TRANSITIONTOIDLE;
             #endif
 
-            if (!data.wellPumpSt && !data.highSurfaceBuoySt && data.secBuoySt)
+            if (!dataStorage.data.wellPumpSt && !dataStorage.data.highSurfaceBuoySt && dataStorage.data.secBuoySt)
             {
                 output(wellPump, 1);
                 wellPumpPrevMillis = millis();
             }
 
 
-            if (data.wellPumpSt && (data.highSurfaceBuoySt || !data.secBuoySt))
+            if (dataStorage.data.wellPumpSt && (dataStorage.data.highSurfaceBuoySt || !dataStorage.data.secBuoySt))
             {
                 output(wellPump, 0);
             }
 
 
-            if (!data.lowFilteredBuoySt && data.highSurfaceBuoySt)
+            if (!dataStorage.data.lowFilteredBuoySt && dataStorage.data.highSurfaceBuoySt)
                 purificationStatus = TRANSITIONTOFILTERWORKING;
 
-            if (!data.UVPumpSt && !data.highPurifiedBuoySt && data.lowFilteredBuoySt)
+            if (!dataStorage.data.UVPumpSt && !dataStorage.data.highPurifiedBuoySt && dataStorage.data.lowFilteredBuoySt)
             {
                 output(ACInverter, 1);
                 delay(250);
@@ -81,11 +81,11 @@ void purificationLoop()
                     logACAmps();
                     delay(10);
                 }
-                data.ACUVAmps = getACAmps();
+                dataStorage.data.ACUVAmps = getACAmps();
 
-                if (data.ACUVAmps < config.ESTIMATEDUVAMPERAGE)
+                if (dataStorage.data.ACUVAmps < configStorage.config.ESTIMATEDUVAMPERAGE)
                 {
-                    raise(UVLightNotWorkingError, String(F("The UV amperage sensor detected "))+String(data.ACUVAmps)+String(F("A. The UV light must be either broken or disconnected. Check the connections and if it persists, replace the UV light")));
+                    raise(UVLightNotWorkingError, String(F("The UV amperage sensor detected "))+String(dataStorage.data.ACUVAmps)+String(F("A. The UV light must be either broken or disconnected. Check the connections and if it persists, replace the UV light")));
                 }
                 #endif
 
@@ -93,31 +93,31 @@ void purificationLoop()
                 UVMillis = UVPumpPrevMillis;
                 output(UVPump, 1);
             }
-            if (data.UVPumpSt) // if UV is on and each 800ms
+            if (dataStorage.data.UVPumpSt) // if UV is on and each 800ms
             {
                 workingTime += millis() - UVMillis; // Add this time to workingTime
-                data.purifiedWater = ((float)workingTime * config.UVPUMPFLOW) / 3600000.00; // calculate the amount of purified water
+                dataStorage.data.purifiedWater = ((float)workingTime * configStorage.config.UVPUMPFLOW) / 3600000.00; // calculate the amount of purified water
                 UVMillis = millis();
             }
 
-            if (data.UVPumpSt && (!data.lowFilteredBuoySt || data.highPurifiedBuoySt))
+            if (dataStorage.data.UVPumpSt && (!dataStorage.data.lowFilteredBuoySt || dataStorage.data.highPurifiedBuoySt))
             {
                 output(UVPump, 0);
                 workingTime += millis() - UVMillis; // Add this time to workingTime
-                data.purifiedWater = ((float)workingTime * config.UVPUMPFLOW) / 3600000.00; // calculate the amount of purified water
+                dataStorage.data.purifiedWater = ((float)workingTime * configStorage.config.UVPUMPFLOW) / 3600000.00; // calculate the amount of purified water
                 delay(1000);
                 output(UVRelay, 0);
                 delay(250);
                 output(ACInverter, 0);
             }
 
-            if (!data.endPumpSt && !data.endBuoySt && data.lowPurifiedBuoySt)
+            if (!dataStorage.data.endPumpSt && !dataStorage.data.endBuoySt && dataStorage.data.lowPurifiedBuoySt)
             {
                 output(endPump, 1);
                 endPumpPrevMillis = millis();
             }
 
-            if (data.endPumpSt && (!data.lowPurifiedBuoySt || data.endBuoySt))
+            if (dataStorage.data.endPumpSt && (!dataStorage.data.lowPurifiedBuoySt || dataStorage.data.endBuoySt))
             {
                 output(endPump, 0);
             }
@@ -133,11 +133,11 @@ void purificationLoop()
             delay(1000);
             output(UVRelay, 0);
             #if !OVERRRIDEMAXVOLTAGE
-            if (voltRead() < config.STOPWORKINGVOLTAGE)
+            if (voltRead() < configStorage.config.STOPWORKINGVOLTAGE)
                 purificationStatus = TRANSITIONTOIDLE;
             #endif
 
-            waitForVoltage(config.STARTWORKINGVOLTAGE);
+            waitForVoltage(configStorage.config.STARTWORKINGVOLTAGE);
             filterPumpPrevMillis = millis();
             output(filterRelay, 1);
 
@@ -146,11 +146,11 @@ void purificationLoop()
 
         case FILTERWORKING: // Filter Working
             #if !OVERRRIDEMAXVOLTAGE
-            if (voltRead() < config.STOPWORKINGVOLTAGE)
+            if (voltRead() < configStorage.config.STOPWORKINGVOLTAGE)
                 purificationStatus = TRANSITIONTOIDLE;
             #endif
 
-            if (data.highFilteredBuoySt || !data.lowSurfaceBuoySt)
+            if (dataStorage.data.highFilteredBuoySt || !dataStorage.data.lowSurfaceBuoySt)
             {
                 output(filterRelay, 0);
                 purificationStatus = TRANSITIONTOPUMPSWORKING;

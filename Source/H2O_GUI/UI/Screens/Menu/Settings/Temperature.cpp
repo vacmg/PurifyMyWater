@@ -16,11 +16,11 @@ void drawTemperature()
     {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(getString(Temp_RefreshInterval_STR), getString(Temp_SystemStopTemp_STR), getString(Temp_PSUFanStartTemp_STR),String(((double) config.TEMPCHECKTIME) / 1000.0) + "s",String((double) config.STOPWORKINGTEMP) + "C", String((double) config.STARTPSUTEMP) + "C",true, true, true, fontSizes);
+            draw6ButtonsLayout(getString(Temp_RefreshInterval_STR), getString(Temp_SystemStopTemp_STR), getString(Temp_PSUFanStartTemp_STR),String(((double) configStorage.config.TEMPCHECKTIME) / 1000.0) + "s",String((double) configStorage.config.STOPWORKINGTEMP) + "C", String((double) configStorage.config.STARTPSUTEMP) + "C",true, true, true, fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(getString(Temp_PSUFanStopTemp_STR), getString(Temp_CaseFanStartTemp_STR), getString(Temp_CaseFanStopTemp_STR),String((double) config.STOPPSUTEMP) + "C", String((double) config.STARTCASETEMP) + "C",String((double) config.STOPCASETEMP) + "C", true, true, true, fontSizes);
+            draw6ButtonsLayout(getString(Temp_PSUFanStopTemp_STR), getString(Temp_CaseFanStartTemp_STR), getString(Temp_CaseFanStopTemp_STR),String((double) configStorage.config.STOPPSUTEMP) + "C", String((double) configStorage.config.STARTCASETEMP) + "C",String((double) configStorage.config.STOPCASETEMP) + "C", true, true, true, fontSizes);
             break;
         default:debug(F("Page selected is out of bounds (page>2 || page<0)"));
     }
@@ -38,13 +38,13 @@ void clickTemperature()
         switch (page)
         {
             case 1: // Temp. Refresh Rate
-                tempVal = getNumInput(getString(Temp_RefreshInterval_STR), F("s"), (double)config.TEMPCHECKTIME/1000.0);
+                tempVal = getNumInput(getString(Temp_RefreshInterval_STR), F("s"), (double)configStorage.config.TEMPCHECKTIME/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (tempVal > 0)
                     {
-                        debug(F("TEMPCHECKTIME UPDATED: "));debug(config.TEMPCHECKTIME);debug(F(" --> "));debug(tempVal);debug('\n');
-                        config.TEMPCHECKTIME = (unsigned long)(tempVal * 1000);
+                        debug(F("TEMPCHECKTIME UPDATED: "));debug(configStorage.config.TEMPCHECKTIME);debug(F(" --> "));debug(tempVal);debug('\n');
+                        configStorage.config.TEMPCHECKTIME = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
                 }
@@ -53,13 +53,13 @@ void clickTemperature()
                 break;
 
             case 2: //PSU Fan Stop Temp.
-                tempVal = getNumInput(getString(Temp_PSUFanStopTemp_STR), F("C"), config.STOPPSUTEMP);
+                tempVal = getNumInput(getString(Temp_PSUFanStopTemp_STR), F("C"), configStorage.config.STOPPSUTEMP);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (tempVal > 0 && tempVal < config.STARTPSUTEMP)
+                    if (tempVal > 0 && tempVal < configStorage.config.STARTPSUTEMP)
                     {
-                        debug(F("STOPPSUTEMP UPDATED: "));debug(config.STOPPSUTEMP);debug(F(" --> "));debug(tempVal);debug('\n');
-                        config.STOPPSUTEMP = (byte) tempVal;
+                        debug(F("STOPPSUTEMP UPDATED: "));debug(configStorage.config.STOPPSUTEMP);debug(F(" --> "));debug(tempVal);debug('\n');
+                        configStorage.config.STOPPSUTEMP = (byte) tempVal;
                         // TODO send new setting
                     }
                 }
@@ -73,10 +73,10 @@ void clickTemperature()
         switch (page)
         {
             case 1: // System Stop Temp.
-                tempVal = getNumInput(getString(Temp_RefreshInterval_STR), F("C"), config.STOPWORKINGTEMP);
+                tempVal = getNumInput(getString(Temp_RefreshInterval_STR), F("C"), configStorage.config.STOPWORKINGTEMP);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (tempVal > 0 && tempVal > config.STARTPSUTEMP && tempVal > config.STARTCASETEMP)
+                    if (tempVal > 0 && tempVal > configStorage.config.STARTPSUTEMP && tempVal > configStorage.config.STARTCASETEMP)
                     {
                         debug(F("STOPWORKINGTEMP UPDATED: "));debug(config.STOPWORKINGTEMP);debug(F(" --> "));debug(tempVal);debug('\n');
                         config.STOPWORKINGTEMP = (byte) tempVal;

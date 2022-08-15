@@ -39,7 +39,7 @@ enum SystemStatus {SYSTEM_OFF = 0, SYSTEM_ON = 1}; // This struct stores if the 
 enum WorkingMode {Purification_Mode, DCPSU_Mode, ACPSU_Mode}; // This struct stores the system working mode which can be the default purification mode and some alternative uses of the system
 
 // This struct stores all the system configuration
-typedef struct Configuration // TODO create a toStr & toStruct functions to send the whole config (union?)
+struct Configuration // TODO create a toStr & toStruct functions to send the whole config (union?)
 {
     enum SystemStatus systemStatus; // Used to store whether the purification system is on or off
     enum WorkingMode workingMode; // Used to store the current system mode
@@ -71,10 +71,16 @@ typedef struct Configuration // TODO create a toStr & toStruct functions to send
     byte STARTPSUTEMP; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
     byte STOPPSUTEMP; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
 
-} Config;
+};
+
+typedef union ConfigurationUnion
+{
+    struct Configuration config;
+    char binConfig[sizeof(struct Configuration)];
+}Config;
 
 // This struct stores all the relevant data used to control the system
-typedef struct SharedData // TODO create a toStr & toStruct functions to send the whole config
+struct SharedData // TODO create a toStr & toStruct functions to send the whole config
 {
     enum Errors currentError; // This variable stores the error that the system has in a particular time
 
@@ -101,17 +107,23 @@ typedef struct SharedData // TODO create a toStr & toStruct functions to send th
     bool endBuoySt;
     bool screenSensorSt;
 
-} Data;
+};
+
+typedef union SharedDataUnion
+{
+    struct SharedData data;
+    char binData[sizeof(struct SharedData)];
+}Data;
 
 // Global data types
 
 // Global variables
 
 // This variable stores the system configuration
-Config config = {};
+Config configStorage = {};
 
 // This variable stores all the relevant data used to control the system
-Data data = {NoError,0.0F,0.0F,0.0F,0.0, false,false,false,false,false,false,false,false,false,false,false,false,false};
+Data dataStorage = {NoError,0.0F,0.0F,0.0F,0.0, false,false,false,false,false,false,false,false,false,false,false,false,false};
 
 // Global variables
 
@@ -176,28 +188,28 @@ void setDefaultConfig()
     void printConfiguration()
     {
         debug(F("Current config:\n"));
-        Serial.print(F("Purification status:\t"));Serial.println(systemStatusToString(config.systemStatus));
-        Serial.print(F("STARTCHARGINGVOLTAGE:\t"));Serial.println(config.STARTCHARGINGVOLTAGE);
-        Serial.print(F("STOPCHARGINGVOLTAGE:\t"));Serial.println(config.STOPCHARGINGVOLTAGE);
-        Serial.print(F("STARTWORKINGVOLTAGE:\t"));Serial.println(config.STARTWORKINGVOLTAGE);
-        Serial.print(F("STOPWORKINGVOLTAGE:\t"));Serial.println(config.STOPWORKINGVOLTAGE);
-        Serial.print(F("DCAMMSENSITIVITY:\t"));Serial.println(config.DCAMMSENSITIVITY);
-        Serial.print(F("DCAMMZERO:\t"));Serial.println(config.DCAMMZERO);
-        Serial.print(F("ACAMMSENSITIVITY:\t"));Serial.println(config.ACAMMSENSITIVITY);
-        Serial.print(F("ACAMMZERO:\t"));Serial.println(config.ACAMMZERO);
-        Serial.print(F("ACFREQUENCY:\t"));Serial.println(config.ACFREQUENCY);
-        Serial.print(F("ESTIMATEDUVAMPERAGE:\t"));Serial.println(config.ESTIMATEDUVAMPERAGE);
-        Serial.print(F("WELLPUMPTIMEOUT:\t"));Serial.println(config.WELLPUMPTIMEOUT);
-        Serial.print(F("UVPUMPTIMEOUT:\t"));Serial.println(config.UVPUMPTIMEOUT);
-        Serial.print(F("ENDPUMPTIMEOUT:\t"));Serial.println(config.ENDPUMPTIMEOUT);
-        Serial.print(F("FILTERTIMEOUT:\t"));Serial.println(config.FILTERTIMEOUT);
-        Serial.print(F("UVPUMPFLOW:\t"));Serial.println(config.UVPUMPFLOW);
-        Serial.print(F("TEMPCHECKTIME:\t"));Serial.println(config.TEMPCHECKTIME);
-        Serial.print(F("STOPWORKINGTEMP:\t"));Serial.println(config.STOPWORKINGTEMP);
-        Serial.print(F("STARTCASETEMP:\t"));Serial.println(config.STARTCASETEMP);
-        Serial.print(F("STOPCASETEMP:\t"));Serial.println(config.STOPCASETEMP);
-        Serial.print(F("STARTPSUTEMP:\t"));Serial.println(config.STARTPSUTEMP);
-        Serial.print(F("STOPPSUTEMP:\t"));Serial.println(config.STOPPSUTEMP);
+        Serial.print(F("Purification status:\t"));Serial.println(systemStatusToString(configStorage.configStorage.config.systemStatus));
+        Serial.print(F("STARTCHARGINGVOLTAGE:\t"));Serial.println(configStorage.configStorage.config.STARTCHARGINGVOLTAGE);
+        Serial.print(F("STOPCHARGINGVOLTAGE:\t"));Serial.println(configStorage.configStorage.config.STOPCHARGINGVOLTAGE);
+        Serial.print(F("STARTWORKINGVOLTAGE:\t"));Serial.println(configStorage.configStorage.config.STARTWORKINGVOLTAGE);
+        Serial.print(F("STOPWORKINGVOLTAGE:\t"));Serial.println(configStorage.configStorage.config.STOPWORKINGVOLTAGE);
+        Serial.print(F("DCAMMSENSITIVITY:\t"));Serial.println(configStorage.configStorage.config.DCAMMSENSITIVITY);
+        Serial.print(F("DCAMMZERO:\t"));Serial.println(configStorage.configStorage.config.DCAMMZERO);
+        Serial.print(F("ACAMMSENSITIVITY:\t"));Serial.println(configStorage.configStorage.config.ACAMMSENSITIVITY);
+        Serial.print(F("ACAMMZERO:\t"));Serial.println(configStorage.configStorage.config.ACAMMZERO);
+        Serial.print(F("ACFREQUENCY:\t"));Serial.println(configStorage.configStorage.config.ACFREQUENCY);
+        Serial.print(F("ESTIMATEDUVAMPERAGE:\t"));Serial.println(configStorage.configStorage.config.ESTIMATEDUVAMPERAGE);
+        Serial.print(F("WELLPUMPTIMEOUT:\t"));Serial.println(configStorage.configStorage.config.WELLPUMPTIMEOUT);
+        Serial.print(F("UVPUMPTIMEOUT:\t"));Serial.println(configStorage.configStorage.config.UVPUMPTIMEOUT);
+        Serial.print(F("ENDPUMPTIMEOUT:\t"));Serial.println(configStorage.configStorage.config.ENDPUMPTIMEOUT);
+        Serial.print(F("FILTERTIMEOUT:\t"));Serial.println(configStorage.configStorage.config.FILTERTIMEOUT);
+        Serial.print(F("UVPUMPFLOW:\t"));Serial.println(configStorage.configStorage.config.UVPUMPFLOW);
+        Serial.print(F("TEMPCHECKTIME:\t"));Serial.println(configStorage.configStorage.config.TEMPCHECKTIME);
+        Serial.print(F("STOPWORKINGTEMP:\t"));Serial.println(configStorage.configStorage.config.STOPWORKINGTEMP);
+        Serial.print(F("STARTCASETEMP:\t"));Serial.println(configStorage.configStorage.config.STARTCASETEMP);
+        Serial.print(F("STOPCASETEMP:\t"));Serial.println(configStorage.configStorage.config.STOPCASETEMP);
+        Serial.print(F("STARTPSUTEMP:\t"));Serial.println(configStorage.configStorage.config.STARTPSUTEMP);
+        Serial.print(F("STOPPSUTEMP:\t"));Serial.println(configStorage.configStorage.config.STOPPSUTEMP);
         Serial.println();
     }
 

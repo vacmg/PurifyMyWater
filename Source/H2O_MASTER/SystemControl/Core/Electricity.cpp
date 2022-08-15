@@ -16,14 +16,14 @@ float fmap(float x, float in_min, float in_max, float out_min, float out_max)
 float voltRead()
 {
     float f = fmap(analogRead(voltSensor), 0, 1023, 0.0, 25.0);   // read from sensor and adjust the scale to 0-25V
-    data.voltage = f - loadOffset();
-    return data.voltage;
+    dataStorage.data.voltage = f - loadOffset();
+    return dataStorage.data.voltage;
 }
 
 // This function generates an offset to correctly measure real voltage under heavy loads
 float loadOffset()
 {
-    data.DCAmps = getDCAmps(200); // get current load
+    dataStorage.data.DCAmps = getDCAmps(200); // get current load
     //float formula = load * -0.65; // one big pump // 1.5A
     //float formula = load * -0.375; // two big pumps // 3A
     //float formula = load * -0.50; // 1 pump + UV // 2.5A
@@ -33,7 +33,7 @@ float loadOffset()
     //float formula = load * 0.00 - 1.00; // no load // 0A
 
     // Using some known pairs of current and difference from real to arduino measured voltage, here we used least square roots to approximate to the formula of a straight line
-    float formula = -0.9487F - (0.0453F * data.DCAmps); // f(I)=-0.9487-0.0453*I
+    float formula = -0.9487F - (0.0453F * dataStorage.data.DCAmps); // f(I)=-0.9487-0.0453*I
     return formula;
 }
 
@@ -43,11 +43,11 @@ void voltControl()
 {
     voltRead();
     //debug(voltage);
-    if (data.voltage < config.STARTCHARGINGVOLTAGE)
+    if (dataStorage.data.voltage < configStorage.config.STARTCHARGINGVOLTAGE)
     {
         output(voltSSRelay, 1);
     }
-    else if (data.voltage > config.STOPCHARGINGVOLTAGE)
+    else if (dataStorage.data.voltage > configStorage.config.STOPCHARGINGVOLTAGE)
     {
         output(voltSSRelay, 0);
     }
@@ -58,12 +58,12 @@ void waitForVoltage(float volts)
 {
     voltRead();
 #if OVERRRIDEMAXVOLTAGE
-    data.voltage = volts + 1;
+    dataStorage.data.voltage = volts + 1;
 #endif
-    if (data.voltage < volts)
+    if (dataStorage.data.voltage < volts)
     {
         output(voltSSRelay, 1);
-        while (data.voltage < volts)
+        while (dataStorage.data.voltage < volts)
         {
             voltRead();
         }
@@ -86,7 +86,7 @@ float getDCAmps(int samples)
     for (int i = 0; i < samples; i++)
     {
         sensorVolts = analogRead(mainAmpSensor) * (5.0 / 1023.0); // sensor reading
-        current = current + (sensorVolts - config.DCAMMZERO) / config.DCAMMSENSITIVITY; // Process input to get Amperage
+        current = current + (sensorVolts - configStorage.config.DCAMMZERO) / configStorage.config.DCAMMSENSITIVITY; // Process input to get Amperage
     }
     current = current / samples;
     return(current >= 0 ? (float)current : 0);
@@ -95,7 +95,7 @@ float getDCAmps(int samples)
 // This function uses all the data logged by logACAmps() and calculates an RMS Amperage value for the UV sensor
 float getACAmps()
 {
-    double amps = config.ACAMMZERO + config.ACAMMSENSITIVITY * inputStats.sigma();
+    double amps = configStorage.config.ACAMMZERO + configStorage.config.ACAMMSENSITIVITY * inputStats.sigma();
     return(amps >= 0 ? (float)amps : 0); // calculate RMS Amperage
 }
 

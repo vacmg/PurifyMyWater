@@ -12,7 +12,7 @@
 // This function is not completed yet
 void raise(enum Errors error, const String& possibleExplanation)
 {
-    data.currentError = error;
+    dataStorage.data.currentError = error;
     bool critical = true;
     ledAnimation* prevAnimation = currentAnimation;
     setColor(RED);
@@ -75,35 +75,35 @@ void raise(enum Errors error, const String& possibleExplanation)
 void errorCheck()
 {
     // Check for incongruent buoys
-    if (!data.lowSurfaceBuoySt && data.highSurfaceBuoySt)
+    if (!dataStorage.data.lowSurfaceBuoySt && dataStorage.data.highSurfaceBuoySt)
     {
         raise(BuoyIncongruenceError, F("An incongruence has been detected with either lowSurfaceBuoy or highSurfaceBuoy. Please check the connections to those sensors"));
     }
-    if (!data.lowFilteredBuoySt && data.highFilteredBuoySt)
+    if (!dataStorage.data.lowFilteredBuoySt && dataStorage.data.highFilteredBuoySt)
     {
         raise(BuoyIncongruenceError, F("An incongruence has been detected with either lowFilteredBuoy or highFilteredBuoy. Please check the connections to those sensors"));
     }
-    if (!data.lowPurifiedBuoySt && data.highPurifiedBuoySt)
+    if (!dataStorage.data.lowPurifiedBuoySt && dataStorage.data.highPurifiedBuoySt)
     {
         raise(BuoyIncongruenceError, F("An incongruence has been detected with either lowPurifiedBuoy or highPurifiedBuoy. Please check the connections to those sensors"));
     }
 
     // Check for pumps timeout
-    if (data.wellPumpSt && millis() > wellPumpPrevMillis + config.WELLPUMPTIMEOUT)
+    if (dataStorage.data.wellPumpSt && millis() > wellPumpPrevMillis + configStorage.config.WELLPUMPTIMEOUT)
     {
-        raise(PumpTimeoutError, String(F("Well pump has been working for more than ")) + String(config.WELLPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the well pump's circuit")));
+        raise(PumpTimeoutError, String(F("Well pump has been working for more than ")) + String(configStorage.config.WELLPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the well pump's circuit")));
     }
-    if (data.UVPumpSt && millis() > UVPumpPrevMillis + config.UVPUMPTIMEOUT)
+    if (dataStorage.data.UVPumpSt && millis() > UVPumpPrevMillis + configStorage.config.UVPUMPTIMEOUT)
     {
-        raise(PumpTimeoutError, String(F("UV pump has been working for more than ")) + String(config.UVPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in UV the pump's circuit")));
+        raise(PumpTimeoutError, String(F("UV pump has been working for more than ")) + String(configStorage.config.UVPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in UV the pump's circuit")));
     }
-    if (data.endPumpSt && millis() > endPumpPrevMillis + config.ENDPUMPTIMEOUT)
+    if (dataStorage.data.endPumpSt && millis() > endPumpPrevMillis + configStorage.config.ENDPUMPTIMEOUT)
     {
-        raise(PumpTimeoutError, String(F("Well pump has been working for more than ")) + String(config.ENDPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the end pump's circuit")));
+        raise(PumpTimeoutError, String(F("Well pump has been working for more than ")) + String(configStorage.config.ENDPUMPTIMEOUT) + String(F("ms. Either the pump doesn't work or there is a leakage in the end pump's circuit")));
     }
-    if (data.filterPumpSt && millis() > filterPumpPrevMillis + config.FILTERTIMEOUT)
+    if (dataStorage.data.filterPumpSt && millis() > filterPumpPrevMillis + configStorage.config.FILTERTIMEOUT)
     {
-        raise(PumpTimeoutError, String(F("Filter has been working for more than ")) + String(config.FILTERTIMEOUT) + String(F("ms. Either the filter doesn't work or there is a leakage in the filter's circuit")));
+        raise(PumpTimeoutError, String(F("Filter has been working for more than ")) + String(configStorage.config.FILTERTIMEOUT) + String(F("ms. Either the filter doesn't work or there is a leakage in the filter's circuit")));
     }
 }
 
@@ -163,7 +163,7 @@ void coreSetup()
     pinMode(screenRelay, OUTPUT);
     output(screenRelay, 0);
 
-    inputStats.setWindowSecs(40.0F / config.ACFREQUENCY); //Set AC Ammeter frequency
+    inputStats.setWindowSecs(40.0F / configStorage.config.ACFREQUENCY); //Set AC Ammeter frequency
 }
 
 // This is the core loop code, which no matter which module is enabled, those instructions must be executed every main loop execution

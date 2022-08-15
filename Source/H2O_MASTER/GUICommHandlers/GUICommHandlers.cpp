@@ -6,12 +6,12 @@
 
 void GUILoop()
 {
-    data.screenSensorSt = readDigitalSensor(screenSensor);
+    dataStorage.data.screenSensorSt = readDigitalSensor(screenSensor);
     screenPowerManager.loop();
     switch (guiStatus)
     {
         case GUI_ERROR_ST:
-            switch (data.currentError)
+            switch (dataStorage.data.currentError)
             {
                 case GUICannotSafelyShutdownError:
                     delay(1000);
@@ -25,7 +25,7 @@ void GUILoop()
                     else
                     {
                         screenPowerManager.setScreen(1);
-                        data.currentError = GUINotRespondingError;
+                        dataStorage.data.currentError = GUINotRespondingError;
                         guiStatus = GUI_ERROR_ST;
                     }
                     break;
@@ -33,13 +33,13 @@ void GUILoop()
                 case GUINotRespondingError:
                     screenPowerManager.forceScreen(0);
                     gui.commDisabler();
-                    data.currentError=NoError;
+                    dataStorage.data.currentError=NoError;
                     guiStatus = GUI_OFF_ST;
                     delay(1500);
                     break;
 
                 case MCUsIncompatibleVersionError:
-                    if(!data.screenSensorSt)
+                    if(!dataStorage.data.screenSensorSt)
                     {
                         shutdownScreen();
                     }
@@ -52,10 +52,10 @@ void GUILoop()
             break;
 
         case GUI_DISABLED_ST:
-            switch (data.currentError)
+            switch (dataStorage.data.currentError)
             {
                 case HandshakeError:
-                    if(!data.screenSensorSt)
+                    if(!dataStorage.data.screenSensorSt)
                     {
                         screenPowerManager.setScreen(0);
                         gui.commDisabler();
@@ -67,7 +67,7 @@ void GUILoop()
         case GUI_SHUTTING_DOWN_ST:
             if(screenPowerManager.isScreenOn())
             {
-                if(data.screenSensorSt)
+                if(dataStorage.data.screenSensorSt)
                 {
                     screenPowerManager.setScreen(1);
                     // TODO send shutdown cancel command
@@ -82,7 +82,7 @@ void GUILoop()
             break;
 
         case GUI_OFF_ST:
-            if(data.screenSensorSt)
+            if(dataStorage.data.screenSensorSt)
             {
                 screenPowerManager.setScreen(1);
                 delay(250);
@@ -109,7 +109,7 @@ void GUILoop()
 
         case GUI_CONNECTED_ST:
             gui.commLoop();
-            if(!data.screenSensorSt)
+            if(!dataStorage.data.screenSensorSt)
             {
                 shutdownScreen();
             }
@@ -120,7 +120,7 @@ void GUILoop()
 void shutdownScreen()
 {
     guiStatus = GUI_SHUTTING_DOWN_ST;
-    if(!data.screenSensorSt)
+    if(!dataStorage.data.screenSensorSt)
     {
         // TODO send shutdown command
         // TODO wait for OK
@@ -131,7 +131,7 @@ void shutdownScreen()
         }
         else
         {
-            data.currentError = GUICannotSafelyShutdownError;
+            dataStorage.data.currentError = GUICannotSafelyShutdownError;
             guiStatus = GUI_ERROR_ST;
         }
     }

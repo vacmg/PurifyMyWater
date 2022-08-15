@@ -24,22 +24,22 @@ void tempControl()
     getSensorsTemp(temp);
 
     // Start or stop fans according to external and internal temperature
-    if (temp[INSENSOR] > config.STARTCASETEMP && temp[OUTSENSOR] < temp[INSENSOR])
+    if (temp[INSENSOR] > configStorage.config.STARTCASETEMP && temp[OUTSENSOR] < temp[INSENSOR])
     {
         output(inFan, 1);
         output(outFan, 1);
     }
-    else if (temp[INSENSOR] < config.STOPCASETEMP || temp[OUTSENSOR] >= temp[INSENSOR])
+    else if (temp[INSENSOR] < configStorage.config.STOPCASETEMP || temp[OUTSENSOR] >= temp[INSENSOR])
     {
         output(inFan, 0);
         output(outFan, 0);
     }
 
-    if (temp[PSUSENSOR] > config.STARTPSUTEMP && temp[INSENSOR] < temp[PSUSENSOR])
+    if (temp[PSUSENSOR] > configStorage.config.STARTPSUTEMP && temp[INSENSOR] < temp[PSUSENSOR])
     {
         output(PSUFan, 1);
     }
-    else if (temp[PSUSENSOR] < config.STOPPSUTEMP || temp[INSENSOR] >= temp[PSUSENSOR])
+    else if (temp[PSUSENSOR] < configStorage.config.STOPPSUTEMP || temp[INSENSOR] >= temp[PSUSENSOR])
     {
         output(PSUFan, 0);
     }
@@ -49,7 +49,7 @@ void tempControl()
     bool ok = true;
     for (byte i = 0; i < 3 && ok; i++)
     {
-        if (temp[i] > config.STOPWORKINGTEMP)
+        if (temp[i] > configStorage.config.STOPWORKINGTEMP)
         {
             ok = false;
         }
@@ -88,7 +88,7 @@ void tempSetup()
 // This is the temperature loop code, which handles all the instructions needed to measure & control the system temperature
 void tempLoop()
 {
-    if (millis() > tempMillis + config.TEMPCHECKTIME)
+    if (millis() > tempMillis + configStorage.config.TEMPCHECKTIME)
     {
         tempControl();
         tempMillis = millis();
