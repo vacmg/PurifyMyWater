@@ -2,8 +2,8 @@
 // Created by Victor on 15/08/2022.
 //
 
-#ifndef H2O_MASTER_GUI_H
-#define H2O_MASTER_GUI_H
+#ifndef H2O_MASTER_GUICOMMHANDLERS_H
+#define H2O_MASTER_GUICOMMHANDLERS_H
 
 #include "../Shared/SharedData.h"
 #include "../Communications/ComManager.h"
@@ -32,4 +32,4 @@ void shutdownScreen();
 
 #include "GUICommHandlers.cpp"
 
-#endif //H2O_MASTER_GUI_H
+#endif //H2O_MASTER_GUICOMMHANDLERS_H

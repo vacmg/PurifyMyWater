@@ -129,6 +129,9 @@ void loop()
 #if !DISABLEPURIFICATION
     purificationLoop();
 #endif
+#if !DISABLECOMM
+    GUILoop();
+#endif
 
     #if DEBUG
         perf = millis() - prevmillis;

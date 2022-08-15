@@ -27,6 +27,15 @@
 #include "UI/UI.h"
 #endif
 
+#if !DISABLECOMM
+#include "Communications/ComManager.h"
+#include "MasterCommHandlers/MasterCommHandlers.h"
+#else
+// TODO create ';' macros to disable communication functions
+#endif
+
+
+
 //Main Functions
 
 void setup()

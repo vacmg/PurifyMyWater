@@ -12,10 +12,18 @@
 #include "Handlers/requestMessageHandler.h"
 #include "Handlers/requestAnswerMessageHandler.h"
 
+enum GUIStatus{
+    GUI_CONNECTING_ST,
+    GUI_CONNECTED_ST,
+    GUI_SHUTTING_DOWN_ST,
+    GUI_READY_TO_SHUTDOWN_ST,
+    GUI_ERROR_ST,
+    GUI_DISABLED_ST,
+};
 
 ComManager master(&Serial1,&sendMessageHandler,&requestMessageHandler,&requestAnswerMessageHandler);
 
-void GUILoop();
+void MasterCommLoop(); // TODO implement this
 
 #include "MasterCommHandlers.cpp"
 

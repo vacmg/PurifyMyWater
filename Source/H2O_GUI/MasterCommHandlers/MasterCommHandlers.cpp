@@ -4,7 +4,7 @@
 
 #include "MasterCommHandlers.h"
 
-void GUILoop()
+void MasterCommLoop()
 {
 
 }
