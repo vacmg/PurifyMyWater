@@ -32,11 +32,11 @@
 void setup()
 {
 #if DEBUG
-    Serial.begin(115200);
+    Serial.begin(9600);
     delay(200);
     debug(F("Setup - Booting...\n"));
     delay(50);
-    debug(F("Purification system version: "));debug((__FlashStringHelper*)VERSION);debug(F("\n\n"));
+    debug(F("PurifyMyWater UI version: "));debug((__FlashStringHelper*)VERSION);debug(F("\n\n"));
     delay(50);
 #endif
 
@@ -46,23 +46,14 @@ void setup()
 
     setDefaultConfig(); // TODO read config from master
 
-    debug('\n');
     //todo Test code after this line
 
-    //ComManager comManager(&Serial1);
-    //comManager.commSetup();
+    ComManager comManager(&Serial1);
+    comManager.commSetup();
 
-    Serial1.begin(9600);
-    Serial.println("Starting mirror mode\n");
-    while (true)
-    {
-        if(Serial1.available())
-        {
-            Serial.write(Serial1.read());
-        }
-    }
 
-    //while (true); // TODO delete or comment this
+
+    while (true); // TODO delete or comment this
 
     //todo Test code before this line
 

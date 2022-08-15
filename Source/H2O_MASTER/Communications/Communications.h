@@ -19,6 +19,7 @@
 #define SENDMESSAGE_ID 3
 
 #include <Arduino.h>
+#include "../Shared/SharedData.h"
 
 /*
  * Message structure:
@@ -43,22 +44,22 @@ public:
     // Application layer
 
     // This function puts information together to create a sendMessage payload
-    static bool createSendMessage(char* payload, const char* variableID, const char* value);
+    static bool createSendMessage(char* payload, enum VariableIDs variableID, const char* value);
 
     // This function extracts information from a sendMessage payload
-    static bool extractSendMessage(char* payload, char* variableID, char* value);
+    static bool extractSendMessage(char* payload, enum VariableIDs* variableID, char* value);
 
     // This function puts information together to create a requestAnswerMessage payload
-    static bool createRequestAnswerMessage(char* payload, const char* variableID, const char* value, const char* functionID);
+    static bool createRequestAnswerMessage(char* payload, enum VariableIDs variableID, const char* value, enum FunctionIDs functionID, byte step);
 
     // This function extracts information from a requestAnswerMessage payload
-    static bool extractRequestAnswerMessage(char* payload, char* variableID, char* value, char* functionID);
+    static bool extractRequestAnswerMessage(char* payload, enum VariableIDs* variableID, char* value, enum FunctionIDs* functionID, byte* step);
 
     // This function puts information together to create a requestMessage payload
-    static bool createRequestMessage(char* payload, const char* variableID, const char* functionID);
+    static bool createRequestMessage(char* payload, enum VariableIDs variableID, enum FunctionIDs functionID, byte step);
 
     // This function extracts information from a requestMessage payload
-    static bool extractRequestMessage(char* payload, char* variableID, char* functionID);
+    static bool extractRequestMessage(char* payload, enum VariableIDs* variableID, enum FunctionIDs* functionID, byte* step);
 
     // Link layer
 
@@ -66,11 +67,21 @@ public:
     // On success, it returns true, otherwise false.
     static bool sendMessage(const char* payload, HardwareSerial* serial);
 
-    // This function gets a message, verifies & extract its payload, send an ACK if the message is valid & returns if success
+    // This function gets a message, verifies & extract its payload, send an ACK if the message is valid & returns true if success
     static bool getMessage(char* payload, HardwareSerial* serial);
 
+    // This function sends a message
+    // On success, it returns true, otherwise false.
+    static bool sendQuickMessage(const char* payload, HardwareSerial* serial);
+
+    // This function gets a message, verifies & extract its payload & returns true if the message is valid
+    static bool getQuickMessage(char* payload, HardwareSerial* serial);
+
     // This function flushes an input HardwareSerial and discards all data on the input buffer
-    static void flush(HardwareSerial* serial);
+    static bool flush(HardwareSerial* serial);
+
+    // This function awaits for the HardwareSerial object to transmit all the data pending in the internal output buffer
+    static bool await(HardwareSerial* serial);
 
 private:
     // This function extracts the payload from a message & validates it against a precalculated CRC8

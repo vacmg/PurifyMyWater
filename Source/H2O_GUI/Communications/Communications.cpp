@@ -15,79 +15,77 @@
 // Application layer
 
 // This function puts information together to create a sendMessage payload
-bool Communications::createSendMessage(char* payload, const char* variableID, const char* value)
+bool Communications::createSendMessage(char* payload, enum VariableIDs variableID, const char* value)
 {
     if(value == nullptr || payload == nullptr)
         return false;
     payload[0] = SENDMESSAGE_ID; // ID sendMessage
-    payload[1] = '\0'; // ensure strcat works (it will be replaced by strcat)
-    strcat(payload, variableID);
-    strcat(payload,SEPARATOR);
+    payload[1] = variableID;
+    payload[2] = '\0'; // ensure strcat works (it will be replaced by strcat)
     strcat(payload, value);
     return true;
 }
 
 // This function extracts information from a sendMessage payload
-bool Communications::extractSendMessage(char* payload, char* variableID, char* value)
+bool Communications::extractSendMessage(char* payload, enum VariableIDs* variableID, char* value)
 {
-    if (value == nullptr || payload == nullptr)
+    if (value == nullptr || payload == nullptr || variableID == nullptr)
         return false;
-    strcpy(variableID,strtok(&payload[1],SEPARATOR));
-    strcpy(value,strtok(nullptr,SEPARATOR));
+    *variableID = (VariableIDs)payload[1];
+    strcpy(value,&payload[2]);
+    return true;
 }
 
 // This function puts information together to create a requestAnswerMessage payload
-bool Communications::createRequestAnswerMessage(char* payload, const char* variableID, const char* value, const char* functionID)
+bool Communications::createRequestAnswerMessage(char* payload, enum VariableIDs variableID, const char* value, enum FunctionIDs functionID, byte step)
 {
-    if (payload == nullptr || value == nullptr || variableID == nullptr || functionID == nullptr)
+    if (payload == nullptr || value == nullptr || step<1)
         return false;
 
     payload[0] = REQUESTANSWERMESSAGE_ID;
-    payload[1] = '\0'; // ensure strcat works (it will be replaced by strcat)
-    strcat(payload, SEPARATOR);
-    strcat(payload, variableID);
-    strcat(payload, SEPARATOR);
+    payload[1] = variableID;
+    payload[2] = functionID;
+    payload[3] = step;
+    payload[4] = '\0'; // ensure strcat works (it will be replaced by strcat)
     strcat(payload, value);
-    strcat(payload, SEPARATOR);
-    strcat(payload, functionID);
     return true;
 }
 
 // This function extracts information from a requestAnswerMessage payload
-bool Communications::extractRequestAnswerMessage(char* payload, char* variableID, char* value, char* functionID)
+bool Communications::extractRequestAnswerMessage(char* payload, enum VariableIDs* variableID, char* value, enum FunctionIDs* functionID, byte* step)
 {
     if (payload == nullptr || value == nullptr || variableID == nullptr || functionID == nullptr)
         return false;
-
-    strcpy(variableID, strtok(&payload[1], SEPARATOR));
-    strcpy(value, strtok(nullptr, SEPARATOR));
-    strcpy(functionID, strtok(nullptr, SEPARATOR));
+    *variableID = (VariableIDs)payload[1];
+    *functionID = (FunctionIDs)payload[2];
+    *step = payload[3];
+    strcpy(value, &payload[4]);
     return true;
 }
 
 // This function puts information together to create a requestMessage payload
-bool Communications::createRequestMessage(char* payload, const char* variableID, const char* functionID)
+bool Communications::createRequestMessage(char* payload, enum VariableIDs variableID, enum FunctionIDs functionID, byte step)
 {
-    if(variableID == nullptr || payload == nullptr || functionID == nullptr)
+    if(payload == nullptr || step<1)
         return false;
     payload[0] = REQUESTMESSAGE_ID;
-    payload[1] = '\0'; // ensure strcat works (it will be replaced by strcat)
-    strcat(payload,variableID);
-    strcat(payload,SEPARATOR);
-    strcat(payload,functionID);
+    payload[1] = variableID;
+    payload[2] = functionID;
+    payload[3] = step;
+    payload[4] = '\0';
     return true;
 }
 
 // This function extracts information from a requestMessage payload
-bool Communications::extractRequestMessage(char* payload, char* variableID, char* functionID)
+bool Communications::extractRequestMessage(char* payload, enum VariableIDs* variableID, enum FunctionIDs* functionID, byte* step)
 {
     if(payload == nullptr || variableID == nullptr || functionID == nullptr)
         return false;
-    strcpy(variableID,strtok(&payload[1],SEPARATOR));
-    strcpy(functionID,strtok(nullptr,SEPARATOR));
+    *variableID = (VariableIDs)payload[1];
+    *functionID = (FunctionIDs)payload[2];
+    *step = payload[3];
     return true;
 }
-
 
 // Link layer
 
@@ -102,6 +100,7 @@ bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
         return false;
     }
     char message[MAXMSGSIZE];
+    message[0] = 1; // This avoids strcat placing the '\n' in message[0] (this will only happen if message[0] is 0 (memory is not automatically cleared))
     message[1] = payloadLength+1; // set size of the message
     strcpy(&message[2],payload); // copy payload to message
     strcat(message,"\n"); // Add \n terminator
@@ -124,14 +123,51 @@ bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
 // This function gets a message, verifies & extract its payload, send an ACK if the message is valid & returns if success
 bool Communications::getMessage(char* payload, HardwareSerial* serial)
 {
-    delay(100);
-    serial->readBytesUntil('\n',payload,MAXMSGSIZE); // [CRC][size][payload]
-    flush(serial);
-
-    if (verifyMessage(payload)) // if crc match expected crc
+    if(serial->available())
     {
-        serial->write(ACK);
-        return true;
+        delay(100);
+        serial->readBytesUntil('\n',payload,MAXMSGSIZE); // [CRC][size][payload]
+        flush(serial);
+
+        if (verifyMessage(payload)) // if crc match expected crc
+        {
+            serial->write(ACK);
+            return true;
+        }
+    }
+    return false;
+}
+
+// This function sends a message
+// On success, it returns true, otherwise false.
+bool Communications::sendQuickMessage(const char* payload, HardwareSerial* serial)
+{
+    byte payloadLength = strlen(payload);
+    if(payloadLength>MAXPAYLOADSIZE)
+    {
+        debug(F("Payload exceeded maximum message size: "));debug(payloadLength);debug(F(" > "));debug(MAXPAYLOADSIZE);debug('\n');
+        return false;
+    }
+    char message[MAXMSGSIZE];
+    message[0] = 1; // This avoids strcat placing the '\n' in message[0] (this will only happen if message[0] is 0 (memory is not automatically cleared))
+    message[1] = payloadLength+1; // set size of the message
+    strcpy(&message[2],payload); // copy payload to message
+    strcat(message,"\n"); // Add \n terminator
+    message[0] = CRC8((byte*)&message[1],message[1]); // set CRC of the message
+
+    serial->write(message,payloadLength+3); //[CRC][size][payload]\n
+    return true;
+}
+
+// This function gets a message, verifies & extract its payload & returns true if the message is valid
+bool Communications::getQuickMessage(char* payload, HardwareSerial* serial)
+{
+    if(serial->available())
+    {
+        delay(100);
+        serial->readBytesUntil('\n',payload,MAXMSGSIZE); // [CRC][size][payload]
+
+        return verifyMessage(payload); // if crc match expected crc
     }
     return false;
 }
@@ -178,10 +214,18 @@ byte Communications::CRC8(const byte* data, size_t dataLength)
 }
 
 // This function flushes an input HardwareSerial and discards all data on the input buffer
-void Communications::flush(HardwareSerial* serial)
+bool Communications::flush(HardwareSerial* serial)
 {
     while (serial->available())
     {
         serial->read();
     }
+    return true;
+}
+
+// This function awaits for the HardwareSerial object to transmit all the data pending in the internal output buffer
+bool Communications::await(HardwareSerial* serial)
+{
+    serial->flush();
+    return true;
 }

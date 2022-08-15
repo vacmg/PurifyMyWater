@@ -49,11 +49,11 @@ void readAllSensors();
 void setup()
 {
 #if DEBUG
-    Serial.begin(115200);
+    Serial.begin(9600);
     delay(200);
     debug(F("Setup - Booting...\n"));
     delay(50);
-    debug(F("Purification system version: "));debug((__FlashStringHelper*)VERSION);debug(F("\n\n"));
+    debug(F("PurifyMyWater System version: "));debug((__FlashStringHelper*)VERSION);debug(F("\n\n"));
     delay(50);
 #endif
 
@@ -95,7 +95,10 @@ void setup()
     ComManager comManager(&Serial1);
     comManager.commSetup();
 
-    //while (true); // TODO delete or comment this
+
+
+
+    while (true); // TODO delete or comment this
 
     //todo Test code before this line
 
