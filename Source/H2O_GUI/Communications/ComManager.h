@@ -2,8 +2,8 @@
 // Created by Víctor on 20/06/2022.
 //
 
-#ifndef H2O_MASTER_COMMANAGER_H
-#define H2O_MASTER_COMMANAGER_H
+#ifndef H2O_COMMANAGER_H
+#define H2O_COMMANAGER_H
 
 #include "Communications.h"
 #include "../Shared/SharedData.h"
@@ -39,4 +39,4 @@ private:
 
 #include "ComManager.cpp"
 
-#endif //H2O_MASTER_COMMANAGER_H
+#endif //H2O_COMMANAGER_H

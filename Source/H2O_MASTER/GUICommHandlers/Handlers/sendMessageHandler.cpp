@@ -3,3 +3,8 @@
 //
 
 #include "sendMessageHandler.h"
+
+void sendMessageHandler(enum VariableIDs variableID, char* value)
+{
+
+}

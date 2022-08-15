@@ -132,7 +132,7 @@ Data dataStorage = {NoError,0.0F,0.0F,0.0F,0.0, false,false,false,false,false,fa
 // This function restores the default configuration in the system
 void setDefaultConfig()
 {
-    config = {
+    configStorage = {
             SYSTEM_OFF,Purification_Mode,13,15.75,15,12,0.1135,2.4956,
             -0.07157,0.033,50,1.0,60000,60000,60000,60000,
             55,10000,65,40,38,40,38
@@ -152,7 +152,6 @@ void setDefaultConfig()
 #endif
 
 #if DEBUG
-
     bool printArray(const char* array, unsigned int len)
     {
         for(int i = 0;i<len;i++)

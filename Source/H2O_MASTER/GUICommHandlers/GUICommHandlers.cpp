@@ -26,7 +26,7 @@ void GUILoop()
                     {
                         screenPowerManager.setScreen(1);
                         dataStorage.data.currentError = GUINotRespondingError;
-                        guiStatus = GUI_ERROR_ST;
+                        changeGUIStatus(GUI_ERROR_ST);
                     }
                     break;
 
@@ -34,7 +34,7 @@ void GUILoop()
                     screenPowerManager.forceScreen(0);
                     gui.commDisabler();
                     dataStorage.data.currentError=NoError;
-                    guiStatus = GUI_OFF_ST;
+                    changeGUIStatus(GUI_OFF_ST);
                     delay(1500);
                     break;
 
@@ -46,7 +46,7 @@ void GUILoop()
                     break;
 
                 case HandshakeError:
-                    guiStatus = GUI_DISABLED_ST;
+                    changeGUIStatus(GUI_DISABLED_ST);
                     break;
             }
             break;
@@ -76,7 +76,7 @@ void GUILoop()
             }
             else
             {
-                guiStatus = GUI_OFF_ST;
+                changeGUIStatus(GUI_OFF_ST);
                 gui.commDisabler();
             }
             break;
@@ -88,11 +88,11 @@ void GUILoop()
                 delay(250);
                 if(gui.commSetup())
                 {
-                    guiStatus = GUI_CONNECTING_ST;
+                    changeGUIStatus(GUI_CONNECTING_ST);
                 }
                 else
                 {
-                    guiStatus = GUI_ERROR_ST;
+                    changeGUIStatus(GUI_ERROR_ST);
                 }
 
             }
@@ -101,10 +101,10 @@ void GUILoop()
         case GUI_CONNECTING_ST:
             if(gui.commSetup())
             {
-                guiStatus = GUI_CONNECTED_ST;
+                changeGUIStatus(GUI_CONNECTED_ST);
             }
             else
-                guiStatus = GUI_ERROR_ST;
+                changeGUIStatus(GUI_ERROR_ST);
             break;
 
         case GUI_CONNECTED_ST:
@@ -119,7 +119,7 @@ void GUILoop()
 
 void shutdownScreen()
 {
-    guiStatus = GUI_SHUTTING_DOWN_ST;
+    changeGUIStatus(GUI_SHUTTING_DOWN_ST);
     if(!dataStorage.data.screenSensorSt)
     {
         // TODO send shutdown command
