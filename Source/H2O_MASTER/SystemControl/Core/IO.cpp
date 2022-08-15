@@ -7,13 +7,13 @@
 /*------------Output Control------------*/
 
 // Depending on the hardware used, relays are activated with high or low signals.
-// To maintain readability, in this function we set what kind of signal we need to activate those relays
-// A true value means that the circuit is closed whereas a false means that the circuit is opened
+// To maintain readability, in this function we set what kind of signal we need to activate those relays.
+// A true value means that the circuit is closed whereas a false means that the circuit is opened.
 void output(byte pin, bool value)
 {
     if (!(pin == redLed || pin == greenLed || pin == blueLed || pin == voltRelay || pin == outFan || pin == PSUFan || pin == inFan))
     {
-        value = !value;
+        value = (!value);
     }
     switch (pin)
     {
@@ -72,19 +72,30 @@ void updateAnimation()
 
 /*------------Input Control-------------*/
 
+// Depending on the hardware used, digital sensors send high or low signals upon detecting something or not.
+// To maintain readability, in this function we set what kind of signal shows that the sensor is detecting something.
+// A true value means that the sensor is detecting something whereas a false means that the sensor is not detecting anything.
+bool readDigitalSensor(byte pin)
+{
+    bool data = digitalRead(pin);
+    /*if(pin == xxx || ...)
+    {
+        data = (!data);
+    }*/
+    return data;
+}
+
 // This function gets all buoys current status
 void getBuoyStatus()
 {
-    data.secBuoySt = digitalRead(secBuoy);
-    data.lowSurfaceBuoySt = digitalRead(lowSurfaceBuoy);
-    data.highSurfaceBuoySt = digitalRead(highSurfaceBuoy);
-    data.lowFilteredBuoySt = digitalRead(lowFilteredBuoy);
-    data.highFilteredBuoySt = digitalRead(highFilteredBuoy);
-    data.lowPurifiedBuoySt = digitalRead(lowPurifiedBuoy);
-    data.highPurifiedBuoySt = digitalRead(highPurifiedBuoy);
-    data.endBuoySt = digitalRead(endBuoy);
-
-    data.screenSensorSt = digitalRead(screenSensor); // TODO get this value in communication's loop
+    data.secBuoySt = readDigitalSensor(secBuoy);
+    data.lowSurfaceBuoySt = readDigitalSensor(lowSurfaceBuoy);
+    data.highSurfaceBuoySt = readDigitalSensor(highSurfaceBuoy);
+    data.lowFilteredBuoySt = readDigitalSensor(lowFilteredBuoy);
+    data.highFilteredBuoySt = readDigitalSensor(highFilteredBuoy);
+    data.lowPurifiedBuoySt = readDigitalSensor(lowPurifiedBuoy);
+    data.highPurifiedBuoySt = readDigitalSensor(highPurifiedBuoy);
+    data.endBuoySt = readDigitalSensor(endBuoy);
 }
 
 /*------------Input Control-------------*/

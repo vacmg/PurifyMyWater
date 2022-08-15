@@ -87,9 +87,14 @@ void setColor(byte r, byte g, byte b);
 void setColor(byte color[3]);
 
 // Depending on the hardware used, relays are activated with high or low signals.
-// To maintain readability, in this function we set what kind of signal we need to activate those relays
-// A true value means that the circuit is closed whereas a false means that the circuit is opened
+// To maintain readability, in this function we set what kind of signal we need to activate those relays.
+// A true value means that the circuit is closed whereas a false means that the circuit is opened.
 void output(byte pin, bool value);
+
+// Depending on the hardware used, digital sensors send high or low signals upon detecting something or not.
+// To maintain readability, in this function we set what kind of signal shows that the sensor is detecting something.
+// A true value means that the sensor is detecting something whereas a false means that the sensor is not detecting anything.
+bool readDigitalSensor(byte pin);
 
 // This function gets all buoys current status
 void getBuoyStatus();
