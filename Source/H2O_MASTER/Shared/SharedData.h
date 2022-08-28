@@ -84,8 +84,6 @@ typedef union ConfigurationUnion
 // This struct stores all the relevant data used to control the system
 struct SharedData // TODO create a toStr & toStruct functions to send the whole config
 {
-    enum Errors currentError; // This variable stores the error that the system has in a particular time // TODO get this out of the sharedData struct
-
     float voltage; // System current voltage
     float ACUVAmps; // UV current (AC 230V)
     float DCAmps; // System current (DC 12V)
@@ -125,7 +123,10 @@ typedef union SharedDataUnion
 Config configStorage = DEFAULTCONFIG;
 
 // This variable stores all the relevant data used to control the system
-Data dataStorage = {NoError,0.0F,0.0F,0.0F,0.0, false,false,false,false,false,false,false,false,false,false,false,false,false};
+Data dataStorage = {0.0F,0.0F,0.0F,0.0, false,false,false,false,false,false,false,false,false,false,false,false,false};
+
+// This variable stores the error that the system has in a particular time
+enum Errors currentError = NoError;
 
 // Global variables
 
@@ -212,8 +213,6 @@ void setDefaultConfig()
 
     #define debugConfig() printConfiguration()
 
-    // TODO debugSharedData
-
     const char errorNoError_STR[] PROGMEM = "NoError";
     const char errorBuoyIncongruenceError_STR[] PROGMEM = "BuoyIncongruenceError";
     const char errorPumpTimeoutError_STR[] PROGMEM = "PumpTimeoutError";
@@ -233,8 +232,36 @@ void setDefaultConfig()
         strcpy_P(debugBuff, (char *)pgm_read_word(&(debugErrorsTable[error])));
         return debugBuff;
     }
+
+void printSharedData()
+{
+    debug(F("Current data:\n"));
+    Serial.print(F("Current Error:\t"));Serial.println(errorToString(currentError));
+    Serial.print(F("\nvoltage:\t"));Serial.println(dataStorage.data.voltage);
+    Serial.print(F("ACUVAmps:\t"));Serial.println(dataStorage.data.ACUVAmps);
+    Serial.print(F("DCAmps:\t"));Serial.println(dataStorage.data.DCAmps);
+    Serial.print(F("\npurifiedWater:\t"));Serial.println(dataStorage.data.purifiedWater);
+    Serial.print(F("\nwellPumpSt:\t"));Serial.println(dataStorage.data.wellPumpSt);
+    Serial.print(F("UVPumpSt:\t"));Serial.println(dataStorage.data.UVPumpSt);
+    Serial.print(F("endPumpSt:\t"));Serial.println(dataStorage.data.endPumpSt);
+    Serial.print(F("filterPumpSt:\t"));Serial.println(dataStorage.data.filterPumpSt);
+    Serial.print(F("\nsecBuoySt:\t"));Serial.println(dataStorage.data.secBuoySt);
+    Serial.print(F("lowSurfaceBuoySt:\t"));Serial.println(dataStorage.data.lowSurfaceBuoySt);
+    Serial.print(F("highSurfaceBuoySt:\t"));Serial.println(dataStorage.data.highSurfaceBuoySt);
+    Serial.print(F("lowFilteredBuoySt:\t"));Serial.println(dataStorage.data.lowFilteredBuoySt);
+    Serial.print(F("highFilteredBuoySt:\t"));Serial.println(dataStorage.data.highFilteredBuoySt);
+    Serial.print(F("lowPurifiedBuoySt:\t"));Serial.println(dataStorage.data.lowPurifiedBuoySt);
+    Serial.print(F("highPurifiedBuoySt:\t"));Serial.println(dataStorage.data.highPurifiedBuoySt);
+    Serial.print(F("endBuoySt:\t"));Serial.println(dataStorage.data.endBuoySt);
+    Serial.print(F("screenSensorSt:\t"));Serial.println(dataStorage.data.screenSensorSt);
+    Serial.println();
+}
+
+#define debugData() printSharedData()
+
 #else
     #define debugConfig() ;
+    #define debugData() ;
 #endif
 
 // Debug Functions

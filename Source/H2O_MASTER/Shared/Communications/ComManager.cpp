@@ -58,7 +58,7 @@ bool ComManager::checkCompatibleVersions(char* localVersion, char* otherVersion)
     if(!res)
     {
         debug(F("Handshake Error: MCUs are incompatible\n"));
-        dataStorage.data.currentError = MCUsIncompatibleVersionError;
+        currentError = MCUsIncompatibleVersionError;
     }
 
     return res;
@@ -128,7 +128,7 @@ bool ComManager::doHandshake()
     {
         debug(F("Handshake Error: Cannot create messages\n"));
     }
-    dataStorage.data.currentError = HandshakeError;
+    currentError = HandshakeError;
     return false;
 }
 

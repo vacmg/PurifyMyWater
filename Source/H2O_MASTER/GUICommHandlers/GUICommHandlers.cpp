@@ -21,7 +21,7 @@ void GUILoop()
                 {
                     changeGUIStatus(GUI_CONNECTED_ST);
                 }
-                else if (dataStorage.data.currentError == MCUsIncompatibleVersionError)
+                else if (currentError == MCUsIncompatibleVersionError)
                 {
                     changeGUIStatus(GUI_ERROR_ST);
                 }
@@ -38,7 +38,7 @@ void GUILoop()
         case GUI_CONNECTED_ST:
             guiComManager.commLoop(); // Handle all commands
 
-            if((screenPowerManager.isDesiredScreenOn() && !dataStorage.data.screenSensorSt) || dataStorage.data.currentError == GUINotRespondingError)
+            if((screenPowerManager.isDesiredScreenOn() && !dataStorage.data.screenSensorSt) || currentError == GUINotRespondingError)
             {
                 char message[3];
                 Communications::createSendMessage(message,SHUTDOWN_OK_CMD,"");
@@ -64,7 +64,7 @@ void GUILoop()
                 }
                 else // GUICannotSafelyShutdownError
                 {
-                    dataStorage.data.currentError = GUICannotSafelyShutdownError;
+                    currentError = GUICannotSafelyShutdownError;
 
                     char message[3];
                     Communications::createSendMessage(message,SHUTDOWN_OK_CMD,"");
@@ -83,7 +83,7 @@ void GUILoop()
             break;
 
         case GUI_ERROR_ST:
-            switch (dataStorage.data.currentError)
+            switch (currentError)
             {
                 case MCUsIncompatibleVersionError:
                     if(screenPowerManager.isDesiredScreenOn() && !dataStorage.data.screenSensorSt)
@@ -108,7 +108,7 @@ void GUILoop()
                         {
                             screenPowerManager.forceScreen(0);
                         }
-                        dataStorage.data.currentError = NoError;
+                        currentError = NoError;
                         changeGUIStatus(GUI_COOLDOWN_ST);
                         debug(F("Cooldown for "));debug(GUICOOLDOWNTIME);debug(F("ms\n"));
                         guiMillis = millis();

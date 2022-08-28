@@ -12,7 +12,7 @@
 // This function is not completed yet
 void raise(enum Errors error, const String& possibleExplanation)
 {
-    dataStorage.data.currentError = error;
+    currentError = error;
     bool critical = true;
     ledAnimation* prevAnimation = currentAnimation;
     setColor(RED);

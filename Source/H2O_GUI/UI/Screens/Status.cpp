@@ -276,7 +276,7 @@ void drawStatusForeground(const char *voltage, const char *waterAmount)//TODO ad
     label.setFontSize(2);
     btn2.setCoords(300, 234);
     btn2.setCoords1(420, 290);
-    if (dataStorage.data.currentError != NoError) // ERROR
+    if (currentError != NoError) // ERROR
     {
         label.setString(getString(StatusBtn_Error_STR));
         btn2.setSecondaryColor(Color(239, 127, 26));
@@ -658,7 +658,7 @@ void clickStatus()
     }
     else if (btn2.isPressed())
     {
-        if (dataStorage.data.currentError != NoError)
+        if (currentError != NoError)
         {
             debug(F("Button FAILURE pressed\n")); // TODO Draw ERROR message
         }
