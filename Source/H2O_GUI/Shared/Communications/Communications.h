@@ -20,7 +20,7 @@
 #define SENDMESSAGE_ID 3
 
 #include <Arduino.h>
-#include "../Shared/SharedData.h"
+#include "../SharedData.h"
 
 /*
  * Message structure:

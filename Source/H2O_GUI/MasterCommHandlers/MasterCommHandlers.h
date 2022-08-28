@@ -6,7 +6,7 @@
 #define H2O_GUI_MASTERCOMMHANDLERS_H
 
 #include "../Shared/SharedData.h"
-#include "../Communications/ComManager.h"
+#include "../Shared/Communications/ComManager.h"
 
 #include "Handlers/sendMessageHandler.h"
 #include "Handlers/requestMessageHandler.h"

@@ -21,20 +21,32 @@
 /*------------Config----------------*/
 
 #include "Shared/SharedData.h"
-#include "Communications/ComManager.h"
 
 #if !DISABLEUI
 #include "UI/UI.h"
 #endif
 
 #if !DISABLECOMM
-#include "Communications/ComManager.h"
+#include "Shared/Communications/ComManager.h"
 #include "MasterCommHandlers/MasterCommHandlers.h"
 #else
 // TODO create ';' macros to disable communication functions
 #endif
 
 
+// TODO delete this
+void testSendMessageHandler(enum VariableIDs variableID, char* value);
+ComManager com(&Serial1, &testSendMessageHandler, nullptr, nullptr);
+void testSendMessageHandler(enum VariableIDs variableID, char* value)
+{
+    if(variableID==SHUTDOWN_CMD)
+    {
+        debug(F("Shutdown cmd received\n"));
+        char message[3];
+        Communications::createSendMessage(message,SHUTDOWN_OK_CMD,"");
+        com.sendMessage(message);
+    }
+}
 
 //Main Functions
 
@@ -57,7 +69,21 @@ void setup()
 
     //todo Test code after this line
 
+    com.commSetup();
 
+    while (true)
+    {
+        com.commLoop();
+    }
+
+    /*Serial1.begin(COMMANAGERBAUDRATE);
+    debug(F("Starting mirror mode\n\n"));
+    delay(100);
+    while (true)
+    {
+        if(Serial1.available())
+            Serial.write(Serial1.read());
+    }*/
 
     while (true); // TODO delete or comment this
 

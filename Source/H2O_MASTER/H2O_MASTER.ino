@@ -36,7 +36,7 @@
 #include "SystemControl/Purification.h"
 #endif
 #if !DISABLECOMM
-#include "Communications/ComManager.h"
+#include "Shared/Communications/ComManager.h"
 #include "GUICommHandlers/GUICommHandlers.h"
 #else
 // TODO create ';' macros to disable communication functions
@@ -93,14 +93,16 @@ void setup()
     tempSetup();
 #endif
 #if !DISABLEPURIFICATION
-    purificationSetup();
+    purificationSetup(); // it must be the last setup (it waits for voltage for a long time)
 #endif
 
     //todo Test code after this line
 
+    /*Serial1.begin(COMMANAGERBAUDRATE);
+    delay(150);
+    Serial1.println("patata");
 
-
-    //while (true); // TODO delete or comment this
+    while (true); // TODO delete or comment this*/
 
     //todo Test code before this line
 

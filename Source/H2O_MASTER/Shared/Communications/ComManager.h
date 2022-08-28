@@ -6,7 +6,7 @@
 #define H2O_COMMANAGER_H
 
 #include "Communications.h"
-#include "../Shared/SharedData.h"
+#include "../SharedData.h"
 
 #define COMMANAGERBAUDRATE 9600
 #define HANDSHAKETIMEOUT 5000
@@ -23,6 +23,9 @@ public:
 
     bool flush();
     bool await();
+    bool isEnabled();
+    int dataAvailable();
+    HardwareSerial* getSerial();
 
 private:
     HardwareSerial* serial;

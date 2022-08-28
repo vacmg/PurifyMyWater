@@ -33,7 +33,7 @@ bool ComManager::commSetup()
             return false;
         }
     }
-    else return true;
+    return true;
 }
 
 bool ComManager::commDisabler()
@@ -86,8 +86,8 @@ bool ComManager::doHandshake()
 
         while ((!okSent || !okReceived) && handshakeMillis+HANDSHAKETIMEOUT>millis())
         {
-            sendQuickMessage(ourVersionMsg);
-            while (Communications::getQuickMessage(receivedMsg,serial))
+            Communications::sendQuickMessage(ourVersionMsg, serial);
+            while (Communications::getQuickMessage(receivedMsg, serial))
             {
                 if (receivedMsg[0] == SENDMESSAGE_ID)
                 {
@@ -98,7 +98,7 @@ bool ComManager::doHandshake()
                         {
                             //debug(F("OK Sent\n"));
                             strcpy(otherVersion,receivedData);
-                            sendQuickMessage(okMsg);
+                            Communications::sendQuickMessage(okMsg, serial);
                             okSent = true;
                         }
                         else if(cmdID == OK_CMD)
@@ -136,7 +136,7 @@ void ComManager::commLoop()
 {
     if(enabled && serial->available())
     {
-        char serialBuffer[MAXPAYLOADSIZE] = "";
+        char serialBuffer[MAXMSGSIZE] = "";
         enum VariableIDs variableID;
         enum FunctionIDs functionID;
         byte step;
@@ -185,4 +185,19 @@ bool ComManager::flush()
 bool ComManager::await()
 {
     return enabled && Communications::await(serial);
+}
+
+bool ComManager::isEnabled()
+{
+    return enabled;
+}
+
+int ComManager::dataAvailable()
+{
+    return enabled?serial->available():0;
+}
+
+HardwareSerial* ComManager::getSerial()
+{
+    return serial;
 }

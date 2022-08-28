@@ -7,6 +7,8 @@
 
 #include "Core.h"
 
+#define SCREENSHUTDOWNDELAY 8000
+
 /*------------Input-----------------*/
 
 const byte secBuoy = 2;
@@ -86,6 +88,7 @@ public:
     void setScreen(bool status);
     void forceScreen(bool status);
     bool isScreenOn();
+    bool isDesiredScreenOn();
     void loop();
 
 private:
@@ -97,7 +100,8 @@ private:
     bool changing;
 };
 
-ScreenPowerManager screenPowerManager(screenRelay,10000); // This object handles Screen power management
+//todo delete 13
+ScreenPowerManager screenPowerManager(13/*screenRelay*/,SCREENSHUTDOWNDELAY); // This object handles Screen power management
 
 // This function is used to perform animations on the RGB status led.
 // If an animation is loaded in currentAnimation and this function is called everytime, the animation will be displayed on the LED

@@ -21,7 +21,7 @@
 const char VERSION[] PROGMEM = "v2-alpha-1"; // MAXIMUN size is 16 bytes
 
 // It must have a maximum of 254 members
-enum VariableIDs {VERSION_ID = 1, OK_CMD, SHUTDOWN_CMD, CANCELSHUTDOWN_CMD, // Other messages/commands are self-contained here
+enum VariableIDs {VERSION_ID = 1, OK_CMD, SHUTDOWN_CMD, SHUTDOWN_OK_CMD, CANCELSHUTDOWN_CMD, // Other messages/commands are self-contained here
         currentError_ID, voltage_ID, ACUVAmps_ID, DCAmps_ID, purifiedWater_ID, wellPumpSt_ID, UVPumpSt_ID, endPumpSt_ID, filterPumpSt_ID, secBuoySt_ID, lowSurfaceBuoySt_ID, highSurfaceBuoySt_ID, lowFilteredBuoySt_ID, highFilteredBuoySt_ID, lowPurifiedBuoySt_ID, highPurifiedBuoySt_ID, endBuoySt_ID, screenSensorSt_ID, // Data
     purificationStatus_ID, workingMode_ID, STARTCHARGINGVOLTAGE_ID, STOPCHARGINGVOLTAGE_ID, STARTWORKINGVOLTAGE_ID, STOPWORKINGVOLTAGE_ID, DCAMMSENSITIVITY_ID, DCAMMZERO_ID, ACAMMSENSITIVITY_ID, ACAMMZERO_ID, ACFREQUENCY_ID, ESTIMATEDUVAMPERAGE_ID, WELLPUMPTIMEOUT_ID, UVPUMPTIMEOUT_ID, ENDPUMPTIMEOUT_ID, FILTERTIMEOUT_ID, UVPUMPFLOW_ID, TEMPCHECKTIME_ID, STOPWORKINGTEMP_ID, STARTCASETEMP_ID, STOPCASETEMP_ID, STARTPSUTEMP_ID, STOPPSUTEMP_ID // Config
 };
@@ -73,6 +73,8 @@ struct Configuration // TODO create a toStr & toStruct functions to send the who
 
 };
 
+#define DEFAULTCONFIG {SYSTEM_OFF,Purification_Mode,13,15.75,15,12,0.1135,2.4956,-0.07157,0.033,50,1.0,60000,60000,60000,60000,55,10000,65,40,38,40,38}
+
 typedef union ConfigurationUnion
 {
     struct Configuration config;
@@ -82,7 +84,7 @@ typedef union ConfigurationUnion
 // This struct stores all the relevant data used to control the system
 struct SharedData // TODO create a toStr & toStruct functions to send the whole config
 {
-    enum Errors currentError; // This variable stores the error that the system has in a particular time
+    enum Errors currentError; // This variable stores the error that the system has in a particular time // TODO get this out of the sharedData struct
 
     float voltage; // System current voltage
     float ACUVAmps; // UV current (AC 230V)
@@ -120,7 +122,7 @@ typedef union SharedDataUnion
 // Global variables
 
 // This variable stores the system configuration
-Config configStorage = {};
+Config configStorage = DEFAULTCONFIG;
 
 // This variable stores all the relevant data used to control the system
 Data dataStorage = {NoError,0.0F,0.0F,0.0F,0.0, false,false,false,false,false,false,false,false,false,false,false,false,false};
@@ -132,11 +134,7 @@ Data dataStorage = {NoError,0.0F,0.0F,0.0F,0.0, false,false,false,false,false,fa
 // This function restores the default configuration in the system
 void setDefaultConfig()
 {
-    configStorage = {
-            SYSTEM_OFF,Purification_Mode,13,15.75,15,12,0.1135,2.4956,
-            -0.07157,0.033,50,1.0,60000,60000,60000,60000,
-            55,10000,65,40,38,40,38
-    };
+    configStorage = DEFAULTCONFIG;
 }
 
 // Global functions
@@ -214,6 +212,7 @@ void setDefaultConfig()
 
     #define debugConfig() printConfiguration()
 
+    // TODO debugSharedData
 
     const char errorNoError_STR[] PROGMEM = "NoError";
     const char errorBuoyIncongruenceError_STR[] PROGMEM = "BuoyIncongruenceError";
@@ -222,8 +221,12 @@ void setDefaultConfig()
     const char errorScreenNotConnectedError_STR[] PROGMEM = "ScreenNotConnectedError";
     const char errorTempSensorsAmountError_STR[] PROGMEM = "TempSensorsAmountError";
     const char errorHotTempError_STR[] PROGMEM = "HotTempError";
+    const char errorHandshakeError_STR[] PROGMEM = "HandshakeError";
+    const char errorMCUsIncompatibleVersionError_STR[] PROGMEM = "MCUsIncompatibleVersionError";
+    const char errorGUINotRespondingError_STR[] PROGMEM = "GUINotRespondingError";
+    const char errorGUICannotSafelyShutdownError_STR[] PROGMEM = "GUICannotSafelyShutdownError";
 
-    const char *const debugErrorsTable[] PROGMEM = {errorNoError_STR, errorBuoyIncongruenceError_STR, errorPumpTimeoutError_STR, errorUVLightNotWorkingError_STR, errorScreenNotConnectedError_STR, errorTempSensorsAmountError_STR, errorHotTempError_STR};
+    const char *const debugErrorsTable[] PROGMEM = {errorNoError_STR, errorBuoyIncongruenceError_STR, errorPumpTimeoutError_STR, errorUVLightNotWorkingError_STR, errorScreenNotConnectedError_STR, errorTempSensorsAmountError_STR, errorHotTempError_STR, errorHandshakeError_STR, errorMCUsIncompatibleVersionError_STR, errorGUINotRespondingError_STR, errorGUICannotSafelyShutdownError_STR};
 
     char* errorToString(enum Errors error)
     {

@@ -7,132 +7,114 @@
 void GUILoop()
 {
     dataStorage.data.screenSensorSt = readDigitalSensor(screenSensor);
+    //debug(F("screenSensorSt: "));debug(dataStorage.data.screenSensorSt);debug('\n');
     screenPowerManager.loop();
+
     switch (guiStatus)
     {
-        case GUI_ERROR_ST:
-            switch (dataStorage.data.currentError)
-            {
-                case GUICannotSafelyShutdownError:
-                    delay(1000);
-                    // TODO send shutdown command
-                    // TODO wait for OK
-                    bool ok;
-                    if(ok)
-                    {
-                        screenPowerManager.setScreen(0);
-                    }
-                    else
-                    {
-                        screenPowerManager.setScreen(1);
-                        dataStorage.data.currentError = GUINotRespondingError;
-                        changeGUIStatus(GUI_ERROR_ST);
-                    }
-                    break;
-
-                case GUINotRespondingError:
-                    screenPowerManager.forceScreen(0);
-                    gui.commDisabler();
-                    dataStorage.data.currentError=NoError;
-                    changeGUIStatus(GUI_OFF_ST);
-                    delay(1500);
-                    break;
-
-                case MCUsIncompatibleVersionError:
-                    if(!dataStorage.data.screenSensorSt)
-                    {
-                        shutdownScreen();
-                    }
-                    break;
-
-                case HandshakeError:
-                    changeGUIStatus(GUI_DISABLED_ST);
-                    break;
-            }
-            break;
-
-        case GUI_DISABLED_ST:
-            switch (dataStorage.data.currentError)
-            {
-                case HandshakeError:
-                    if(!dataStorage.data.screenSensorSt)
-                    {
-                        screenPowerManager.setScreen(0);
-                        gui.commDisabler();
-                    }
-                    break;
-            }
-            break;
-
-        case GUI_SHUTTING_DOWN_ST:
-            if(screenPowerManager.isScreenOn())
-            {
-                if(dataStorage.data.screenSensorSt)
-                {
-                    screenPowerManager.setScreen(1);
-                    // TODO send shutdown cancel command
-                    // TODO wait for OK
-                }
-            }
-            else
-            {
-                changeGUIStatus(GUI_OFF_ST);
-                gui.commDisabler();
-            }
-            break;
-
         case GUI_OFF_ST:
             if(dataStorage.data.screenSensorSt)
             {
                 screenPowerManager.setScreen(1);
                 delay(250);
-                if(gui.commSetup())
+                if(guiComManager.commSetup())
                 {
-                    changeGUIStatus(GUI_CONNECTING_ST);
+                    changeGUIStatus(GUI_CONNECTED_ST);
                 }
-                else
+                else if (dataStorage.data.currentError == MCUsIncompatibleVersionError)
                 {
                     changeGUIStatus(GUI_ERROR_ST);
                 }
-
+                else // HandshakeError
+                {
+                    screenPowerManager.forceScreen(0);
+                    changeGUIStatus(GUI_COOLDOWN_ST);
+                    debug(F("Cooldown for "));debug(GUICOOLDOWNTIME);debug(F("ms\n"));
+                    guiMillis = millis();
+                }
             }
-            break;
-
-        case GUI_CONNECTING_ST:
-            if(gui.commSetup())
-            {
-                changeGUIStatus(GUI_CONNECTED_ST);
-            }
-            else
-                changeGUIStatus(GUI_ERROR_ST);
             break;
 
         case GUI_CONNECTED_ST:
-            gui.commLoop();
-            if(!dataStorage.data.screenSensorSt)
+            guiComManager.commLoop(); // Handle all commands
+
+            if((screenPowerManager.isDesiredScreenOn() && !dataStorage.data.screenSensorSt) || dataStorage.data.currentError == GUINotRespondingError)
             {
-                shutdownScreen();
+                char message[3];
+                Communications::createSendMessage(message,SHUTDOWN_OK_CMD,"");
+                guiComManager.sendMessage(message);
+
+                changeGUIStatus(GUI_SHUTTING_DOWN_ST);
             }
             break;
-    }
-}
 
-void shutdownScreen()
-{
-    changeGUIStatus(GUI_SHUTTING_DOWN_ST);
-    if(!dataStorage.data.screenSensorSt)
-    {
-        // TODO send shutdown command
-        // TODO wait for OK
-        bool ok;
-        if(ok)
-        {
-            screenPowerManager.setScreen(0);
-        }
-        else
-        {
-            dataStorage.data.currentError = GUICannotSafelyShutdownError;
-            guiStatus = GUI_ERROR_ST;
-        }
+        case GUI_SHUTTING_DOWN_ST:
+            if(guiComManager.dataAvailable())
+            {
+                char message[MAXMSGSIZE] = "";
+                char data[MAXVALUESIZE] = "";
+                enum VariableIDs variableID;
+                Communications::getMessage(message,guiComManager.getSerial());
+                if(message[0] == SENDMESSAGE_ID && Communications::extractSendMessage(message,&variableID,data) && variableID == SHUTDOWN_OK_CMD)
+                {
+                    screenPowerManager.setScreen(0);
+                    changeGUIStatus(GUI_COOLDOWN_ST);
+                    debug(F("Cooldown for "));debug(GUICOOLDOWNTIME);debug(F("ms\n"));
+                    guiMillis = millis();
+                }
+                else // GUICannotSafelyShutdownError
+                {
+                    dataStorage.data.currentError = GUICannotSafelyShutdownError;
+
+                    char message[3];
+                    Communications::createSendMessage(message,SHUTDOWN_OK_CMD,"");
+                    guiComManager.sendMessage(message);
+
+                    changeGUIStatus(GUI_ERROR_ST);
+                }
+            }
+            break;
+
+        case GUI_COOLDOWN_ST:
+            if(guiMillis+GUICOOLDOWNTIME<millis())
+            {
+                changeGUIStatus(GUI_OFF_ST);
+            }
+            break;
+
+        case GUI_ERROR_ST:
+            switch (dataStorage.data.currentError)
+            {
+                case MCUsIncompatibleVersionError:
+                    if(screenPowerManager.isDesiredScreenOn() && !dataStorage.data.screenSensorSt)
+                    {
+                        screenPowerManager.setScreen(0);
+                        changeGUIStatus(GUI_DISABLED_ST);
+                    }
+                    break;
+
+                case GUICannotSafelyShutdownError:
+                    if(guiComManager.dataAvailable())
+                    {
+                        char message[MAXMSGSIZE] = "";
+                        char data[MAXVALUESIZE] = "";
+                        enum VariableIDs variableID;
+                        Communications::getMessage(message,guiComManager.getSerial());
+                        if(message[0] == SENDMESSAGE_ID && Communications::extractSendMessage(message,&variableID,data) && variableID == SHUTDOWN_OK_CMD)
+                        {
+                            screenPowerManager.setScreen(0);
+                        }
+                        else // 2nd time GUICannotSafelyShutdownError
+                        {
+                            screenPowerManager.forceScreen(0);
+                        }
+                        dataStorage.data.currentError = NoError;
+                        changeGUIStatus(GUI_COOLDOWN_ST);
+                        debug(F("Cooldown for "));debug(GUICOOLDOWNTIME);debug(F("ms\n"));
+                        guiMillis = millis();
+                    }
+                    break;
+            }
+            break;
     }
 }
