@@ -27,7 +27,7 @@ void GUILoop()
                 }
                 else // HandshakeError
                 {
-                    screenPowerManager.forceScreen(0);
+                    screenPowerManager.setScreen(0);
                     changeGUIStatus(GUI_COOLDOWN_ST);
                     debug(F("Cooldown for "));debug(GUICOOLDOWNTIME);debug(F("ms\n"));
                     guiMillis = millis();
@@ -38,13 +38,14 @@ void GUILoop()
         case GUI_CONNECTED_ST:
             guiComManager.commLoop(); // Handle all commands
 
-            if((screenPowerManager.isDesiredScreenOn() && !dataStorage.data.screenSensorSt) || currentError == GUINotRespondingError)
+            if((screenPowerManager.isDesiredScreenOn() && !dataStorage.data.screenSensorSt) || currentError == DestinationMCUNotRespondingError)
             {
                 char message[3];
-                Communications::createSendMessage(message,SHUTDOWN_OK_CMD,"");
+                Communications::createSendMessage(message,SHUTDOWN_CMD,"");
                 guiComManager.sendMessage(message);
 
                 changeGUIStatus(GUI_SHUTTING_DOWN_ST);
+                guiMillis = millis();
             }
             break;
 
@@ -64,22 +65,54 @@ void GUILoop()
                 }
                 else // GUICannotSafelyShutdownError
                 {
-                    currentError = GUICannotSafelyShutdownError;
-
+                    debug(F("Error detected: "));debug(errorToString(GUICannotSafelyShutdownError));debug('\n');
                     char message[3];
-                    Communications::createSendMessage(message,SHUTDOWN_OK_CMD,"");
+                    Communications::createSendMessage(message,SHUTDOWN_CMD,"");
                     guiComManager.sendMessage(message);
 
+                    currentError = GUICannotSafelyShutdownError;
                     changeGUIStatus(GUI_ERROR_ST);
+                    debug(F("Retrying...\n"));
+                    guiMillis = millis();
                 }
+            }
+            else if (guiMillis+(2*MSGTIMEOUT)<millis())
+            {
+                debug(F("Timeout! Error detected: "));debug(errorToString(GUICannotSafelyShutdownError));debug('\n');
+                char message[3];
+                Communications::createSendMessage(message,SHUTDOWN_CMD,"");
+                guiComManager.sendMessage(message);
+
+                currentError = GUICannotSafelyShutdownError;
+                changeGUIStatus(GUI_ERROR_ST);
+                debug(F("Retrying...\n"));
+                guiMillis = millis();
             }
             break;
 
         case GUI_COOLDOWN_ST:
+            if (guiMillis+SCREENSHUTDOWNDELAY-1000>=millis() && currentError!=HandshakeError && currentError!=DestinationMCUNotRespondingError && currentError !=GUICannotSafelyShutdownError && dataStorage.data.screenSensorSt) // cancel shutdown
+            {
+                guiSw = true;
+                screenPowerManager.setScreen(1);
+                char message[3];
+                Communications::createSendMessage(message,SHUTDOWN_CANCEL_CMD,"");
+                guiComManager.sendMessage(message);
+                changeGUIStatus(GUI_CONNECTED_ST);
+            }
+            else if (guiSw && guiMillis+SCREENSHUTDOWNDELAY-1000<millis())
+            {
+                guiSw = false;
+                debug(F("Disabling communications...\n"));
+                guiComManager.commDisabler();
+            }
             if(guiMillis+GUICOOLDOWNTIME<millis())
             {
+                if(currentError == DestinationMCUNotRespondingError || currentError == HandshakeError || currentError == GUICannotSafelyShutdownError)
+                    currentError = NoError;
                 changeGUIStatus(GUI_OFF_ST);
             }
+
             break;
 
         case GUI_ERROR_ST:
@@ -106,9 +139,23 @@ void GUILoop()
                         }
                         else // 2nd time GUICannotSafelyShutdownError
                         {
+                            currentError = GUICannotSafelyShutdownError;
+                            debug(F("Disabling communications...\n"));
+                            guiComManager.commDisabler();
                             screenPowerManager.forceScreen(0);
                         }
-                        currentError = NoError;
+                        changeGUIStatus(GUI_COOLDOWN_ST);
+                        debug(F("Cooldown for "));debug(GUICOOLDOWNTIME);debug(F("ms\n"));
+                        guiMillis = millis();
+                    }
+                    else if (guiMillis+(2*MSGTIMEOUT)<millis())
+                    {
+                        currentError = GUICannotSafelyShutdownError;
+                        debug(F("Disabling communications...\n"));
+                        guiComManager.commDisabler();
+
+                        screenPowerManager.forceScreen(0);
+
                         changeGUIStatus(GUI_COOLDOWN_ST);
                         debug(F("Cooldown for "));debug(GUICOOLDOWNTIME);debug(F("ms\n"));
                         guiMillis = millis();

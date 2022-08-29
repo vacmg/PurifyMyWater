@@ -34,19 +34,7 @@
 #endif
 
 
-// TODO delete this
-void testSendMessageHandler(enum VariableIDs variableID, char* value);
-ComManager com(&Serial1, &testSendMessageHandler, nullptr, nullptr);
-void testSendMessageHandler(enum VariableIDs variableID, char* value)
-{
-    if(variableID==SHUTDOWN_CMD)
-    {
-        debug(F("Shutdown cmd received\n"));
-        char message[3];
-        Communications::createSendMessage(message,SHUTDOWN_OK_CMD,"");
-        com.sendMessage(message);
-    }
-}
+
 
 //Main Functions
 
@@ -69,12 +57,8 @@ void setup()
 
     //todo Test code after this line
 
+    ComManager com(&Serial1, nullptr, nullptr, nullptr);
     com.commSetup();
-
-    while (true)
-    {
-        com.commLoop();
-    }
 
     /*Serial1.begin(COMMANAGERBAUDRATE);
     debug(F("Starting mirror mode\n\n"));

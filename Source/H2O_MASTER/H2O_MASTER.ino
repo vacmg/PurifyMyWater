@@ -99,10 +99,9 @@ void setup()
     //todo Test code after this line
 
     /*Serial1.begin(COMMANAGERBAUDRATE);
-    delay(150);
-    Serial1.println("patata");
+    delay(150);//*/
 
-    while (true); // TODO delete or comment this*/
+    //while (true); // TODO delete or comment this
 
     //todo Test code before this line
 

@@ -24,7 +24,7 @@ bool ComManager::commSetup()
         if(doHandshake())
         {
             enabled = true;
-            debug(F("Successful handshake\n"));
+            debug(F("ComManager: Successful handshake\n"));
             return true;
         }
         else
@@ -48,8 +48,8 @@ bool ComManager::commDisabler()
 
 bool ComManager::checkCompatibleVersions(char* localVersion, char* otherVersion)
 {
-    debug(F("localVersion:      "));debug(localVersion);debug('\n');
-    debug(F("otherVersion:      "));debug(otherVersion);debug('\n');
+    debug(F("ComManager: localVersion:      "));debug(localVersion);debug('\n');
+    debug(F("ComManager: otherVersion:      "));debug(otherVersion);debug('\n');
     localVersion = strtok(localVersion,"."); // Get localVersion major version
     otherVersion = strtok(otherVersion,"."); // Get otherVersion major version
     /*debug(F("localMajorVersion: "));debug(localVersion);debug('\n');
@@ -57,7 +57,7 @@ bool ComManager::checkCompatibleVersions(char* localVersion, char* otherVersion)
     bool res = strcmp(localVersion,otherVersion)==0; // Compare major versions
     if(!res)
     {
-        debug(F("Handshake Error: MCUs are incompatible\n"));
+        debug(F("ComManager: Handshake Error: MCUs are incompatible\n"));
         currentError = MCUsIncompatibleVersionError;
     }
 
@@ -78,7 +78,7 @@ bool ComManager::doHandshake()
     if(Communications::createSendMessage(ourVersionMsg,VERSION_ID,ourVersion)
     && Communications::createSendMessage(okMsg,OK_CMD,""))
     {
-        debug(F("Performing handshake...\n"));
+        debug(F("ComManager: Performing handshake...\n"));
         bool okSent = false, okReceived = false;
         char receivedMsg[MAXMSGSIZE] = "";
         char receivedData[MAXVERSIONSIZE] = "";
@@ -121,12 +121,12 @@ bool ComManager::doHandshake()
         }
         else
         {
-            debug(F("Handshake Error: Timeout\n"));
+            debug(F("ComManager: Handshake Error: Timeout\n"));
         }
     }
     else
     {
-        debug(F("Handshake Error: Cannot create messages\n"));
+        debug(F("ComManager: Handshake Error: Cannot create messages\n"));
     }
     currentError = HandshakeError;
     return false;
@@ -148,20 +148,20 @@ void ComManager::commLoop()
                 case REQUESTMESSAGE_ID:
                     Communications::extractRequestMessage(serialBuffer,&variableID,&functionID,&step);
                     requestMessageHandler(variableID,functionID,step);
-                    debug(F("REQUESTMESSAGE\n"));
+                    debug(F("ComManager: RequestMessage received\n"));
                     break;
                 case REQUESTANSWERMESSAGE_ID:
                     Communications::extractRequestAnswerMessage(serialBuffer,&variableID,value,&functionID,&step);
                     requestAnswerMessageHandler(variableID,value,functionID,step);
-                    debug(F("REQUESTANSWERMESSAGE\n"));
+                    debug(F("ComManager: RequestAnswerMessage received\n"));
                     break;
                 case SENDMESSAGE_ID:
                     Communications::extractSendMessage(serialBuffer,&variableID,value);
                     sendMessageHandler(variableID,value);
-                    debug(F("SENDMESSAGE\n"));
+                    debug(F("ComManager: SendMessage received\n"));
                     break;
                 default:
-                    debug(F("Unknown message: "));debug(serialBuffer);debug('\n');
+                    debug(F("ComManager: Unknown message: "));debug(serialBuffer);debug('\n');
             }
         }
     }
@@ -170,7 +170,13 @@ void ComManager::commLoop()
 
 bool ComManager::sendMessage(const char *payload)
 {
-    return enabled && Communications::sendMessage(payload,serial);
+    if(enabled)
+    {
+        if(Communications::sendMessage(payload,serial))
+            return true;
+        else
+            currentError = DestinationMCUNotRespondingError;
+    }
 }
 
 bool ComManager::sendQuickMessage(const char* payload)

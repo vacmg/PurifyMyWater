@@ -21,9 +21,9 @@ void ScreenPowerManager::setScreen(bool status)
 {
     desiredScreenSt = status;
     debug(F("Set Screen MCU to "));debug(status?F("Boot\n"):F("Shutdown\n"));
-    if(status == 1)
+    if(status == 1 && screenSt == 0)
     {
-        debug(F("Booting Screen MCU\n"));
+        debug(F("ScreenPowerManager: Booting Screen MCU\n"));
         output(screenRelay,1);
         screenSt = 1;
     }
@@ -39,25 +39,20 @@ void ScreenPowerManager::forceScreen(bool status)
 
 void ScreenPowerManager::loop()
 {
-    /*debug(F("ScreenPowerManager::loop():\n")); //todo remove this
-    debug(F("Changing: "));debug(changing);
-    debug(F("\nscreenSt: "));debug(screenSt);
-    debug(F("\ndesiredScreenSt: "));debug(desiredScreenSt);
-    debug('\n');//*/
     if(!changing && screenSt!=desiredScreenSt) // if not changing, and it should
     {
-        debug(F("Screen MCU Shutdown timer started\n"));
+        debug(F("ScreenPowerManager: Screen MCU Shutdown timer started\n"));
         screenPowerMillis = millis();
         changing = true;
     }
     else if (changing && screenSt==desiredScreenSt) // If change was cancelled
     {
-        debug(F("Screen MCU Shutdown timer cancelled\n"));
+        debug(F("ScreenPowerManager: Screen MCU Shutdown timer cancelled\n"));
         changing = false;
     }
     else if(changing && screenPowerMillis+shutdownDelayMs<millis()) // if change is about to be performed
     {
-        debug(F("Shutting down Screen MCU\n"));
+        debug(F("ScreenPowerManager: Shutting down Screen MCU\n"));
         output(screenRelay,desiredScreenSt);
         screenSt = desiredScreenSt;
         changing = false;

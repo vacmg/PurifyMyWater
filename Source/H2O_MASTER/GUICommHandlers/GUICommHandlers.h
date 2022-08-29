@@ -14,7 +14,7 @@
 #include "Handlers/requestAnswerMessageHandler.h"
 
 
-#define GUICOOLDOWNTIME SCREENSHUTDOWNDELAY+2000 // GUI minimum delay between a shutdown and the next start
+#define GUICOOLDOWNTIME SCREENSHUTDOWNDELAY+5000 // GUI minimum delay between a shutdown and the next start
 
 enum GUIStatus{
     GUI_ERROR_ST = 0,
@@ -27,12 +27,13 @@ enum GUIStatus{
 
 enum GUIStatus guiStatus = GUI_OFF_ST;
 unsigned long guiMillis = 0;
+bool guiSw = false;
 
 #if DEBUG
 
 #define changeGUIStatus(newStatus) debug(F("GUIStatus changed from '"));debug(GUIModeToString(guiStatus));debug(F("' to '"));debug(GUIModeToString(newStatus));debug(F("'\n")); guiStatus = newStatus
 
-const char mode0[] PROGMEM = "GUI_ERROR_ST"; // in order (BOOTING = 0 ---> mode0 = "BOOTING" --> modeTable[0] = mode0)
+const char mode0[] PROGMEM = "GUI_ERROR_ST";
 const char mode1[] PROGMEM = "GUI_DISABLED_ST";
 const char mode2[] PROGMEM = "GUI_OFF_ST";
 const char mode3[] PROGMEM = "GUI_COOLDOWN_ST";

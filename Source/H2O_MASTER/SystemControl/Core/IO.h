@@ -7,7 +7,7 @@
 
 #include "Core.h"
 
-#define SCREENSHUTDOWNDELAY 8000
+#define SCREENSHUTDOWNDELAY 15000
 
 /*------------Input-----------------*/
 
@@ -101,7 +101,7 @@ private:
 };
 
 //todo delete 13
-ScreenPowerManager screenPowerManager(13/*screenRelay*/,SCREENSHUTDOWNDELAY); // This object handles Screen power management
+ScreenPowerManager screenPowerManager(screenRelay,SCREENSHUTDOWNDELAY); // This object handles Screen power management
 
 // This function is used to perform animations on the RGB status led.
 // If an animation is loaded in currentAnimation and this function is called everytime, the animation will be displayed on the LED

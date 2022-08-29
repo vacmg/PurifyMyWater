@@ -134,6 +134,13 @@ bool Communications::getMessage(char* payload, HardwareSerial* serial)
             serial->write(ACK);
             return true;
         }
+        else
+        {
+            debug(F("A corrupted or incomplete message arrived (CRC mismatch)\nThe message was: "));
+            debug(payload);
+            debug('\n');
+        }
+
     }
     return false;
 }
@@ -167,7 +174,16 @@ bool Communications::getQuickMessage(char* payload, HardwareSerial* serial)
         delay(100);
         serial->readBytesUntil('\n',payload,MAXMSGSIZE); // [CRC][size][payload]
 
-        return verifyMessage(payload); // if crc match expected crc
+        if(verifyMessage(payload)) // if crc match expected crc
+        {
+            return true;
+        }
+        else
+        {
+            debug(F("A corrupted or incomplete message arrived (CRC mismatch)\nThe message was: "));
+            debug(payload);
+            debug('\n');
+        }
     }
     return false;
 }
