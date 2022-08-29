@@ -141,6 +141,11 @@ void updateAnimation()
 // A true value means that the sensor is detecting something whereas a false means that the sensor is not detecting anything.
 bool readDigitalSensor(byte pin)
 {
+#if SCREENALWAYSON
+    if(pin == screenSensor)
+        return true;
+#endif
+
     bool data = digitalRead(pin);
     /*if(pin == xxx || ...)
     {

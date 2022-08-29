@@ -100,7 +100,6 @@ private:
     bool changing;
 };
 
-//todo delete 13
 ScreenPowerManager screenPowerManager(screenRelay,SCREENSHUTDOWNDELAY); // This object handles Screen power management
 
 // This function is used to perform animations on the RGB status led.

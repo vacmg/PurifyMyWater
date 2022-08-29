@@ -21,6 +21,7 @@
 #define DISABLECOMM false // used to disable GUI management & Communications
 
 #define OVERRRIDEMAXVOLTAGE false // useful to check some functions without powering all the system
+#define SCREENALWAYSON false // Bypass screen sensor (screen sensor always report active (1))
 
 /*------------Config----------------*/
 
