@@ -20,7 +20,7 @@
 #define SCREEN35ROTATIONOFFSET 2
 #endif
 
-    enum ScreenStatus {
+    enum ScreenStatus{
         BOOTING = 0,
         LOADSTATUS,
         STATUS,
@@ -48,7 +48,9 @@
         WATER,
         LOADTEMPERATURE,
         LOADPAGETEMPERATURE,
-        TEMPERATURE
+        TEMPERATURE,
+        LOADERROR,
+        ERROR,
     };
 enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show the splash screen
 
@@ -94,8 +96,10 @@ const char mode24[] PROGMEM = "WATER";
 const char mode25[] PROGMEM = "LOADTEMPERATURE";
 const char mode26[] PROGMEM = "LOADPAGETEMPERATURE";
 const char mode27[] PROGMEM = "TEMPERATURE";
+const char mode28[] PROGMEM = "LOADERROR";
+const char mode29[] PROGMEM = "ERROR";
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27, mode28, mode29};
 
 char* modeToString(ScreenStatus status)
 {
@@ -222,6 +226,15 @@ void UILoop()
             sw = true; // todo delete this
             drawStatusBackground(true);
             changeScreenStatus(STATUS);
+            break;
+
+        case LOADERROR:
+            drawError();
+            changeScreenStatus(ERROR);
+            break;
+
+        case ERROR:
+            clickError();
             break;
 
         case LOADSTATUS:

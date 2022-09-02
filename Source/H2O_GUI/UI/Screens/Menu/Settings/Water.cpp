@@ -120,7 +120,7 @@ void drawWater()
             break;
         case 2:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(getString(Water_FilterMaxTimeON_STR), getString(Water_UVPumpFlow_STR), "",String(((double) config.FILTERTIMEOUT) / 1000.0) + F("s"), String(config.UVPUMPFLOW) + F("L/H"), "",true, true, true, fontSizes);
+            draw6ButtonsLayout(getString(Water_FilterMaxTimeON_STR), getString(Water_UVPumpFlow_STR), "",String(((double) configStorage.config.FILTERTIMEOUT) / 1000.0) + F("s"), String(configStorage.config.UVPUMPFLOW) + F("L/H"), "",true, true, true, fontSizes);
             break;
         default:debug(F("Page selected is out of bounds (page>2 || page<0)"));
     }

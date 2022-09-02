@@ -22,7 +22,8 @@ enum GUIStatus{
     GUI_OFF_ST,
     GUI_COOLDOWN_ST,
     GUI_CONNECTED_ST,
-    GUI_SHUTTING_DOWN_ST
+    GUI_SHUTTING_DOWN_ST,
+    GUI_RECONNECTING_ST
 };
 
 enum GUIStatus guiStatus = GUI_OFF_ST;
@@ -39,8 +40,9 @@ const char mode2[] PROGMEM = "GUI_OFF_ST";
 const char mode3[] PROGMEM = "GUI_COOLDOWN_ST";
 const char mode4[] PROGMEM = "GUI_CONNECTED_ST";
 const char mode5[] PROGMEM = "GUI_SHUTTING_DOWN_ST";
+const char mode6[] PROGMEM = "GUI_RECONNECTING_ST";
 
-const char *const debugGUIModeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5};
+const char *const debugGUIModeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6};
 
 char* GUIModeToString(enum GUIStatus status)
 {
@@ -59,6 +61,6 @@ ComManager guiComManager(&Serial1,&sendMessageHandler,&requestMessageHandler,&re
 
 void GUILoop();
 
-#include "GUICommHandlers.cpp"
+#include "GUIComHandlers.cpp"
 
 #endif //H2O_MASTER_GUICOMMHANDLERS_H

@@ -5,7 +5,7 @@
 #ifndef H2O_GUI_REQUESTANSWERMESSAGEHANDLER_H
 #define H2O_GUI_REQUESTANSWERMESSAGEHANDLER_H
 
-#include "../MasterCommHandlers.h"
+#include "../MasterComHandlers.h"
 
 void requestAnswerMessageHandler(enum VariableIDs variableID, char* value, enum FunctionIDs functionID, byte step);
 

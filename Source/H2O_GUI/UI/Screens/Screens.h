@@ -10,5 +10,6 @@
 #include "Splash.h"
 #include "Menu/Menu.h"
 #include "Status.h"
+#include "Error.h"
 
 #endif //H2O_GUI_PAGES_H

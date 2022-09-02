@@ -27,8 +27,7 @@
 #endif
 
 #if !DISABLECOMM
-#include "Shared/Communications/ComManager.h"
-#include "MasterCommHandlers/MasterCommHandlers.h"
+#include "MasterComHandlers/MasterComHandlers.h"
 #else
 // TODO create ';' macros to disable communication functions
 #endif
@@ -45,7 +44,8 @@ void setup()
     delay(200);
     debug(F("Setup - Booting...\n"));
     delay(50);
-    debug(F("PurifyMyWater UI version: "));debug((__FlashStringHelper*)VERSION);debug(F("\n\n"));
+    debug(F("PurifyMyWater UI version: "));debug((__FlashStringHelper*)VERSION);debug('\n');
+    debug(F("Build date: "));debug((F(__TIMESTAMP__)));debug(F("\n\n"));
     delay(50);
 #endif
 
@@ -57,8 +57,8 @@ void setup()
 
     //todo Test code after this line
 
-    ComManager com(&Serial1, nullptr, nullptr, nullptr);
-    com.commSetup();
+    /*ComManager com(&Serial1, nullptr, nullptr, nullptr);
+    com.commSetup();*/
 
     /*Serial1.begin(COMMANAGERBAUDRATE);
     debug(F("Starting mirror mode\n\n"));
@@ -69,7 +69,7 @@ void setup()
             Serial.write(Serial1.read());
     }*/
 
-    while (true); // TODO delete or comment this
+    //while (true); // TODO delete or comment this
 
     //todo Test code before this line
 
@@ -79,6 +79,9 @@ void setup()
 
 void loop()
 {
+#if !DISABLECOMM
+    masterComLoop();
+#endif
 #if !DISABLEUI
     UILoop();
 #endif

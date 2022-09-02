@@ -73,7 +73,7 @@ bool ComManager::doHandshake()
     char otherVersion[MAXVERSIONSIZE];
     strcpy_P(ourVersion,VERSION);
     char okMsg[3];
-    char ourVersionMsg[MAXVERSIONSIZE+2];
+    char ourVersionMsg[MAXVERSIONSIZE+2]; // 1(Message_ID)+1(variableID)
 
     if(Communications::createSendMessage(ourVersionMsg,VERSION_ID,ourVersion)
     && Communications::createSendMessage(okMsg,OK_CMD,""))
@@ -167,7 +167,6 @@ void ComManager::commLoop()
     }
 }
 
-
 bool ComManager::sendMessage(const char *payload)
 {
     if(enabled)
@@ -188,6 +187,7 @@ bool ComManager::flush()
 {
     return enabled && Communications::flush(serial);
 }
+
 bool ComManager::await()
 {
     return enabled && Communications::await(serial);

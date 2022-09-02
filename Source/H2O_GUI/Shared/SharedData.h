@@ -41,8 +41,8 @@ enum WorkingMode {Purification_Mode, DCPSU_Mode, ACPSU_Mode}; // This struct sto
 // This struct stores all the system configuration
 struct Configuration // TODO create a toStr & toStruct functions to send the whole config (union?)
 {
-    enum SystemStatus systemStatus; // Used to store whether the purification system is on or off
-    enum WorkingMode workingMode; // Used to store the current system mode
+    enum SystemStatus systemStatus; // Used to store whether the purification system is on or off // TODO implement this
+    enum WorkingMode workingMode; // Used to store the current system mode // TODO implement this
 
     // Electricity settings
     float STARTCHARGINGVOLTAGE; // STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE < STOPCHARGINGVOLTAGE
@@ -70,7 +70,6 @@ struct Configuration // TODO create a toStr & toStruct functions to send the who
     byte STOPCASETEMP; // in Cº // 0 < STOPCASETEMP < STARTCASETEMP
     byte STARTPSUTEMP; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
     byte STOPPSUTEMP; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
-
 };
 
 #define DEFAULTCONFIG {SYSTEM_OFF,Purification_Mode,13,15.75,15,12,0.1135,2.4956,-0.07157,0.033,50,1.0,60000,60000,60000,60000,55,10000,65,40,38,40,38}
@@ -187,6 +186,7 @@ void setDefaultConfig()
     {
         debug(F("Current config:\n"));
         Serial.print(F("Purification status:\t"));Serial.println(systemStatusToString(configStorage.config.systemStatus));
+        // TODO print working mode
         Serial.print(F("STARTCHARGINGVOLTAGE:\t"));Serial.println(configStorage.config.STARTCHARGINGVOLTAGE);
         Serial.print(F("STOPCHARGINGVOLTAGE:\t"));Serial.println(configStorage.config.STOPCHARGINGVOLTAGE);
         Serial.print(F("STARTWORKINGVOLTAGE:\t"));Serial.println(configStorage.config.STARTWORKINGVOLTAGE);

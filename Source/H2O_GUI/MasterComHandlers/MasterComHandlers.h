@@ -12,12 +12,15 @@
 #include "Handlers/requestMessageHandler.h"
 #include "Handlers/requestAnswerMessageHandler.h"
 
+#if !DISABLEUI
+#include "../UI/UI.h"
+#endif
+
 enum GUIStatus{
     GUI_CONNECTING_ST = 0,
     GUI_CONNECTED_ST,
     GUI_SHUTTING_DOWN_ST,
     GUI_READY_TO_SHUTDOWN_ST,
-    GUI_ERROR_ST,
     GUI_DISABLED_ST,
 };
 
@@ -27,14 +30,13 @@ enum GUIStatus guiStatus = (enum GUIStatus)0;
 
 #define changeGUIStatus(newStatus) debug(F("GUIStatus changed from '"));debug(GUIModeToString(guiStatus));debug(F("' to '"));debug(GUIModeToString(newStatus));debug(F("'\n")); guiStatus = newStatus
 
-const char mode0[] PROGMEM = "XXX_ST";
-const char mode1[] PROGMEM = "XXX_ST";
-const char mode2[] PROGMEM = "XXX_ST";
-const char mode3[] PROGMEM = "XXX_ST";
-const char mode4[] PROGMEM = "XXX_ST";
-const char mode5[] PROGMEM = "XXX_ST";
+const char gmode0[] PROGMEM = "GUI_CONNECTING_ST";
+const char gmode1[] PROGMEM = "GUI_CONNECTED_ST";
+const char gmode2[] PROGMEM = "GUI_SHUTTING_DOWN_ST";
+const char gmode3[] PROGMEM = "GUI_READY_TO_SHUTDOWN_ST";
+const char gmode4[] PROGMEM = "GUI_DISABLED_ST";
 
-const char *const debugGUIModeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5};
+const char *const debugGUIModeTable[] PROGMEM = {gmode0, gmode1, gmode2, gmode3, gmode4};
 
 char* GUIModeToString(enum GUIStatus status)
 {
@@ -50,8 +52,8 @@ char* GUIModeToString(enum GUIStatus status)
 
 ComManager masterComManager(&Serial1,&sendMessageHandler,&requestMessageHandler,&requestAnswerMessageHandler);
 
-void MasterCommLoop(); // TODO implement this
+void masterComLoop();
 
-#include "MasterCommHandlers.cpp"
+#include "MasterComHandlers.cpp"
 
 #endif //H2O_GUI_MASTERCOMMHANDLERS_H

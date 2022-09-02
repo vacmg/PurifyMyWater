@@ -5,7 +5,7 @@
 #ifndef H2O_MASTER_SENDMESSAGEHANDLER_H
 #define H2O_MASTER_SENDMESSAGEHANDLER_H
 
-#include "../GUICommHandlers.h"
+#include "../GUIComHandlers.h"
 
 void sendMessageHandler(enum VariableIDs variableID, char* value);
 

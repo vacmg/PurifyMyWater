@@ -2,7 +2,7 @@
 // Created by Victor on 15/08/2022.
 //
 
-#include "GUICommHandlers.h"
+#include "GUIComHandlers.h"
 
 void GUILoop()
 {
@@ -93,12 +93,14 @@ void GUILoop()
         case GUI_COOLDOWN_ST:
             if (guiMillis+SCREENSHUTDOWNDELAY-1000>=millis() && currentError!=HandshakeError && currentError!=DestinationMCUNotRespondingError && currentError !=GUICannotSafelyShutdownError && dataStorage.data.screenSensorSt) // cancel shutdown
             {
+                debug(F("Reconnecting...\n"));
                 guiSw = true;
                 screenPowerManager.setScreen(1);
                 char message[3];
                 Communications::createSendMessage(message,SHUTDOWN_CANCEL_CMD,"");
                 guiComManager.sendMessage(message);
-                changeGUIStatus(GUI_CONNECTED_ST);
+                changeGUIStatus(GUI_RECONNECTING_ST);
+                guiMillis = millis();
             }
             else if (guiSw && guiMillis+SCREENSHUTDOWNDELAY-1000<millis())
             {
@@ -112,7 +114,30 @@ void GUILoop()
                     currentError = NoError;
                 changeGUIStatus(GUI_OFF_ST);
             }
+            break;
 
+        case GUI_RECONNECTING_ST: // TODO test reconnecting
+            if(guiComManager.dataAvailable())
+            {
+                char message[MAXMSGSIZE] = "";
+                char data[MAXVALUESIZE] = "";
+                enum VariableIDs variableID;
+                Communications::getMessage(message,guiComManager.getSerial());
+                if(message[0] == SENDMESSAGE_ID && Communications::extractSendMessage(message,&variableID,data) && variableID == SHUTDOWN_OK_CMD)
+                {
+                    changeGUIStatus(GUI_CONNECTED_ST);
+                    debug(F("Screen MCU reconnected\n"));
+                }
+            }
+            else if (guiMillis+(2*MSGTIMEOUT)<millis())
+            {
+                currentError = DestinationMCUNotRespondingError;
+                debug(F("Cannot reconnect Screen MCU, shutting it down\n"));
+                screenPowerManager.setScreen(0);
+                changeGUIStatus(GUI_COOLDOWN_ST);
+                debug(F("Cooldown for "));debug(GUICOOLDOWNTIME);debug(F("ms\n"));
+                guiMillis = millis();
+            }
             break;
 
         case GUI_ERROR_ST:

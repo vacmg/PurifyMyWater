@@ -37,8 +37,7 @@
 #include "SystemControl/Purification.h"
 #endif
 #if !DISABLECOMM
-#include "Shared/Communications/ComManager.h"
-#include "GUICommHandlers/GUICommHandlers.h"
+#include "GUIComHandlers/GUIComHandlers.h"
 #else
 // TODO create ';' macros to disable communication functions
 #endif
@@ -60,7 +59,8 @@ void setup()
     delay(200);
     debug(F("Setup - Booting...\n"));
     delay(50);
-    debug(F("PurifyMyWater System version: "));debug((__FlashStringHelper*)VERSION);debug(F("\n\n"));
+    debug(F("PurifyMyWater System version: "));debug((__FlashStringHelper*)VERSION);debug('\n');
+    debug(F("Build date: "));debug((F(__TIMESTAMP__)));debug(F("\n\n"));
     delay(50);
 #endif
 

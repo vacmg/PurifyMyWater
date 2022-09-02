@@ -96,8 +96,8 @@ void clickElectricity()
                 {
                     if (MINSYSTEMALLOWEDVOLTAGE < tempVal && tempVal < configStorage.config.STARTCHARGINGVOLTAGE - 1)// MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1
                     {
-                        debug(F("STOPWORKINGVOLTAGE UPDATED: "));debug(config.STOPWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
-                        config.STOPWORKINGVOLTAGE = (float)tempVal;
+                        debug(F("STOPWORKINGVOLTAGE UPDATED: "));debug(configStorage.config.STOPWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                        configStorage.config.STOPWORKINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -106,11 +106,11 @@ void clickElectricity()
                 break;
 
             case 3:
-                tempVal = getNumInput(getString(Electricity_ACAmmeterZero_STR), F(""), config.ACAMMZERO,4);
+                tempVal = getNumInput(getString(Electricity_ACAmmeterZero_STR), F(""), configStorage.config.ACAMMZERO,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(F("ACAMMZERO UPDATED: "));debug(config.ACAMMZERO);debug(F(" --> "));debug(tempVal);debug('\n');
-                    config.ACAMMZERO = tempVal;
+                    debug(F("ACAMMZERO UPDATED: "));debug(configStorage.config.ACAMMZERO);debug(F(" --> "));debug(tempVal);debug('\n');
+                    configStorage.config.ACAMMZERO = tempVal;
                     // TODO send new setting
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
@@ -123,13 +123,13 @@ void clickElectricity()
         switch (page)
         {
             case 1:
-                tempVal = getNumInput(getString(Electricity_UVCurrent_STR), F("A"), config.ESTIMATEDUVAMPERAGE);
+                tempVal = getNumInput(getString(Electricity_UVCurrent_STR), F("A"), configStorage.config.ESTIMATEDUVAMPERAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (0 < tempVal && tempVal < MAXUVAMPERAGE)//0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE
                     {
-                        debug(F("ESTIMATEDUVAMPERAGE UPDATED: "));debug(config.ESTIMATEDUVAMPERAGE);debug(F(" --> "));debug(tempVal);debug('\n');
-                        config.ESTIMATEDUVAMPERAGE = (float)tempVal;
+                        debug(F("ESTIMATEDUVAMPERAGE UPDATED: "));debug(configStorage.config.ESTIMATEDUVAMPERAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                        configStorage.config.ESTIMATEDUVAMPERAGE = (float)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -138,13 +138,13 @@ void clickElectricity()
                 break;
 
             case 2:
-                tempVal = getNumInput(getString(Electricity_ACInverterFrequency_STR), F("Hz"), config.ACFREQUENCY);
+                tempVal = getNumInput(getString(Electricity_ACInverterFrequency_STR), F("Hz"), configStorage.config.ACFREQUENCY);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (50 < tempVal && tempVal < 60)// 50 <= ACFREQUENCY <= 60
                     {
-                        debug(F("ACFREQUENCY UPDATED: "));debug(config.ACFREQUENCY);debug(F(" --> "));debug(tempVal);debug('\n');
-                        config.ACFREQUENCY = (byte)tempVal;
+                        debug(F("ACFREQUENCY UPDATED: "));debug(configStorage.config.ACFREQUENCY);debug(F(" --> "));debug(tempVal);debug('\n');
+                        configStorage.config.ACFREQUENCY = (byte)tempVal;
                         // TODO send new setting
                     }
                 }
@@ -153,11 +153,11 @@ void clickElectricity()
                 break;
 
             case 3:
-                tempVal = getNumInput(getString(Electricity_DCAmmeterSensitivity_STR), F(""), config.DCAMMSENSITIVITY,4);
+                tempVal = getNumInput(getString(Electricity_DCAmmeterSensitivity_STR), F(""), configStorage.config.DCAMMSENSITIVITY,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(F("DCAMMSENSITIVITY UPDATED: "));debug(config.DCAMMSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
-                    config.DCAMMSENSITIVITY = tempVal;
+                    debug(F("DCAMMSENSITIVITY UPDATED: "));debug(configStorage.config.DCAMMSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
+                    configStorage.config.DCAMMSENSITIVITY = tempVal;
                     // TODO send new setting
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
@@ -180,19 +180,19 @@ void drawElectricity() // TODO get settings real value
     {
         case 1:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(getString(Electricity_StartChargingVoltage_STR), getString(Electricity_StopChargingVoltage_STR), getString(Electricity_UVCurrent_STR),String(config.STARTCHARGINGVOLTAGE) + F("V"), String(config.STOPCHARGINGVOLTAGE) + F("V"),String(config.ESTIMATEDUVAMPERAGE) + F("A"), true, true, true, fontSizes);
+            draw6ButtonsLayout(getString(Electricity_StartChargingVoltage_STR), getString(Electricity_StopChargingVoltage_STR), getString(Electricity_UVCurrent_STR),String(configStorage.config.STARTCHARGINGVOLTAGE) + F("V"), String(configStorage.config.STOPCHARGINGVOLTAGE) + F("V"),String(configStorage.config.ESTIMATEDUVAMPERAGE) + F("A"), true, true, true, fontSizes);
             break;
         case 2:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(getString(Electricity_StartWorkingVoltage_STR), getString(Electricity_StopWorkingVoltage_STR),getString(Electricity_ACInverterFrequency_STR),String(config.STARTWORKINGVOLTAGE) + F("V"), String(config.STOPWORKINGVOLTAGE) + F("V"),String(config.ACFREQUENCY) + F("Hz"), true, true, true, fontSizes);
+            draw6ButtonsLayout(getString(Electricity_StartWorkingVoltage_STR), getString(Electricity_StopWorkingVoltage_STR),getString(Electricity_ACInverterFrequency_STR),String(configStorage.config.STARTWORKINGVOLTAGE) + F("V"), String(configStorage.config.STOPWORKINGVOLTAGE) + F("V"),String(configStorage.config.ACFREQUENCY) + F("Hz"), true, true, true, fontSizes);
             break;
         case 3:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 2, 2);
-            draw6ButtonsLayout(getString(Electricity_ACAmmeterSensitivity_STR), getString(Electricity_ACAmmeterZero_STR),getString(Electricity_DCAmmeterSensitivity_STR),String(config.ACAMMSENSITIVITY, 4), String(config.ACAMMZERO, 4), String(config.DCAMMSENSITIVITY, 4), true,true, true, fontSizes);
+            draw6ButtonsLayout(getString(Electricity_ACAmmeterSensitivity_STR), getString(Electricity_ACAmmeterZero_STR),getString(Electricity_DCAmmeterSensitivity_STR),String(configStorage.config.ACAMMSENSITIVITY, 4), String(configStorage.config.ACAMMZERO, 4), String(configStorage.config.DCAMMSENSITIVITY, 4), true,true, true, fontSizes);
             break;
         case 4:
             setFontSizeArray(fontSizes, 1, 1, 1, 2, 1, 1);
-            draw6ButtonsLayout(getString(Electricity_DCAmmeterZero_STR), "", "", String(config.DCAMMZERO, 4), "", "", true, false, false,fontSizes);
+            draw6ButtonsLayout(getString(Electricity_DCAmmeterZero_STR), "", "", String(configStorage.config.DCAMMZERO, 4), "", "", true, false, false,fontSizes);
             break;
         default: debug(F("Page selected is out of bounds (page>4 || page<0)"));
     }
