@@ -10,18 +10,23 @@
 
 /*------------Config----------------*/
 
+#define DEBUG true // Used to display debug information messages through Serial port
+
+#define USEVOLATILECONFIG true // Used to disable EEPROM writes due to saving configuration in the persistent storage
+#define SETDEFAULTCONFIG false // Used to set the config to the default config
+
+#define DISABLEHARDWARECHECKS true // Used to disable check routines to detect faulty hardware
+#define DISABLEPURIFICATION true // Used to disable purification control systems
+#define DISABLETEMPERATURE true // Used to disable temperature control systems
+#define DISABLECOMM false // Used to disable GUI management & Communications
+
+#define OVERRRIDEMAXVOLTAGE false // Used to check some functions without powering all the system
+#define SCREENALWAYSON false // Used to bypass screen sensor (screen sensor always report active (1))
+
+#if !DEBUG && (USEVOLATILECONFIG || SETDEFAULTCONFIG || DISABLEHARDWARECHECKS || DISABLEPURIFICATION || DISABLECOMM || OVERRRIDEMAXVOLTAGE || SCREENALWAYSON)
+#undef DEBUG
 #define DEBUG true
-
-#define USEVOLATILECONFIG true // used to disable EEPROM writes due to saving configuration in the persistent storage
-#define SETDEFAULTCONFIG false // used to set the config to the default config
-
-#define DISABLEHARDWARECHECKS true // used to disable check routines to detect faulty hardware
-#define DISABLEPURIFICATION true // used to disable purification control systems
-#define DISABLETEMPERATURE true // used to disable temperature control systems
-#define DISABLECOMM false // used to disable GUI management & Communications
-
-#define OVERRRIDEMAXVOLTAGE false // useful to check some functions without powering all the system
-#define SCREENALWAYSON false // Bypass screen sensor (screen sensor always report active (1))
+#endif
 
 /*------------Config----------------*/
 
@@ -50,26 +55,62 @@
 void readAllSensors();
 #endif
 
+
+//TODO remove this
+/*
+void testSendMessageHandler(enum VariableIDs variableID, char* value);
+ComManager testComManager(&Serial1,&testSendMessageHandler, nullptr, nullptr);
+void testSendMessageHandler(enum VariableIDs variableID, char* value)
+{
+    if(variableID == SHUTDOWN_OK_CMD)
+        debug(F("Shutdown OK received"));
+}
+*/
+
 // The setup() function runs once each time the microcontroller starts
 // This function starts serial communication if defined, configures every input and output, set any other variable that needs to and waits for enough voltage in the capacitors to start operating
 void setup()
 {
-#if DEBUG
     Serial.begin(9600);
     delay(200);
+#if DEBUG
     debug(F("Setup - Booting...\n"));
     delay(50);
-    debug(F("PurifyMyWater System version: "));debug((__FlashStringHelper*)VERSION);debug('\n');
+#endif
+    Serial.print(F("PurifyMyWater System version: "));Serial.print((__FlashStringHelper*)VERSION);Serial.print('\n');
+#if DEBUG
     debug(F("Build date: "));debug((F(__TIMESTAMP__)));debug(F("\n\n"));
     delay(50);
 #endif
 
+    debug(F("\nCAUTION: NEVER use debug features on a deployed system, there is risk of IRREVERSIBLE DAMAGE to the system\n\nUsing those debug features:\n"));
+
+    debug(F("DEBUG\t\t\t- Used to display debug information messages through Serial port\n"));
 #if USEVOLATILECONFIG
-    debug(F("Using volatile settings (DEBUG MODE)\n"));
+    debug(F("USEVOLATILECONFIG\t- Used to disable EEPROM writes due to saving configuration in the persistent storage\n"));
 #endif
+#if SETDEFAULTCONFIG
+    debug(F("SETDEFAULTCONFIG\t- Used to set the config to the default config\n"));
+#endif
+#if DISABLEHARDWARECHECKS
+    debug(F("DISABLEHARDWARECHECKS\t- Used to disable check routines to detect faulty hardware\n"));
+#endif
+#if DISABLEPURIFICATION
+    debug(F("DISABLEPURIFICATION\t- Used to disable purification control systems\n"));
+#endif
+#if DISABLECOMM
+    debug(F("DISABLECOMM\t\t- Used to disable GUI management & Communications\n"));
+#endif
+#if OVERRRIDEMAXVOLTAGE
+    debug(F("OVERRRIDEMAXVOLTAGE\t- Used to check some functions without powering all the system\n"));
+#endif
+#if SCREENALWAYSON
+    debug(F("SCREENALWAYSON\t\t- Used to bypass screen sensor (screen sensor always report active (1))\n"));
+#endif
+    debug('\n');
+    delay(50);
 
 #if SETDEFAULTCONFIG
-    debug(F("Using default configuration (DEBUG MODE)\n"));
     setDefaultConfig(); // load default settings
     updateConfig(); // save default settings to EEPROM
 #else
@@ -99,10 +140,28 @@ void setup()
 
     //todo Test code after this line
 
-    /*Serial1.begin(COMMANAGERBAUDRATE);
-    delay(150);//*/
+    /*testComManager.commSetup();
 
-    //while (true); // TODO delete or comment this
+    for (int step = 0;step<1;step++)
+    {
+        while (!Serial.available());
+        while (Serial.available()) Serial.read();
+
+        switch (step)
+        {
+            case 1:
+
+                break;
+        }
+    }
+
+    while (true)
+    {
+        testComManager.commLoop();
+    }*/
+
+
+    while (true); // TODO delete or comment this
 
     //todo Test code before this line
 

@@ -4,6 +4,12 @@
 
 #include "Error.h"
 
+
+// TODO
+//  HandshakeError
+//  MCUsIncompatibleVersionError
+//
+
 void drawError()
 {
     my_lcd.Fill_Screen(0xFFFF);

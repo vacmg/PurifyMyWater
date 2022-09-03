@@ -210,6 +210,9 @@ void UISetup()
 
     //my_lcd.Fill_Screen(0);
     my_lcd.Fill_Screen(Color(255, 255, 255).to565());
+#if DEBUG
+    drawDebugFlagsScreen();
+#endif
     debug(F("UI Ready\n"));
 }
 
@@ -220,9 +223,6 @@ void UILoop()
     {
         case BOOTING:
             drawSplashScreen();
-            // Perform other boot stuff after this line
-            delay(1000);
-            // Perform other boot stuff before this line
             sw = true; // todo delete this
             drawStatusBackground(true);
             changeScreenStatus(STATUS);

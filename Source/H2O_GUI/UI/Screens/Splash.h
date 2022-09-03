@@ -7,6 +7,10 @@
 
 #include "Screens.h"
 
+#if DEBUG
+void drawDebugFlagsScreen();
+#endif
+
 void drawSplashScreen();
 
 #include "Splash.cpp"

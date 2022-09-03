@@ -10,13 +10,18 @@
 
 /*------------Config----------------*/
 
+#define DEBUG true // Used to display debug information messages through Serial port
+
+#define DISABLEUI true  // Used to disable the UI screen module
+#define DISABLECOMM false // Used to disable communications module // TODO implement it
+
+#define SETDEFAULTSCREENCONFIG false // Used to set the screenConfig to the default screenConfig
+#define USEVOLATILECONFIG true // Used to disable EEPROM writes due to saving configuration in the persistent storage
+
+#if !DEBUG && (USEVOLATILECONFIG || SETDEFAULTSCREENCONFIG || DISABLEUI || DISABLECOMM)
+#undef DEBUG
 #define DEBUG true
-
-#define DISABLEUI true  // used to disable the UI screen module
-#define DISABLECOMM false // used to disable communications module // TODO implement it
-
-#define SETDEFAULTSCREENCONFIG false // used to set the screenConfig to the default screenConfig
-#define USEVOLATILECONFIG true // used to disable EEPROM writes due to saving configuration in the persistent storage
+#endif
 
 /*------------Config----------------*/
 
@@ -34,20 +39,60 @@
 
 
 
+// TODO delete this
+/*void testSendMessageHandler(enum VariableIDs variableID, char* value);
+ComManager com(&Serial1, &testSendMessageHandler, nullptr, nullptr);
+void testSendMessageHandler(enum VariableIDs variableID, char* value)
+{
+    if(variableID==SHUTDOWN_CMD)
+    {
+        debug(F("Shutdown cmd received\n"));
+        char message[3];
+        Communications::createSendMessage(message,SHUTDOWN_OK_CMD,"");
+        com.sendMessage(message);
+    }
+    else if(variableID==SHUTDOWN_CANCEL_CMD)
+    {
+        debug(F("Shutdown CANCEL cmd received\n"));
+        char message[3];
+        Communications::createSendMessage(message,SHUTDOWN_OK_CMD,"");
+        com.sendMessage(message);
+    }
+}*/
 
 //Main Functions
 
 void setup()
 {
-#if DEBUG
     Serial.begin(9600);
     delay(200);
+#if DEBUG
     debug(F("Setup - Booting...\n"));
     delay(50);
-    debug(F("PurifyMyWater UI version: "));debug((__FlashStringHelper*)VERSION);debug('\n');
+#endif
+    Serial.print(F("PurifyMyWater UI version: "));Serial.print((__FlashStringHelper*)VERSION);Serial.print('\n');
+#if DEBUG
     debug(F("Build date: "));debug((F(__TIMESTAMP__)));debug(F("\n\n"));
     delay(50);
 #endif
+
+    debug(F("\nCAUTION: NEVER use debug features on a deployed system, there is risk of IRREVERSIBLE DAMAGE to the system\n\nUsing those debug features:\n"));
+
+    debug(F("DEBUG\t\t\t- Used to display debug information messages through Serial port\n"));
+#if DISABLEUI
+    debug(F("DISABLEUI\t\t- Used to disable the UI screen module\n"));
+#endif
+#if DISABLECOMM
+    debug(F("DISABLECOMM\t\t- Used to disable communications module\n"));
+#endif
+#if SETDEFAULTSCREENCONFIG
+    debug(F("SETDEFAULTSCREENCONFIG\t- Used to set the screenConfig to the default screenConfig\n"));
+#endif
+#if USEVOLATILECONFIG
+    debug(F("USEVOLATILECONFIG\t- Used to disable EEPROM writes due to saving configuration in the persistent storage\n"));
+#endif
+    debug('\n');
+    delay(50);
 
 #if !DISABLEUI
     UISetup();
@@ -67,6 +112,12 @@ void setup()
     {
         if(Serial1.available())
             Serial.write(Serial1.read());
+    }*/
+
+    /*com.commSetup();
+    while (true)
+    {
+        com.commLoop();
     }*/
 
     //while (true); // TODO delete or comment this

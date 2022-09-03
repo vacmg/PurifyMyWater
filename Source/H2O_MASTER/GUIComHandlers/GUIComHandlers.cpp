@@ -116,7 +116,7 @@ void GUILoop()
             }
             break;
 
-        case GUI_RECONNECTING_ST: // TODO test reconnecting
+        case GUI_RECONNECTING_ST:
             if(guiComManager.dataAvailable())
             {
                 char message[MAXMSGSIZE] = "";

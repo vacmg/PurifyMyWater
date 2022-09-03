@@ -27,7 +27,7 @@ enum VariableIDs {VERSION_ID = 1, OK_CMD, SHUTDOWN_CMD, SHUTDOWN_OK_CMD, SHUTDOW
 };
 
 // It must have a maximum of 254 members
-enum FunctionIDs {Handshake_ID = 1};
+enum FunctionIDs {};
 
 enum Errors {NoError = 0, BuoyIncongruenceError, PumpTimeoutError,
         UVLightNotWorkingError, ScreenNotConnectedError, TempSensorsAmountError,
