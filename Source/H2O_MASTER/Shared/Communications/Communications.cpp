@@ -104,7 +104,7 @@ bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
     }
     char message[MAXMSGSIZE];
     message[0] = 1; // This avoids strcat placing the '\n' in message[0] (this will only happen if message[0] is 0 (memory is not automatically cleared))
-    message[1] = payloadLength+1; // set size of the message
+    message[1] = payloadLength+1; // size of [size]+[message]
     strcpy(&message[2],payload); // copy payload to message
     message[0] = CRC8((byte*)&message[1],message[1]); // set CRC of the message
 
@@ -162,7 +162,7 @@ bool Communications::sendQuickMessage(const char* payload, HardwareSerial* seria
     }
     char message[MAXMSGSIZE];
     message[0] = 1; // This avoids strcat placing the '\n' in message[0] (this will only happen if message[0] is 0 (memory is not automatically cleared))
-    message[1] = payloadLength+1; // set size of the message
+    message[1] = payloadLength+1; // size of [size]+[message]
     strcpy(&message[2],payload); // copy payload to message
     message[0] = CRC8((byte*)&message[1],message[1]); // set CRC of the message
 
@@ -199,7 +199,7 @@ bool Communications::getQuickMessage(char* payload, HardwareSerial* serial)
 bool Communications::verifyMessage(char* message)
 {
     byte originCRC = message[0]; // Origin CRC code
-    byte size = message[1]; // size of [tam]+[message]
+    byte size = message[1]; // size of [size]+[message]
     byte realCRC = CRC8((byte*) &message[1],size); // get CRC8 of [tam][message]
     if(originCRC==realCRC) // If message is valid
     {
