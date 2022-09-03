@@ -5,6 +5,7 @@
 #include "Communications.h"
 
 /*
+ *
  * [CRC][size][payload]\n
  * CRC: CRC8 code of [size][payload]
  * size: size in bytes of [size]+[payload]
@@ -93,6 +94,8 @@ bool Communications::extractRequestMessage(const char* payload, enum VariableIDs
 // On success, it returns true, otherwise false.
 bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
 {
+    //[CRC][size][payload]
+    //[CRC][size][payload]\n
     byte payloadLength = strlen(payload);
     if(payloadLength>MAXPAYLOADSIZE)
     {
@@ -103,7 +106,6 @@ bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
     message[0] = 1; // This avoids strcat placing the '\n' in message[0] (this will only happen if message[0] is 0 (memory is not automatically cleared))
     message[1] = payloadLength+1; // set size of the message
     strcpy(&message[2],payload); // copy payload to message
-    strcat(message,"\n"); // Add \n terminator
     message[0] = CRC8((byte*)&message[1],message[1]); // set CRC of the message
 
     bool successfulSend = false;
@@ -123,10 +125,13 @@ bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
 // This function gets a message, verifies & extract its payload, send an ACK if the message is valid & returns if success
 bool Communications::getMessage(char* payload, HardwareSerial* serial)
 {
+    // payload[64] crc -> 1 + size -> 1 + payload -> 61 + null -> 1 = 63
     if(serial->available())
     {
         delay(100);
-        serial->readBytesUntil('\n',payload,MAXMSGSIZE); // [CRC][size][payload]
+        payload[0] = serial->read(); // [CRC]
+        payload[1] = serial->read(); // [size]
+        serial->readBytes(&payload[2], (payload[1]<MAXPAYLOADSIZE) ? payload[1] : MAXPAYLOADSIZE); // [payload]
         flush(serial);
 
         if (verifyMessage(payload)) // if crc match expected crc
@@ -159,7 +164,6 @@ bool Communications::sendQuickMessage(const char* payload, HardwareSerial* seria
     message[0] = 1; // This avoids strcat placing the '\n' in message[0] (this will only happen if message[0] is 0 (memory is not automatically cleared))
     message[1] = payloadLength+1; // set size of the message
     strcpy(&message[2],payload); // copy payload to message
-    strcat(message,"\n"); // Add \n terminator
     message[0] = CRC8((byte*)&message[1],message[1]); // set CRC of the message
 
     serial->write(message,payloadLength+3); //[CRC][size][payload]\n
@@ -172,7 +176,9 @@ bool Communications::getQuickMessage(char* payload, HardwareSerial* serial)
     if(serial->available())
     {
         delay(100);
-        serial->readBytesUntil('\n',payload,MAXMSGSIZE); // [CRC][size][payload]
+        payload[0] = serial->read(); // [CRC]
+        payload[1] = serial->read(); // [size]
+        serial->readBytes(&payload[2], (payload[1]<MAXPAYLOADSIZE) ? payload[1] : MAXPAYLOADSIZE); // [payload]
 
         if(verifyMessage(payload)) // if crc match expected crc
         {
