@@ -23,7 +23,7 @@ public:
 
     bool flush();
     bool await();
-    bool isEnabled();
+    bool isEnabled() const;
     int dataAvailable();
     HardwareSerial* getSerial();
 
@@ -34,7 +34,7 @@ private:
     void (*requestMessageHandler)(enum VariableIDs variableID, enum FunctionIDs functionID, byte step);
     void (*requestAnswerMessageHandler)(enum VariableIDs variableID, char* value, enum FunctionIDs functionID, byte step);
 
-    bool checkCompatibleVersions(char* v1, char* v2);
+    static bool checkCompatibleVersions(char* localVersion, char* otherVersion);
     bool doHandshake();
 
 

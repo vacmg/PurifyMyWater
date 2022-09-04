@@ -482,10 +482,19 @@ void UILoop()
                 clickExtraFunctions(); // TODO implement extraFunctions logic
             }
             break;
-            //case LOADHELP: // TODO implement help menu
-            //case HELP:
-            //case LOADENGINEERINGMODE: // TODO implement engineering mode
-            //case ENGINEERINGMODE:
+        case LOADHELP: // TODO implement help menu
+            currentError = ScreenNotImplementedError;
+            changeScreenStatus(LOADERROR);
+        break;
+
+        //case HELP:
+
+        case LOADENGINEERINGMODE: // TODO implement engineering mode
+            currentError = ScreenNotImplementedError;
+            changeScreenStatus(LOADERROR);
+        break;
+
+        //case ENGINEERINGMODE:
     }
 }
 
