@@ -11,7 +11,6 @@
 
 #define MAXMSGSIZE MAXPAYLOADSIZE + 3 // payload+1(size)+1(crc)+1(NULL) // Arduino Serial buffers have 64 bytes by default, to use more space (up to 256B), use #define SERIAL_TX_BUFFER_SIZE xx & SERIAL_RX_BUFFER_SIZE
 #define MAXVALUESIZE MAXPAYLOADSIZE - 5 // payloadsize - 1(MessageType)-1(variableID)-1(functionID)-1(step)-1(NULL)
-#define SEPARATOR ","
 
 #define ACK 6
 

@@ -478,6 +478,7 @@ void UILoop()
             drawExtraFunctions();
             changeScreenStatus(EXTRAFUNCTIONS);
             break;
+
         case EXTRAFUNCTIONS:
             if (backBtn.isPressed())
             {
@@ -489,6 +490,7 @@ void UILoop()
                 clickExtraFunctions(); // TODO implement extraFunctions logic
             }
             break;
+
         case LOADHELP: // TODO implement help menu
             currentError = ScreenNotImplementedError;
             changeScreenStatus(LOADERROR);
