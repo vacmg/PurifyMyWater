@@ -22,17 +22,20 @@ const char VERSION[] PROGMEM = "v2-alpha-1"; // MAXIMUN size is 16 bytes
 
 // It must have a maximum of 254 members
 enum VariableIDs {VERSION_ID = 1, OK_CMD, SHUTDOWN_CMD, SHUTDOWN_OK_CMD, SHUTDOWN_CANCEL_CMD, // Other messages/commands are self-contained here
-        currentError_ID, voltage_ID, ACUVAmps_ID, DCAmps_ID, purifiedWater_ID, wellPumpSt_ID, UVPumpSt_ID, endPumpSt_ID, filterPumpSt_ID, secBuoySt_ID, lowSurfaceBuoySt_ID, highSurfaceBuoySt_ID, lowFilteredBuoySt_ID, highFilteredBuoySt_ID, lowPurifiedBuoySt_ID, highPurifiedBuoySt_ID, endBuoySt_ID, screenSensorSt_ID, // Data
+        voltage_ID, ACUVAmps_ID, DCAmps_ID, purifiedWater_ID, wellPumpSt_ID, UVPumpSt_ID, endPumpSt_ID, filterPumpSt_ID, secBuoySt_ID, lowSurfaceBuoySt_ID, highSurfaceBuoySt_ID, lowFilteredBuoySt_ID, highFilteredBuoySt_ID, lowPurifiedBuoySt_ID, highPurifiedBuoySt_ID, endBuoySt_ID, screenSensorSt_ID, // Data
     systemStatus_ID, workingMode_ID, STARTCHARGINGVOLTAGE_ID, STOPCHARGINGVOLTAGE_ID, STARTWORKINGVOLTAGE_ID, STOPWORKINGVOLTAGE_ID, DCAMMSENSITIVITY_ID, DCAMMZERO_ID, ACAMMSENSITIVITY_ID, ACAMMZERO_ID, ACFREQUENCY_ID, ESTIMATEDUVAMPERAGE_ID, WELLPUMPTIMEOUT_ID, UVPUMPTIMEOUT_ID, ENDPUMPTIMEOUT_ID, FILTERTIMEOUT_ID, UVPUMPFLOW_ID, TEMPCHECKTIME_ID, STOPWORKINGTEMP_ID, STARTCASETEMP_ID, STOPCASETEMP_ID, STARTPSUTEMP_ID, STOPPSUTEMP_ID // Config
 };
 
 // It must have a maximum of 254 members
-enum FunctionIDs {Handshake_ID = 1};
+enum FunctionIDs {};
 
-enum Errors {NoError = 0, BuoyIncongruenceError, PumpTimeoutError,
-        UVLightNotWorkingError, ScreenNotConnectedError, TempSensorsAmountError,
-        HotTempError,
-        HandshakeError, MCUsIncompatibleVersionError, DestinationMCUNotRespondingError, GUICannotSafelyShutdownError}; // Used to process different errors
+enum Errors {
+    NoError = 0, BuoyIncongruenceError, PumpTimeoutError,
+    UVLightNotWorkingError, ScreenNotConnectedError, TempSensorsAmountError,
+    HotTempError,
+    HandshakeError, MCUsIncompatibleVersionError, DestinationMCUNotRespondingError, GUICannotSafelyShutdownError,
+    ScreenNotImplementedError
+}; // Used to process different errors
 
 enum SystemStatus {SYSTEM_OFF = 0, SYSTEM_ON = 1}; // This struct stores if the system is working or not (think about it like a master switch)
 
@@ -224,8 +227,9 @@ void setDefaultConfig()
     const char errorMCUsIncompatibleVersionError_STR[] PROGMEM = "MCUsIncompatibleVersionError";
     const char errorDestinationMCUNotRespondingError_STR[] PROGMEM = "DestinationMCUNotRespondingError";
     const char errorGUICannotSafelyShutdownError_STR[] PROGMEM = "GUICannotSafelyShutdownError";
+    const char errorScreenNotImplementedError_STR[] PROGMEM = "ScreenNotImplementedError";
 
-    const char *const debugErrorsTable[] PROGMEM = {errorNoError_STR, errorBuoyIncongruenceError_STR, errorPumpTimeoutError_STR, errorUVLightNotWorkingError_STR, errorScreenNotConnectedError_STR, errorTempSensorsAmountError_STR, errorHotTempError_STR, errorHandshakeError_STR, errorMCUsIncompatibleVersionError_STR, errorDestinationMCUNotRespondingError_STR, errorGUICannotSafelyShutdownError_STR};
+    const char *const debugErrorsTable[] PROGMEM = {errorNoError_STR, errorBuoyIncongruenceError_STR, errorPumpTimeoutError_STR, errorUVLightNotWorkingError_STR, errorScreenNotConnectedError_STR, errorTempSensorsAmountError_STR, errorHotTempError_STR, errorHandshakeError_STR, errorMCUsIncompatibleVersionError_STR, errorDestinationMCUNotRespondingError_STR, errorGUICannotSafelyShutdownError_STR, errorScreenNotImplementedError_STR};
 
     char* errorToString(enum Errors error)
     {

@@ -4,18 +4,47 @@
 
 #include "Error.h"
 
+
+// TODO
+//  HandshakeError
+//  MCUsIncompatibleVersionError
+//
+
 void drawError()
 {
-    my_lcd.Fill_Screen(0xFFFF);
-    char str[9] = "Error ";
-    strcat(str,String(currentError).c_str());
-    Label messageLabel(0,0,str,0,Color(255,0,0));
-    Rectangle message(50,50,430,270,Color(),&messageLabel);
+    switch (currentError)
+    {
+        case ScreenNotImplementedError:
+        {
+            my_lcd.Fill_Screen(0xFFFF);
+            Label title(25, 25, getString(ScreenNotImplementedError_STR), 3, Color(255, 0, 0));
+            Rectangle titleRec(25, 25, 455, 200, Color(255, 0, 0), &title,true);
+            my_lcd.draw(&titleRec);
+            btn1.setCoords(25, 255);
+            btn1.setCoords1(455,305);
+            label.setString(getString(OK_STR));
+            my_lcd.draw(&btn1);
+        }
 
-    my_lcd.draw(&message);
+            break;
+
+        default:
+            my_lcd.Fill_Screen(0xFFFF);
+            char str[9] = "Error ";
+            strcat(str,String(currentError).c_str());
+            Label messageLabel(0,0,str,0,Color(255,0,0));
+            Rectangle message(50,50,430,270,Color(),&messageLabel);
+
+            my_lcd.draw(&message);
+    }
+
 }
 
 void clickError()
 {
-
+    if(btn1.isPressed() && currentError == ScreenNotImplementedError)
+    {
+        currentError = NoError;
+        changeScreenStatus(LOADMENU);
+    }
 }

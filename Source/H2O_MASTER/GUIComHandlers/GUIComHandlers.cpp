@@ -58,7 +58,8 @@ void GUILoop()
                 Communications::getMessage(message,guiComManager.getSerial());
                 if(message[0] == SENDMESSAGE_ID && Communications::extractSendMessage(message,&variableID,data) && variableID == SHUTDOWN_OK_CMD)
                 {
-                    screenPowerManager.setScreen(0);
+                    screenPowerManager.setScreen(false);
+                    guiSw = true;
                     changeGUIStatus(GUI_COOLDOWN_ST);
                     debug(F("Cooldown for "));debug(GUICOOLDOWNTIME);debug(F("ms\n"));
                     guiMillis = millis();
@@ -94,8 +95,7 @@ void GUILoop()
             if (guiMillis+SCREENSHUTDOWNDELAY-1000>=millis() && currentError!=HandshakeError && currentError!=DestinationMCUNotRespondingError && currentError !=GUICannotSafelyShutdownError && dataStorage.data.screenSensorSt) // cancel shutdown
             {
                 debug(F("Reconnecting...\n"));
-                guiSw = true;
-                screenPowerManager.setScreen(1);
+                screenPowerManager.setScreen(true);
                 char message[3];
                 Communications::createSendMessage(message,SHUTDOWN_CANCEL_CMD,"");
                 guiComManager.sendMessage(message);
@@ -116,7 +116,7 @@ void GUILoop()
             }
             break;
 
-        case GUI_RECONNECTING_ST: // TODO test reconnecting
+        case GUI_RECONNECTING_ST:
             if(guiComManager.dataAvailable())
             {
                 char message[MAXMSGSIZE] = "";
@@ -133,7 +133,7 @@ void GUILoop()
             {
                 currentError = DestinationMCUNotRespondingError;
                 debug(F("Cannot reconnect Screen MCU, shutting it down\n"));
-                screenPowerManager.setScreen(0);
+                screenPowerManager.setScreen(false);
                 changeGUIStatus(GUI_COOLDOWN_ST);
                 debug(F("Cooldown for "));debug(GUICOOLDOWNTIME);debug(F("ms\n"));
                 guiMillis = millis();
@@ -160,14 +160,14 @@ void GUILoop()
                         Communications::getMessage(message,guiComManager.getSerial());
                         if(message[0] == SENDMESSAGE_ID && Communications::extractSendMessage(message,&variableID,data) && variableID == SHUTDOWN_OK_CMD)
                         {
-                            screenPowerManager.setScreen(0);
+                            screenPowerManager.setScreen(false);
                         }
                         else // 2nd time GUICannotSafelyShutdownError
                         {
                             currentError = GUICannotSafelyShutdownError;
                             debug(F("Disabling communications...\n"));
                             guiComManager.commDisabler();
-                            screenPowerManager.forceScreen(0);
+                            screenPowerManager.forceScreen(false);
                         }
                         changeGUIStatus(GUI_COOLDOWN_ST);
                         debug(F("Cooldown for "));debug(GUICOOLDOWNTIME);debug(F("ms\n"));
@@ -179,7 +179,7 @@ void GUILoop()
                         debug(F("Disabling communications...\n"));
                         guiComManager.commDisabler();
 
-                        screenPowerManager.forceScreen(0);
+                        screenPowerManager.forceScreen(false);
 
                         changeGUIStatus(GUI_COOLDOWN_ST);
                         debug(F("Cooldown for "));debug(GUICOOLDOWNTIME);debug(F("ms\n"));

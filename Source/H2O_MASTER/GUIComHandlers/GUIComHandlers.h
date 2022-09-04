@@ -9,11 +9,6 @@
 #include "../Shared/Communications/ComManager.h"
 #include "../SystemControl/Core/Core.h"
 
-#include "Handlers/sendMessageHandler.h"
-#include "Handlers/requestMessageHandler.h"
-#include "Handlers/requestAnswerMessageHandler.h"
-
-
 #define GUICOOLDOWNTIME SCREENSHUTDOWNDELAY+5000 // GUI minimum delay between a shutdown and the next start
 
 enum GUIStatus{
@@ -56,6 +51,9 @@ char* GUIModeToString(enum GUIStatus status)
 
 #endif
 
+#include "Handlers/sendMessageHandler.h"
+#include "Handlers/requestMessageHandler.h"
+#include "Handlers/requestAnswerMessageHandler.h"
 
 ComManager guiComManager(&Serial1,&sendMessageHandler,&requestMessageHandler,&requestAnswerMessageHandler);
 

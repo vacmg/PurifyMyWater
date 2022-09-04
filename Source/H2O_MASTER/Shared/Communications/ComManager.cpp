@@ -193,7 +193,7 @@ bool ComManager::await()
     return enabled && Communications::await(serial);
 }
 
-bool ComManager::isEnabled()
+bool ComManager::isEnabled() const
 {
     return enabled;
 }
