@@ -21,7 +21,7 @@
 const char VERSION[] PROGMEM = "v2-alpha-1"; // MAXIMUN size is 16 bytes
 
 // It must have a maximum of 254 members
-enum VariableIDs {VERSION_ID = 1, OK_CMD, SHUTDOWN_CMD, SHUTDOWN_OK_CMD, SHUTDOWN_CANCEL_CMD, // Other messages/commands are self-contained here
+enum VariableIDs {VERSION_ID = 1, OK_CMD, SHUTDOWN_CMD, SHUTDOWN_OK_CMD, SHUTDOWN_CANCEL_CMD, BUSY_CMD, AVAILABLE_CMD, // Other messages/commands are self-contained here
         voltage_ID, ACUVAmps_ID, DCAmps_ID, purifiedWater_ID, wellPumpSt_ID, UVPumpSt_ID, endPumpSt_ID, filterPumpSt_ID, secBuoySt_ID, lowSurfaceBuoySt_ID, highSurfaceBuoySt_ID, lowFilteredBuoySt_ID, highFilteredBuoySt_ID, lowPurifiedBuoySt_ID, highPurifiedBuoySt_ID, endBuoySt_ID, screenSensorSt_ID, // Data
     systemStatus_ID, workingMode_ID, STARTCHARGINGVOLTAGE_ID, STOPCHARGINGVOLTAGE_ID, STARTWORKINGVOLTAGE_ID, STOPWORKINGVOLTAGE_ID, DCAMMSENSITIVITY_ID, DCAMMZERO_ID, ACAMMSENSITIVITY_ID, ACAMMZERO_ID, ACFREQUENCY_ID, ESTIMATEDUVAMPERAGE_ID, WELLPUMPTIMEOUT_ID, UVPUMPTIMEOUT_ID, ENDPUMPTIMEOUT_ID, FILTERTIMEOUT_ID, UVPUMPFLOW_ID, TEMPCHECKTIME_ID, STOPWORKINGTEMP_ID, STARTCASETEMP_ID, STOPCASETEMP_ID, STARTPSUTEMP_ID, STOPPSUTEMP_ID // Config
 };
@@ -29,10 +29,13 @@ enum VariableIDs {VERSION_ID = 1, OK_CMD, SHUTDOWN_CMD, SHUTDOWN_OK_CMD, SHUTDOW
 // It must have a maximum of 254 members
 enum FunctionIDs {};
 
-enum Errors {NoError = 0, BuoyIncongruenceError, PumpTimeoutError,
-        UVLightNotWorkingError, ScreenNotConnectedError, TempSensorsAmountError,
-        HotTempError,
-        HandshakeError, MCUsIncompatibleVersionError, DestinationMCUNotRespondingError, GUICannotSafelyShutdownError}; // Used to process different errors
+enum Errors {
+    NoError = 0, BuoyIncongruenceError, PumpTimeoutError,
+    UVLightNotWorkingError, ScreenNotConnectedError, TempSensorsAmountError,
+    HotTempError,
+    HandshakeError, MCUsIncompatibleVersionError, DestinationMCUNotRespondingError, GUICannotSafelyShutdownError,
+    ScreenNotImplementedError
+    }; // Used to process different errors
 
 enum SystemStatus {SYSTEM_OFF = 0, SYSTEM_ON = 1}; // This struct stores if the system is working or not (think about it like a master switch)
 
@@ -104,7 +107,7 @@ struct SharedData // TODO create a toStr & toStruct functions to send the whole 
     bool lowPurifiedBuoySt;
     bool highPurifiedBuoySt;
     bool endBuoySt;
-    bool screenSensorSt;
+    bool screenSensorSt; // TODO remove from sharedData (variable is exclusive to master)
 
 };
 
@@ -144,7 +147,7 @@ void setDefaultConfig()
 #ifndef debug(data)
     #if DEBUG
         #define debug(data) Serial.print(data)
-        #define changeVariable(variable, value) debug(F(#variable));debug(F(" changed from "));debug(variable);debug(F(" to "));debug(value); (variable) = value
+        #define changeVariable(variable, value) debug(F(#variable));debug(F(" changed from "));debug(variable);debug(F(" to "));debug(value);debug('\n'); (variable) = value
     #else
         #define debug(data) ;
         #define changeVariable(variable, value) variable = value

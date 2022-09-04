@@ -4,7 +4,10 @@
 
 #include "GUIComHandlers.h"
 
-void GUILoop()
+// Use sendGUIMessage to send a message from outside GUILoop()
+#define sendGUIMessage(message) (guiStatus == GUI_CONNECTED_ST) && guiComManager.sendMessage(payload)
+
+void GUILoop() // TODO guard sendmessages from a guistatus different from GUI_CONNECTED_ST
 {
     dataStorage.data.screenSensorSt = readDigitalSensor(screenSensor);
     //debug(F("screenSensorSt: "));debug(dataStorage.data.screenSensorSt);debug('\n');
@@ -19,7 +22,7 @@ void GUILoop()
                 delay(250);
                 if(guiComManager.commSetup())
                 {
-                    changeGUIStatus(GUI_CONNECTED_ST);
+                    changeGUIStatus(GUI_BUSY_ST);
                 }
                 else if (currentError == MCUsIncompatibleVersionError)
                 {
@@ -35,6 +38,7 @@ void GUILoop()
             }
             break;
 
+        case GUI_BUSY_ST:
         case GUI_CONNECTED_ST:
             guiComManager.commLoop(); // Handle all commands
 

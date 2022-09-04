@@ -46,6 +46,9 @@ char* GUIModeToString(enum GUIStatus status)
 
 #endif
 
+bool sendBusyCommand();
+bool sendAvailableCommand();
+
 #include "Handlers/sendMessageHandler.h"
 #include "Handlers/requestMessageHandler.h"
 #include "Handlers/requestAnswerMessageHandler.h"

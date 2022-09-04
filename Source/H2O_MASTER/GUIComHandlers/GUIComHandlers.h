@@ -18,7 +18,8 @@ enum GUIStatus{
     GUI_COOLDOWN_ST,
     GUI_CONNECTED_ST,
     GUI_SHUTTING_DOWN_ST,
-    GUI_RECONNECTING_ST
+    GUI_RECONNECTING_ST,
+    GUI_BUSY_ST
 };
 
 enum GUIStatus guiStatus = GUI_OFF_ST;
@@ -36,8 +37,9 @@ const char mode3[] PROGMEM = "GUI_COOLDOWN_ST";
 const char mode4[] PROGMEM = "GUI_CONNECTED_ST";
 const char mode5[] PROGMEM = "GUI_SHUTTING_DOWN_ST";
 const char mode6[] PROGMEM = "GUI_RECONNECTING_ST";
+const char mode7[] PROGMEM = "GUI_BUSY_ST";
 
-const char *const debugGUIModeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6};
+const char *const debugGUIModeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7};
 
 char* GUIModeToString(enum GUIStatus status)
 {

@@ -8,6 +8,16 @@ void sendMessageHandler(enum VariableIDs variableID, char* value)
 {
     switch (variableID)
     {
+        case BUSY_CMD:
+            changeGUIStatus(GUI_BUSY_ST);
+            debug(F("GUI is BUSY\n"));
+            break;
+
+        case AVAILABLE_CMD:
+            changeGUIStatus(GUI_CONNECTED_ST);
+            debug(F("GUI is READY\n"));
+            break;
+
         case systemStatus_ID:
             changeVariable(configStorage.config.systemStatus,(SystemStatus)atoi(value));
             break;
@@ -161,7 +171,7 @@ void sendMessageHandler(enum VariableIDs variableID, char* value)
             break;
 
         case endBuoySt_ID:
-            changeVariable(dataStorage.data.endPumpSt,atoi(value));
+            changeVariable(dataStorage.data.endBuoySt,atoi(value));
             break;
 
         case screenSensorSt_ID:

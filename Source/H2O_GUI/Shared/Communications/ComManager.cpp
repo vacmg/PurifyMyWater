@@ -147,18 +147,18 @@ void ComManager::commLoop()
             {
                 case REQUESTMESSAGE_ID:
                     Communications::extractRequestMessage(serialBuffer,&variableID,&functionID,&step);
-                    requestMessageHandler(variableID,functionID,step);
                     debug(F("ComManager: RequestMessage received\n"));
+                    requestMessageHandler(variableID,functionID,step);
                     break;
                 case REQUESTANSWERMESSAGE_ID:
                     Communications::extractRequestAnswerMessage(serialBuffer,&variableID,value,&functionID,&step);
-                    requestAnswerMessageHandler(variableID,value,functionID,step);
                     debug(F("ComManager: RequestAnswerMessage received\n"));
+                    requestAnswerMessageHandler(variableID,value,functionID,step);
                     break;
                 case SENDMESSAGE_ID:
                     Communications::extractSendMessage(serialBuffer,&variableID,value);
-                    sendMessageHandler(variableID,value);
                     debug(F("ComManager: SendMessage received\n"));
+                    sendMessageHandler(variableID,value);
                     break;
                 default:
                     debug(F("ComManager: Unknown message: "));debug(serialBuffer);debug('\n');

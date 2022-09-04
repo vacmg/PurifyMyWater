@@ -4,6 +4,20 @@
 
 #include "MasterComHandlers.h"
 
+bool sendBusyCommand()
+{
+    char availableMessage[3];
+    Communications::createSendMessage(availableMessage,BUSY_CMD,"");
+    return masterComManager.sendMessage(availableMessage);
+}
+
+bool sendAvailableCommand()
+{
+    char availableMessage[3];
+    Communications::createSendMessage(availableMessage,AVAILABLE_CMD,"");
+    return masterComManager.sendMessage(availableMessage);
+}
+
 void masterComLoop()
 {
     switch (guiStatus)
@@ -11,6 +25,9 @@ void masterComLoop()
         case GUI_CONNECTING_ST:
             if(masterComManager.commSetup())
             {
+                #if DISABLEUI
+                sendAvailableCommand();
+                #endif
                 changeGUIStatus(GUI_CONNECTED_ST);
             }
             else // HandshakeError || MCUsIncompatibleVersionError

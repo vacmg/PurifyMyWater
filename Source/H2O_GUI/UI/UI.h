@@ -170,6 +170,10 @@ bool sw = true; // todo delete this
 #include "Core/Core.h"
 #include "Screens/Screens.h"
 
+#if !DISABLECOMM
+#include "../MasterComHandlers/MasterComHandlers.h"
+#endif
+
 
 void UISetup()
 {
@@ -223,8 +227,10 @@ void UILoop()
     {
         case BOOTING:
             drawSplashScreen();
-            sw = true; // todo delete this
             drawStatusBackground(true);
+            #if !DISABLECOMM
+            sendAvailableCommand();
+            #endif
             changeScreenStatus(STATUS);
             break;
 
