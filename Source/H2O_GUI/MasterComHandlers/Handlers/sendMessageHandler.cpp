@@ -184,10 +184,6 @@ void sendMessageHandler(enum VariableIDs variableID, char* value)
             changeVariable(dataStorage.data.endBuoySt,atoi(value));
             break;
 
-        case screenSensorSt_ID:
-            changeVariable(dataStorage.data.screenSensorSt,atoi(value));
-            break;
-
         default:
             debug(F("sendMessageHandler: Unknown variableID: "));debug(variableID);debug('\n');
     }

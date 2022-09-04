@@ -22,7 +22,7 @@ const char VERSION[] PROGMEM = "v2-alpha-1"; // MAXIMUN size is 16 bytes
 
 // It must have a maximum of 254 members
 enum VariableIDs {VERSION_ID = 1, OK_CMD, SHUTDOWN_CMD, SHUTDOWN_OK_CMD, SHUTDOWN_CANCEL_CMD, BUSY_CMD, AVAILABLE_CMD, // Other messages/commands are self-contained here
-        voltage_ID, ACUVAmps_ID, DCAmps_ID, purifiedWater_ID, wellPumpSt_ID, UVPumpSt_ID, endPumpSt_ID, filterPumpSt_ID, secBuoySt_ID, lowSurfaceBuoySt_ID, highSurfaceBuoySt_ID, lowFilteredBuoySt_ID, highFilteredBuoySt_ID, lowPurifiedBuoySt_ID, highPurifiedBuoySt_ID, endBuoySt_ID, screenSensorSt_ID, // Data
+        voltage_ID, ACUVAmps_ID, DCAmps_ID, purifiedWater_ID, wellPumpSt_ID, UVPumpSt_ID, endPumpSt_ID, filterPumpSt_ID, secBuoySt_ID, lowSurfaceBuoySt_ID, highSurfaceBuoySt_ID, lowFilteredBuoySt_ID, highFilteredBuoySt_ID, lowPurifiedBuoySt_ID, highPurifiedBuoySt_ID, endBuoySt_ID, // Data
     systemStatus_ID, workingMode_ID, STARTCHARGINGVOLTAGE_ID, STOPCHARGINGVOLTAGE_ID, STARTWORKINGVOLTAGE_ID, STOPWORKINGVOLTAGE_ID, DCAMMSENSITIVITY_ID, DCAMMZERO_ID, ACAMMSENSITIVITY_ID, ACAMMZERO_ID, ACFREQUENCY_ID, ESTIMATEDUVAMPERAGE_ID, WELLPUMPTIMEOUT_ID, UVPUMPTIMEOUT_ID, ENDPUMPTIMEOUT_ID, FILTERTIMEOUT_ID, UVPUMPFLOW_ID, TEMPCHECKTIME_ID, STOPWORKINGTEMP_ID, STARTCASETEMP_ID, STOPCASETEMP_ID, STARTPSUTEMP_ID, STOPPSUTEMP_ID // Config
 };
 
@@ -107,8 +107,6 @@ struct SharedData // TODO create a toStr & toStruct functions to send the whole 
     bool lowPurifiedBuoySt;
     bool highPurifiedBuoySt;
     bool endBuoySt;
-    bool screenSensorSt; // TODO remove from sharedData (variable is exclusive to master)
-
 };
 
 typedef union SharedDataUnion
@@ -125,7 +123,7 @@ typedef union SharedDataUnion
 Config configStorage = DEFAULTCONFIG;
 
 // This variable stores all the relevant data used to control the system
-Data dataStorage = {0.0F,0.0F,0.0F,0.0, false,false,false,false,false,false,false,false,false,false,false,false,false};
+Data dataStorage = {0.0F,0.0F,0.0F,0.0, false,false,false,false,false,false,false,false,false,false,false,false};
 
 // This variable stores the error that the system has in a particular time
 enum Errors currentError = NoError;
@@ -270,7 +268,6 @@ void printSharedData()
     Serial.print(F("lowPurifiedBuoySt:\t"));Serial.println(dataStorage.data.lowPurifiedBuoySt);
     Serial.print(F("highPurifiedBuoySt:\t"));Serial.println(dataStorage.data.highPurifiedBuoySt);
     Serial.print(F("endBuoySt:\t"));Serial.println(dataStorage.data.endBuoySt);
-    Serial.print(F("screenSensorSt:\t"));Serial.println(dataStorage.data.screenSensorSt);
     Serial.println();
 }
 

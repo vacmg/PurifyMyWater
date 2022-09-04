@@ -9,14 +9,14 @@
 
 void GUILoop() // TODO guard sendmessages from a guistatus different from GUI_CONNECTED_ST
 {
-    dataStorage.data.screenSensorSt = readDigitalSensor(screenSensor);
+    bool screenSensorSt = readDigitalSensor(screenSensor);
     //debug(F("screenSensorSt: "));debug(dataStorage.data.screenSensorSt);debug('\n');
     screenPowerManager.loop();
 
     switch (guiStatus)
     {
         case GUI_OFF_ST:
-            if(dataStorage.data.screenSensorSt)
+            if(screenSensorSt)
             {
                 screenPowerManager.setScreen(1);
                 delay(250);
@@ -42,7 +42,7 @@ void GUILoop() // TODO guard sendmessages from a guistatus different from GUI_CO
         case GUI_CONNECTED_ST:
             guiComManager.commLoop(); // Handle all commands
 
-            if((screenPowerManager.isDesiredScreenOn() && !dataStorage.data.screenSensorSt) || currentError == DestinationMCUNotRespondingError)
+            if((screenPowerManager.isDesiredScreenOn() && !screenSensorSt) || currentError == DestinationMCUNotRespondingError)
             {
                 char message[3];
                 Communications::createSendMessage(message,SHUTDOWN_CMD,"");
@@ -96,7 +96,7 @@ void GUILoop() // TODO guard sendmessages from a guistatus different from GUI_CO
             break;
 
         case GUI_COOLDOWN_ST:
-            if (guiMillis+SCREENSHUTDOWNDELAY-1000>=millis() && currentError!=HandshakeError && currentError!=DestinationMCUNotRespondingError && currentError !=GUICannotSafelyShutdownError && dataStorage.data.screenSensorSt) // cancel shutdown
+            if (guiMillis+SCREENSHUTDOWNDELAY-1000>=millis() && currentError!=HandshakeError && currentError!=DestinationMCUNotRespondingError && currentError !=GUICannotSafelyShutdownError && screenSensorSt) // cancel shutdown
             {
                 debug(F("Reconnecting...\n"));
                 screenPowerManager.setScreen(true);
@@ -148,7 +148,7 @@ void GUILoop() // TODO guard sendmessages from a guistatus different from GUI_CO
             switch (currentError)
             {
                 case MCUsIncompatibleVersionError:
-                    if(screenPowerManager.isDesiredScreenOn() && !dataStorage.data.screenSensorSt)
+                    if(screenPowerManager.isDesiredScreenOn() && !screenSensorSt)
                     {
                         screenPowerManager.setScreen(0);
                         changeGUIStatus(GUI_DISABLED_ST);
