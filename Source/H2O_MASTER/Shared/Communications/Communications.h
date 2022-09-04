@@ -23,21 +23,11 @@
 #include "../SharedData.h"
 
 /*
- * Message structure:
- * [CRC][size][payload]\n
+ * [CRC][size][payload]
  * CRC: CRC8 code of [size][payload]
  * size: size in bytes of [size]+[payload]
  * payload: useful data of the message
- * \n: terminator character
  */
-
-#ifndef debug(data)
-    #if DEBUG
-        #define debug(data) Serial.print(data)
-    #else
-        #define debug(data) ;
-    #endif
-#endif
 
 class Communications
 {

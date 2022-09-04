@@ -5,12 +5,10 @@
 #include "Communications.h"
 
 /*
- *
- * [CRC][size][payload]\n
+ * [CRC][size][payload]
  * CRC: CRC8 code of [size][payload]
  * size: size in bytes of [size]+[payload]
  * payload: useful data of the message
- * \n: terminator character
  */
 
 // Application layer
@@ -94,8 +92,6 @@ bool Communications::extractRequestMessage(const char* payload, enum VariableIDs
 // On success, it returns true, otherwise false.
 bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
 {
-    //[CRC][size][payload]
-    //[CRC][size][payload]\n
     byte payloadLength = strlen(payload);
     if(payloadLength>MAXPAYLOADSIZE)
     {
@@ -125,7 +121,6 @@ bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
 // This function gets a message, verifies & extract its payload, send an ACK if the message is valid & returns if success
 bool Communications::getMessage(char* payload, HardwareSerial* serial)
 {
-    // payload[64] crc -> 1 + size -> 1 + payload -> 61 + null -> 1 = 63
     if(serial->available())
     {
         delay(100);
