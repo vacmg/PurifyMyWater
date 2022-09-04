@@ -144,8 +144,10 @@ void setDefaultConfig()
 #ifndef debug(data)
     #if DEBUG
         #define debug(data) Serial.print(data)
+        #define changeVariable(variable, value) debug(F(#variable));debug(F(" changed from "));debug(variable);debug(F(" to "));debug(value); (variable) = value
     #else
         #define debug(data) ;
+        #define changeVariable(variable, value) variable = value
     #endif
 #endif
 
@@ -174,19 +176,31 @@ void setDefaultConfig()
     const char systemStatusOFF_STR[] PROGMEM = "OFF";
     const char systemStatusON_STR[] PROGMEM = "ON";
 
-    const char *const debugConfigTable[] PROGMEM = {systemStatusOFF_STR, systemStatusON_STR};
+    const char *const debugSystemStatusTable[] PROGMEM = {systemStatusOFF_STR, systemStatusON_STR};
 
     char* systemStatusToString(enum SystemStatus status)
     {
-        strcpy_P(debugBuff, (char *)pgm_read_word(&(debugConfigTable[status])));
+        strcpy_P(debugBuff, (char *)pgm_read_word(&(debugSystemStatusTable[status])));
+        return debugBuff;
+    }
+
+    const char workingMode_Purification_Mode_STR[] PROGMEM = "Purification_Mode";
+    const char workingMode_DCPSU_Mode_STR[] PROGMEM = "DCPSU_Mode";
+    const char workingMode_ACPSU_Mode_STR[] PROGMEM = "ACPSU_Mode";
+
+    const char *const debugWorkingModeTable[] PROGMEM = {workingMode_Purification_Mode_STR, workingMode_DCPSU_Mode_STR, workingMode_ACPSU_Mode_STR};
+
+    char* workingModeToString(enum WorkingMode mode)
+    {
+        strcpy_P(debugBuff, (char *)pgm_read_word(&(debugWorkingModeTable[mode])));
         return debugBuff;
     }
 
     void printConfiguration()
     {
         debug(F("Current config:\n"));
-        Serial.print(F("Purification status:\t"));Serial.println(systemStatusToString(configStorage.config.systemStatus));
-        // TODO print working mode
+        Serial.print(F("System status:\t"));Serial.println(systemStatusToString(configStorage.config.systemStatus));
+        Serial.print(F("Working mode:\t"));Serial.println(workingModeToString(configStorage.config.workingMode));
         Serial.print(F("STARTCHARGINGVOLTAGE:\t"));Serial.println(configStorage.config.STARTCHARGINGVOLTAGE);
         Serial.print(F("STOPCHARGINGVOLTAGE:\t"));Serial.println(configStorage.config.STOPCHARGINGVOLTAGE);
         Serial.print(F("STARTWORKINGVOLTAGE:\t"));Serial.println(configStorage.config.STARTWORKINGVOLTAGE);
