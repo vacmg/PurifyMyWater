@@ -57,15 +57,15 @@ void readAllSensors();
 
 
 //TODO remove this
-/*
-void testSendMessageHandler(enum VariableIDs variableID, char* value);
+
+/*void testSendMessageHandler(enum VariableIDs variableID, char* value);
 ComManager testComManager(&Serial1,&testSendMessageHandler, nullptr, nullptr);
 void testSendMessageHandler(enum VariableIDs variableID, char* value)
 {
     if(variableID == SHUTDOWN_OK_CMD)
         debug(F("Shutdown OK received"));
-}
-*/
+}*/
+
 
 // The setup() function runs once each time the microcontroller starts
 // This function starts serial communication if defined, configures every input and output, set any other variable that needs to and waits for enough voltage in the capacitors to start operating
@@ -141,19 +141,61 @@ void setup()
     //todo Test code after this line
 
     /*testComManager.commSetup();
+    char message[MAXMSGSIZE] = "";
+    char data[MAXVALUESIZE] = "";
+    enum VariableIDs variableID;
 
-    for (int step = 0;step<1;step++)
+
+    for (int step = 0;step<2;step++)
     {
+        debug(F("Ready to start test "));debug(step);debug('\n');
         while (!Serial.available());
         while (Serial.available()) Serial.read();
+        debug(F("Step "));debug(step);debug('\n');
 
         switch (step)
         {
-            case 1:
+            case 0:
+                debug(F("Send SHUTDOWN_CMD test\n"));
+                Communications::createSendMessage(message,SHUTDOWN_CMD,"");
+                testComManager.sendMessage(message);
+                debug(F("command sent\n"));
+                while (!Serial1.available());
+                debug(F("answer received\n"));
+                delay(100);
+                Communications::getMessage(message, testComManager.getSerial());
+                if (message[0] == SENDMESSAGE_ID && Communications::extractSendMessage(message, &variableID, data))
+                {
+                    debug(F("variableID: "));debug(variableID);debug(F("; variableID==SHUTDOWN_OK_CMD? "));debug(variableID==SHUTDOWN_OK_CMD);debug('\n');
+                    if(variableID==SHUTDOWN_OK_CMD)
+                    {
+                        debug(F("\nSend SHUTDOWN_CMD test (0) SUCCESS\n"));
+                    }
+                }
+                break;
 
+            case 1:
+                debug(F("Send SHUTDOWN_CANCEL_CMD test\n"));
+                Communications::createSendMessage(message,SHUTDOWN_CANCEL_CMD,"");
+                testComManager.sendMessage(message);
+                debug(F("command sent\n"));
+                while (!Serial1.available());
+                debug(F("answer received\n"));
+                delay(100);
+                Communications::getMessage(message, testComManager.getSerial());
+                if (message[0] == SENDMESSAGE_ID && Communications::extractSendMessage(message, &variableID, data))
+                {
+                    debug(F("variableID: "));debug(variableID);debug(F("; variableID==SHUTDOWN_OK_CMD? "));debug(variableID==SHUTDOWN_OK_CMD);debug('\n');
+                    if(variableID==SHUTDOWN_OK_CMD)
+                    {
+                        debug(F("\nSend SHUTDOWN_CANCEL_CMD test (1) SUCCESS\n"));
+                    }
+                }
                 break;
         }
+        debug('\n');
     }
+    debug(F("Tests FINISHED\n"));
 
     while (true)
     {
@@ -161,7 +203,7 @@ void setup()
     }*/
 
 
-    while (true); // TODO delete or comment this
+    //while (true); // TODO delete or comment this
 
     //todo Test code before this line
 

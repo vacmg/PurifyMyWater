@@ -8,10 +8,6 @@
 #include "../Shared/SharedData.h"
 #include "../Shared/Communications/ComManager.h"
 
-#include "Handlers/sendMessageHandler.h"
-#include "Handlers/requestMessageHandler.h"
-#include "Handlers/requestAnswerMessageHandler.h"
-
 #if !DISABLEUI
 #include "../UI/UI.h"
 #endif
@@ -49,6 +45,10 @@ char* GUIModeToString(enum GUIStatus status)
 #define changeGUIStatus(newStatus) guiStatus = newStatus
 
 #endif
+
+#include "Handlers/sendMessageHandler.h"
+#include "Handlers/requestMessageHandler.h"
+#include "Handlers/requestAnswerMessageHandler.h"
 
 ComManager masterComManager(&Serial1,&sendMessageHandler,&requestMessageHandler,&requestAnswerMessageHandler);
 

@@ -76,6 +76,8 @@ void setup()
     delay(50);
 #endif
 
+    configStorage.config.
+
     debug(F("\nCAUTION: NEVER use debug features on a deployed system, there is risk of IRREVERSIBLE DAMAGE to the system\n\nUsing those debug features:\n"));
 
     debug(F("DEBUG\t\t\t- Used to display debug information messages through Serial port\n"));

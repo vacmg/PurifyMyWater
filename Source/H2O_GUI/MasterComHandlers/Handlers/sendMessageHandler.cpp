@@ -6,5 +6,9 @@
 
 void sendMessageHandler(enum VariableIDs variableID, char* value)
 {
-
+    if(variableID == SHUTDOWN_CMD)
+    {
+        debug(F("SHUTDOWN COMMAND RECEIVED\n"));
+        changeGUIStatus(GUI_SHUTTING_DOWN_ST);
+    }
 }
