@@ -38,28 +38,6 @@
 #endif
 
 
-
-// TODO delete this
-/*void testSendMessageHandler(enum VariableIDs variableID, char* value);
-ComManager com(&Serial1, &testSendMessageHandler, nullptr, nullptr);
-void testSendMessageHandler(enum VariableIDs variableID, char* value)
-{
-    if(variableID==SHUTDOWN_CMD)
-    {
-        debug(F("Shutdown cmd received\n"));
-        char message[3];
-        Communications::createSendMessage(message,SHUTDOWN_OK_CMD,"");
-        com.sendMessage(message);
-    }
-    else if(variableID==SHUTDOWN_CANCEL_CMD)
-    {
-        debug(F("Shutdown CANCEL cmd received\n"));
-        char message[3];
-        Communications::createSendMessage(message,SHUTDOWN_OK_CMD,"");
-        com.sendMessage(message);
-    }
-}*/
-
 //Main Functions
 
 void setup()
@@ -75,8 +53,6 @@ void setup()
     debug(F("Build date: "));debug((F(__TIMESTAMP__)));debug(F("\n\n"));
     delay(50);
 #endif
-
-    configStorage.config.
 
     debug(F("\nCAUTION: NEVER use debug features on a deployed system, there is risk of IRREVERSIBLE DAMAGE to the system\n\nUsing those debug features:\n"));
 
@@ -104,23 +80,7 @@ void setup()
 
     //todo Test code after this line
 
-    /*ComManager com(&Serial1, nullptr, nullptr, nullptr);
-    com.commSetup();*/
 
-    /*Serial1.begin(COMMANAGERBAUDRATE);
-    debug(F("Starting mirror mode\n\n"));
-    delay(100);
-    while (true)
-    {
-        if(Serial1.available())
-            Serial.write(Serial1.read());
-    }*/
-
-    /*com.commSetup();
-    while (true)
-    {
-        com.commLoop();
-    }*/
 
     //while (true); // TODO delete or comment this
 
