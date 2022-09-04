@@ -129,9 +129,26 @@ void setup()
 
     //todo Test code after this line
 
+    GUILoop();
 
+    char message[64];
 
-    //while (true); // TODO delete or comment this
+    while (guiStatus!=GUI_CONNECTED_ST) GUILoop();
+
+    delay(3000);
+
+    debug(Communications::createSendMessage(message,endBuoySt_ID,String(1).c_str()));
+
+    debug(guiComManager.sendMessage(message));
+    delay(3000);
+
+    debug(Communications::createSendMessage(message,voltage_ID,String(12.35).c_str()));
+
+    debug(guiComManager.sendMessage(message));
+
+    while (true) GUILoop();
+
+    while (true); // TODO delete or comment this
 
     //todo Test code before this line
 

@@ -10,8 +10,8 @@
 void drawStatusBackgroundPhoto();
 void drawStatusBackground(bool dontFillScreen);
 void drawStatusBackground();
-void drawStatusForeground(const char* voltage, const char* waterAmount);
-void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRelay, char well, char surfaceTank, char filteredTank, char purifiedTank, bool endTank); // false --> OFF, true -->ON, <0 --> LOW, = 0 --> Half, >0 --> FULL
+void drawStatusForeground();
+void drawStatusColors();
 void clickStatus();
 
 #include "Status.cpp"

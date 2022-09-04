@@ -132,6 +132,7 @@ char* rotationToString(enum Rotation rotation)
 
 byte page = 0;
 byte maxPage = 0;
+bool updateStatusForeground = true;
 
 SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
 
@@ -163,9 +164,8 @@ Rectangle title(65, 5, 415, 75, Color(0xFFFF),&titleLabel, false);
 RectangleButton oKBtn(250, 270, 410, 310, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
 RectangleButton dotBtn(425, 95, 475, 145, Color(0, 0, 0), Color(255, 255, 255), &label, false, &ts);
 RectangleButton signBtn(5, 95, 55, 145, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
-//Global Variables End
 
-bool sw = true; // todo delete this
+//Global Variables End
 
 #include "Core/Core.h"
 #include "Screens/Screens.h"
@@ -244,16 +244,17 @@ void UILoop()
             break;
 
         case LOADSTATUS:
-            sw = true; // todo delete this
+            updateStatusForeground = true;
             drawStatusBackground();
             changeScreenStatus(STATUS);
             break;
 
-        case STATUS: // todo implement real logic with real values
-            if (sw) // todo delete this (change condition to update info labels)
+        case STATUS:
+            if (updateStatusForeground)
             {
-                drawStatusForeground("15.4V", "320L");
-                sw = false; // todo delete this
+                drawStatusForeground();
+                delay(500);
+                updateStatusForeground = false;
             }
             else
             {

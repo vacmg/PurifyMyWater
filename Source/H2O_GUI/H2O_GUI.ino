@@ -12,8 +12,8 @@
 
 #define DEBUG true // Used to display debug information messages through Serial port
 
-#define DISABLEUI true  // Used to disable the UI screen module
-#define DISABLECOMM false // Used to disable communications module // TODO implement it
+#define DISABLEUI false  // Used to disable the UI screen module
+#define DISABLECOMM false // Used to disable communications module
 
 #define SETDEFAULTSCREENCONFIG false // Used to set the screenConfig to the default screenConfig
 #define USEVOLATILECONFIG true // Used to disable EEPROM writes due to saving configuration in the persistent storage
@@ -33,8 +33,6 @@
 
 #if !DISABLECOMM
 #include "MasterComHandlers/MasterComHandlers.h"
-#else
-// TODO create ';' macros to disable communication functions
 #endif
 
 
