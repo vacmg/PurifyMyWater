@@ -14,7 +14,7 @@ void sendMessageHandler(enum VariableIDs variableID, char* value)
             break;
 
         case systemStatus_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(configStorage.config.systemStatus,(SystemStatus)atoi(value));
             break;
 
@@ -107,7 +107,7 @@ void sendMessageHandler(enum VariableIDs variableID, char* value)
             break;
 
         case voltage_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(dataStorage.data.voltage,atof(value));
             break;
 
@@ -120,67 +120,67 @@ void sendMessageHandler(enum VariableIDs variableID, char* value)
             break;
 
         case purifiedWater_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(dataStorage.data.purifiedWater,atof(value));
             break;
 
         case wellPumpSt_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(dataStorage.data.wellPumpSt,atoi(value));
             break;
 
         case UVPumpSt_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(dataStorage.data.UVPumpSt,atoi(value));
             break;
 
         case endPumpSt_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(dataStorage.data.endPumpSt,atoi(value));
             break;
 
         case filterPumpSt_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(dataStorage.data.filterPumpSt,atoi(value));
             break;
 
         case secBuoySt_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(dataStorage.data.secBuoySt,atoi(value));
             break;
 
         case lowSurfaceBuoySt_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(dataStorage.data.lowSurfaceBuoySt,atoi(value));
             break;
 
         case highSurfaceBuoySt_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(dataStorage.data.highSurfaceBuoySt,atoi(value));
             break;
 
         case lowFilteredBuoySt_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(dataStorage.data.lowFilteredBuoySt,atoi(value));
             break;
 
         case highFilteredBuoySt_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(dataStorage.data.highFilteredBuoySt,atoi(value));
             break;
 
         case lowPurifiedBuoySt_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(dataStorage.data.lowPurifiedBuoySt,atoi(value));
             break;
 
         case highPurifiedBuoySt_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(dataStorage.data.highPurifiedBuoySt,atoi(value));
             break;
 
         case endBuoySt_ID:
-            updateStatusForeground = true;
+            updateStatusForeground(true)
             changeVariable(dataStorage.data.endBuoySt,atoi(value));
             break;
 

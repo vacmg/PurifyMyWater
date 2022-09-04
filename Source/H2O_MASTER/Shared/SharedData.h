@@ -18,7 +18,7 @@
 // Global data types
 
 #define MAXVERSIONSIZE 16
-const char VERSION[] PROGMEM = "v2-alpha-1"; // MAXIMUN size is 16 bytes
+const char VERSION[] PROGMEM = "v2-alpha-2"; // MAXIMUM size is 16 bytes
 
 // It must have a maximum of 254 members
 enum VariableIDs {VERSION_ID = 1, OK_CMD, SHUTDOWN_CMD, SHUTDOWN_OK_CMD, SHUTDOWN_CANCEL_CMD, BUSY_CMD, AVAILABLE_CMD, // Other messages/commands are self-contained here

@@ -17,8 +17,8 @@ void drawError()
         case ScreenNotImplementedError:
         {
             my_lcd.Fill_Screen(0xFFFF);
-            Label title(25, 25, getString(ScreenNotImplementedError_STR), 3, Color(255, 0, 0));
-            Rectangle titleRec(25, 25, 455, 200, Color(255, 0, 0), &title,true);
+            Label title(25, 25, getString(ScreenNotImplementedError_STR), 2, Color(255, 0, 0));
+            Rectangle titleRec(25, 25, 455, 200, Color(255, 0, 0), &title,false);
             my_lcd.draw(&titleRec);
             btn1.setCoords(25, 255);
             btn1.setCoords1(455,305);

@@ -7,6 +7,12 @@
 
 #include "../MasterComHandlers.h"
 
+#if DISABLEUI
+#define updateStatusForeground(status) ;
+#else
+#define updateStatusForeground(status) updateStatusForeground = status;
+#endif
+
 void sendMessageHandler(enum VariableIDs variableID, char* value);
 
 #include "sendMessageHandler.cpp"
