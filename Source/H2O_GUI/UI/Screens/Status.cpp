@@ -258,16 +258,20 @@ void drawStatusBackground()
 }
 
 // Draw voltage & amount of purified water
-void drawStatusForeground(const char *voltage, const char *waterAmount)//TODO add water levels & other indicators
+void drawStatusForeground()
 {
-    debug("Voltage: ");debug(voltage);debug("\tWater amount: ");debug(waterAmount);debug('\n');
+    char string[10];
 
-    label.setString(voltage);
+    strcpy(string,String(dataStorage.data.voltage,2).c_str());
+    strcat(string,"V");
+    label.setString(string);
     rectangle.setCoords(20, 115);
     rectangle.setCoords1(70, 135);
     my_lcd.draw(&rectangle);
 
-    label.setString(waterAmount);
+    strcpy(string,String(dataStorage.data.purifiedWater,1).c_str());
+    strcat(string,"L");
+    label.setString(string);
     rectangle.setCoords(400, 195);
     rectangle.setCoords1(440, 215);
     my_lcd.draw(&rectangle);
@@ -281,7 +285,7 @@ void drawStatusForeground(const char *voltage, const char *waterAmount)//TODO ad
         label.setString(getString(StatusBtn_Error_STR));
         btn2.setSecondaryColor(Color(239, 127, 26));
     }
-    else if (config.purificationStatus == OFF) // OFF
+    else if (configStorage.config.systemStatus == SYSTEM_OFF) // OFF
     {
         label.setString(getString(OFF_STR));
         btn2.setSecondaryColor(Color(176, 54, 20));
@@ -295,25 +299,51 @@ void drawStatusForeground(const char *voltage, const char *waterAmount)//TODO ad
     btn2.setSecondaryColor(Color(255, 255, 255));
     btn2.enableAutoSize(true);
 
-    drawStatusColors(0, 0, 0, 0, 0, 0, 0, 0, 0);
+    drawStatusColors();
 }
 
-void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRelay, char well, char surfaceTank,char filteredTank, char purifiedTank,bool endTank) // false --> OFF, true -->ON, <0 --> LOW, = 0 --> Half, >0 --> FULL
+void drawStatusColors() // false --> OFF, true -->ON, <0 --> LOW, = 0 --> Half, >0 --> FULL
 {
+    char surfaceTank;
+    char filteredTank;
+    char purifiedTank;
+
+    if(dataStorage.data.highSurfaceBuoySt)
+        surfaceTank = 1;
+    else if(!dataStorage.data.lowSurfaceBuoySt)
+        surfaceTank = -1;
+    else
+        surfaceTank = 0;
+
+    if(dataStorage.data.highFilteredBuoySt)
+        filteredTank = 1;
+    else if(!dataStorage.data.lowFilteredBuoySt)
+        filteredTank = -1;
+    else
+        filteredTank = 0;
+
+    if(dataStorage.data.highPurifiedBuoySt)
+        purifiedTank = 1;
+    else if(!dataStorage.data.lowPurifiedBuoySt)
+        purifiedTank = -1;
+    else
+        purifiedTank = 0;
+
+
     Color blue(81, 136, 223);
     Color white(0xFFFF);
     Color yellow(255, 255, 0);
 
     Rectangle rec1(80, 247, 89, 252, white, white); // big rectangle under the valve
     //wellPump
-    if (wellPump)
+    if (dataStorage.data.wellPumpSt)
     {
         rec1.setMainColor(yellow);
         rec1.setSecondaryColor(yellow);
     }
     my_lcd.draw(&rec1);
 
-    if (wellPump)
+    if (dataStorage.data.wellPumpSt)
     {
         rec1.setMainColor(blue);
         rec1.setSecondaryColor(blue);
@@ -339,7 +369,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     my_lcd.draw(&rec1);
 
     //well_high
-    if (!well)
+    if (!dataStorage.data.secBuoySt)
     {
         rec1.setMainColor(white);
         rec1.setSecondaryColor(white);
@@ -360,7 +390,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
 
     //SufaceTank
     Rectangle rec2(135, 201, 144, 206, white, white);
-    if (filterRelay)
+    if (dataStorage.data.filterPumpSt)
     {
         rec2.setMainColor(yellow);
         rec2.setSecondaryColor(yellow);
@@ -368,7 +398,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     my_lcd.draw(&rec2);
 
     //TubeSurfaceTank
-    if (filterRelay)
+    if (dataStorage.data.filterPumpSt)
     {
         rec2.setMainColor(blue);
         rec2.setSecondaryColor(blue);
@@ -383,7 +413,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
 
     //filter
     RoundRectangle recFilter(158, 131, 199, 151, 3, white, white);
-    if (filterRelay)
+    if (dataStorage.data.filterPumpSt)
     {
         recFilter.setMainColor(yellow);
         recFilter.setSecondaryColor(yellow);
@@ -391,7 +421,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     my_lcd.draw(&recFilter);
 
     //TubeFilter
-    if (filterRelay)
+    if (dataStorage.data.filterPumpSt)
     {
         recFilter.setMainColor(blue);
         recFilter.setSecondaryColor(blue);
@@ -447,7 +477,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
 
     //UVPump
     Rectangle rec3(213, 213, 258, 219, white, white);
-    if (UVRelay)
+    if (dataStorage.data.UVPumpSt)
     {
         rec3.setMainColor(yellow);
         rec3.setSecondaryColor(yellow);
@@ -457,7 +487,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     my_lcd.draw(&rec3);
 
     //TubeUVPump
-    if (UVRelay)
+    if (dataStorage.data.UVPumpSt)
     {
         rec3.setMainColor(blue);
         rec3.setSecondaryColor(blue);
@@ -473,7 +503,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     my_lcd.draw(&rec3);
 
     //UV
-    if (UVRelay)
+    if (dataStorage.data.UVPumpSt)
     {
         recFilter.setMainColor(yellow);
         recFilter.setSecondaryColor(yellow);
@@ -490,7 +520,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
 
     //TubeUV
     recFilter.setRadius(0);
-    if (UVRelay)
+    if (dataStorage.data.UVPumpSt)
     {
         recFilter.setMainColor(blue);
         recFilter.setSecondaryColor(blue);
@@ -557,7 +587,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     //EndPump
     Rectangle rec4(339, 213, 379, 219, white, white);
 
-    if (endPump)
+    if (dataStorage.data.endPumpSt)
     {
         rec4.setMainColor(yellow);
         rec4.setSecondaryColor(yellow);
@@ -567,7 +597,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
     my_lcd.draw(&rec4);
 
     //TubeEndPump
-    if (endPump)
+    if (dataStorage.data.endPumpSt)
     {
         rec4.setMainColor(blue);
         rec4.setSecondaryColor(blue);
@@ -640,7 +670,7 @@ void drawStatusColors(bool wellPump, bool endPump, bool UVRelay, bool filterRela
 
 
     //EndTank_high
-    if (!endTank)
+    if (!dataStorage.data.endBuoySt)
     {
         rec5.setMainColor(white);
         rec5.setSecondaryColor(white);
@@ -662,18 +692,16 @@ void clickStatus()
         {
             debug(F("Button FAILURE pressed\n")); // TODO Draw ERROR message
         }
-        else if (config.purificationStatus == ON)
+        else if (configStorage.config.systemStatus == SYSTEM_ON)
         {
             debug(F("Button OFF pressed\n"));
-            config.purificationStatus = OFF; // TODO send off command
-            drawStatusForeground("15.4V", "320L");
+            configStorage.config.systemStatus = SYSTEM_OFF; // TODO send off command
         }
-        else if (config.purificationStatus == OFF)
+        else
         {
             debug(F("Button ON pressed\n"));
-            config.purificationStatus = ON; // TODO send on command
-            drawStatusForeground("15.4V", "320L");
+            configStorage.config.systemStatus = SYSTEM_ON; // TODO send on command
         }
-        delay(500);
+        updateStatusForeground = true;
     }
 }

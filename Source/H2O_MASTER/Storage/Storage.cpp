@@ -15,7 +15,7 @@ unsigned long configCRC32()
     };
     unsigned long crc = ~0L;
 
-    for (unsigned int index = 4 ; index < sizeof (config)+4; index++)
+    for (unsigned int index = 4 ; index < sizeof (configStorage.config)+4; index++)
     {
 
         crc = crc_table[(crc ^ EEPROM[index]) & 0x0f] ^ (crc >> 4);
@@ -36,7 +36,7 @@ bool readConfig()
     EEPROM.get(0,crc);
     if(crc == configCRC32())
     {
-        EEPROM.get(4, config);
+        EEPROM.get(4, configStorage.config);
         return true;
     }
     return false;
@@ -46,7 +46,7 @@ bool readConfig()
 void updateConfig()
 {
 #if !USEVOLATILECONFIG
-    EEPROM.put(4, config);
+    EEPROM.put(4, configStorage.config);
     unsigned long crc = configCRC32();
     EEPROM.put(0, crc);
 #endif

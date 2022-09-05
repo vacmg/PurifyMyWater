@@ -91,6 +91,8 @@ const char FR_Electricity_DCAmmeterZero_STR[] PROGMEM = "DC Ammeter Zero";
 // Language
 const char FR_Language_Title_STR[] PROGMEM = "Select a language";
 
+// Error
+const char FR_ScreenNotImplementedError_STR[] PROGMEM = "This option is not implemented yet";
 
 
 const char *const langFR[] PROGMEM = {FR_LANG_STR,FR_YES_STR,FR_NO_STR,FR_ON_STR, FR_OFF_STR, FR_Previous_STR, FR_Next_STR, FR_Delete_STR,FR_OK_STR, // Utils
@@ -102,7 +104,8 @@ const char *const langFR[] PROGMEM = {FR_LANG_STR,FR_YES_STR,FR_NO_STR,FR_ON_STR
                                       FR_Temp_Title_STR, FR_Temp_RefreshInterval_STR, FR_Temp_SystemStopTemp_STR, FR_Temp_PSUFanStartTemp_STR, FR_Temp_PSUFanStopTemp_STR, FR_Temp_CaseFanStartTemp_STR, FR_Temp_CaseFanStopTemp_STR, // Temperature
                                       FR_Interface_Title_STR, FR_Interface_RefreshInterval_STR, FR_Interface_LanguageTitle_STR, FR_Interface_RotationTitle_STR, FR_Interface_RotationLandscape_STR, FR_Interface_RotationInvertedLandscape_STR, FR_Interface_CalibrationTitle_STR, FR_Interface_CalibrationStart_STR, FR_Interface_ResetTitle_STR, FR_Interface_ResetStart_STR, // Interface
                                       FR_Electricity_Title_STR, FR_Electricity_UVCurrent_STR, FR_Electricity_StartChargingVoltage_STR, FR_Electricity_StopChargingVoltage_STR, FR_Electricity_StartWorkingVoltage_STR, FR_Electricity_StopWorkingVoltage_STR, FR_Electricity_ACInverterFrequency_STR, FR_Electricity_ACAmmeterSensitivity_STR, FR_Electricity_ACAmmeterZero_STR, FR_Electricity_DCAmmeterSensitivity_STR, FR_Electricity_DCAmmeterZero_STR, // Electricity
-                                      FR_Language_Title_STR // Language
+                                      FR_Language_Title_STR, // Language
+                                      FR_ScreenNotImplementedError_STR // Error
 
 }; // Follow the same order as enum StringIDs (Languages.h)
 

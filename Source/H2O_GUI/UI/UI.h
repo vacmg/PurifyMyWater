@@ -20,7 +20,7 @@
 #define SCREEN35ROTATIONOFFSET 2
 #endif
 
-    enum ScreenStatus {
+    enum ScreenStatus{
         BOOTING = 0,
         LOADSTATUS,
         STATUS,
@@ -48,7 +48,9 @@
         WATER,
         LOADTEMPERATURE,
         LOADPAGETEMPERATURE,
-        TEMPERATURE
+        TEMPERATURE,
+        LOADERROR,
+        ERROR,
     };
 enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show the splash screen
 
@@ -94,8 +96,10 @@ const char mode24[] PROGMEM = "WATER";
 const char mode25[] PROGMEM = "LOADTEMPERATURE";
 const char mode26[] PROGMEM = "LOADPAGETEMPERATURE";
 const char mode27[] PROGMEM = "TEMPERATURE";
+const char mode28[] PROGMEM = "LOADERROR";
+const char mode29[] PROGMEM = "ERROR";
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27, mode28, mode29};
 
 char* modeToString(ScreenStatus status)
 {
@@ -128,6 +132,7 @@ char* rotationToString(enum Rotation rotation)
 
 byte page = 0;
 byte maxPage = 0;
+bool updateStatusForeground = true;
 
 SimpleLCDTouchScreen my_lcd(ST7796S, A3, A2, A1, A0, A4); //model,cs,cd,wr,rd,reset
 
@@ -159,12 +164,15 @@ Rectangle title(65, 5, 415, 75, Color(0xFFFF),&titleLabel, false);
 RectangleButton oKBtn(250, 270, 410, 310, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
 RectangleButton dotBtn(425, 95, 475, 145, Color(0, 0, 0), Color(255, 255, 255), &label, false, &ts);
 RectangleButton signBtn(5, 95, 55, 145, Color(0, 0, 0), Color(255, 255, 255), &label, &ts);
-//Global Variables End
 
-bool sw = true; // todo delete this
+//Global Variables End
 
 #include "Core/Core.h"
 #include "Screens/Screens.h"
+
+#if !DISABLECOMM
+#include "../MasterComHandlers/MasterComHandlers.h"
+#endif
 
 
 void UISetup()
@@ -211,6 +219,9 @@ void UISetup()
 
     //my_lcd.Fill_Screen(0);
     my_lcd.Fill_Screen(Color(255, 255, 255).to565());
+#if DEBUG
+    drawDebugFlagsScreen();
+#endif
     debug(F("UI Ready\n"));
 }
 
@@ -221,25 +232,34 @@ void UILoop()
     {
         case BOOTING:
             drawSplashScreen();
-            // Perform other boot stuff after this line
-            delay(1000);
-            // Perform other boot stuff before this line
-            sw = true; // todo delete this
             drawStatusBackground(true);
+            #if !DISABLECOMM
+            sendAvailableCommand();
+            #endif
             changeScreenStatus(STATUS);
             break;
 
+        case LOADERROR:
+            drawError();
+            changeScreenStatus(ERROR);
+            break;
+
+        case ERROR:
+            clickError();
+            break;
+
         case LOADSTATUS:
-            sw = true; // todo delete this
+            updateStatusForeground = true;
             drawStatusBackground();
             changeScreenStatus(STATUS);
             break;
 
-        case STATUS: // todo implement real logic with real values
-            if (sw) // todo delete this (change condition to update info labels)
+        case STATUS:
+            if (updateStatusForeground)
             {
-                drawStatusForeground("15.4V", "320L");
-                sw = false; // todo delete this
+                drawStatusForeground();
+                delay(500);
+                updateStatusForeground = false;
             }
             else
             {
@@ -463,6 +483,7 @@ void UILoop()
             drawExtraFunctions();
             changeScreenStatus(EXTRAFUNCTIONS);
             break;
+
         case EXTRAFUNCTIONS:
             if (backBtn.isPressed())
             {
@@ -474,10 +495,20 @@ void UILoop()
                 clickExtraFunctions(); // TODO implement extraFunctions logic
             }
             break;
-            //case LOADHELP: // TODO implement help menu
-            //case HELP:
-            //case LOADENGINEERINGMODE: // TODO implement engineering mode
-            //case ENGINEERINGMODE:
+
+        case LOADHELP: // TODO implement help menu
+            currentError = ScreenNotImplementedError;
+            changeScreenStatus(LOADERROR);
+        break;
+
+        //case HELP:
+
+        case LOADENGINEERINGMODE: // TODO implement engineering mode
+            currentError = ScreenNotImplementedError;
+            changeScreenStatus(LOADERROR);
+        break;
+
+        //case ENGINEERINGMODE:
     }
 }
 
