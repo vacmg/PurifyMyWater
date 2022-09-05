@@ -57,14 +57,14 @@ public:
     // On success, it returns true, otherwise false.
     static bool sendMessage(const char* payload, HardwareSerial* serial);
 
-    // This function gets a message, verifies & extract its payload, send an ACK if the message is valid & returns true if success
+    // This function gets a message, verifies & extract its payload (of size MAXMSGSIZE), send an ACK if the message is valid & returns true if success
     static bool getMessage(char* payload, HardwareSerial* serial);
 
     // This function sends a message
     // On success, it returns true, otherwise false.
     static bool sendQuickMessage(const char* payload, HardwareSerial* serial);
 
-    // This function gets a message, verifies & extract its payload & returns true if the message is valid
+    // This function gets a message, verifies & extract its payload (of size MAXMSGSIZE) & returns true if the message is valid
     static bool getQuickMessage(char* payload, HardwareSerial* serial);
 
     // This function flushes an input HardwareSerial and discards all data on the input buffer

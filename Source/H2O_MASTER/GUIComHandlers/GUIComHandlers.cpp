@@ -4,9 +4,6 @@
 
 #include "GUIComHandlers.h"
 
-// Use sendGUIMessage to send a message from outside GUILoop()
-#define sendGUIMessage(message) (guiStatus == GUI_CONNECTED_ST) && guiComManager.sendMessage(payload)
-
 void GUILoop() // TODO guard sendmessages from a guistatus different from GUI_CONNECTED_ST
 {
     bool screenSensorSt = readDigitalSensor(screenSensor);
