@@ -53,9 +53,6 @@ char* GUIModeToString(enum GUIStatus status)
 
 #endif
 
-// Use sendGUIMessage to send a message from outside GUILoop()
-#define sendGUIMessage(message) (guiStatus == GUI_CONNECTED_ST) && guiComManager.sendMessage(payload)
-
 #include "Handlers/sendMessageHandler.h"
 #include "Handlers/requestMessageHandler.h"
 #include "Handlers/requestAnswerMessageHandler.h"

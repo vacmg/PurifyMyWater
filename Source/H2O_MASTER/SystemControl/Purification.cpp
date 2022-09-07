@@ -67,7 +67,9 @@ void purificationLoop()
 
 
             if (!dataStorage.data.lowFilteredBuoySt && dataStorage.data.highSurfaceBuoySt)
+            {
                 purificationStatus = TRANSITIONTOFILTERWORKING;
+            }
 
             if (!dataStorage.data.UVPumpSt && !dataStorage.data.highPurifiedBuoySt && dataStorage.data.lowFilteredBuoySt)
             {
