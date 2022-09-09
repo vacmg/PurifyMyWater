@@ -44,7 +44,7 @@
 #if !DISABLECOMM
 #include "GUIComHandlers/GUIComHandlers.h"
 // Use sendGUIMessage to send a message from outside GUILoop()
-#define sendGUIMessage(message) (guiStatus == GUI_CONNECTED_ST) && guiComManager.sendMessage(payload)
+#define sendGUIMessage(payload) (guiStatus == GUI_CONNECTED_ST) && guiComManager.sendMessage(payload)
 #else
 #define sendGUIMessage(message) ;
 #endif

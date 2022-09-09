@@ -100,6 +100,11 @@ void purificationLoop()
             {
                 workingTime += millis() - UVMillis; // Add this time to workingTime
                 dataStorage.data.purifiedWater = ((float)workingTime * configStorage.config.UVPUMPFLOW) / 3600000.00; // calculate the amount of purified water
+                #if !DISABLECOMM
+                    char purifiedWaterBuffer[10];
+                    Communications::createSendMessage(purifiedWaterBuffer,purifiedWater_ID,String(dataStorage.data.purifiedWater).c_str());
+                    sendGUIMessage(purifiedWaterBuffer);
+                #endif
                 UVMillis = millis();
             }
 

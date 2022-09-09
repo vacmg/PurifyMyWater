@@ -166,6 +166,19 @@ void coreSetup()
     inputStats.setWindowSecs(40.0F / configStorage.config.ACFREQUENCY); //Set AC Ammeter frequency
 }
 
+void sendVoltage()
+{
+    if (sendVoltageMillis + configStorage.config.DATAREFRESHPERIOD < millis())
+    {
+        #if !DISABLECOMM
+            char temp[10];
+            Communications::createSendMessage(temp,voltage_ID,String(dataStorage.data.voltage).c_str());
+            sendGUIMessage(temp);
+        #endif
+        sendVoltageMillis = millis();
+    }
+}
+
 // This is the core loop code, which no matter which module is enabled, those instructions must be executed every main loop execution
 void coreLoop()
 {
@@ -176,6 +189,6 @@ void coreLoop()
 #if !DISABLEHARDWARECHECKS
     errorCheck();
 #endif
-
+    sendVoltage();
     updateAnimation();
 }

@@ -5,7 +5,11 @@
 #ifndef H2O_MASTER_CORE_H
 #define H2O_MASTER_CORE_H
 
-#include "../../Shared/SharedData.h"
+#include "../../H2O_MASTER.ino"
+
+#if !DISABLECOMM
+#include "../../GUIComHandlers/GUIComHandlers.h"
+#endif
 
 enum PurificationStatus
 {
@@ -19,6 +23,7 @@ enum PurificationStatus
 
 enum PurificationStatus purificationStatus = TRANSITIONTOIDLE; // Purification current status is changed using this variable
 unsigned long UVMillis = 0;
+unsigned long sendVoltageMillis = 0;
 unsigned long workingTime = 0; // Time that UV pump is working (in ms) // Used to calculate the amount of purified water
 
 #include "IO.h"
@@ -35,6 +40,8 @@ void disconnectEverything();
 
 // This function will check for hardware errors on the system
 void errorCheck();
+
+void sendVoltage();
 
 // This function will allow to notify the user about the error
 // and redirect the execution to an "onlyVitalActivities" function if it is critical

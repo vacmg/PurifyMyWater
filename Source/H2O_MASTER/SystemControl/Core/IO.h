@@ -64,6 +64,11 @@ unsigned long UVPumpPrevMillis = 0; // UVPumpPrevMillis also stores UV working s
 unsigned long endPumpPrevMillis = 0;
 unsigned long filterPumpPrevMillis = 0;
 
+// Buffer used to create messages
+#if !DISABLECOMM
+    char bufferStatus[4];
+#endif
+
 typedef struct ledAnimation
 {
     int frameDelay; // Delay between frames (in ms)

@@ -83,15 +83,31 @@ void output(byte pin, bool value)
     {
         case wellPump:
             dataStorage.data.wellPumpSt = value;
+            #if !DISABLECOMM
+                Communications::createSendMessage(bufferStatus,wellPumpSt_ID,String(dataStorage.data.wellPumpSt).c_str());
+                sendGUIMessage(bufferStatus);
+            #endif
             break;
         case UVPump:
             dataStorage.data.UVPumpSt = value;
+            #if !DISABLECOMM
+                Communications::createSendMessage(bufferStatus,UVPumpSt_ID,String(dataStorage.data.UVPumpSt).c_str());
+                sendGUIMessage(bufferStatus);
+            #endif
             break;
         case endPump:
             dataStorage.data.endPumpSt = value;
+            #if !DISABLECOMM
+                Communications::createSendMessage(bufferStatus,endPumpSt_ID,String(dataStorage.data.endPumpSt).c_str());
+                sendGUIMessage(bufferStatus);
+            #endif
             break;
         case filterRelay:
             dataStorage.data.filterPumpSt = value;
+            #if !DISABLECOMM
+                Communications::createSendMessage(bufferStatus,filterPumpSt_ID,String(dataStorage.data.filterPumpSt).c_str());
+                sendGUIMessage(bufferStatus);
+            #endif
             break;
     }
     digitalWrite(pin, value);
@@ -153,18 +169,78 @@ bool readDigitalSensor(byte pin)
     }*/
     return data;
 }
-
+bool wasChangedAndSet(bool* variable, bool newValue)
+{
+    bool res = *variable == newValue;
+    *variable = res;
+    return res;
+}
 // This function gets all buoys current status
 void getBuoyStatus()
 {
-    dataStorage.data.secBuoySt = readDigitalSensor(secBuoy);
-    dataStorage.data.lowSurfaceBuoySt = readDigitalSensor(lowSurfaceBuoy);
-    dataStorage.data.highSurfaceBuoySt = readDigitalSensor(highSurfaceBuoy);
-    dataStorage.data.lowFilteredBuoySt = readDigitalSensor(lowFilteredBuoy);
-    dataStorage.data.highFilteredBuoySt = readDigitalSensor(highFilteredBuoy);
-    dataStorage.data.lowPurifiedBuoySt = readDigitalSensor(lowPurifiedBuoy);
-    dataStorage.data.highPurifiedBuoySt = readDigitalSensor(highPurifiedBuoy);
-    dataStorage.data.endBuoySt = readDigitalSensor(endBuoy);
+    if (wasChangedAndSet(&dataStorage.data.secBuoySt, readDigitalSensor(secBuoy)))
+    {
+        #if !DISABLECOMM
+            Communications::createSendMessage(bufferStatus,secBuoySt_ID,String(dataStorage.data.secBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
+
+    if (wasChangedAndSet(&dataStorage.data.lowSurfaceBuoySt, readDigitalSensor(lowSurfaceBuoy)))
+    {
+        #if !DISABLECOMM
+            Communications::createSendMessage(bufferStatus,lowSurfaceBuoySt_ID,String(dataStorage.data.lowSurfaceBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
+
+    if(wasChangedAndSet(&dataStorage.data.highSurfaceBuoySt, readDigitalSensor(highSurfaceBuoy)))
+    {
+        #if !DISABLECOMM
+            Communications::createSendMessage(bufferStatus,highSurfaceBuoySt_ID,String(dataStorage.data.highSurfaceBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
+
+    if(wasChangedAndSet(&dataStorage.data.lowFilteredBuoySt, readDigitalSensor(lowFilteredBuoy)))
+    {
+        #if !DISABLECOMM
+            Communications::createSendMessage(bufferStatus,lowFilteredBuoySt_ID,String(dataStorage.data.lowFilteredBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
+
+    if(wasChangedAndSet(&dataStorage.data.highFilteredBuoySt, readDigitalSensor(highFilteredBuoy)))
+    {
+        #if !DISABLECOMM
+            Communications::createSendMessage(bufferStatus,highFilteredBuoySt_ID,String(dataStorage.data.highFilteredBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
+
+    if(wasChangedAndSet(&dataStorage.data.lowPurifiedBuoySt, readDigitalSensor(lowPurifiedBuoy)))
+    {
+        #if !DISABLECOMM
+            Communications::createSendMessage(bufferStatus,lowPurifiedBuoySt_ID,String(dataStorage.data.lowPurifiedBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
+
+    if(wasChangedAndSet(&dataStorage.data.highPurifiedBuoySt, readDigitalSensor(highPurifiedBuoy)))
+    {
+        #if !DISABLECOMM
+            Communications::createSendMessage(bufferStatus,highPurifiedBuoySt_ID,String(dataStorage.data.highPurifiedBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
+
+    if(wasChangedAndSet(&dataStorage.data.endBuoySt, readDigitalSensor(endBuoy)))
+    {
+        #if !DISABLECOMM
+            Communications::createSendMessage(bufferStatus,endBuoySt_ID,String(dataStorage.data.endBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
 }
 
 /*------------Input Control-------------*/
