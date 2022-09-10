@@ -5,7 +5,7 @@
 #include "Reset.h"
 
 void drawReset(){
-    drawBoolPopup("Reset",String("test.txt"),"YES","N0");
+    drawBoolPopup(getString(Interface_ResetStart_STR), getPath(ResetPopUp), getString(YES_STR),getString(NO_STR));
 }
 
 void clickReset(){
