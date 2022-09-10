@@ -14,7 +14,7 @@
 #include "../Shared/SharedData.h"
 #include "Settings/ScreenSettings.h"
 
-#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
+#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 #if SCREENHW == 35
 #define SCREEN35ROTATIONOFFSET 2
@@ -51,8 +51,10 @@
         TEMPERATURE,
         LOADERROR,
         ERROR,
+        LOADRESET,
+        RESET,
     };
-enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show the splash screen
+enum ScreenStatus screenStatus = LOADINTERFACE;//BOOTING; // Must be initialized to BOOTING in order to show the splash screen
 
 
 #include "Languages/Languages.h"
@@ -98,8 +100,10 @@ const char mode26[] PROGMEM = "LOADPAGETEMPERATURE";
 const char mode27[] PROGMEM = "TEMPERATURE";
 const char mode28[] PROGMEM = "LOADERROR";
 const char mode29[] PROGMEM = "ERROR";
+const char mode30[] PROGMEM = "LOADRESET";
+const char mode31[] PROGMEM = "RESET";
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27, mode28, mode29};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27, mode28, mode29, mode30, mode31};
 
 char* modeToString(ScreenStatus status)
 {
@@ -371,6 +375,15 @@ void UILoop()
             else
                 clickInterface();
             // if you click in one of the buttons of the page, you go to this function
+            break;
+
+        case LOADRESET:
+            drawReset();
+            changeScreenStatus(RESET);
+            break;
+
+        case RESET:
+            clickReset();
             break;
 
         case LOADLANGUAGE:

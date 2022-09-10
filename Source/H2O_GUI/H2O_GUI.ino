@@ -12,10 +12,10 @@
 
 #define DEBUG true // Used to display debug information messages through Serial port
 
-#define DISABLEUI true  // Used to disable the UI screen module
-#define DISABLECOMM false // Used to disable communications module
+#define DISABLEUI false  // Used to disable the UI screen module
+#define DISABLECOMM true // Used to disable communications module
 
-#define SETDEFAULTSCREENCONFIG false // Used to set the screenConfig to the default screenConfig
+#define SETDEFAULTSCREENCONFIG true // Used to set the screenConfig to the default screenConfig
 #define USEVOLATILECONFIG true // Used to disable EEPROM writes due to saving configuration in the persistent storage
 
 #if !DEBUG && (USEVOLATILECONFIG || SETDEFAULTSCREENCONFIG || DISABLEUI || DISABLECOMM)
@@ -78,8 +78,10 @@ void setup()
 
     //todo Test code after this line
 
-    //while (true); // TODO delete or comment this
+    //drawOkPopup("TITULO",String("test.txt"),"Si");
+    //drawBoolPopup("TITULO",String("test.txt"),"Si","No");
 
+    while (false); // TODO delete or comment this
     //todo Test code before this line
 
     debug(F("Setup - Ready\n\n"));

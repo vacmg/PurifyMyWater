@@ -7,7 +7,7 @@
 // This function set default screenConfig parameters
 void setDefaultScreenConfig()
 {
-    screenConfig.ROTATION = INVERTED_LANDSCAPE;
+    screenConfig.ROTATION = LANDSCAPE; // INVERTED_LANDSCAPE // LANDSCAPE
     screenConfig.LANGUAGE = ENGLISH;
     screenConfig.DATAREFRESHPERIOD = 5000;
 }

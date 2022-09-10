@@ -64,6 +64,10 @@ void clickInterface()
                 setRotation(screenConfig.ROTATION); // Set the rotation in the screen & touch module
                 changeScreenStatus(LOADINTERFACE); // Reload interface menu to repaint the screen
                 break;
+            case 2: // Reset
+                changeScreenStatus(LOADRESET);
+                break;
+
         }
     }
 }
