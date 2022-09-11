@@ -9,7 +9,6 @@ void setDefaultScreenConfig()
 {
     screenConfig.ROTATION = INVERTED_LANDSCAPE;
     screenConfig.LANGUAGE = ENGLISH;
-    screenConfig.DATAREFRESHPERIOD = 5000;
 }
 
 // This function returns the crc32 value of the config structure stored in EEPROM

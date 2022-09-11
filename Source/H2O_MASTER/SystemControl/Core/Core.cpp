@@ -112,12 +112,14 @@ void disconnectEverything()
 {
     output(voltSSRelay, 0);
     output(voltRelay, 0);
-    output(ACInverter, 0);
     output(wellPump, 0);
     output(UVPump, 0);
     output(endPump, 0);
-    output(UVRelay, 0);
     output(filterRelay, 0);
+    delay(1000);
+    output(UVRelay, 0);
+    delay(250);
+    output(ACInverter, 0);
 
     debug(F("DisconnectEverything - Done\n"));
 }
@@ -127,6 +129,8 @@ void disconnectEverything()
 // This is the core setup code, which no matter which module is enabled, those instructions must be executed
 void coreSetup()
 {
+    debug(F("Setup - Core - Setting up I/O\n"));
+
     pinMode(redLed, OUTPUT);
     pinMode(blueLed, OUTPUT);
     pinMode(greenLed, OUTPUT);
@@ -164,20 +168,22 @@ void coreSetup()
     output(screenRelay, 0);
 
     inputStats.setWindowSecs(40.0F / configStorage.config.ACFREQUENCY); //Set AC Ammeter frequency
+
+    debug(F("Setup - Core - I/O ready\n"));
 }
 
+#if !DISABLECOMM
 void sendVoltage()
 {
     if (sendVoltageMillis + configStorage.config.DATAREFRESHPERIOD < millis())
     {
-        #if !DISABLECOMM
-            char temp[10];
-            Communications::createSendMessage(temp,voltage_ID,String(dataStorage.data.voltage).c_str());
-            sendGUIMessage(temp);
-        #endif
+        char temp[10];
+        Communications::createSendMessage(temp,voltage_ID,String(dataStorage.data.voltage).c_str());
+        sendGUIMessage(temp);
         sendVoltageMillis = millis();
     }
 }
+#endif
 
 // This is the core loop code, which no matter which module is enabled, those instructions must be executed every main loop execution
 void coreLoop()
@@ -189,6 +195,8 @@ void coreLoop()
 #if !DISABLEHARDWARECHECKS
     errorCheck();
 #endif
+#if !DISABLECOMM
     sendVoltage();
+#endif
     updateAnimation();
 }

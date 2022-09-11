@@ -5,6 +5,7 @@
 #ifndef H2O_GUI_SHAREDDATA_H
 #define H2O_GUI_SHAREDDATA_H
 
+#include "../Compile_Flags.h"
 #include <Arduino.h>
 
 // Hardware constants
@@ -143,14 +144,18 @@ void setDefaultConfig()
 
 // Debug Functions
 
-#ifndef debug(data)
-    #if DEBUG
+#if DEBUG
+    #ifndef debug(data)
         #define debug(data) Serial.print(data)
-        #define changeVariable(variable, value) debug(F(#variable));debug(F(" changed from "));debug(variable);debug(F(" to "));debug(value);debug('\n'); (variable) = value
-    #else
-        #define debug(data) ;
-        #define changeVariable(variable, value) variable = value
     #endif
+    #define changeVariable(variable, value) debug(F(#variable));debug(F(" changed from "));debug(variable);debug(F(" to "));debug(value);debug('\n'); (variable) = value
+    #define debugStatement(statement) debug(F(#statement)); debug(F(": ")); debug(statement); debug('\n')
+#else
+    #ifndef debug(data)
+        #define debug(data) ;
+    #endif
+    #define changeVariable(variable, value) variable = value
+    #define debugStatement(statement) ;
 #endif
 
 #if DEBUG
