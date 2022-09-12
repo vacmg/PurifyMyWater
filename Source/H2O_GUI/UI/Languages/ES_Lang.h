@@ -111,8 +111,16 @@ const char *const langES[] PROGMEM = {ES_LANG_STR,ES_YES_STR,ES_NO_STR,ES_ON_STR
 
 
 // const char ES_XXX_PATH[] PROGMEM = "xxxx";
+const char ES_HelpTopic1_PATH[] PROGMEM = "/ES/Help/Topic1.txt";
+const char ES_HelpTopic2_PATH[] PROGMEM = "/ES/Help/Topic2.txt";
+const char ES_HelpTopic3_PATH[] PROGMEM = "/ES/Help/Topic3.txt";
+const char ES_HelpTopic4_PATH[] PROGMEM = "/ES/Help/Topic4.txt";
+const char ES_HelpTopic5_PATH[] PROGMEM = "/ES/Help/Topic5.txt";
+const char ES_HelpTopic6_PATH[] PROGMEM = "/ES/Help/Topic6.txt";
+
+const char *const pathES[] PROGMEM = { ES_HelpTopic1_PATH,ES_HelpTopic2_PATH,ES_HelpTopic3_PATH,ES_HelpTopic4_PATH,ES_HelpTopic5_PATH,ES_HelpTopic6_PATH,}; // Follow the same order as enum PathIDs (Languages.h)
 
 
-const char *const pathES[] PROGMEM = {}; // Follow the same order as enum PathIDs (Languages.h)
+
 
 #endif //H2O_GUI_ES_LANG_H

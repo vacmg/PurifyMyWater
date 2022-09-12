@@ -11,6 +11,11 @@ void drawHelpMenu();
 
 void drawHelpTopic();
 
+void clickHelp();
+
+void clickHelpTopic();
+
+char helpPath[50]="";
 #include "Help.cpp"
 
 #endif //H2O_GUI_HELP_H
