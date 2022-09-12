@@ -12,7 +12,7 @@
 #if !DISABLECOMM
     #define wasChangedAndSet(variable, newValue) wasChangedAndSetFn(variable,newValue)
 #else
-    #define wasChangedAndSet(variable, newValue) (*variable=newVariable)||true
+    #define wasChangedAndSet(variable, newValue) (*variable=newValue)||true
 #endif
 
 /*------------Input-----------------*/

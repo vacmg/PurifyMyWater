@@ -207,31 +207,37 @@ void setDefaultConfig()
 
     void printConfiguration()
     {
-        debug(F("Current config:\n"));
-        Serial.print(F("System status:\t"));Serial.println(systemStatusToString(configStorage.config.systemStatus));
-        Serial.print(F("Working mode:\t"));Serial.println(workingModeToString(configStorage.config.workingMode));
+        debug(F("\nCurrent config:\n\n"));
+        Serial.print(F("System status:\t\t"));Serial.println(systemStatusToString(configStorage.config.systemStatus));
+        Serial.print(F("Working mode:\t\t"));Serial.println(workingModeToString(configStorage.config.workingMode));
+
         Serial.print(F("STARTCHARGINGVOLTAGE:\t"));Serial.println(configStorage.config.STARTCHARGINGVOLTAGE);
         Serial.print(F("STOPCHARGINGVOLTAGE:\t"));Serial.println(configStorage.config.STOPCHARGINGVOLTAGE);
         Serial.print(F("STARTWORKINGVOLTAGE:\t"));Serial.println(configStorage.config.STARTWORKINGVOLTAGE);
         Serial.print(F("STOPWORKINGVOLTAGE:\t"));Serial.println(configStorage.config.STOPWORKINGVOLTAGE);
         Serial.print(F("DCAMMSENSITIVITY:\t"));Serial.println(configStorage.config.DCAMMSENSITIVITY);
-        Serial.print(F("DCAMMZERO:\t"));Serial.println(configStorage.config.DCAMMZERO);
+        Serial.print(F("DCAMMZERO:\t\t"));Serial.println(configStorage.config.DCAMMZERO);
         Serial.print(F("ACAMMSENSITIVITY:\t"));Serial.println(configStorage.config.ACAMMSENSITIVITY);
-        Serial.print(F("ACAMMZERO:\t"));Serial.println(configStorage.config.ACAMMZERO);
-        Serial.print(F("ACFREQUENCY:\t"));Serial.println(configStorage.config.ACFREQUENCY);
+        Serial.print(F("ACAMMZERO:\t\t"));Serial.println(configStorage.config.ACAMMZERO);
+        Serial.print(F("ACFREQUENCY:\t\t"));Serial.println(configStorage.config.ACFREQUENCY);
         Serial.print(F("ESTIMATEDUVAMPERAGE:\t"));Serial.println(configStorage.config.ESTIMATEDUVAMPERAGE);
+
         Serial.print(F("WELLPUMPTIMEOUT:\t"));Serial.println(configStorage.config.WELLPUMPTIMEOUT);
-        Serial.print(F("UVPUMPTIMEOUT:\t"));Serial.println(configStorage.config.UVPUMPTIMEOUT);
-        Serial.print(F("ENDPUMPTIMEOUT:\t"));Serial.println(configStorage.config.ENDPUMPTIMEOUT);
-        Serial.print(F("FILTERTIMEOUT:\t"));Serial.println(configStorage.config.FILTERTIMEOUT);
-        Serial.print(F("UVPUMPFLOW:\t"));Serial.println(configStorage.config.UVPUMPFLOW);
-        Serial.print(F("TEMPCHECKTIME:\t"));Serial.println(configStorage.config.TEMPCHECKTIME);
+        Serial.print(F("UVPUMPTIMEOUT:\t\t"));Serial.println(configStorage.config.UVPUMPTIMEOUT);
+        Serial.print(F("ENDPUMPTIMEOUT:\t\t"));Serial.println(configStorage.config.ENDPUMPTIMEOUT);
+        Serial.print(F("FILTERTIMEOUT:\t\t"));Serial.println(configStorage.config.FILTERTIMEOUT);
+        Serial.print(F("UVPUMPFLOW:\t\t"));Serial.println(configStorage.config.UVPUMPFLOW);
+
+        Serial.print(F("TEMPCHECKTIME:\t\t"));Serial.println(configStorage.config.TEMPCHECKTIME);
         Serial.print(F("STOPWORKINGTEMP:\t"));Serial.println(configStorage.config.STOPWORKINGTEMP);
-        Serial.print(F("STARTCASETEMP:\t"));Serial.println(configStorage.config.STARTCASETEMP);
-        Serial.print(F("STOPCASETEMP:\t"));Serial.println(configStorage.config.STOPCASETEMP);
-        Serial.print(F("STARTPSUTEMP:\t"));Serial.println(configStorage.config.STARTPSUTEMP);
-        Serial.print(F("STOPPSUTEMP:\t"));Serial.println(configStorage.config.STOPPSUTEMP);
-        Serial.println();
+        Serial.print(F("STARTCASETEMP:\t\t"));Serial.println(configStorage.config.STARTCASETEMP);
+        Serial.print(F("STOPCASETEMP:\t\t"));Serial.println(configStorage.config.STOPCASETEMP);
+        Serial.print(F("STARTPSUTEMP:\t\t"));Serial.println(configStorage.config.STARTPSUTEMP);
+        Serial.print(F("STOPPSUTEMP:\t\t"));Serial.println(configStorage.config.STOPPSUTEMP);
+
+        Serial.print(F("DATAREFRESHPERIOD:\t"));Serial.println(configStorage.config.DATAREFRESHPERIOD);
+
+        Serial.println('\n');
     }
 
     #define debugConfig() printConfiguration()
@@ -247,8 +253,9 @@ void setDefaultConfig()
     const char errorMCUsIncompatibleVersionError_STR[] PROGMEM = "MCUsIncompatibleVersionError";
     const char errorDestinationMCUNotRespondingError_STR[] PROGMEM = "DestinationMCUNotRespondingError";
     const char errorGUICannotSafelyShutdownError_STR[] PROGMEM = "GUICannotSafelyShutdownError";
+    const char errorScreenNotImplementedError_STR[] PROGMEM = "ScreenNotImplementedError";
 
-    const char *const debugErrorsTable[] PROGMEM = {errorNoError_STR, errorBuoyIncongruenceError_STR, errorPumpTimeoutError_STR, errorUVLightNotWorkingError_STR, errorScreenNotConnectedError_STR, errorTempSensorsAmountError_STR, errorHotTempError_STR, errorHandshakeError_STR, errorMCUsIncompatibleVersionError_STR, errorDestinationMCUNotRespondingError_STR, errorGUICannotSafelyShutdownError_STR};
+    const char *const debugErrorsTable[] PROGMEM = {errorNoError_STR, errorBuoyIncongruenceError_STR, errorPumpTimeoutError_STR, errorUVLightNotWorkingError_STR, errorScreenNotConnectedError_STR, errorTempSensorsAmountError_STR, errorHotTempError_STR, errorHandshakeError_STR, errorMCUsIncompatibleVersionError_STR, errorDestinationMCUNotRespondingError_STR, errorGUICannotSafelyShutdownError_STR, errorScreenNotImplementedError_STR};
 
     char* errorToString(enum Errors error)
     {
@@ -258,25 +265,29 @@ void setDefaultConfig()
 
 void printSharedData()
 {
-    debug(F("Current data:\n"));
-    Serial.print(F("Current Error:\t"));Serial.println(errorToString(currentError));
-    Serial.print(F("\nvoltage:\t"));Serial.println(dataStorage.data.voltage);
-    Serial.print(F("ACUVAmps:\t"));Serial.println(dataStorage.data.ACUVAmps);
-    Serial.print(F("DCAmps:\t"));Serial.println(dataStorage.data.DCAmps);
-    Serial.print(F("\npurifiedWater:\t"));Serial.println(dataStorage.data.purifiedWater);
-    Serial.print(F("\nwellPumpSt:\t"));Serial.println(dataStorage.data.wellPumpSt);
-    Serial.print(F("UVPumpSt:\t"));Serial.println(dataStorage.data.UVPumpSt);
-    Serial.print(F("endPumpSt:\t"));Serial.println(dataStorage.data.endPumpSt);
-    Serial.print(F("filterPumpSt:\t"));Serial.println(dataStorage.data.filterPumpSt);
-    Serial.print(F("\nsecBuoySt:\t"));Serial.println(dataStorage.data.secBuoySt);
+    debug(F("\nCurrent data:\n\n"));
+    Serial.print(F("Current Error:\t\t"));Serial.println(errorToString(currentError));
+
+    Serial.print(F("\nvoltage:\t\t"));Serial.println(dataStorage.data.voltage);
+    Serial.print(F("ACUVAmps:\t\t"));Serial.println(dataStorage.data.ACUVAmps);
+    Serial.print(F("DCAmps:\t\t\t"));Serial.println(dataStorage.data.DCAmps);
+
+    Serial.print(F("\npurifiedWater:\t\t"));Serial.println(dataStorage.data.purifiedWater);
+
+    Serial.print(F("\nwellPumpSt:\t\t"));Serial.println(dataStorage.data.wellPumpSt);
+    Serial.print(F("UVPumpSt:\t\t"));Serial.println(dataStorage.data.UVPumpSt);
+    Serial.print(F("endPumpSt:\t\t"));Serial.println(dataStorage.data.endPumpSt);
+    Serial.print(F("filterPumpSt:\t\t"));Serial.println(dataStorage.data.filterPumpSt);
+
+    Serial.print(F("\nsecBuoySt:\t\t"));Serial.println(dataStorage.data.secBuoySt);
     Serial.print(F("lowSurfaceBuoySt:\t"));Serial.println(dataStorage.data.lowSurfaceBuoySt);
     Serial.print(F("highSurfaceBuoySt:\t"));Serial.println(dataStorage.data.highSurfaceBuoySt);
     Serial.print(F("lowFilteredBuoySt:\t"));Serial.println(dataStorage.data.lowFilteredBuoySt);
     Serial.print(F("highFilteredBuoySt:\t"));Serial.println(dataStorage.data.highFilteredBuoySt);
     Serial.print(F("lowPurifiedBuoySt:\t"));Serial.println(dataStorage.data.lowPurifiedBuoySt);
     Serial.print(F("highPurifiedBuoySt:\t"));Serial.println(dataStorage.data.highPurifiedBuoySt);
-    Serial.print(F("endBuoySt:\t"));Serial.println(dataStorage.data.endBuoySt);
-    Serial.println();
+    Serial.print(F("endBuoySt:\t\t"));Serial.println(dataStorage.data.endBuoySt);
+    Serial.println('\n');
 }
 
 #define debugData() printSharedData()

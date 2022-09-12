@@ -107,6 +107,7 @@ void setup()
         debug(F("Configuration successfully load\n"));
     }
 #endif
+    debugConfig();
 
     coreSetup();
 #if !DISABLETEMPERATURE
@@ -116,11 +117,11 @@ void setup()
     purificationSetup(); // it must be the last setup (it waits for voltage for a long time)
 #endif
 
-    //todo Test code after this line
+    debug(F("Setup - Starting Test phase\n")); //todo delete Test code after this line
 
     //while (true); // TODO delete or comment this
 
-    //todo Test code before this line
+    debug(F("Setup - Test phase finished\n")); //todo delete Test code before this line
 
     debug(F("Setup - Ready\n\n"));
 }

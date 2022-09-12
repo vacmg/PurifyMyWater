@@ -64,14 +64,13 @@ void setup()
 #endif
 
     setDefaultConfig(); // TODO read config from master
+    debugConfig(); // TODO print real config
 
-    //todo Test code after this line
-
-
+    debug(F("Setup - Starting Test phase\n")); //todo delete Test code after this line
 
     //while (true); // TODO delete or comment this
 
-    //todo Test code before this line
+    debug(F("Setup - Test phase finished\n")); //todo delete Test code before this line
 
     debug(F("Setup - Ready\n\n"));
     delay(50);
