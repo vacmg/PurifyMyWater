@@ -59,12 +59,12 @@ void ScreenPowerManager::loop()
     }
 }
 
-bool ScreenPowerManager::isScreenOn()
+bool ScreenPowerManager::isScreenOn() const
 {
     return screenSt;
 }
 
-bool ScreenPowerManager::isDesiredScreenOn()
+bool ScreenPowerManager::isDesiredScreenOn() const
 {
     return desiredScreenSt;
 }
@@ -75,25 +75,59 @@ bool ScreenPowerManager::isDesiredScreenOn()
 // A true value means that the circuit is closed whereas a false means that the circuit is opened.
 void output(byte pin, bool value)
 {
-    if (!(pin == redLed || pin == greenLed || pin == blueLed || pin == voltRelay || pin == outFan || pin == PSUFan || pin == inFan))
-    {
-        value = (!value);
-    }
     switch (pin)
     {
         case wellPump:
             dataStorage.data.wellPumpSt = value;
+            changeVariable(dataStorage.data.wellPumpSt, value);
+            #if !DISABLECOMM
+            {
+                char bufferStatus[4] = "";
+                Communications::createSendMessage(bufferStatus,wellPumpSt_ID,String(dataStorage.data.wellPumpSt).c_str());
+                sendGUIMessage(bufferStatus);
+            }
+            #endif
             break;
         case UVPump:
             dataStorage.data.UVPumpSt = value;
+            changeVariable(dataStorage.data.UVPumpSt, value);
+            #if !DISABLECOMM
+            {
+                char bufferStatus[4] = "";
+                Communications::createSendMessage(bufferStatus,UVPumpSt_ID,String(dataStorage.data.UVPumpSt).c_str());
+                sendGUIMessage(bufferStatus);
+            }
+            #endif
             break;
         case endPump:
             dataStorage.data.endPumpSt = value;
+            changeVariable(dataStorage.data.endPumpSt, value);
+            #if !DISABLECOMM
+            {
+                char bufferStatus[4] = "";
+                Communications::createSendMessage(bufferStatus,endPumpSt_ID,String(dataStorage.data.endPumpSt).c_str());
+                sendGUIMessage(bufferStatus);
+            }
+            #endif
             break;
         case filterRelay:
             dataStorage.data.filterPumpSt = value;
+            changeVariable(dataStorage.data.filterPumpSt, value);
+            #if !DISABLECOMM
+            {
+                char bufferStatus[4] = "";
+                Communications::createSendMessage(bufferStatus,filterPumpSt_ID,String(dataStorage.data.filterPumpSt).c_str());
+                sendGUIMessage(bufferStatus);
+            }
+            #endif
             break;
     }
+
+    if (!(pin == redLed || pin == greenLed || pin == blueLed || pin == voltRelay || pin == outFan || pin == PSUFan || pin == inFan))
+    {
+        value = (!value);
+    }
+
     digitalWrite(pin, value);
 }
 
@@ -117,7 +151,7 @@ void setColor(byte r, byte g, byte b)
 // If an animation is loaded in currentAnimation and this function is called everytime, the animation will be displayed on the LED
 void updateAnimation()
 {
-    if (currentAnimation != NULL && millis() > prevAnimationMillis + currentAnimation->frameDelay)
+    if (currentAnimation != nullptr && millis() > prevAnimationMillis + currentAnimation->frameDelay)
     {
         setColor(currentAnimation->animation[currentAnimation->currentFrame]);
         if (currentAnimation->currentFrame + 1 >= currentAnimation->animationSize)
@@ -154,17 +188,92 @@ bool readDigitalSensor(byte pin)
     return data;
 }
 
+
+#if !DISABLECOMM
+// This auxiliary function checks if a variable value has changed & updates its value
+bool wasChangedAndSetFn(bool* variable, bool newValue)
+{
+    bool res = *variable != newValue;
+    //changeVariable(*variable, newValue);
+    //debugStatement(res);
+    return false;//res;
+}
+#endif
+
 // This function gets all buoys current status
 void getBuoyStatus()
 {
-    dataStorage.data.secBuoySt = readDigitalSensor(secBuoy);
-    dataStorage.data.lowSurfaceBuoySt = readDigitalSensor(lowSurfaceBuoy);
-    dataStorage.data.highSurfaceBuoySt = readDigitalSensor(highSurfaceBuoy);
-    dataStorage.data.lowFilteredBuoySt = readDigitalSensor(lowFilteredBuoy);
-    dataStorage.data.highFilteredBuoySt = readDigitalSensor(highFilteredBuoy);
-    dataStorage.data.lowPurifiedBuoySt = readDigitalSensor(lowPurifiedBuoy);
-    dataStorage.data.highPurifiedBuoySt = readDigitalSensor(highPurifiedBuoy);
-    dataStorage.data.endBuoySt = readDigitalSensor(endBuoy);
+    if (wasChangedAndSet(&dataStorage.data.secBuoySt, readDigitalSensor(secBuoy)))
+    {
+        #if !DISABLECOMM
+            char bufferStatus[4] = "";
+            Communications::createSendMessage(bufferStatus,secBuoySt_ID,String(dataStorage.data.secBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
+
+    if (wasChangedAndSet(&dataStorage.data.lowSurfaceBuoySt, readDigitalSensor(lowSurfaceBuoy)))
+    {
+        #if !DISABLECOMM
+            char bufferStatus[4] = "";
+            Communications::createSendMessage(bufferStatus,lowSurfaceBuoySt_ID,String(dataStorage.data.lowSurfaceBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
+
+    if(wasChangedAndSet(&dataStorage.data.highSurfaceBuoySt, readDigitalSensor(highSurfaceBuoy)))
+    {
+        #if !DISABLECOMM
+            char bufferStatus[4] = "";
+            Communications::createSendMessage(bufferStatus,highSurfaceBuoySt_ID,String(dataStorage.data.highSurfaceBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
+
+    if(wasChangedAndSet(&dataStorage.data.lowFilteredBuoySt, readDigitalSensor(lowFilteredBuoy)))
+    {
+        #if !DISABLECOMM
+            char bufferStatus[4] = "";
+            Communications::createSendMessage(bufferStatus,lowFilteredBuoySt_ID,String(dataStorage.data.lowFilteredBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
+
+    if(wasChangedAndSet(&dataStorage.data.highFilteredBuoySt, readDigitalSensor(highFilteredBuoy)))
+    {
+        #if !DISABLECOMM
+            char bufferStatus[4] = "";
+            Communications::createSendMessage(bufferStatus,highFilteredBuoySt_ID,String(dataStorage.data.highFilteredBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
+
+    if(wasChangedAndSet(&dataStorage.data.lowPurifiedBuoySt, readDigitalSensor(lowPurifiedBuoy)))
+    {
+        #if !DISABLECOMM
+            char bufferStatus[4] = "";
+            Communications::createSendMessage(bufferStatus,lowPurifiedBuoySt_ID,String(dataStorage.data.lowPurifiedBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
+
+    if(wasChangedAndSet(&dataStorage.data.highPurifiedBuoySt, readDigitalSensor(highPurifiedBuoy)))
+    {
+        #if !DISABLECOMM
+            char bufferStatus[4] = "";
+            Communications::createSendMessage(bufferStatus,highPurifiedBuoySt_ID,String(dataStorage.data.highPurifiedBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
+
+    if(wasChangedAndSet(&dataStorage.data.endBuoySt, readDigitalSensor(endBuoy)))
+    {
+        #if !DISABLECOMM
+            char bufferStatus[4] = "";
+            Communications::createSendMessage(bufferStatus,endBuoySt_ID,String(dataStorage.data.endBuoySt).c_str());
+            sendGUIMessage(bufferStatus);
+        #endif
+    }
 }
 
 /*------------Input Control-------------*/
