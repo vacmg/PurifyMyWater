@@ -14,7 +14,7 @@
 #include "../Shared/SharedData.h"
 #include "Settings/ScreenSettings.h"
 
-#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
+#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 #if SCREENHW == 35
 #define SCREEN35ROTATIONOFFSET 2
@@ -54,7 +54,7 @@
         LOADRESET,
         RESET,
     };
-enum ScreenStatus screenStatus = LOADINTERFACE;//BOOTING; // Must be initialized to BOOTING in order to show the splash screen
+enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show the splash screen
 
 
 #include "Languages/Languages.h"

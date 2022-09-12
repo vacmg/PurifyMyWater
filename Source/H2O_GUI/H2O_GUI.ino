@@ -78,10 +78,10 @@ void setup()
 
     //todo Test code after this line
 
-    //drawOkPopup("TITULO",String("test.txt"),"Si");
-    //drawBoolPopup("TITULO",String("test.txt"),"Si","No");
 
-    while (false); // TODO delete or comment this
+
+    //while (true); // TODO delete or comment this
+
     //todo Test code before this line
 
     debug(F("Setup - Ready\n\n"));
