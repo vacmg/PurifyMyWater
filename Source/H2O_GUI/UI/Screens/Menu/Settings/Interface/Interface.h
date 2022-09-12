@@ -7,6 +7,7 @@
 
 #include "../Settings.h"
 #include "Language.h"
+#include "Reset.h"
 
 //This function set and draw the title, set the font size and draws the buttons in all pages.
 void drawInterface();

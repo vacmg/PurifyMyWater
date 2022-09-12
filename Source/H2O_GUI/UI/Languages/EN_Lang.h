@@ -112,7 +112,8 @@ const char *const langEN[] PROGMEM = {EN_LANG_STR, EN_YES_STR,EN_NO_STR,EN_ON_ST
 
 // const char EN_XXX_PATH[] PROGMEM = "xxxx";
 
+const char EN_ResetPopUp_PATH[] PROGMEM = "/EN/Reset/PopUp.txt";
 
-const char *const pathEN[] PROGMEM = {}; // Follow the same order as enum PathIDs (Languages.h)
+const char *const pathEN[] PROGMEM = {EN_ResetPopUp_PATH}; // Follow the same order as enum PathIDs (Languages.h)
 
 #endif //H2O_GUI_EN_LANG_H
