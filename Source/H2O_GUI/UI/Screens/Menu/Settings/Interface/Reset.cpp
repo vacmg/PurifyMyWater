@@ -6,7 +6,7 @@
 
 void drawReset()
 {
-    drawBoolPopup(getString(Interface_ResetStart_STR), getPath(ResetPopUp), getString(YES_STR),getString(NO_STR));
+    drawBoolPopup(getString(Interface_ResetStart_STR), getPath(ResetPopup_PATH), getString(YES_STR),getString(NO_STR));
 }
 
 void clickReset()
