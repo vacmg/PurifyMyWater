@@ -72,7 +72,7 @@ void GUILoop() // TODO guard sendmessages from a guistatus different from GUI_CO
                     Communications::createSendMessage(message,SHUTDOWN_CMD,"");
                     guiComManager.sendMessage(message);
 
-                    currentError = GUICannotSafelyShutdownError;
+                    changeError(GUICannotSafelyShutdownError);
                     changeGUIStatus(GUI_ERROR_ST);
                     debug(F("Retrying...\n"));
                     guiMillis = millis();
@@ -85,7 +85,7 @@ void GUILoop() // TODO guard sendmessages from a guistatus different from GUI_CO
                 Communications::createSendMessage(message,SHUTDOWN_CMD,"");
                 guiComManager.sendMessage(message);
 
-                currentError = GUICannotSafelyShutdownError;
+                changeError(GUICannotSafelyShutdownError);
                 changeGUIStatus(GUI_ERROR_ST);
                 debug(F("Retrying...\n"));
                 guiMillis = millis();
@@ -112,7 +112,7 @@ void GUILoop() // TODO guard sendmessages from a guistatus different from GUI_CO
             if(guiMillis+GUICOOLDOWNTIME<millis())
             {
                 if(currentError == DestinationMCUNotRespondingError || currentError == HandshakeError || currentError == GUICannotSafelyShutdownError)
-                    currentError = NoError;
+                changeError(NoError);
                 changeGUIStatus(GUI_OFF_ST);
             }
             break;
@@ -132,7 +132,7 @@ void GUILoop() // TODO guard sendmessages from a guistatus different from GUI_CO
             }
             else if (guiMillis+(2*MSGTIMEOUT)<millis())
             {
-                currentError = DestinationMCUNotRespondingError;
+                changeError(DestinationMCUNotRespondingError);
                 debug(F("Cannot reconnect Screen MCU, shutting it down\n"));
                 screenPowerManager.setScreen(false);
                 changeGUIStatus(GUI_COOLDOWN_ST);
@@ -165,7 +165,7 @@ void GUILoop() // TODO guard sendmessages from a guistatus different from GUI_CO
                         }
                         else // 2nd time GUICannotSafelyShutdownError
                         {
-                            currentError = GUICannotSafelyShutdownError;
+                            changeError(GUICannotSafelyShutdownError);
                             debug(F("Disabling communications...\n"));
                             guiComManager.commDisabler();
                             screenPowerManager.forceScreen(false);
@@ -176,7 +176,7 @@ void GUILoop() // TODO guard sendmessages from a guistatus different from GUI_CO
                     }
                     else if (guiMillis+(2*MSGTIMEOUT)<millis())
                     {
-                        currentError = GUICannotSafelyShutdownError;
+                        changeError(GUICannotSafelyShutdownError);
                         debug(F("Disabling communications...\n"));
                         guiComManager.commDisabler();
 

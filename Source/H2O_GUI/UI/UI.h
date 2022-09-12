@@ -124,7 +124,7 @@ char* rotationToString(enum Rotation rotation)
 
 #ifdef debugConfig()
 #undef debugConfig()
-#define debugConfig() printConfiguration(); debug(F("Rotation: ")); debug(rotationToString(screenConfig.ROTATION)); debug(F("\nLanguage: ")); debug(getString(Lang_STR)); debug(F("\nDATAREFRESHPERIOD: ")); debug(screenConfig.DATAREFRESHPERIOD); debug('\n')
+#define debugConfig() printConfiguration(); debug(F("Rotation: ")); debug(rotationToString(screenConfig.ROTATION)); debug(F("\nLanguage: ")); debug(getString(Lang_STR)); debug('\n')
 #endif
 #else
 
@@ -510,14 +510,14 @@ void UILoop()
             break;
 
         case LOADHELP: // TODO implement help menu
-            currentError = ScreenNotImplementedError;
+            changeError(ScreenNotImplementedError);
             changeScreenStatus(LOADERROR);
         break;
 
         //case HELP:
 
         case LOADENGINEERINGMODE: // TODO implement engineering mode
-            currentError = ScreenNotImplementedError;
+            changeError(ScreenNotImplementedError);
             changeScreenStatus(LOADERROR);
         break;
 

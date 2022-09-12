@@ -148,12 +148,14 @@ void setDefaultConfig()
     #ifndef debug(data)
         #define debug(data) Serial.print(data)
     #endif
+    #define changeError(newError) debug(F("CurrentError changed from "));debug(errorToString(currentError));debug(F(" to "));debug(errorToString(newError));debug(F(" in file "));debug(F(__FILE__));debug(F(" at line "));debug(__LINE__);debug('\n');currentError=newError
     #define changeVariable(variable, value) debug(F(#variable));debug(F(" changed from "));debug(variable);debug(F(" to "));debug(value);debug('\n'); (variable) = value
     #define debugStatement(statement) debug(F(#statement)); debug(F(": ")); debug(statement); debug('\n')
 #else
     #ifndef debug(data)
         #define debug(data) ;
     #endif
+    #define changeError(newError) currentError = newError
     #define changeVariable(variable, value) variable = value
     #define debugStatement(statement) ;
 #endif

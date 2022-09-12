@@ -44,7 +44,7 @@ void clickError()
 {
     if(btn1.isPressed() && currentError == ScreenNotImplementedError)
     {
-        currentError = NoError;
+        changeError(NoError);
         changeScreenStatus(LOADMENU);
     }
 }
