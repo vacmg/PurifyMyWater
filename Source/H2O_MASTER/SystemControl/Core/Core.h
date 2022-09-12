@@ -77,7 +77,8 @@ void sendVoltage();
 // and redirect the execution to an "onlyVitalActivities" function if it is critical
 // or resume the program if it is not
 // This function is not completed yet
-void raise(enum Errors error, const String& possibleExplanation);
+void raiseFn(enum Errors error, const String& possibleExplanation, const String& file, const uint16_t line);
+#define raise(error, possibleExplanation) raiseFn(error, possibleExplanation, F(__FILE__), __LINE__)
 
 #include "Core.cpp"
 

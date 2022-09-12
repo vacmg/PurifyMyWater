@@ -10,53 +10,44 @@
 // and redirect the execution to an "onlyVitalActivities" function if it is critical
 // or resume the program if it is not
 // This function is not completed yet
-void raise(enum Errors error, const String& possibleExplanation)
+void raiseFn(enum Errors error, const String& possibleExplanation, const String& file, const uint16_t line)
 {
     currentError = error;
     bool critical = true;
     ledAnimation* prevAnimation = currentAnimation;
     setColor(RED);
 
-    switch (error)
+    /*switch (error)
     {
-#if GUI
-        case SCREENNOTCONNECTEDERROR:
-            critical = false;
-            setColor(255, 30, 0); // orange
-            break;
-#endif
-        default:
+        default:*/
             currentAnimation = &defaultErrorAnimation;
-            break;
-    }
+            /*break;
+    }*/
+
+    debug(critical?F("RAISE --- CRITICAL Error "):F("RAISE --- Error "));debug(errorToString(error));debug(F(" in file "));debug(file);debug(F(" at line "));debug(line);debug(F(": "));debug(possibleExplanation);debug('\n');
 
     if (critical)
     {
         disconnectEverything();
-        delay(1000);
-        voltControl();
-#if DEBUG
-        debug(F("RAISE --- CRITICAL Error "));debug(errorToString(error));debug(F(": "));debug(possibleExplanation);debug('\n');
-            delay(2000);
-#endif
-
         unsigned long pm = millis();
         while (true)
         {
             if (pm + 1000 < millis())
             {
-                voltControl();
+                coreLoop();
+                #if !DISABLECOMM
+                    GUILoop(); // TODO disable some of those loops if required
+                #endif
+                #if !DISABLETEMPERATURE
+                    tempLoop();
+                #endif
                 pm = millis();
             }
-            updateAnimation();
         }
     }
     else
     {
-#if DEBUG
-        debug(F("RAISE --- CRITICAL Error "));debug(error);debug(F(": "));debug(possibleExplanation);debug('\n');
-            delay(3000);
-#endif
+        delay(5000);
         switch (purificationStatus) // set back normal color
         {
             case TRANSITIONTOIDLE:
