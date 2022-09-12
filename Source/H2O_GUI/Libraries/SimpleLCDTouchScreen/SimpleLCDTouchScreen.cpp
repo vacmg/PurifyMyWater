@@ -105,7 +105,7 @@ bool SimpleLCDTouchScreen::draw(Picture* picture)
 
 bool SimpleLCDTouchScreen::draw(TextBox* textBox)
 {
-    return draw(textBox, textBox->getFontSize());
+    return textBox != nullptr && draw(textBox, textBox->getFontSize());
 }
 
 bool SimpleLCDTouchScreen::draw(TextBox* textBox, uint8_t font)
@@ -129,61 +129,71 @@ bool SimpleLCDTouchScreen::draw(TextBox* textBox, uint8_t font)
         draw(&realRectangle);
     //TODO END remove this*/
 
-    textBox->getLabel()->setFontSize(font);
-    uint16_t maxNumOfCharPerRow = textBox->charactersPerRow(xpx,font);
-    uint16_t maxNumOfRows = textBox->maxAmountOfRows(ypx, font);
-    uint16_t row = 0;
-    uint16_t pos = textBox->getBeginOffset();
-    uint32_t wordSize;
-    File file = SD.open(textBox->getTextPath(), FILE_READ);
-
-    char* nxWord = textBox->nextWord(&file,pos,textBox->getEndOffset(),&wordSize);
-    while (nxWord!= nullptr && row<maxNumOfRows) // For each line until the paragraph is read or numOfRows is exceeded
+    if(textBox->isAValidLabel())
     {
-        uint16_t charsReadInARow = 0;
-        bool maxCharPerLineExceeded = false;
-        char* line = (char*) calloc(maxNumOfCharPerRow, sizeof(char));
-        Label* label = textBox->getLabel();
-        label->setCoords((int)(textBox->getx()+textBox->getMarginX()),(int)(textBox->gety()+textBox->getMarginY()+((7*font)+textBox->getSpacing())*row)); // set the coords where to draw the string
-        while (nxWord!= nullptr && !maxCharPerLineExceeded) // For each word until the line is full or a \n is read
+        textBox->getLabel()->setFontSize(font);
+        uint16_t maxNumOfCharPerRow = textBox->charactersPerRow(xpx,font);
+        uint16_t maxNumOfRows = textBox->maxAmountOfRows(ypx, font);
+        uint16_t row = 0;
+        uint16_t pos = textBox->getBeginOffset();
+        uint32_t wordSize;
+        File file = SD.open(textBox->getTextPath(), FILE_READ);
+
+        char* nxWord = textBox->nextWord(&file,pos,textBox->getEndOffset(),&wordSize);
+        while (nxWord!= nullptr && row<maxNumOfRows) // For each line until the paragraph is read or numOfRows is exceeded
         {
-            if(maxNumOfCharPerRow-charsReadInARow<(wordSize+1)) // If there is no enough free space
+            uint16_t charsReadInARow = 0;
+            bool maxCharPerLineExceeded = false;
+            char* line = (char*) calloc(maxNumOfCharPerRow, sizeof(char));
+            Label* label = textBox->getLabel();
+            label->setCoords((int)(textBox->getx()+textBox->getMarginX()),(int)(textBox->gety()+textBox->getMarginY()+((7*font)+textBox->getSpacing())*row)); // set the coords where to draw the string
+            while (nxWord!= nullptr && !maxCharPerLineExceeded) // For each word until the line is full or a \n is read
             {
-                maxCharPerLineExceeded = true; // end line
-            }
-            else // If there is enough free space
-            {
-                strcat(line,nxWord); // Add the word to the line
-                charsReadInARow+=wordSize; // Add the word to the line // wordSize
-                free(nxWord); // Free old pointer once it has been appended to the line
-
-                if(file.available()) // If there is a delimiter
+                if(maxNumOfCharPerRow-charsReadInARow<(wordSize+1)) // If there is no enough free space
                 {
-                    charsReadInARow+=1; // Add the word to the line // delimiter (1 char)
-                    char terminator[2] = "";
-                    terminator[0] = (char)file.read(); // get the delimiter as a string
-                    terminator[1] = NULL;
-                    if(terminator[0] == '\n') // If the delimiter is a \n, end line
-                        maxCharPerLineExceeded = true;
-                    else // If it is the end of the file
-                        strcat(line,terminator); // If the delimiter is a space, add it to the line
-                    pos+=wordSize+1; // Move forward text pointer
+                    maxCharPerLineExceeded = true; // end line
                 }
-                else
-                    pos+=wordSize; // Move forward text pointer
-                nxWord = textBox->nextWord(&file,pos,textBox->getEndOffset(),&wordSize); // read next word
+                else // If there is enough free space
+                {
+                    strcat(line,nxWord); // Add the word to the line
+                    charsReadInARow+=wordSize; // Add the word to the line // wordSize
+                    free(nxWord); // Free old pointer once it has been appended to the line
+
+                    if(file.available()) // If there is a delimiter
+                    {
+                        charsReadInARow+=1; // Add the word to the line // delimiter (1 char)
+                        char terminator[2] = "";
+                        terminator[0] = (char)file.read(); // get the delimiter as a string
+                        terminator[1] = NULL;
+                        if(terminator[0] == '\n') // If the delimiter is a \n, end line
+                            maxCharPerLineExceeded = true;
+                        else // If it is the end of the file
+                            strcat(line,terminator); // If the delimiter is a space, add it to the line
+                        pos+=wordSize+1; // Move forward text pointer
+                    }
+                    else
+                        pos+=wordSize; // Move forward text pointer
+                    nxWord = textBox->nextWord(&file,pos,textBox->getEndOffset(),&wordSize); // read next word
+                }
             }
+            label->setString(line); // set the string to draw
+            draw(label);
+            free(line); // free line string after using it
+            row++;
         }
-        label->setString(line); // set the string to draw
-        draw(label);
-        free(line); // free line string after using it
-        row++;
+        file.close();
+        if(nxWord!= nullptr)
+        {
+            return false;
+        }
     }
-    file.close();
-    if(nxWord!= nullptr)
+    else
     {
+        Label label(textBox->getx(),textBox->gety(),String(F("Invalid label")).c_str(),2,Color(255,255,255),Color(255,0,0));
+        draw(&label);
         return false;
     }
+
     return true;
 }
 

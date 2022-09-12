@@ -14,7 +14,6 @@ enum Languages {ENGLISH = 0, SPANISH = 1, FRENCH = 2};
 typedef struct ScreenConfiguration {
     enum Rotation ROTATION; // Current screen rotation
     enum Languages LANGUAGE; // current UI language
-    unsigned long DATAREFRESHPERIOD; // in ms // Time between data refreshes
 } ScreenConfig;
 
 ScreenConfig screenConfig = {}; // ScreenConfiguration structure used to store current UI related config

@@ -6,7 +6,11 @@
 #define H2O_MASTER_PURIFICATION_H
 
 #include <Arduino.h>
+#include "../Shared/SharedData.h"
 #include "Core/Core.h"
+#if !DISABLECOMM
+#include "../GUIComHandlers/GUIComHandlers.h"
+#endif
 
 // This is the purification setup code, which sets the system to a well known status to start with the purification
 void purificationSetup();
