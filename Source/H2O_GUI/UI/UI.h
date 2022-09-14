@@ -68,7 +68,7 @@ TouchScreenObject ts(9, A2, A3, 8, 300, 320, 480, (screenConfig.ROTATION + SCREE
 TouchScreenObject ts(8,A3,A2,9,300,320,480,screenConfig.ROTATION,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
 #endif
 
-#if DEBUG
+#if !DEBUG
 
 #define changeScreenStatus(newStatus) debug(F("screenStatus changed from '"));debug(modeToString(screenStatus));debug(F("' to '"));debug(modeToString(newStatus));debug(F("'\n")); screenStatus = newStatus
 
@@ -80,34 +80,35 @@ const char mode4[] PROGMEM = "MENU";
 const char mode5[] PROGMEM = "LOADSETTINGS";
 const char mode6[] PROGMEM = "SETTINGS";
 const char mode7[] PROGMEM = "LOADHELP";
-const char mode8[] PROGMEM = "HELP";
-const char mode9[] PROGMEM = "LOADENGINEERINGMODE";
-const char mode10[] PROGMEM = "ENGINEERINGMODE";
-const char mode11[] PROGMEM = "LOADEXTRAFUNCTIONS";
-const char mode12[] PROGMEM = "EXTRAFUNCTIONS";
-const char mode13[] PROGMEM = "LOADELECTRICTY";
-const char mode14[] PROGMEM = "LOADPAGEELECTRICITY";
-const char mode15[] PROGMEM = "ELECTRICITY";
-const char mode16[] PROGMEM = "LOADINTERFACE";
-const char mode17[] PROGMEM = "LOADPAGEINTERFACE";
-const char mode18[] PROGMEM = "INTERFACE";
-const char mode19[] PROGMEM = "LOADLANGUAGE";
-const char mode20[] PROGMEM = "LOADPAGELANGUAGE";
-const char mode21[] PROGMEM = "LANGUAGE";
-const char mode22[] PROGMEM = "LOADWATER";
-const char mode23[] PROGMEM = "LOADPAGEWATER";
-const char mode24[] PROGMEM = "WATER";
-const char mode25[] PROGMEM = "LOADTEMPERATURE";
-const char mode26[] PROGMEM = "LOADPAGETEMPERATURE";
-const char mode27[] PROGMEM = "TEMPERATURE";
-const char mode28[] PROGMEM = "LOADERROR";
-const char mode29[] PROGMEM = "ERROR";
-const char mode30[] PROGMEM = "LOADHELPTOPIC";
-const char mode31[] PROGMEM = "LOADPAGEHELPTOPIC";
-const char mode32[] PROGMEM = "HELPTOPIC";
+const char mode8[] PROGMEM = "LOADPAGEHELP";
+const char mode9[] PROGMEM = "HELP";
+const char mode10[] PROGMEM = "LOADENGINEERINGMODE";
+const char mode11[] PROGMEM = "ENGINEERINGMODE";
+const char mode12[] PROGMEM = "LOADEXTRAFUNCTIONS";
+const char mode13[] PROGMEM = "EXTRAFUNCTIONS";
+const char mode14[] PROGMEM = "LOADELECTRICTY";
+const char mode15[] PROGMEM = "LOADPAGEELECTRICITY";
+const char mode16[] PROGMEM = "ELECTRICITY";
+const char mode17[] PROGMEM = "LOADINTERFACE";
+const char mode18[] PROGMEM = "LOADPAGEINTERFACE";
+const char mode19[] PROGMEM = "INTERFACE";
+const char mode20[] PROGMEM = "LOADLANGUAGE";
+const char mode21[] PROGMEM = "LOADPAGELANGUAGE";
+const char mode22[] PROGMEM = "LANGUAGE";
+const char mode23[] PROGMEM = "LOADWATER";
+const char mode24[] PROGMEM = "LOADPAGEWATER";
+const char mode25[] PROGMEM = "WATER";
+const char mode26[] PROGMEM = "LOADTEMPERATURE";
+const char mode27[] PROGMEM = "LOADPAGETEMPERATURE";
+const char mode28[] PROGMEM = "TEMPERATURE";
+const char mode29[] PROGMEM = "LOADERROR";
+const char mode30[] PROGMEM = "ERROR";
+const char mode31[] PROGMEM = "LOADHELPTOPIC";
+const char mode32[] PROGMEM = "LOADPAGEHELPTOPIC";
+const char mode33[] PROGMEM = "HELPTOPIC";
 
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27, mode28, mode29, mode30, mode31, mode32};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27, mode28, mode29, mode30, mode31, mode32, mode33};
 
 char* modeToString(ScreenStatus status)
 {

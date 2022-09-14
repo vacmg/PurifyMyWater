@@ -19,7 +19,7 @@ void drawHelpTopic()
 {
     drawBackground(); //TODO pintar de forma inteligente
     // Title Menu
-    titleLabel.setString("Help");
+    titleLabel.setString("Topic");
     my_lcd.draw(&title);
     // TextBoxTopic
     Label helpLabel(1,1,"",1,Color());
