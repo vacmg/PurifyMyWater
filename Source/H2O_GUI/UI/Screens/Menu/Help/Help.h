@@ -16,6 +16,7 @@ void clickHelp();
 void clickHelpTopic();
 
 char helpPath[50]="";
+char topicNumber[10]="";
 #include "Help.cpp"
 
 #endif //H2O_GUI_HELP_H

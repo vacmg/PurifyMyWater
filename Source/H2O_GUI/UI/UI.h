@@ -68,7 +68,7 @@ TouchScreenObject ts(9, A2, A3, 8, 300, 320, 480, (screenConfig.ROTATION + SCREE
 TouchScreenObject ts(8,A3,A2,9,300,320,480,screenConfig.ROTATION,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
 #endif
 
-#if !DEBUG
+#if DEBUG
 
 #define changeScreenStatus(newStatus) debug(F("screenStatus changed from '"));debug(modeToString(screenStatus));debug(F("' to '"));debug(modeToString(newStatus));debug(F("'\n")); screenStatus = newStatus
 
@@ -506,7 +506,6 @@ void UILoop()
             break;
 
         case LOADHELP: // TODO implement help menu
-            drawBackground();
             page = 1;
             maxPage = 1;
             changeScreenStatus(LOADPAGEHELP);
@@ -543,6 +542,7 @@ void UILoop()
         case LOADHELPTOPIC:
             page = 1;
             maxPage = 1;
+            changeScreenStatus(LOADPAGEHELPTOPIC);
             break;
 
         case LOADPAGEHELPTOPIC:

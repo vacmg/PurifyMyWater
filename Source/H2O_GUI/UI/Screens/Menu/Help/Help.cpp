@@ -17,9 +17,10 @@ void drawHelpMenu()
 
 void drawHelpTopic()
 {
-    drawBackground(); //TODO pintar de forma inteligente
-    // Title Menu
-    titleLabel.setString("Topic");
+    //TODO pintar de forma inteligente
+    drawBackground();
+    //Title Menu
+    titleLabel.setString(topicNumber);
     my_lcd.draw(&title);
     // TextBoxTopic
     Label helpLabel(1,1,"",1,Color());
@@ -34,36 +35,42 @@ void clickHelp()
         case 1:
             if(btn1.isPressed())
             {
+                strcpy(topicNumber,"Topic1");
                 strcpy(helpPath,getPath(HelpTopic1_PATH));
                 debug("HelpTopic1");
                 changeScreenStatus(LOADHELPTOPIC);
             }
             else if (btn2.isPressed())
             {
+                strcpy(topicNumber,"Topic2");
                 strcpy(helpPath,getPath(HelpTopic2_PATH));
                 debug("HelpTopic2");
                 changeScreenStatus(LOADHELPTOPIC);
             }
             else if (btn3.isPressed())
             {
+                strcpy(topicNumber,"Topic3");
                 strcpy(helpPath,getPath(HelpTopic3_PATH));
                 debug("HelpTopic3");
                 changeScreenStatus(LOADHELPTOPIC);
             }
             else if (btn4.isPressed())
             {
+                strcpy(topicNumber,"Topic4");
                 strcpy(helpPath,getPath(HelpTopic4_PATH));
                 debug("HelpTopic4");
                 changeScreenStatus(LOADHELPTOPIC);
             }
             else if (btn5.isPressed())
             {
+                strcpy(topicNumber,"Topic5");
                 strcpy(helpPath,getPath(HelpTopic5_PATH));
                 debug("HelpTopic5");
                 changeScreenStatus(LOADHELPTOPIC);
             }
             else if (btn6.isPressed())
             {
+                strcpy(topicNumber,"Topic6");
                 strcpy(helpPath,getPath(HelpTopic6_PATH));
                 debug("HelpTopic6");
                 changeScreenStatus(LOADHELPTOPIC);
@@ -73,5 +80,5 @@ void clickHelp()
 
 void clickHelpTopic()
 {
-//TODO hata aqui
+
 }
