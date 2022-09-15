@@ -54,11 +54,11 @@
         ERROR,
         LOADHELPTOPIC,
         LOADPAGEHELPTOPIC,
-        HELPTOPIC
+        HELPTOPIC,
         LOADRESET,
         RESET,
     };
-enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show the splash screen
+enum ScreenStatus screenStatus = LOADSTATUS; // Must be initialized to BOOTING in order to show the splash screen
 
 
 #include "Languages/Languages.h"
@@ -501,7 +501,7 @@ void UILoop()
         case LOADEXTRAFUNCTIONS:
             drawBackground();
             page = 0;
-            drawExtraFunctions();
+            drawExtraFunctionsBackground();
             changeScreenStatus(EXTRAFUNCTIONS);
             break;
 
@@ -564,7 +564,25 @@ void UILoop()
             break;
 
         case HELPTOPIC:
-            clickHelpTopic();
+            if (backBtn.isPressed())    // Go to LOADHELP
+            {
+                debug(F("Back Page button pressed\n"));
+                changeScreenStatus(LOADHELP);
+            }
+            else if (page < maxPage && btn8.isPressed())   // Go to LOADPAGEHELP on next page
+            {
+                debug(F("Next page button pressed\n"));
+                page++;
+                changeScreenStatus(LOADPAGEHELPTOPIC);
+            }
+            else if (page > 1 && btn7.isPressed())    // Go to LOADPAGEHELPon previous page
+            {
+                debug(F("Previous page button pressed\n"));
+                page--;
+                changeScreenStatus(LOADPAGEHELPTOPIC);
+            }
+            else
+                clickHelpTopic();
             break;
 
         case LOADENGINEERINGMODE: // TODO implement engineering mode

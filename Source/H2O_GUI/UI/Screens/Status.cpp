@@ -285,15 +285,20 @@ void drawStatusForeground()
         label.setString(getString(StatusBtn_Error_STR));
         btn2.setSecondaryColor(Color(239, 127, 26));
     }
-    else if (configStorage.config.systemStatus == SYSTEM_OFF) // OFF
+    else if (configStorage.config.workingMode == Purification_Off_Mode) // OFF
     {
         label.setString(getString(OFF_STR));
         btn2.setSecondaryColor(Color(176, 54, 20));
     }
-    else // ON
+    else if (configStorage.config.workingMode == Purification_On_Mode)
     {
         label.setString(getString(ON_STR));
         btn2.setSecondaryColor(Color(20, 150, 44));
+    }
+    else
+    {
+        label.setString(getString(AltBtn_STR));
+        btn2.setSecondaryColor(Color(255, 255, 0));
     }
     my_lcd.draw(&btn2);
     btn2.setSecondaryColor(Color(255, 255, 255));
@@ -692,15 +697,22 @@ void clickStatus()
         {
             debug(F("Button FAILURE pressed\n")); // TODO Draw ERROR message
         }
-        else if (configStorage.config.systemStatus == SYSTEM_ON)
+        else if (configStorage.config.workingMode == Purification_Off_Mode)
         {
             debug(F("Button OFF pressed\n"));
-            configStorage.config.systemStatus = SYSTEM_OFF; // TODO send off command
+            debug(F("configStorage.config.workingMode changed from "));debug(workingModeToString(configStorage.config.workingMode));debug(F(" to "));debug(workingModeToString(Purification_On_Mode));debug('\n');
+            configStorage.config.workingMode = Purification_On_Mode; // TODO send on command
         }
-        else
+        else if (configStorage.config.workingMode == Purification_On_Mode)
         {
             debug(F("Button ON pressed\n"));
-            configStorage.config.systemStatus = SYSTEM_ON; // TODO send on command
+            debug(F("configStorage.config.workingMode changed from "));debug(workingModeToString(configStorage.config.workingMode));debug(F(" to "));debug(workingModeToString(Purification_Off_Mode));debug('\n');
+            configStorage.config.workingMode = Purification_Off_Mode; // TODO send off command
+        }
+        else if (configStorage.config.workingMode == DCPSU_Mode || configStorage.config.workingMode == ACPSU_Mode)
+        {
+            debug(F("Button ALT pressed\n"));
+            changeScreenStatus(LOADEXTRAFUNCTIONS);
         }
         updateStatusForeground = true;
     }

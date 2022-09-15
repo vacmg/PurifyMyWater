@@ -9,6 +9,8 @@
 
 void drawExtraFunctions();
 
+void drawExtraFunctionsBackground();
+
 void clickExtraFunctions();
 
 #include "ExtraFunctions.cpp"
