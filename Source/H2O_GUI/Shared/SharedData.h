@@ -38,14 +38,11 @@ enum Errors {
     ScreenNotImplementedError
     }; // Used to process different errors
 
-enum SystemStatus {SYSTEM_OFF = 0, SYSTEM_ON = 1}; // This struct stores if the system is working or not (think about it like a master switch)
-
-enum WorkingMode {Purification_Mode, DCPSU_Mode, ACPSU_Mode}; // This struct stores the system working mode which can be the default purification mode and some alternative uses of the system
+enum WorkingMode {Purification_Off_Mode, Purification_On_Mode, DCPSU_Mode, ACPSU_Mode}; // This struct stores the system working mode which can be the default purification mode and some alternative uses of the system
 
 // This struct stores all the system configuration
 struct Configuration // TODO create a toStr & toStruct functions to send the whole config (union?)
 {
-    enum SystemStatus systemStatus; // Used to store whether the purification system is on or off // TODO implement this
     enum WorkingMode workingMode; // Used to store the current system mode // TODO implement this
 
     // Electricity settings
@@ -77,7 +74,7 @@ struct Configuration // TODO create a toStr & toStruct functions to send the who
     unsigned long DATAREFRESHPERIOD; // in ms // Time between data refreshes
 };
 
-#define DEFAULTCONFIG {SYSTEM_OFF,Purification_Mode,13,15.75,15,12,0.1135,2.4956,-0.07157,0.033,50,1.0,60000,60000,60000,60000,55,10000,65,40,38,40,38,5000}
+#define DEFAULTCONFIG {Purification_On_Mode,13,15.75,15,12,0.1135,2.4956,-0.07157,0.033,50,1.0,60000,60000,60000,60000,55,10000,65,40,38,40,38,5000}
 
 typedef union ConfigurationUnion
 {
@@ -145,14 +142,14 @@ void setDefaultConfig()
 // Debug Functions
 
 #if DEBUG
-    #ifndef debug(data)
+    #ifndef debug
         #define debug(data) Serial.print(data)
     #endif
     #define changeError(newError) debug(F("CurrentError changed from "));debug(errorToString(currentError));debug(F(" to "));debug(errorToString(newError));debug(F(" in file "));debug(F(__FILE__));debug(F(" at line "));debug(__LINE__);debug('\n');currentError=newError
     #define changeVariable(variable, value) debug(F(#variable));debug(F(" changed from "));debug(variable);debug(F(" to "));debug(value);debug('\n'); (variable) = value
     #define debugStatement(statement) debug(F(#statement)); debug(F(": ")); debug(statement); debug('\n')
 #else
-    #ifndef debug(data)
+    #ifndef debug
         #define debug(data) ;
     #endif
     #define changeError(newError) currentError = newError
@@ -182,22 +179,13 @@ void setDefaultConfig()
 
     char debugBuff[50] = "";
 
-    const char systemStatusOFF_STR[] PROGMEM = "OFF";
-    const char systemStatusON_STR[] PROGMEM = "ON";
 
-    const char *const debugSystemStatusTable[] PROGMEM = {systemStatusOFF_STR, systemStatusON_STR};
-
-    char* systemStatusToString(enum SystemStatus status)
-    {
-        strcpy_P(debugBuff, (char *)pgm_read_word(&(debugSystemStatusTable[status])));
-        return debugBuff;
-    }
-
-    const char workingMode_Purification_Mode_STR[] PROGMEM = "Purification_Mode";
+    const char workingMode_Purification_Off_Mode_STR[] PROGMEM = "Purification_Off_Mode";
+    const char workingMode_Purification_On_Mode_STR[] PROGMEM = "Purification_On_Mode";
     const char workingMode_DCPSU_Mode_STR[] PROGMEM = "DCPSU_Mode";
     const char workingMode_ACPSU_Mode_STR[] PROGMEM = "ACPSU_Mode";
 
-    const char *const debugWorkingModeTable[] PROGMEM = {workingMode_Purification_Mode_STR, workingMode_DCPSU_Mode_STR, workingMode_ACPSU_Mode_STR};
+    const char *const debugWorkingModeTable[] PROGMEM = {workingMode_Purification_Off_Mode_STR, workingMode_Purification_On_Mode_STR, workingMode_DCPSU_Mode_STR, workingMode_ACPSU_Mode_STR};
 
     char* workingModeToString(enum WorkingMode mode)
     {
@@ -207,9 +195,8 @@ void setDefaultConfig()
 
     void printConfiguration()
     {
-        debug(F("\nCurrent config:\n\n"));
-        Serial.print(F("System status:\t\t"));Serial.println(systemStatusToString(configStorage.config.systemStatus));
-        Serial.print(F("Working mode:\t\t"));Serial.println(workingModeToString(configStorage.config.workingMode));
+        debug(F("Current config:\n"));
+        Serial.print(F("Working mode:\t"));Serial.println(workingModeToString(configStorage.config.workingMode));
 
         Serial.print(F("STARTCHARGINGVOLTAGE:\t"));Serial.println(configStorage.config.STARTCHARGINGVOLTAGE);
         Serial.print(F("STOPCHARGINGVOLTAGE:\t"));Serial.println(configStorage.config.STOPCHARGINGVOLTAGE);
