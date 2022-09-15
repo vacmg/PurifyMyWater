@@ -21,9 +21,17 @@ void clickWater()
                 {
                     if (0 < configStorage.config.WELLPUMPTIMEOUT)// 0 < WELLPUMPTIMEOUT
                     {
-                        debug(F("WELLPUMPTIMEOUT UPDATED: "));debug(configStorage.config.WELLPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
-                        configStorage.config.WELLPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
-                        // TODO send new setting
+                        char payload[10];
+                        Communications::createSendMessage(payload, WELLPUMPTIMEOUT_ID, String(tempVal).c_str());
+                        if (masterComManager.sendMessage(payload))
+                        {
+                            debug(F("WELLPUMPTIMEOUT UPDATED: "));debug(configStorage.config.WELLPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
+                            configStorage.config.WELLPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
+                        }
+                        else
+                        {
+                            debug(F("ERROR: Could not send the WELLPUMPTIMEOUT update")); // TODO: error message
+                        }
                     }
                 }
                 changeScreenStatus(LOADPAGEWATER); // reload page with new config value
@@ -35,9 +43,17 @@ void clickWater()
                 {
                     if (0 < configStorage.config.FILTERTIMEOUT)// 0 < FILTERTIMEOUT
                     {
-                        debug(F("FILTERTIMEOUT UPDATED: "));debug(configStorage.config.FILTERTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
-                        configStorage.config.FILTERTIMEOUT = (unsigned long)(tempVal * 1000);
-                        // TODO send new setting
+                        char payload[10];
+                        Communications::createSendMessage(payload, FILTERTIMEOUT_ID, String(tempVal).c_str());
+                        if (masterComManager.sendMessage(payload))
+                        {
+                            debug(F("FILTERTIMEOUT UPDATED: "));debug(configStorage.config.FILTERTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
+                            configStorage.config.FILTERTIMEOUT = (unsigned long)(tempVal * 1000);
+                        }
+                        else
+                        {
+                            debug(F("ERROR: Could not send the FILTERTIMEOUT update")); // TODO: error message
+                        }
                     }
                 }
                 changeScreenStatus(LOADPAGEWATER); // reload page with new config value
@@ -55,9 +71,17 @@ void clickWater()
                 {
                     if (0 < configStorage.config.UVPUMPTIMEOUT)// 0 < UVPUMPTIMEOUT
                     {
-                        debug(F("UVPUMPTIMEOUT UPDATED: "));debug(configStorage.config.UVPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
-                        configStorage.config.UVPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
-                        // TODO send new setting
+                        char payload[10];
+                        Communications::createSendMessage(payload, UVPUMPTIMEOUT_ID, String(tempVal).c_str());
+                        if (masterComManager.sendMessage(payload))
+                        {
+                            debug(F("UVPUMPTIMEOUT UPDATED: "));debug(configStorage.config.UVPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
+                            configStorage.config.UVPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
+                        }
+                        else
+                        {
+                            debug(F("ERROR: Could not send the UVPUMPTIMEOUT update")); // TODO: error message
+                        }
                     }
                 }
                 changeScreenStatus(LOADPAGEWATER); // reload page with new config value
@@ -70,9 +94,17 @@ void clickWater()
                 {
                     if(tempVal>=0) // 0 < UVPUMPFLOW
                     {
-                        debug(F("UVPUMPFLOW UPDATED: "));debug(configStorage.config.UVPUMPFLOW);debug(F(" --> "));debug(tempVal);debug('\n');
-                        configStorage.config.UVPUMPFLOW = (float) tempVal;
-                        // TODO send new setting
+                        char payload[10];
+                        Communications::createSendMessage(payload, UVPUMPFLOW_ID, String(tempVal).c_str());
+                        if (masterComManager.sendMessage(payload))
+                        {
+                            debug(F("UVPUMPFLOW UPDATED: "));debug(configStorage.config.UVPUMPFLOW);debug(F(" --> "));debug(tempVal);debug('\n');
+                            configStorage.config.UVPUMPFLOW = (float) tempVal;
+                        }
+                        else
+                        {
+                            debug(F("ERROR: Could not send the UVPUMPFLOW update")); // TODO: error message
+                        }
                     }
 
                 }
@@ -91,9 +123,17 @@ void clickWater()
                 {
                     if (0 < configStorage.config.ENDPUMPTIMEOUT)// 0 < ENDPUMPTIMEOUT
                     {
-                        debug(F("ENDPUMPTIMEOUT UPDATED: "));debug(configStorage.config.ENDPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
-                        configStorage.config.ENDPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
-                        // TODO send new setting
+                        char payload[10];
+                        Communications::createSendMessage(payload, ENDPUMPTIMEOUT_ID, String(tempVal).c_str());
+                        if (masterComManager.sendMessage(payload))
+                        {
+                            debug(F("ENDPUMPTIMEOUT UPDATED: "));debug(configStorage.config.ENDPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
+                            configStorage.config.ENDPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
+                        }
+                        else
+                        {
+                            debug(F("ERROR: Could not send the ENDPUMPTIMEOUT update")); // TODO: error message
+                        }
                     }
                 }
                 changeScreenStatus(LOADPAGEWATER); // reload page with new config value
