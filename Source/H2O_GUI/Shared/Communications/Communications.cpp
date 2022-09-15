@@ -86,13 +86,36 @@ bool Communications::extractRequestMessage(const char* payload, enum VariableIDs
     return true;
 }
 
+// BLOB MESSAGE VICTOR
+//-------------------------------------------------------------------------
+bool Communications::createSendBlobMessage(byte *payload, enum VariableIDs variableID, char blobSize, unsigned char *blob)
+{
+    if (blob == nullptr || blobSize > 126 || payload == nullptr)
+        return false;
+    payload[0] = BLOBMESSAGE_ID;
+    payload[1] = variableID;
+    payload[2] = blobSize;
+    memcpy(&payload[3], blob, blobSize);
+    return true;
+}
+
+bool Communications::extractSendBlobMessage(char *payload, enum VariableIDs *variableID, char blobSize, unsigned char *blob)
+{
+    if (payload == nullptr || blobSize > 126)
+        return false;
+    *variableID = (VariableIDs)payload[1];
+    memcpy(blob, &payload[3], blobSize);
+    return true;
+}
+
+//-----------------------------------------------------------------------
+
 // Link layer
 
 // This function sends a message, waits for ACK & if timeout, it retries MAXMSGRETRIES of times
 // On success, it returns true, otherwise false.
-bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
+bool Communications::sendMessage(const char* payload, byte payloadLength, HardwareSerial* serial)
 {
-    byte payloadLength = strlen(payload);
     if(payloadLength>MAXPAYLOADSIZE)
     {
         debug(F("Payload exceeded maximum message size: "));debug(payloadLength);debug(F(" > "));debug(MAXPAYLOADSIZE);debug('\n');
@@ -101,7 +124,7 @@ bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
     char message[MAXMSGSIZE];
     message[0] = 1; // This avoids strcat placing the '\n' in message[0] (this will only happen if message[0] is 0 (memory is not automatically cleared))
     message[1] = payloadLength+1; // size of [size]+[message]
-    strcpy(&message[2],payload); // copy payload to message
+    memcpy(&message[2],payload,payloadLength); // copy payload to message
     message[0] = CRC8((byte*)&message[1],message[1]); // set CRC of the message
 
     bool successfulSend = false;
@@ -116,6 +139,11 @@ bool Communications::sendMessage(const char* payload, HardwareSerial* serial)
         flush(serial);
     }
     return successfulSend;
+}
+
+bool Communications::sendMessage(const char *payload, HardwareSerial *serial)
+{
+    return sendMessage(payload, strlen(payload),serial);
 }
 
 // This function gets a message, verifies & extract its payload, send an ACK if the message is valid & returns if success

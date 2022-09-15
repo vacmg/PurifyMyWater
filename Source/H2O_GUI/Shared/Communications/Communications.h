@@ -17,6 +17,7 @@
 #define REQUESTMESSAGE_ID 1
 #define REQUESTANSWERMESSAGE_ID 2
 #define SENDMESSAGE_ID 3
+#define BLOBMESSAGE_ID 4
 
 #include <Arduino.h>
 #include "../SharedData.h"
@@ -51,10 +52,17 @@ public:
     // This function extracts information from a requestMessage payload
     static bool extractRequestMessage(const char* payload, enum VariableIDs* variableID, enum FunctionIDs* functionID, byte* step);
 
+    //this function puts information from a BlobMessage payload
+    static bool createSendBlobMessage(byte *payload, enum VariableIDs variableID, char blobSize, unsigned char *blob);
+
+    //this function extracts information from a BlobMessage payload
+    static bool extractSendBlobMessage(char *payload, enum VariableIDs *variableID, char blobSize, unsigned char *blob);
+
     // Link layer
 
     // This function sends a message, waits for ACK & if timeout, it retries MAXMSGRETRIES of times
     // On success, it returns true, otherwise false.
+    static bool sendMessage(const char* payload, byte length, HardwareSerial* serial);
     static bool sendMessage(const char* payload, HardwareSerial* serial);
 
     // This function gets a message, verifies & extract its payload (of size MAXMSGSIZE), send an ACK if the message is valid & returns true if success
