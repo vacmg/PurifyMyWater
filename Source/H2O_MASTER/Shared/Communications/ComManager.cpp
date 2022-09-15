@@ -180,6 +180,20 @@ bool ComManager::sendMessage(const char *payload)
     }
 }
 
+
+void ComManager::setSendMessageHandler(void (*sendMessageHandler)(enum VariableIDs variableID, char* value))
+{
+    this->sendMessageHandler = sendMessageHandler;
+}
+void ComManager::setRequestMessageHandler(void (*requestMessageHandler)(enum VariableIDs variableID, enum FunctionIDs functionID, byte step))
+{
+    this->requestMessageHandler = requestMessageHandler;
+}
+void ComManager::setRequestAnswerMessageHandler(void (*requestAnswerMessageHandler)(enum VariableIDs variableID, char* value, enum FunctionIDs functionID, byte step))
+{
+    this->requestAnswerMessageHandler = requestAnswerMessageHandler;
+}
+
 bool ComManager::sendQuickMessage(const char* payload)
 {
     return enabled && Communications::sendQuickMessage(payload,serial) && await();

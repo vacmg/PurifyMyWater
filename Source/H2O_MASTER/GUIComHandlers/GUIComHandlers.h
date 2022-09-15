@@ -23,6 +23,7 @@ enum GUIStatus guiStatus = GUI_OFF_ST;
 unsigned long guiMillis = 0;
 bool guiSw = false;
 
+void GUISetup();
 void GUILoop();
 
 #if DEBUG
@@ -52,16 +53,16 @@ char* GUIModeToString(enum GUIStatus status)
 
 #endif
 
-#include "Handlers/sendMessageHandler.h"
-#include "Handlers/requestMessageHandler.h"
-#include "Handlers/requestAnswerMessageHandler.h"
-
-ComManager guiComManager(&Serial1,&sendMessageHandler,&requestMessageHandler,&requestAnswerMessageHandler);
+ComManager guiComManager(&Serial1, nullptr, nullptr, nullptr);
 
 // Use sendGUIMessage to send a message from outside GUILoop()
 #define sendGUIMessage(payload) (guiStatus == GUI_CONNECTED_ST) && guiComManager.sendMessage(payload)
 
 #include "../SystemControl/Core/Core.h"
+
+#include "Handlers/sendMessageHandler.h"
+#include "Handlers/requestMessageHandler.h"
+#include "Handlers/requestAnswerMessageHandler.h"
 
 #define GUICOOLDOWNTIME (SCREENSHUTDOWNDELAY+5000) // GUI minimum delay between a shutdown and the next start
 

@@ -116,6 +116,9 @@ void setup()
 #if !DISABLEPURIFICATION
     purificationSetup(); // it must be the last setup (it waits for voltage for a long time)
 #endif
+#if !DISABLECOMM
+    GUISetup();
+#endif
 
     debug(F("Setup - Starting Test phase\n")); //todo delete Test code after this line
 

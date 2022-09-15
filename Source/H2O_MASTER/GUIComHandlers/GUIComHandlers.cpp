@@ -4,6 +4,14 @@
 
 #include "GUIComHandlers.h"
 
+// THIS FUNCTION MUST RUN BEFORE USING guiComManager
+void GUISetup()
+{
+    guiComManager.setSendMessageHandler(sendMessageHandler);
+    guiComManager.setRequestMessageHandler(requestMessageHandler);
+    guiComManager.setRequestAnswerMessageHandler(requestAnswerMessageHandler);
+}
+
 void GUILoop() // TODO guard sendmessages from a guistatus different from GUI_CONNECTED_ST
 {
     bool screenSensorSt = readDigitalSensor(screenSensor);
