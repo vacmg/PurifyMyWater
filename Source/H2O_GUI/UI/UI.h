@@ -14,7 +14,7 @@
 #include "../Shared/SharedData.h"
 #include "Settings/ScreenSettings.h"
 
-#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
+#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 #if SCREENHW == 35
 #define SCREEN35ROTATIONOFFSET 2
@@ -29,6 +29,7 @@
         LOADSETTINGS,
         SETTINGS,
         LOADHELP,
+        LOADPAGEHELP,
         HELP,
         LOADENGINEERINGMODE,
         ENGINEERINGMODE,
@@ -51,6 +52,9 @@
         TEMPERATURE,
         LOADERROR,
         ERROR,
+        LOADHELPTOPIC,
+        LOADPAGEHELPTOPIC,
+        HELPTOPIC
         LOADRESET,
         RESET,
     };
@@ -78,32 +82,36 @@ const char mode4[] PROGMEM = "MENU";
 const char mode5[] PROGMEM = "LOADSETTINGS";
 const char mode6[] PROGMEM = "SETTINGS";
 const char mode7[] PROGMEM = "LOADHELP";
-const char mode8[] PROGMEM = "HELP";
-const char mode9[] PROGMEM = "LOADENGINEERINGMODE";
-const char mode10[] PROGMEM = "ENGINEERINGMODE";
-const char mode11[] PROGMEM = "LOADEXTRAFUNCTIONS";
-const char mode12[] PROGMEM = "EXTRAFUNCTIONS";
-const char mode13[] PROGMEM = "LOADELECTRICTY";
-const char mode14[] PROGMEM = "LOADPAGEELECTRICITY";
-const char mode15[] PROGMEM = "ELECTRICITY";
-const char mode16[] PROGMEM = "LOADINTERFACE";
-const char mode17[] PROGMEM = "LOADPAGEINTERFACE";
-const char mode18[] PROGMEM = "INTERFACE";
-const char mode19[] PROGMEM = "LOADLANGUAGE";
-const char mode20[] PROGMEM = "LOADPAGELANGUAGE";
-const char mode21[] PROGMEM = "LANGUAGE";
-const char mode22[] PROGMEM = "LOADWATER";
-const char mode23[] PROGMEM = "LOADPAGEWATER";
-const char mode24[] PROGMEM = "WATER";
-const char mode25[] PROGMEM = "LOADTEMPERATURE";
-const char mode26[] PROGMEM = "LOADPAGETEMPERATURE";
-const char mode27[] PROGMEM = "TEMPERATURE";
-const char mode28[] PROGMEM = "LOADERROR";
-const char mode29[] PROGMEM = "ERROR";
-const char mode30[] PROGMEM = "LOADRESET";
-const char mode31[] PROGMEM = "RESET";
+const char mode8[] PROGMEM = "LOADPAGEHELP";
+const char mode9[] PROGMEM = "HELP";
+const char mode10[] PROGMEM = "LOADENGINEERINGMODE";
+const char mode11[] PROGMEM = "ENGINEERINGMODE";
+const char mode12[] PROGMEM = "LOADEXTRAFUNCTIONS";
+const char mode13[] PROGMEM = "EXTRAFUNCTIONS";
+const char mode14[] PROGMEM = "LOADELECTRICTY";
+const char mode15[] PROGMEM = "LOADPAGEELECTRICITY";
+const char mode16[] PROGMEM = "ELECTRICITY";
+const char mode17[] PROGMEM = "LOADINTERFACE";
+const char mode18[] PROGMEM = "LOADPAGEINTERFACE";
+const char mode19[] PROGMEM = "INTERFACE";
+const char mode20[] PROGMEM = "LOADLANGUAGE";
+const char mode21[] PROGMEM = "LOADPAGELANGUAGE";
+const char mode22[] PROGMEM = "LANGUAGE";
+const char mode23[] PROGMEM = "LOADWATER";
+const char mode24[] PROGMEM = "LOADPAGEWATER";
+const char mode25[] PROGMEM = "WATER";
+const char mode26[] PROGMEM = "LOADTEMPERATURE";
+const char mode27[] PROGMEM = "LOADPAGETEMPERATURE";
+const char mode28[] PROGMEM = "TEMPERATURE";
+const char mode29[] PROGMEM = "LOADERROR";
+const char mode30[] PROGMEM = "ERROR";
+const char mode31[] PROGMEM = "LOADHELPTOPIC";
+const char mode32[] PROGMEM = "LOADPAGEHELPTOPIC";
+const char mode33[] PROGMEM = "HELPTOPIC";
+const char mode34[] PROGMEM = "LOADRESET";
+const char mode35[] PROGMEM = "RESET";
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27, mode28, mode29, mode30, mode31};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27, mode28, mode29, mode30, mode31, mode32, mode33, mode34, mode35};
 
 char* modeToString(ScreenStatus status)
 {
@@ -510,11 +518,54 @@ void UILoop()
             break;
 
         case LOADHELP: // TODO implement help menu
-            changeError(ScreenNotImplementedError);
-            changeScreenStatus(LOADERROR);
-        break;
+            page = 1;
+            maxPage = 1;
+            changeScreenStatus(LOADPAGEHELP);
+            break;
 
-        //case HELP:
+        case LOADPAGEHELP:
+            debug(F("Loading page "));debug(page);debug(F(" / "));debug(maxPage);debug('\n');
+            drawHelpMenu();
+            changeScreenStatus(HELP);
+            break;
+
+        case HELP:
+            if (backBtn.isPressed())    // Go to LOADHELP
+            {
+                debug(F("Back Page button pressed\n"));
+                changeScreenStatus(LOADMENU);
+            }
+            else if (page < maxPage && btn8.isPressed())   // Go to LOADPAGEHELP on next page
+            {
+                debug(F("Next page button pressed\n"));
+                page++;
+                changeScreenStatus(LOADPAGEHELP);
+            }
+            else if (page > 1 && btn7.isPressed())    // Go to LOADPAGEHELPon previous page
+            {
+                debug(F("Previous page button pressed\n"));
+                page--;
+                changeScreenStatus(LOADPAGEHELP);
+            }
+            else
+                clickHelp();
+            break;
+
+        case LOADHELPTOPIC:
+            page = 1;
+            maxPage = 1;
+            changeScreenStatus(LOADPAGEHELPTOPIC);
+            break;
+
+        case LOADPAGEHELPTOPIC:
+            debug(F("Loading page "));debug(page);debug(F(" / "));debug(maxPage);debug('\n');
+            drawHelpTopic();
+            changeScreenStatus(HELPTOPIC);
+            break;
+
+        case HELPTOPIC:
+            clickHelpTopic();
+            break;
 
         case LOADENGINEERINGMODE: // TODO implement engineering mode
             changeError(ScreenNotImplementedError);
