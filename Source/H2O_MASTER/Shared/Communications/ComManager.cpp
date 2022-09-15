@@ -58,7 +58,7 @@ bool ComManager::checkCompatibleVersions(char* localVersion, char* otherVersion)
     if(!res)
     {
         debug(F("ComManager: Handshake Error: MCUs are incompatible\n"));
-        currentError = MCUsIncompatibleVersionError;
+        changeError(MCUsIncompatibleVersionError);
     }
 
     return res;
@@ -128,7 +128,7 @@ bool ComManager::doHandshake()
     {
         debug(F("ComManager: Handshake Error: Cannot create messages\n"));
     }
-    currentError = HandshakeError;
+    changeError(HandshakeError);
     return false;
 }
 
@@ -174,7 +174,9 @@ bool ComManager::sendMessage(const char *payload)
         if(Communications::sendMessage(payload,serial))
             return true;
         else
-            currentError = DestinationMCUNotRespondingError;
+        {
+            changeError(DestinationMCUNotRespondingError);
+        }
     }
 }
 

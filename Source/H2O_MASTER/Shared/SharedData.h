@@ -5,6 +5,7 @@
 #ifndef H2O_GUI_SHAREDDATA_H
 #define H2O_GUI_SHAREDDATA_H
 
+#include "../Compile_Flags.h"
 #include <Arduino.h>
 
 // Hardware constants
@@ -23,7 +24,7 @@ const char VERSION[] PROGMEM = "v2-alpha-2"; // MAXIMUM size is 16 bytes
 // It must have a maximum of 254 members
 enum VariableIDs {VERSION_ID = 1, OK_CMD, SHUTDOWN_CMD, SHUTDOWN_OK_CMD, SHUTDOWN_CANCEL_CMD, BUSY_CMD, AVAILABLE_CMD, // Other messages/commands are self-contained here
         voltage_ID, ACUVAmps_ID, DCAmps_ID, purifiedWater_ID, wellPumpSt_ID, UVPumpSt_ID, endPumpSt_ID, filterPumpSt_ID, secBuoySt_ID, lowSurfaceBuoySt_ID, highSurfaceBuoySt_ID, lowFilteredBuoySt_ID, highFilteredBuoySt_ID, lowPurifiedBuoySt_ID, highPurifiedBuoySt_ID, endBuoySt_ID, // Data
-    systemStatus_ID, workingMode_ID, STARTCHARGINGVOLTAGE_ID, STOPCHARGINGVOLTAGE_ID, STARTWORKINGVOLTAGE_ID, STOPWORKINGVOLTAGE_ID, DCAMMSENSITIVITY_ID, DCAMMZERO_ID, ACAMMSENSITIVITY_ID, ACAMMZERO_ID, ACFREQUENCY_ID, ESTIMATEDUVAMPERAGE_ID, WELLPUMPTIMEOUT_ID, UVPUMPTIMEOUT_ID, ENDPUMPTIMEOUT_ID, FILTERTIMEOUT_ID, UVPUMPFLOW_ID, TEMPCHECKTIME_ID, STOPWORKINGTEMP_ID, STARTCASETEMP_ID, STOPCASETEMP_ID, STARTPSUTEMP_ID, STOPPSUTEMP_ID // Config
+    systemStatus_ID, workingMode_ID, STARTCHARGINGVOLTAGE_ID, STOPCHARGINGVOLTAGE_ID, STARTWORKINGVOLTAGE_ID, STOPWORKINGVOLTAGE_ID, DCAMMSENSITIVITY_ID, DCAMMZERO_ID, ACAMMSENSITIVITY_ID, ACAMMZERO_ID, ACFREQUENCY_ID, ESTIMATEDUVAMPERAGE_ID, WELLPUMPTIMEOUT_ID, UVPUMPTIMEOUT_ID, ENDPUMPTIMEOUT_ID, FILTERTIMEOUT_ID, UVPUMPFLOW_ID, TEMPCHECKTIME_ID, STOPWORKINGTEMP_ID, STARTCASETEMP_ID, STOPCASETEMP_ID, STARTPSUTEMP_ID, STOPPSUTEMP_ID, DATAREFRESHPERIOD_ID // Config
 };
 
 // It must have a maximum of 254 members
@@ -37,14 +38,11 @@ enum Errors {
     ScreenNotImplementedError
     }; // Used to process different errors
 
-enum SystemStatus {SYSTEM_OFF = 0, SYSTEM_ON = 1}; // This struct stores if the system is working or not (think about it like a master switch)
-
-enum WorkingMode {Purification_Mode, DCPSU_Mode, ACPSU_Mode}; // This struct stores the system working mode which can be the default purification mode and some alternative uses of the system
+enum WorkingMode {Purification_Off_Mode, Purification_On_Mode, DCPSU_Mode, ACPSU_Mode}; // This struct stores the system working mode which can be the default purification mode and some alternative uses of the system
 
 // This struct stores all the system configuration
 struct Configuration // TODO create a toStr & toStruct functions to send the whole config (union?)
 {
-    enum SystemStatus systemStatus; // Used to store whether the purification system is on or off // TODO implement this
     enum WorkingMode workingMode; // Used to store the current system mode // TODO implement this
 
     // Electricity settings
@@ -73,9 +71,10 @@ struct Configuration // TODO create a toStr & toStruct functions to send the who
     byte STOPCASETEMP; // in Cº // 0 < STOPCASETEMP < STARTCASETEMP
     byte STARTPSUTEMP; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
     byte STOPPSUTEMP; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
+    unsigned long DATAREFRESHPERIOD; // in ms // Time between data refreshes
 };
 
-#define DEFAULTCONFIG {SYSTEM_OFF,Purification_Mode,13,15.75,15,12,0.1135,2.4956,-0.07157,0.033,50,1.0,60000,60000,60000,60000,55,10000,65,40,38,40,38}
+#define DEFAULTCONFIG {Purification_On_Mode,13,15.75,15,12,0.1135,2.4956,-0.07157,0.033,50,1.0,60000,60000,60000,60000,55,10000,65,40,38,40,38,5000}
 
 typedef union ConfigurationUnion
 {
@@ -142,14 +141,20 @@ void setDefaultConfig()
 
 // Debug Functions
 
-#ifndef debug(data)
-    #if DEBUG
+#if DEBUG
+    #ifndef debug
         #define debug(data) Serial.print(data)
-        #define changeVariable(variable, value) debug(F(#variable));debug(F(" changed from "));debug(variable);debug(F(" to "));debug(value);debug('\n'); (variable) = value
-    #else
-        #define debug(data) ;
-        #define changeVariable(variable, value) variable = value
     #endif
+    #define changeError(newError) debug(F("CurrentError changed from "));debug(errorToString(currentError));debug(F(" to "));debug(errorToString(newError));debug(F(" in file "));debug(F(__FILE__));debug(F(" at line "));debug(__LINE__);debug('\n');currentError=newError
+    #define changeVariable(variable, value) debug(F(#variable));debug(F(" changed from "));debug(variable);debug(F(" to "));debug(value);debug('\n'); (variable) = value
+    #define debugStatement(statement) debug(F(#statement)); debug(F(": ")); debug(statement); debug('\n')
+#else
+    #ifndef debug
+        #define debug(data) ;
+    #endif
+    #define changeError(newError) currentError = newError
+    #define changeVariable(variable, value) variable = value
+    #define debugStatement(statement) ;
 #endif
 
 #if DEBUG
@@ -174,22 +179,13 @@ void setDefaultConfig()
 
     char debugBuff[50] = "";
 
-    const char systemStatusOFF_STR[] PROGMEM = "OFF";
-    const char systemStatusON_STR[] PROGMEM = "ON";
 
-    const char *const debugSystemStatusTable[] PROGMEM = {systemStatusOFF_STR, systemStatusON_STR};
-
-    char* systemStatusToString(enum SystemStatus status)
-    {
-        strcpy_P(debugBuff, (char *)pgm_read_word(&(debugSystemStatusTable[status])));
-        return debugBuff;
-    }
-
-    const char workingMode_Purification_Mode_STR[] PROGMEM = "Purification_Mode";
+    const char workingMode_Purification_Off_Mode_STR[] PROGMEM = "Purification_Off_Mode";
+    const char workingMode_Purification_On_Mode_STR[] PROGMEM = "Purification_On_Mode";
     const char workingMode_DCPSU_Mode_STR[] PROGMEM = "DCPSU_Mode";
     const char workingMode_ACPSU_Mode_STR[] PROGMEM = "ACPSU_Mode";
 
-    const char *const debugWorkingModeTable[] PROGMEM = {workingMode_Purification_Mode_STR, workingMode_DCPSU_Mode_STR, workingMode_ACPSU_Mode_STR};
+    const char *const debugWorkingModeTable[] PROGMEM = {workingMode_Purification_Off_Mode_STR, workingMode_Purification_On_Mode_STR, workingMode_DCPSU_Mode_STR, workingMode_ACPSU_Mode_STR};
 
     char* workingModeToString(enum WorkingMode mode)
     {
@@ -200,30 +196,35 @@ void setDefaultConfig()
     void printConfiguration()
     {
         debug(F("Current config:\n"));
-        Serial.print(F("System status:\t"));Serial.println(systemStatusToString(configStorage.config.systemStatus));
         Serial.print(F("Working mode:\t"));Serial.println(workingModeToString(configStorage.config.workingMode));
+
         Serial.print(F("STARTCHARGINGVOLTAGE:\t"));Serial.println(configStorage.config.STARTCHARGINGVOLTAGE);
         Serial.print(F("STOPCHARGINGVOLTAGE:\t"));Serial.println(configStorage.config.STOPCHARGINGVOLTAGE);
         Serial.print(F("STARTWORKINGVOLTAGE:\t"));Serial.println(configStorage.config.STARTWORKINGVOLTAGE);
         Serial.print(F("STOPWORKINGVOLTAGE:\t"));Serial.println(configStorage.config.STOPWORKINGVOLTAGE);
         Serial.print(F("DCAMMSENSITIVITY:\t"));Serial.println(configStorage.config.DCAMMSENSITIVITY);
-        Serial.print(F("DCAMMZERO:\t"));Serial.println(configStorage.config.DCAMMZERO);
+        Serial.print(F("DCAMMZERO:\t\t"));Serial.println(configStorage.config.DCAMMZERO);
         Serial.print(F("ACAMMSENSITIVITY:\t"));Serial.println(configStorage.config.ACAMMSENSITIVITY);
-        Serial.print(F("ACAMMZERO:\t"));Serial.println(configStorage.config.ACAMMZERO);
-        Serial.print(F("ACFREQUENCY:\t"));Serial.println(configStorage.config.ACFREQUENCY);
+        Serial.print(F("ACAMMZERO:\t\t"));Serial.println(configStorage.config.ACAMMZERO);
+        Serial.print(F("ACFREQUENCY:\t\t"));Serial.println(configStorage.config.ACFREQUENCY);
         Serial.print(F("ESTIMATEDUVAMPERAGE:\t"));Serial.println(configStorage.config.ESTIMATEDUVAMPERAGE);
+
         Serial.print(F("WELLPUMPTIMEOUT:\t"));Serial.println(configStorage.config.WELLPUMPTIMEOUT);
-        Serial.print(F("UVPUMPTIMEOUT:\t"));Serial.println(configStorage.config.UVPUMPTIMEOUT);
-        Serial.print(F("ENDPUMPTIMEOUT:\t"));Serial.println(configStorage.config.ENDPUMPTIMEOUT);
-        Serial.print(F("FILTERTIMEOUT:\t"));Serial.println(configStorage.config.FILTERTIMEOUT);
-        Serial.print(F("UVPUMPFLOW:\t"));Serial.println(configStorage.config.UVPUMPFLOW);
-        Serial.print(F("TEMPCHECKTIME:\t"));Serial.println(configStorage.config.TEMPCHECKTIME);
+        Serial.print(F("UVPUMPTIMEOUT:\t\t"));Serial.println(configStorage.config.UVPUMPTIMEOUT);
+        Serial.print(F("ENDPUMPTIMEOUT:\t\t"));Serial.println(configStorage.config.ENDPUMPTIMEOUT);
+        Serial.print(F("FILTERTIMEOUT:\t\t"));Serial.println(configStorage.config.FILTERTIMEOUT);
+        Serial.print(F("UVPUMPFLOW:\t\t"));Serial.println(configStorage.config.UVPUMPFLOW);
+
+        Serial.print(F("TEMPCHECKTIME:\t\t"));Serial.println(configStorage.config.TEMPCHECKTIME);
         Serial.print(F("STOPWORKINGTEMP:\t"));Serial.println(configStorage.config.STOPWORKINGTEMP);
-        Serial.print(F("STARTCASETEMP:\t"));Serial.println(configStorage.config.STARTCASETEMP);
-        Serial.print(F("STOPCASETEMP:\t"));Serial.println(configStorage.config.STOPCASETEMP);
-        Serial.print(F("STARTPSUTEMP:\t"));Serial.println(configStorage.config.STARTPSUTEMP);
-        Serial.print(F("STOPPSUTEMP:\t"));Serial.println(configStorage.config.STOPPSUTEMP);
-        Serial.println();
+        Serial.print(F("STARTCASETEMP:\t\t"));Serial.println(configStorage.config.STARTCASETEMP);
+        Serial.print(F("STOPCASETEMP:\t\t"));Serial.println(configStorage.config.STOPCASETEMP);
+        Serial.print(F("STARTPSUTEMP:\t\t"));Serial.println(configStorage.config.STARTPSUTEMP);
+        Serial.print(F("STOPPSUTEMP:\t\t"));Serial.println(configStorage.config.STOPPSUTEMP);
+
+        Serial.print(F("DATAREFRESHPERIOD:\t"));Serial.println(configStorage.config.DATAREFRESHPERIOD);
+
+        Serial.println('\n');
     }
 
     #define debugConfig() printConfiguration()
@@ -239,8 +240,9 @@ void setDefaultConfig()
     const char errorMCUsIncompatibleVersionError_STR[] PROGMEM = "MCUsIncompatibleVersionError";
     const char errorDestinationMCUNotRespondingError_STR[] PROGMEM = "DestinationMCUNotRespondingError";
     const char errorGUICannotSafelyShutdownError_STR[] PROGMEM = "GUICannotSafelyShutdownError";
+    const char errorScreenNotImplementedError_STR[] PROGMEM = "ScreenNotImplementedError";
 
-    const char *const debugErrorsTable[] PROGMEM = {errorNoError_STR, errorBuoyIncongruenceError_STR, errorPumpTimeoutError_STR, errorUVLightNotWorkingError_STR, errorScreenNotConnectedError_STR, errorTempSensorsAmountError_STR, errorHotTempError_STR, errorHandshakeError_STR, errorMCUsIncompatibleVersionError_STR, errorDestinationMCUNotRespondingError_STR, errorGUICannotSafelyShutdownError_STR};
+    const char *const debugErrorsTable[] PROGMEM = {errorNoError_STR, errorBuoyIncongruenceError_STR, errorPumpTimeoutError_STR, errorUVLightNotWorkingError_STR, errorScreenNotConnectedError_STR, errorTempSensorsAmountError_STR, errorHotTempError_STR, errorHandshakeError_STR, errorMCUsIncompatibleVersionError_STR, errorDestinationMCUNotRespondingError_STR, errorGUICannotSafelyShutdownError_STR, errorScreenNotImplementedError_STR};
 
     char* errorToString(enum Errors error)
     {
@@ -250,25 +252,29 @@ void setDefaultConfig()
 
 void printSharedData()
 {
-    debug(F("Current data:\n"));
-    Serial.print(F("Current Error:\t"));Serial.println(errorToString(currentError));
-    Serial.print(F("\nvoltage:\t"));Serial.println(dataStorage.data.voltage);
-    Serial.print(F("ACUVAmps:\t"));Serial.println(dataStorage.data.ACUVAmps);
-    Serial.print(F("DCAmps:\t"));Serial.println(dataStorage.data.DCAmps);
-    Serial.print(F("\npurifiedWater:\t"));Serial.println(dataStorage.data.purifiedWater);
-    Serial.print(F("\nwellPumpSt:\t"));Serial.println(dataStorage.data.wellPumpSt);
-    Serial.print(F("UVPumpSt:\t"));Serial.println(dataStorage.data.UVPumpSt);
-    Serial.print(F("endPumpSt:\t"));Serial.println(dataStorage.data.endPumpSt);
-    Serial.print(F("filterPumpSt:\t"));Serial.println(dataStorage.data.filterPumpSt);
-    Serial.print(F("\nsecBuoySt:\t"));Serial.println(dataStorage.data.secBuoySt);
+    debug(F("\nCurrent data:\n\n"));
+    Serial.print(F("Current Error:\t\t"));Serial.println(errorToString(currentError));
+
+    Serial.print(F("\nvoltage:\t\t"));Serial.println(dataStorage.data.voltage);
+    Serial.print(F("ACUVAmps:\t\t"));Serial.println(dataStorage.data.ACUVAmps);
+    Serial.print(F("DCAmps:\t\t\t"));Serial.println(dataStorage.data.DCAmps);
+
+    Serial.print(F("\npurifiedWater:\t\t"));Serial.println(dataStorage.data.purifiedWater);
+
+    Serial.print(F("\nwellPumpSt:\t\t"));Serial.println(dataStorage.data.wellPumpSt);
+    Serial.print(F("UVPumpSt:\t\t"));Serial.println(dataStorage.data.UVPumpSt);
+    Serial.print(F("endPumpSt:\t\t"));Serial.println(dataStorage.data.endPumpSt);
+    Serial.print(F("filterPumpSt:\t\t"));Serial.println(dataStorage.data.filterPumpSt);
+
+    Serial.print(F("\nsecBuoySt:\t\t"));Serial.println(dataStorage.data.secBuoySt);
     Serial.print(F("lowSurfaceBuoySt:\t"));Serial.println(dataStorage.data.lowSurfaceBuoySt);
     Serial.print(F("highSurfaceBuoySt:\t"));Serial.println(dataStorage.data.highSurfaceBuoySt);
     Serial.print(F("lowFilteredBuoySt:\t"));Serial.println(dataStorage.data.lowFilteredBuoySt);
     Serial.print(F("highFilteredBuoySt:\t"));Serial.println(dataStorage.data.highFilteredBuoySt);
     Serial.print(F("lowPurifiedBuoySt:\t"));Serial.println(dataStorage.data.lowPurifiedBuoySt);
     Serial.print(F("highPurifiedBuoySt:\t"));Serial.println(dataStorage.data.highPurifiedBuoySt);
-    Serial.print(F("endBuoySt:\t"));Serial.println(dataStorage.data.endBuoySt);
-    Serial.println();
+    Serial.print(F("endBuoySt:\t\t"));Serial.println(dataStorage.data.endBuoySt);
+    Serial.println('\n');
 }
 
 #define debugData() printSharedData()

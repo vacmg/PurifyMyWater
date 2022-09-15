@@ -18,10 +18,6 @@ void sendMessageHandler(enum VariableIDs variableID, char* value)
             debug(F("GUI is READY\n"));
             break;
 
-        case systemStatus_ID:
-            changeVariable(configStorage.config.systemStatus,(SystemStatus)atoi(value));
-            break;
-
         case workingMode_ID:
             changeVariable(configStorage.config.workingMode,(WorkingMode)atoi(value));
             break;

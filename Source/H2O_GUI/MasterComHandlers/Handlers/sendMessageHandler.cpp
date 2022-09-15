@@ -12,12 +12,7 @@ void sendMessageHandler(enum VariableIDs variableID, char* value)
             debug(F("SHUTDOWN COMMAND RECEIVED\n"));
             changeGUIStatus(GUI_SHUTTING_DOWN_ST);
             break;
-
-        case systemStatus_ID:
-            updateStatusForeground(true)
-            changeVariable(configStorage.config.systemStatus,(SystemStatus)atoi(value));
-            break;
-
+            
         case workingMode_ID:
             changeVariable(configStorage.config.workingMode,(WorkingMode)atoi(value));
             break;

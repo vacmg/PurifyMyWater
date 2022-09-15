@@ -7,9 +7,6 @@
 
 #include "../Shared/SharedData.h"
 #include "../Shared/Communications/ComManager.h"
-#include "../SystemControl/Core/Core.h"
-
-#define GUICOOLDOWNTIME SCREENSHUTDOWNDELAY+5000 // GUI minimum delay between a shutdown and the next start
 
 enum GUIStatus{
     GUI_ERROR_ST = 0,
@@ -26,20 +23,22 @@ enum GUIStatus guiStatus = GUI_OFF_ST;
 unsigned long guiMillis = 0;
 bool guiSw = false;
 
+void GUILoop();
+
 #if DEBUG
 
 #define changeGUIStatus(newStatus) debug(F("GUIStatus changed from '"));debug(GUIModeToString(guiStatus));debug(F("' to '"));debug(GUIModeToString(newStatus));debug(F("'\n")); guiStatus = newStatus
 
-const char mode0[] PROGMEM = "GUI_ERROR_ST";
-const char mode1[] PROGMEM = "GUI_DISABLED_ST";
-const char mode2[] PROGMEM = "GUI_OFF_ST";
-const char mode3[] PROGMEM = "GUI_COOLDOWN_ST";
-const char mode4[] PROGMEM = "GUI_CONNECTED_ST";
-const char mode5[] PROGMEM = "GUI_SHUTTING_DOWN_ST";
-const char mode6[] PROGMEM = "GUI_RECONNECTING_ST";
-const char mode7[] PROGMEM = "GUI_BUSY_ST";
+const char gmode0[] PROGMEM = "GUI_ERROR_ST";
+const char gmode1[] PROGMEM = "GUI_DISABLED_ST";
+const char gmode2[] PROGMEM = "GUI_OFF_ST";
+const char gmode3[] PROGMEM = "GUI_COOLDOWN_ST";
+const char gmode4[] PROGMEM = "GUI_CONNECTED_ST";
+const char gmode5[] PROGMEM = "GUI_SHUTTING_DOWN_ST";
+const char gmode6[] PROGMEM = "GUI_RECONNECTING_ST";
+const char gmode7[] PROGMEM = "GUI_BUSY_ST";
 
-const char *const debugGUIModeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7};
+const char *const debugGUIModeTable[] PROGMEM = {gmode0, gmode1, gmode2, gmode3, gmode4, gmode5, gmode6, gmode7};
 
 char* GUIModeToString(enum GUIStatus status)
 {
@@ -53,16 +52,18 @@ char* GUIModeToString(enum GUIStatus status)
 
 #endif
 
-// Use sendGUIMessage to send a message from outside GUILoop()
-#define sendGUIMessage(message) (guiStatus == GUI_CONNECTED_ST) && guiComManager.sendMessage(payload)
-
 #include "Handlers/sendMessageHandler.h"
 #include "Handlers/requestMessageHandler.h"
 #include "Handlers/requestAnswerMessageHandler.h"
 
 ComManager guiComManager(&Serial1,&sendMessageHandler,&requestMessageHandler,&requestAnswerMessageHandler);
 
-void GUILoop();
+// Use sendGUIMessage to send a message from outside GUILoop()
+#define sendGUIMessage(payload) (guiStatus == GUI_CONNECTED_ST) && guiComManager.sendMessage(payload)
+
+#include "../SystemControl/Core/Core.h"
+
+#define GUICOOLDOWNTIME (SCREENSHUTDOWNDELAY+5000) // GUI minimum delay between a shutdown and the next start
 
 #include "GUIComHandlers.cpp"
 

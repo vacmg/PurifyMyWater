@@ -55,6 +55,8 @@
         LOADHELPTOPIC,
         LOADPAGEHELPTOPIC,
         HELPTOPIC
+        LOADRESET,
+        RESET,
     };
 enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show the splash screen
 
@@ -106,9 +108,10 @@ const char mode30[] PROGMEM = "ERROR";
 const char mode31[] PROGMEM = "LOADHELPTOPIC";
 const char mode32[] PROGMEM = "LOADPAGEHELPTOPIC";
 const char mode33[] PROGMEM = "HELPTOPIC";
+const char mode34[] PROGMEM = "LOADRESET";
+const char mode35[] PROGMEM = "RESET";
 
-
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27, mode28, mode29, mode30, mode31, mode32, mode33};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27, mode28, mode29, mode30, mode31, mode32, mode33, mode34, mode35};
 
 char* modeToString(ScreenStatus status)
 {
@@ -129,7 +132,7 @@ char* rotationToString(enum Rotation rotation)
 
 #ifdef debugConfig()
 #undef debugConfig()
-#define debugConfig() printConfiguration(); debug(F("Rotation: ")); debug(rotationToString(screenConfig.ROTATION)); debug(F("\nLanguage: ")); debug(getString(Lang_STR)); debug(F("\nDATAREFRESHPERIOD: ")); debug(screenConfig.DATAREFRESHPERIOD); debug('\n')
+#define debugConfig() printConfiguration(); debug(F("Rotation: ")); debug(rotationToString(screenConfig.ROTATION)); debug(F("\nLanguage: ")); debug(getString(Lang_STR)); debug('\n')
 #endif
 #else
 
@@ -382,6 +385,15 @@ void UILoop()
             // if you click in one of the buttons of the page, you go to this function
             break;
 
+        case LOADRESET:
+            drawReset();
+            changeScreenStatus(RESET);
+            break;
+
+        case RESET:
+            clickReset();
+            break;
+
         case LOADLANGUAGE:
             page = 1;
             maxPage = 1;
@@ -556,7 +568,7 @@ void UILoop()
             break;
 
         case LOADENGINEERINGMODE: // TODO implement engineering mode
-            currentError = ScreenNotImplementedError;
+            changeError(ScreenNotImplementedError);
             changeScreenStatus(LOADERROR);
         break;
 

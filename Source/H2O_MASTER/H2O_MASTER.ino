@@ -10,23 +10,7 @@
 
 /*------------Config----------------*/
 
-#define DEBUG true // Used to display debug information messages through Serial port
-
-#define USEVOLATILECONFIG true // Used to disable EEPROM writes due to saving configuration in the persistent storage
-#define SETDEFAULTCONFIG false // Used to set the config to the default config
-
-#define DISABLEHARDWARECHECKS true // Used to disable check routines to detect faulty hardware
-#define DISABLEPURIFICATION true // Used to disable purification control systems
-#define DISABLETEMPERATURE true // Used to disable temperature control systems
-#define DISABLECOMM false // Used to disable GUI management & Communications
-
-#define OVERRRIDEMAXVOLTAGE false // Used to check some functions without powering all the system
-#define SCREENALWAYSON false // Used to bypass screen sensor (screen sensor always report active (1))
-
-#if !DEBUG && (USEVOLATILECONFIG || SETDEFAULTCONFIG || DISABLEHARDWARECHECKS || DISABLEPURIFICATION || DISABLECOMM || OVERRRIDEMAXVOLTAGE || SCREENALWAYSON)
-#undef DEBUG
-#define DEBUG true
-#endif
+#include "Compile_Flags.h"
 
 /*------------Config----------------*/
 
@@ -34,18 +18,23 @@
 
 #include "Shared/SharedData.h"
 #include "Storage/Storage.h"
-#include "SystemControl/Core/Core.h"
-#if !DISABLETEMPERATURE
-#include "SystemControl/Temperature.h"
-#endif
-#if !DISABLEPURIFICATION
-#include "SystemControl/Purification.h"
-#endif
+
 #if !DISABLECOMM
-#include "GUIComHandlers/GUIComHandlers.h"
+    #include "GUIComHandlers/GUIComHandlers.h"
 #else
-// TODO create ';' macros to disable communication functions
+    #define sendGUIMessage(payload) ;
 #endif
+
+#include "SystemControl/Core/Core.h"
+
+#if !DISABLETEMPERATURE
+    #include "SystemControl/Temperature.h"
+#endif
+
+#if !DISABLEPURIFICATION
+    #include "SystemControl/Purification.h"
+#endif
+
 #include <Filters.h>
 
 /*------------Libraries-------------*/
@@ -118,6 +107,7 @@ void setup()
         debug(F("Configuration successfully load\n"));
     }
 #endif
+    debugConfig();
 
     coreSetup();
 #if !DISABLETEMPERATURE
@@ -127,30 +117,11 @@ void setup()
     purificationSetup(); // it must be the last setup (it waits for voltage for a long time)
 #endif
 
-    //todo Test code after this line
+    debug(F("Setup - Starting Test phase\n")); //todo delete Test code after this line
 
-    GUILoop();
+    //while (true); // TODO delete or comment this
 
-    char message[64];
-
-    while (guiStatus!=GUI_CONNECTED_ST) GUILoop();
-
-    delay(3000);
-
-    debug(Communications::createSendMessage(message,endBuoySt_ID,String(1).c_str()));
-
-    debug(guiComManager.sendMessage(message));
-    delay(3000);
-
-    debug(Communications::createSendMessage(message,voltage_ID,String(12.35).c_str()));
-
-    debug(guiComManager.sendMessage(message));
-
-    while (true) GUILoop();
-
-    while (true); // TODO delete or comment this
-
-    //todo Test code before this line
+    debug(F("Setup - Test phase finished\n")); //todo delete Test code before this line
 
     debug(F("Setup - Ready\n\n"));
 }

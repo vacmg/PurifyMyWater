@@ -111,6 +111,7 @@ const char *const langEN[] PROGMEM = {EN_LANG_STR, EN_YES_STR,EN_NO_STR,EN_ON_ST
 
 
 // const char EN_XXX_PATH[] PROGMEM = "xxxx";
+
 const char EN_HelpTopic1_PATH[] PROGMEM = "/EN/Help/Topic1.txt";
 const char EN_HelpTopic2_PATH[] PROGMEM = "/EN/Help/Topic2.txt";
 const char EN_HelpTopic3_PATH[] PROGMEM = "/EN/Help/Topic3.txt";
@@ -118,6 +119,8 @@ const char EN_HelpTopic4_PATH[] PROGMEM = "/EN/Help/Topic4.txt";
 const char EN_HelpTopic5_PATH[] PROGMEM = "/EN/Help/Topic5.txt";
 const char EN_HelpTopic6_PATH[] PROGMEM = "/EN/Help/Topic6.txt";
 
-const char *const pathEN[] PROGMEM = { EN_HelpTopic1_PATH,EN_HelpTopic2_PATH,EN_HelpTopic3_PATH,EN_HelpTopic4_PATH,EN_HelpTopic5_PATH,EN_HelpTopic6_PATH,}; // Follow the same order as enum PathIDs (Languages.h)
+const char EN_ResetPopUp_PATH[] PROGMEM = "/EN/Reset/PopUp.txt";
+
+const char *const pathEN[] PROGMEM = { EN_HelpTopic1_PATH,EN_HelpTopic2_PATH,EN_HelpTopic3_PATH,EN_HelpTopic4_PATH,EN_HelpTopic5_PATH,EN_HelpTopic6_PATH,EN_ResetPopUp_PATH}; // Follow the same order as enum PathIDs (Languages.h)
 
 #endif //H2O_GUI_EN_LANG_H

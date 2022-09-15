@@ -10,53 +10,44 @@
 // and redirect the execution to an "onlyVitalActivities" function if it is critical
 // or resume the program if it is not
 // This function is not completed yet
-void raise(enum Errors error, const String& possibleExplanation)
+void raiseFn(enum Errors error, const String& possibleExplanation, const String& file, const uint16_t line)
 {
     currentError = error;
     bool critical = true;
     ledAnimation* prevAnimation = currentAnimation;
     setColor(RED);
 
-    switch (error)
+    /*switch (error)
     {
-#if GUI
-        case SCREENNOTCONNECTEDERROR:
-            critical = false;
-            setColor(255, 30, 0); // orange
-            break;
-#endif
-        default:
+        default:*/
             currentAnimation = &defaultErrorAnimation;
-            break;
-    }
+            /*break;
+    }*/
+
+    debug(critical?F("RAISE --- CRITICAL Error "):F("RAISE --- Error "));debug(errorToString(error));debug(F(" in file "));debug(file);debug(F(" at line "));debug(line);debug(F(": "));debug(possibleExplanation);debug('\n');
 
     if (critical)
     {
         disconnectEverything();
-        delay(1000);
-        voltControl();
-#if DEBUG
-        debug(F("RAISE --- CRITICAL Error "));debug(errorToString(error));debug(F(": "));debug(possibleExplanation);debug('\n');
-            delay(2000);
-#endif
-
         unsigned long pm = millis();
         while (true)
         {
             if (pm + 1000 < millis())
             {
-                voltControl();
+                coreLoop();
+                #if !DISABLECOMM
+                    GUILoop(); // TODO disable some of those loops if required
+                #endif
+                #if !DISABLETEMPERATURE
+                    tempLoop();
+                #endif
                 pm = millis();
             }
-            updateAnimation();
         }
     }
     else
     {
-#if DEBUG
-        debug(F("RAISE --- CRITICAL Error "));debug(error);debug(F(": "));debug(possibleExplanation);debug('\n');
-            delay(3000);
-#endif
+        delay(5000);
         switch (purificationStatus) // set back normal color
         {
             case TRANSITIONTOIDLE:
@@ -112,12 +103,14 @@ void disconnectEverything()
 {
     output(voltSSRelay, 0);
     output(voltRelay, 0);
-    output(ACInverter, 0);
     output(wellPump, 0);
     output(UVPump, 0);
     output(endPump, 0);
-    output(UVRelay, 0);
     output(filterRelay, 0);
+    delay(1000);
+    output(UVRelay, 0);
+    delay(250);
+    output(ACInverter, 0);
 
     debug(F("DisconnectEverything - Done\n"));
 }
@@ -127,6 +120,8 @@ void disconnectEverything()
 // This is the core setup code, which no matter which module is enabled, those instructions must be executed
 void coreSetup()
 {
+    debug(F("Setup - Core - Setting up I/O\n"));
+
     pinMode(redLed, OUTPUT);
     pinMode(blueLed, OUTPUT);
     pinMode(greenLed, OUTPUT);
@@ -164,7 +159,22 @@ void coreSetup()
     output(screenRelay, 0);
 
     inputStats.setWindowSecs(40.0F / configStorage.config.ACFREQUENCY); //Set AC Ammeter frequency
+
+    debug(F("Setup - Core - I/O ready\n"));
 }
+
+#if !DISABLECOMM
+void sendVoltage()
+{
+    if (sendVoltageMillis + configStorage.config.DATAREFRESHPERIOD < millis())
+    {
+        char temp[10];
+        Communications::createSendMessage(temp,voltage_ID,String(dataStorage.data.voltage).c_str());
+        sendGUIMessage(temp);
+        sendVoltageMillis = millis();
+    }
+}
+#endif
 
 // This is the core loop code, which no matter which module is enabled, those instructions must be executed every main loop execution
 void coreLoop()
@@ -176,6 +186,8 @@ void coreLoop()
 #if !DISABLEHARDWARECHECKS
     errorCheck();
 #endif
-
+#if !DISABLECOMM
+    sendVoltage();
+#endif
     updateAnimation();
 }

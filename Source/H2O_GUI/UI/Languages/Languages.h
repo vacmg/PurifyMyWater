@@ -34,7 +34,7 @@ char* getString(enum StringIDs stringId);
 // Returns the string identified by the id in the language selected by the specified language
 char* getString(enum StringIDs stringId, Languages language);
 
-enum PathIDs{HelpTopic1_PATH,HelpTopic2_PATH,HelpTopic3_PATH,HelpTopic4_PATH,HelpTopic5_PATH,HelpTopic6_PATH};
+enum PathIDs{HelpTopic1_PATH,HelpTopic2_PATH,HelpTopic3_PATH,HelpTopic4_PATH,HelpTopic5_PATH,HelpTopic6_PATH,ResetPopup_PATH};
 
 const char* const* const paths[] PROGMEM = {pathEN, pathES, pathFR}; // Follow the same order as enum Languages (UI.h)
 

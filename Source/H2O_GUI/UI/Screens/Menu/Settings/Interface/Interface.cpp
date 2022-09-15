@@ -20,7 +20,7 @@ void drawInterface()
             break;
         case 2:
             setFontSizeArray(fontSizes, 1, 2, 2, 2, 2, 2);
-            draw6ButtonsLayout(getString(Interface_RefreshInterval_STR), getString(Interface_ResetTitle_STR), "",(String) ((double) screenConfig.DATAREFRESHPERIOD/1000.0) + "s", getString(Interface_ResetStart_STR), "", true,true, false, fontSizes);
+            draw6ButtonsLayout(getString(Interface_RefreshInterval_STR), getString(Interface_ResetTitle_STR), "",(String) ((double) configStorage.config.DATAREFRESHPERIOD/1000.0) + "s", getString(Interface_ResetStart_STR), "", true,true, false, fontSizes);
             break;
         default:debug(F("Page selected is out of bounds (page>2 || page<0)"));
     }
@@ -38,15 +38,14 @@ void clickInterface()
             changeScreenStatus(LOADLANGUAGE);
                 break;
             case 2: // Refresh Period
-                double tempVal = getNumInput(getString(Interface_RefreshInterval_STR), F("s"), (double)screenConfig.DATAREFRESHPERIOD/1000.0);
+                double tempVal = getNumInput(getString(Interface_RefreshInterval_STR), F("s"), (double)configStorage.config.DATAREFRESHPERIOD/1000.0);
                 debug(tempVal);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (tempVal > 0)
                     {
-                        debug(F("DATAREFRESHPERIOD UPDATED: "));debug(screenConfig.DATAREFRESHPERIOD);debug(F(" --> "));debug(tempVal);debug('\n');
-                        screenConfig.DATAREFRESHPERIOD = (unsigned long)(tempVal * 1000);
-                        updateScreenConfig();
+                        debug(F("DATAREFRESHPERIOD UPDATED: "));debug(configStorage.config.DATAREFRESHPERIOD);debug(F(" --> "));debug(tempVal);debug('\n');
+                        configStorage.config.DATAREFRESHPERIOD = (unsigned long)(tempVal * 1000);
                     }
                 }
                 changeScreenStatus(LOADPAGEINTERFACE); // reload page with new config value
@@ -64,6 +63,10 @@ void clickInterface()
                 setRotation(screenConfig.ROTATION); // Set the rotation in the screen & touch module
                 changeScreenStatus(LOADINTERFACE); // Reload interface menu to repaint the screen
                 break;
+            case 2: // Reset
+                changeScreenStatus(LOADRESET);
+                break;
+
         }
     }
 }

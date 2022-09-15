@@ -9,6 +9,12 @@
 
 #define SCREENSHUTDOWNDELAY 15000
 
+#if !DISABLECOMM
+    #define wasChangedAndSet(variable, newValue) wasChangedAndSetFn(variable,newValue)
+#else
+    #define wasChangedAndSet(variable, newValue) (*variable=newValue)||true
+#endif
+
 /*------------Input-----------------*/
 
 const byte secBuoy = 2;
@@ -87,8 +93,8 @@ public:
     ScreenPowerManager(byte screenRelay, unsigned long shutdownDelayMs);
     void setScreen(bool status);
     void forceScreen(bool status);
-    bool isScreenOn();
-    bool isDesiredScreenOn();
+    bool isScreenOn() const;
+    bool isDesiredScreenOn() const;
     void loop();
 
 private:
@@ -122,6 +128,11 @@ bool readDigitalSensor(byte pin);
 
 // This function gets all buoys current status
 void getBuoyStatus();
+
+#if !DISABLECOMM
+// This auxiliary function checks if a variable value has changed & updates its value
+bool wasChangedAndSetFn(bool* variable, bool newValue);
+#endif
 
 #include "IO.cpp"
 

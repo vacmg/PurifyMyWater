@@ -155,7 +155,7 @@ TextBox::TextBox(int x, int y, int x1, int y1, const char* textPath, Label *labe
  */
 char* TextBox::nextWord(File* file, uint32_t start, uint32_t end, uint32_t* length)
 {
-    if(!init() || start>=end)
+    if(!init() || start>=end || !file)
         return nullptr;
 
     file->seek(start);
@@ -193,8 +193,8 @@ uint8_t TextBox::calculateFontSize()
     File file = SD.open(textPath, FILE_READ);
 
     uint32_t length = endOffset - beginOffset;
-    uint32_t xpx = getRectangle()->getx1()-getRectangle()->getx();
-    uint32_t ypx = getRectangle()->gety1()-getRectangle()->gety();
+    uint32_t xpx = getx1()-getx();
+    uint32_t ypx = gety1()-gety();
 
     if(length>0 && xpx>0 && ypx>0 && spacing>0)
     {
@@ -318,13 +318,13 @@ uint32_t TextBox::getEndOffset()
 
 Label *TextBox::getLabel()
 {
-    return ScreenObjectWithLabel::getLabel();
+    return isAValidLabel() ? ScreenObjectWithLabel::getLabel() : nullptr;
 }
 
 Rectangle *TextBox::getFrame()
 {
     init();
-    return ScreenObjectWithRectangle::getRectangle();
+    return isAValidRectangle() ? ScreenObjectWithRectangle::getRectangle() : nullptr;
 }
 
 const char *TextBox::getTextPath()
@@ -339,12 +339,14 @@ bool TextBox::canBeDrawn()
 
 void TextBox::setCoords(int x, int y)
 {
-    getRectangle()->setCoords(x,y);
+    if(isAValidRectangle())
+        getRectangle()->setCoords(x,y);
     ScreenObjectWithXtraCoords::setCoords(x,y);
 }
 void TextBox::setCoords1(int x1, int y1)
 {
-    getRectangle()->setCoords1(x1,y1);
+    if(isAValidRectangle())
+        getRectangle()->setCoords1(x1,y1);
     ScreenObjectWithXtraCoords::setCoords1(x1,y1);
 }
 
@@ -466,8 +468,11 @@ bool TextBox::init()
     if(!validFile)
     {
         checkIfFileExists();
-        getRectangle()->setCoords(getx(),gety());
-        getRectangle()->setCoords1(getx1(),gety1());
+        if(isAValidRectangle())
+        {
+            getRectangle()->setCoords(getx(),gety());
+            getRectangle()->setCoords1(getx1(),gety1());
+        }
     }
     return validFile;
 }
