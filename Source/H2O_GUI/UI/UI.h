@@ -513,7 +513,7 @@ void UILoop()
             }
             else
             {
-                clickExtraFunctions(); // TODO implement extraFunctions logic
+                clickExtraFunctions();
             }
             break;
 

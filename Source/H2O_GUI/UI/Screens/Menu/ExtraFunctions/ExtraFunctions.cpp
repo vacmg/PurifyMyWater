@@ -54,40 +54,40 @@ void drawExtraFunctionsBackground()
     drawExtraFunctionsForeground();
 }
 
-void clickExtraFunctions() // Todo implement extraFunctions
+void clickExtraFunctions()
 {
-    if (btn4.isPressed())
+    if (btn4.isPressed()) // ACPSU button
     {
         debug("ACPSU Button Pressed\n");
         if (configStorage.config.workingMode!=ACPSU_Mode)
         {
             debug(F("configStorage.config.workingMode changed from "));debug(workingModeToString(configStorage.config.workingMode));debug(F(" to "));debug(workingModeToString(ACPSU_Mode));debug('\n');
-            configStorage.config.workingMode = ACPSU_Mode; //TODO send warning message
+            configStorage.config.workingMode = ACPSU_Mode; //TODO send warning message & send message to master
         }
         else if (configStorage.config.workingMode==ACPSU_Mode)
         {
             debug(F("configStorage.config.workingMode changed from "));debug(workingModeToString(configStorage.config.workingMode));debug(F(" to "));debug(workingModeToString(Purification_Off_Mode));debug('\n');
-            configStorage.config.workingMode = Purification_Off_Mode; //TODO send warning message
+            configStorage.config.workingMode = Purification_Off_Mode; //TODO send warning message & send message to master
         }
         drawExtraFunctionsForeground();
 
     }
-    else if (btn5.isPressed())
+    else if (btn5.isPressed()) // DCPSUButton
     {
         debug("DCPSU Button Pressed\n");
         if (configStorage.config.workingMode!=DCPSU_Mode)
         {
             debug(F("configStorage.config.workingMode changed from "));debug(workingModeToString(configStorage.config.workingMode));debug(F(" to "));debug(workingModeToString(DCPSU_Mode));debug('\n');
-            configStorage.config.workingMode = DCPSU_Mode; //TODO send warning message
+            configStorage.config.workingMode = DCPSU_Mode; //TODO send warning message & send message to master
         }
         else if (configStorage.config.workingMode==DCPSU_Mode)
         {
             debug(F("configStorage.config.workingMode changed from "));debug(workingModeToString(configStorage.config.workingMode));debug(F(" to "));debug(workingModeToString(Purification_Off_Mode));debug('\n');
-            configStorage.config.workingMode = Purification_Off_Mode; //TODO send warning message
+            configStorage.config.workingMode = Purification_Off_Mode; //TODO send warning message & send message to master
         }
         drawExtraFunctionsForeground();
     }
-    /*else if (btn6.isPressed())
+    /*else if (btn6.isPressed()) // Start Install Wizard button
     {
 
     }*/

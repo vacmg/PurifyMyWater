@@ -7,7 +7,7 @@
 
 #include "../Menu.h"
 
-void drawExtraFunctions();
+void drawExtraFunctionsForeground();
 
 void drawExtraFunctionsBackground();
 
