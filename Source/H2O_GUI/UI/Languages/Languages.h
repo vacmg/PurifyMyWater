@@ -8,7 +8,7 @@
 #include "../UI.h"
 
 enum StringIDs{Lang_STR = 0, YES_STR, NO_STR, ON_STR, OFF_STR, Previous_STR, Next_STR, Delete_STR, OK_STR, // Utils
-    Status_Title_STR, StatusBtn_Error_STR, MenuBtn_STR, // Status
+    Status_Title_STR, StatusBtn_Error_STR, MenuBtn_STR, AltBtn_STR, // Status
     Menu_Title_STR, HelpBtn_STR, EngineeringBtn_STR, SettingsBtn_STR, ExtraFunctionsBtn, // Menu
     ExtraFunctions_Title_STR, ExtraFunctions_InstallWizard_STR, ExtraFunctions_StartInstallWizard_STR, ExtraFunctions_ACPSU_STR, ExtraFunctions_DCPSU_STR, // ExtraFunctions
     Settings_Title_STR, Settings_ElectricityBtn_STR, Settings_WaterBtn_STR, Settings_TemperatureBtn_STR, Settings_InterfaceBtn_STR, // Settings

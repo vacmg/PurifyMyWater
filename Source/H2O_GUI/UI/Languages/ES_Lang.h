@@ -24,6 +24,7 @@ const char ES_OK_STR[] PROGMEM = "OK";
 const char ES_Status_Title_STR[] PROGMEM = "Status";
 const char ES_StatusBtn_Error_STR[] PROGMEM = "FAILURE";
 const char ES_MenuBtn_STR[] PROGMEM = "Menu";
+const char ES_AltBtn_STR[] PROGMEM = "ALT";
 
 // Menu
 const char ES_Menu_Title_STR[] PROGMEM = "Menu";
@@ -96,7 +97,7 @@ const char ES_ScreenNotImplementedError_STR[] PROGMEM = "This option is not impl
 
 
 const char *const langES[] PROGMEM = {ES_LANG_STR,ES_YES_STR,ES_NO_STR,ES_ON_STR, ES_OFF_STR, ES_Previous_STR, ES_Next_STR,ES_Delete_STR, ES_OK_STR, // Utils
-                                      ES_Status_Title_STR, ES_StatusBtn_Error_STR, ES_MenuBtn_STR, // Status
+                                      ES_Status_Title_STR, ES_StatusBtn_Error_STR, ES_MenuBtn_STR,ES_AltBtn_STR, // Status
                                       ES_Menu_Title_STR, ES_HelpBtn_STR, ES_EngineeringBtn_STR, ES_SettingsBtn_STR, ES_ExtraFunctionsBtn, // Menu
                                       ES_ExtraFunctions_Title_STR, ES_ExtraFunctions_InstallWizard_STR, ES_ExtraFunctions_StartInstallWizard_STR, ES_ExtraFunctions_ACPSU_STR, ES_ExtraFunctions_DCPSU_STR, // ExtraFunctions
                                       ES_Settings_Title_STR, ES_Settings_ElectricityBtn_STR, ES_Settings_WaterBtn_STR, ES_Settings_TemperatureBtn_STR, ES_Settings_InterfaceBtn_STR, // Settings

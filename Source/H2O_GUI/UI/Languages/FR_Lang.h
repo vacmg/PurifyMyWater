@@ -24,7 +24,7 @@ const char FR_OK_STR[] PROGMEM = "OK";
 const char FR_Status_Title_STR[] PROGMEM = "Status";
 const char FR_StatusBtn_Error_STR[] PROGMEM = "FAILURE";
 const char FR_MenuBtn_STR[] PROGMEM = "Menu";
-
+const char FR_AltBtn_STR[] PROGMEM = "ALT";
 // Menu
 const char FR_Menu_Title_STR[] PROGMEM = "Menu";
 const char FR_HelpBtn_STR[] PROGMEM = "Help";
@@ -96,7 +96,7 @@ const char FR_ScreenNotImplementedError_STR[] PROGMEM = "This option is not impl
 
 
 const char *const langFR[] PROGMEM = {FR_LANG_STR,FR_YES_STR,FR_NO_STR,FR_ON_STR, FR_OFF_STR, FR_Previous_STR, FR_Next_STR, FR_Delete_STR,FR_OK_STR, // Utils
-                                      FR_Status_Title_STR, FR_StatusBtn_Error_STR, FR_MenuBtn_STR, // Status
+                                      FR_Status_Title_STR, FR_StatusBtn_Error_STR, FR_MenuBtn_STR,FR_AltBtn_STR, // Status
                                       FR_Menu_Title_STR, FR_HelpBtn_STR, FR_EngineeringBtn_STR, FR_SettingsBtn_STR, FR_ExtraFunctionsBtn, // Menu
                                       FR_ExtraFunctions_Title_STR, FR_ExtraFunctions_InstallWizard_STR, FR_ExtraFunctions_StartInstallWizard_STR, FR_ExtraFunctions_ACPSU_STR, FR_ExtraFunctions_DCPSU_STR, // ExtraFunctions
                                       FR_Settings_Title_STR, FR_Settings_ElectricityBtn_STR, FR_Settings_WaterBtn_STR, FR_Settings_TemperatureBtn_STR, FR_Settings_InterfaceBtn_STR, // Settings
