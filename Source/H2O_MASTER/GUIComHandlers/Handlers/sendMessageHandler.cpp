@@ -6,6 +6,7 @@
 
 void sendMessageHandler(enum VariableIDs variableID, char* value)
 {
+    //disconnectEverything();
     switch (variableID)
     {
         case BUSY_CMD:

@@ -21,6 +21,9 @@ public:
     bool sendMessage(const char* payload);
     bool sendQuickMessage(const char* payload);
 
+    void setSendMessageHandler(void (*sendMessageHandler)(enum VariableIDs variableID, char* value));
+    void setRequestMessageHandler(void (*requestMessageHandler)(enum VariableIDs variableID, enum FunctionIDs functionID, byte step));
+    void setRequestAnswerMessageHandler(void (*requestAnswerMessageHandler)(enum VariableIDs variableID, char* value, enum FunctionIDs functionID, byte step));
     bool flush();
     bool await();
     bool isEnabled() const;
