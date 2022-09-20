@@ -149,7 +149,8 @@ void loop()
     tempLoop();
 #endif
 #if !DISABLEPURIFICATION
-    purificationLoop();
+    if(configStorage.config.workingMode==Purification_On_Mode)
+        purificationLoop();
 #endif
 #if !DISABLECOMM
     GUILoop();
