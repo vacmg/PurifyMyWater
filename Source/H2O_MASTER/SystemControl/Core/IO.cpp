@@ -196,7 +196,7 @@ bool wasChangedAndSetFn(bool* variable, bool newValue)
     bool res = *variable != newValue;
     //changeVariable(*variable, newValue);
     //debugStatement(res);
-    return false;//res;
+    return false;//res; //TODO check why it returns false
 }
 #endif
 

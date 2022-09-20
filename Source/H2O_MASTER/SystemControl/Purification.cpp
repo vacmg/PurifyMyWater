@@ -22,14 +22,8 @@ void purificationLoop()
     switch (purificationStatus)
     {
         case TRANSITIONTOIDLE: // Transition to OFF
-            output(wellPump, 0);
-            output(endPump, 0);
-            output(UVPump, 0);
-            output(filterRelay, 0);
-            delay(1000);
-            output(UVRelay, 0);
-            delay(250);
-            output(ACInverter, 0);
+            disconnectEverything();
+
             output(voltSSRelay, 1); // TODO check if this should be guarded if the system is manually shut down instead of undervoltage
             setColor(UNDERVOLTAGECOLOR);
             changePurificationStatus(IDLE);

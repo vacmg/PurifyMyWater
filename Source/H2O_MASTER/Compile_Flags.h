@@ -11,7 +11,7 @@
 #define SETDEFAULTCONFIG false // Used to set the config to the default config
 
 #define DISABLEHARDWARECHECKS true // Used to disable check routines to detect faulty hardware
-#define DISABLEPURIFICATION true // Used to disable purification control systems
+#define DISABLEPURIFICATION !true // Used to disable purification control systems
 #define DISABLETEMPERATURE true // Used to disable temperature control systems
 #define DISABLECOMM false // Used to disable GUI management & Communications
 
