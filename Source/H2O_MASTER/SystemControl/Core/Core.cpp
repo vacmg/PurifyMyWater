@@ -111,6 +111,7 @@ void disconnectEverything(bool withVoltage)
         output(voltSSRelay, 0);
         output(voltRelay, 0);
     }
+    output(DCPSURelay,0);
     output(wellPump, 0);
     output(endPump, 0);
     output(UVPump, 0);
@@ -152,7 +153,9 @@ void coreSetup()
     pinMode(endPump, OUTPUT);
     pinMode(UVRelay, OUTPUT);
     pinMode(filterRelay, OUTPUT);
+    pinMode(DCPSURelay, OUTPUT);
 
+    output(DCPSURelay, 0);
     output(voltSSRelay, 0);
     output(voltRelay, 0);
     output(ACInverter, 0);

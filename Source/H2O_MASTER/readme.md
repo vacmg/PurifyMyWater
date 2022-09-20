@@ -24,7 +24,7 @@ A2: UV current sensor (5A)
 
 9: End buoy
 
-23: Case open sensor
+23: Case open sensor (Screen sensor)
 
 22: Output fan
 
@@ -33,6 +33,8 @@ A2: UV current sensor (5A)
 26: Input fan
 
 48: Temperature sensors
+
+31: Screen module relay
 
 33: Voltage solid state relay
 
@@ -46,9 +48,9 @@ A2: UV current sensor (5A)
 
 43: Well pump
 
-45: Static inverter realy
+45: Static inverter relay
 
-47: Screen module relay
+47: 12v DC output relay
 
 49: Voltage relay
 

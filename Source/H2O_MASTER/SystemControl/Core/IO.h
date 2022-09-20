@@ -61,8 +61,9 @@ const byte inFan = 26;
 const byte redLed = 10;
 const byte greenLed = 12;
 const byte blueLed = 11;
+const byte DCPSURelay = 47;
 
-const byte screenRelay = 47;
+const byte screenRelay = 31;
 
 // Used to check for PumpTimeoutError
 unsigned long wellPumpPrevMillis = 0;
@@ -131,7 +132,7 @@ void getBuoyStatus();
 
 #if !DISABLECOMM
 // This auxiliary function checks if a variable value has changed & updates its value
-bool wasChangedAndSetFn(bool* variable, bool newValue);
+bool wasChangedAndSetFn(const bool* variable, bool newValue);
 #endif
 
 #include "IO.cpp"
