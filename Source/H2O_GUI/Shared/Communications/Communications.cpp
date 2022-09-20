@@ -16,6 +16,11 @@
 // This function puts information together to create a sendMessage payload
 bool Communications::createSendMessage(char* payload, enum VariableIDs variableID, const char* value)
 {
+    return createSendMessage(payload,variableID,value, strlen(value));
+}
+
+bool Communications::createSendMessage(char* payload, enum VariableIDs variableID, const char* value, byte valueSize)
+{
     if(value == nullptr || strlen(value)>MAXVALUESIZE-1 || payload == nullptr)
         return false;
     payload[0] = SENDMESSAGE_ID; // ID sendMessage
@@ -99,12 +104,20 @@ bool Communications::createSendBlobMessage(byte *payload, enum VariableIDs varia
     return true;
 }
 
-bool Communications::extractSendBlobMessage(char *payload, enum VariableIDs *variableID, char blobSize, unsigned char *blob)
+bool Communications::sendBlobMessage(char *payload, enum VariableIDs variableID, byte size, byte* blob, HardwareSerial* serial)
 {
-    if (payload == nullptr || blobSize > 126)
-        return false;
-    *variableID = (VariableIDs)payload[1];
-    memcpy(blob, &payload[3], blobSize);
+    payload[0] = BLOBMESSAGE_ID;
+    payload[1] = variableID;
+    payload[2] = size; //max_bytes
+    char actual_byte = 0;
+    while (actual_byte < size)
+    {
+        payload[3] = actual_byte;
+        memcpy(&blob[actual_byte], &payload[4], 56*sizeof(char));
+        if(!sendMessage(payload, strlen(payload), serial))
+            return false;
+        actual_byte += 56; // TODO crear una constante para esto
+    }
     return true;
 }
 

@@ -56,7 +56,9 @@ public:
     static bool createSendBlobMessage(byte *payload, enum VariableIDs variableID, char blobSize, unsigned char *blob);
 
     //this function extracts information from a BlobMessage payload
-    static bool extractSendBlobMessage(char *payload, enum VariableIDs *variableID, char blobSize, unsigned char *blob);
+    static bool extractSendBlobMessage(char *payload, enum VariableIDs *variableID, char *blobSize, unsigned char *blob);
+
+    static bool sendBlobMessage(char *payload, enum VariableIDs variableID, byte size, byte* value, HardwareSerial* serial);
 
     // Link layer
 
