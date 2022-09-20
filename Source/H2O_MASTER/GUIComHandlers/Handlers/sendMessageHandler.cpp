@@ -26,21 +26,16 @@ void sendMessageHandler(enum VariableIDs variableID, char* value)
             switch (configStorage.config.workingMode) // TODO trabajo aqui
             {
                 case Purification_Off_Mode:
-                    /*output(DCPSURelay, 0);
-                    output(voltSSRelay, 0);
-                    output(voltRelay, 0);
-                    output(ACInverter, 0);
-                    output(wellPump, 0);
-                    output(UVPump, 0);
-                    output(endPump, 0);
-                    output(UVRelay, 0);
-                    output(filterRelay, 0);*/
                     break;
                 case DCPSU_Mode:
+                    output(DCPSURelay, 1);
                     break;
                 case ACPSU_Mode:
+                    output(ACInverter, 1);
+                    output(UVRelay, 1);
                     break;
                 case Purification_On_Mode:
+                    purificationStatus = IDLE;
                     break;
             }
             break;
