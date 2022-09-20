@@ -64,6 +64,7 @@ void coreLoop();
 
 // Quick shortcut to disconnect every pump or relay
 void disconnectEverything();
+void disconnectEverything(bool withVoltage);
 
 // This function will check for hardware errors on the system
 void errorCheck();

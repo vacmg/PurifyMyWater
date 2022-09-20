@@ -98,14 +98,22 @@ void errorCheck()
     }
 }
 
-// Quick shortcut to disconnect every pump or relay
 void disconnectEverything()
 {
-    output(voltSSRelay, 0);
-    output(voltRelay, 0);
+    disconnectEverything(false);
+}
+
+// Quick shortcut to disconnect every pump or relay
+void disconnectEverything(bool withVoltage)
+{
+    if (withVoltage)
+    {
+        output(voltSSRelay, 0);
+        output(voltRelay, 0);
+    }
     output(wellPump, 0);
-    output(UVPump, 0);
     output(endPump, 0);
+    output(UVPump, 0);
     output(filterRelay, 0);
     delay(1000);
     output(UVRelay, 0);

@@ -20,6 +20,13 @@ void sendMessageHandler(enum VariableIDs variableID, char* value)
 
         case workingMode_ID:
             changeVariable(configStorage.config.workingMode,(WorkingMode)atoi(value));
+
+            switch (configStorage.config.workingMode)
+            {
+                case Purification_Off_Mode:
+                    disconnectEverything();
+                    break;
+            }
             break;
 
         case STARTCHARGINGVOLTAGE_ID:
