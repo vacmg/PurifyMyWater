@@ -52,7 +52,8 @@ char* GUIModeToString(enum GUIStatus status)
 
 #endif
 
-void disconnectEverything(); // TODO manage includes to delete this (dependency in sendMessageHandler)
+void disconnectEverything(); // TODO delete this
+void disconenctEverything(bool withVoltage); // TODO delete this
 
 #include "Handlers/sendMessageHandler.h"
 #include "Handlers/requestMessageHandler.h"
