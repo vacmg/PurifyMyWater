@@ -44,8 +44,21 @@ void clickInterface()
                 {
                     if (tempVal > 0)
                     {
-                        debug(F("DATAREFRESHPERIOD UPDATED: "));debug(configStorage.config.DATAREFRESHPERIOD);debug(F(" --> "));debug(tempVal);debug('\n');
-                        configStorage.config.DATAREFRESHPERIOD = (unsigned long)(tempVal * 1000);
+                    #if !DISABLECOMM
+                        char payload[10];
+                        Communications::createSendMessage(payload, DATAREFRESHPERIOD_ID, String(tempVal).c_str());
+                        if (masterComManager.sendMessage(payload))
+                        {
+                    #endif
+                            debug(F("DATAREFRESHPERIOD UPDATED: "));debug(configStorage.config.DATAREFRESHPERIOD);debug(F(" --> "));debug(tempVal);debug('\n');
+                            configStorage.config.DATAREFRESHPERIOD = (unsigned long)(tempVal * 1000);
+                    #if !DISABLECOMM
+                        }
+                        else
+                        {
+                            debug(F("ERROR: Could not send the DATAREFRESHPERIOD update")); // TODO: error message
+                        }
+                    #endif
                     }
                 }
                 changeScreenStatus(LOADPAGEINTERFACE); // reload page with new config value
