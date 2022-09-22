@@ -26,22 +26,32 @@ bool Communications::createSendMessage(char* payload, enum VariableIDs variableI
     payload[0] = SENDMESSAGE_ID; // ID sendMessage
     payload[1] = variableID;
     payload[2] = '\0'; // ensure strcat works (it will be replaced by strcat)
-    strcat(payload, value);
+    memcpy(&payload[3], value, valueSize);
     return true;
 }
 
 // This function extracts information from a sendMessage payload
 bool Communications::extractSendMessage(const char* payload, enum VariableIDs* variableID, char* value)
 {
+    return extractSendMessage(payload, variableID, value, strlen(value));
+}
+
+bool Communications::extractSendMessage(const char* payload, enum VariableIDs* variableID, char* value, byte valueSize)
+{
     if (value == nullptr || payload == nullptr || variableID == nullptr)
         return false;
     *variableID = (VariableIDs)payload[1];
-    strcpy(value,&payload[2]);
+    memcpy(value,&payload[2], valueSize);
     return true;
 }
 
 // This function puts information together to create a requestAnswerMessage payload
 bool Communications::createRequestAnswerMessage(char* payload, enum VariableIDs variableID, const char* value, enum FunctionIDs functionID, byte step)
+{
+    return createRequestAnswerMessage(payload, variableID, value, functionID, strlen(value));
+}
+
+bool Communications::createRequestAnswerMessage(char* payload, enum VariableIDs variableID, const char* value, enum FunctionIDs functionID, byte step, byte valueSize)
 {
     if (payload == nullptr || value == nullptr || strlen(value)>MAXVALUESIZE-1 || step<1)
         return false;
@@ -51,7 +61,7 @@ bool Communications::createRequestAnswerMessage(char* payload, enum VariableIDs 
     payload[2] = functionID;
     payload[3] = step;
     payload[4] = '\0'; // ensure strcat works (it will be replaced by strcat)
-    strcat(payload, value);
+    memcpy(payload, value, valueSize);
     return true;
 }
 
@@ -119,6 +129,11 @@ bool Communications::sendBlobMessage(char *payload, enum VariableIDs variableID,
         actual_byte += 56; // TODO crear una constante para esto
     }
     return true;
+}
+
+bool Communications::extractBlobMessage()
+{
+
 }
 
 //-----------------------------------------------------------------------

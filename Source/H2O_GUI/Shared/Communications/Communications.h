@@ -36,12 +36,15 @@ public:
 
     // This function puts information together to create a sendMessage payload
     static bool createSendMessage(char* payload, enum VariableIDs variableID, const char* value);
+    static bool createSendMessage(char* payload, enum VariableIDs variableID, const char* value, byte valueSize);
 
     // This function extracts information from a sendMessage payload
     static bool extractSendMessage(const char* payload, enum VariableIDs* variableID, char* value);
+    static bool extractSendMessage(const char* payload, enum VariableIDs* variableID, char* value, byte valueSize);
 
     // This function puts information together to create a requestAnswerMessage payload
     static bool createRequestAnswerMessage(char* payload, enum VariableIDs variableID, const char* value, enum FunctionIDs functionID, byte step);
+    static bool createRequestAnswerMessage(char* payload, enum VariableIDs variableID, const char* value, enum FunctionIDs functionID, byte step, byte valueSize);
 
     // This function extracts information from a requestAnswerMessage payload
     static bool extractRequestAnswerMessage(const char* payload, enum VariableIDs* variableID, char* value, enum FunctionIDs* functionID, byte* step);
