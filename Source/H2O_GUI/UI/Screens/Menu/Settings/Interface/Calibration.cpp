@@ -9,7 +9,7 @@
 #include <LCDWIKI_GUI.h> //Core graphics library
 #include <LCDWIKI_KBV.h> //Hardware-specific library
 
-#define TOUCH_ORIENTATION  1
+#define TOUCH_ORIENTATION  3
 #define TITLE "TouchScreen.h Calibration"
 #define MEGA true
 
@@ -17,7 +17,7 @@
 //if the IC model is not known and the modules is readable,you can use this constructed function
 //LCDWIKI_KBV my_lcd(320,480,A3,A2,A1,A0,A4);//width,height,cs,cd,wr,rd,reset
 
-#define  BLACK   0x0000
+#define BLACK   0x0000
 #define BLUE    0x001F
 #define RED     0xF800
 #define GREEN   0x07E0
@@ -33,6 +33,7 @@
 
 TouchScreen mytouch(XP, YP, XM, YM, 300);
 TSPoint tp;                      //Touchscreen_due branch uses Point
+
 
 void show_string(uint8_t *str,int16_t x,int16_t y,uint8_t csize,uint16_t fc, uint16_t bc,boolean mode)
 {
@@ -60,13 +61,6 @@ bool is_pressed(void)
     return state;
 }
 
-void showpoint(void)
-{
-    Serial.print("\r\nx="); Serial.print(tp.x);
-    Serial.print(" y="); Serial.print(tp.y);
-    Serial.print(" z="); Serial.print(tp.z);
-}
-
 uint32_t cx, cy;
 uint32_t rx[8], ry[8];
 int32_t clx, crx, cty, cby;
@@ -75,7 +69,7 @@ int dispx, dispy, text_y_center, swapxy;
 uint32_t calx, caly, cals;
 char buf[13];
 
-void setupCalibration()
+void calibrationSetup()
 {
     Serial.begin(9600);
     Serial.println(TITLE);
@@ -175,23 +169,6 @@ void waitForTouch()
     while (is_pressed() == true) {}
     while (is_pressed() == false) {}
     while (is_pressed() == true) {}
-}
-
-void toHex(uint32_t num)
-{
-    buf[0] = '0';
-    buf[1] = 'x';
-    buf[10] = 'U';
-    buf[11] = 'L';
-    buf[12] = 0;
-    for (int zz = 9; zz > 1; zz--)
-    {
-        if ((num & 0xF) > 9)
-            buf[zz] = (num & 0xF) + 55;
-        else
-            buf[zz] = (num & 0xF) + 48;
-        num = num >> 4;
-    }
 }
 
 void startup()
@@ -303,10 +280,10 @@ void fail() {
 
 void loopCalibration()
 {
+    calibrationSetup();
     startup();
 
-
-    drawCrossHair(dispx - 11, 10,0x528A);
+    drawCrossHair(dispx - 11, 10,0x528A); //TODO AQUI
     drawCrossHair(dispx / 2, 10,0x528A);
     drawCrossHair(10, 10,0x528A);
     drawCrossHair(dispx - 11, dispy / 2,0x528A);

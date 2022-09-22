@@ -10,13 +10,11 @@
 void show_string(uint8_t *str,int16_t x,int16_t y,uint8_t csize,uint16_t fc, uint16_t bc,boolean mode);
 void Read_Resistive(void);
 bool is_pressed(void);
-void showpoint(void);
-void setupCalibration();
+void calibrationSetup();
 void drawCrossHair(int x, int y, unsigned int color);
 void readCoordinates();
 void calibrate(int x, int y, int i);
 void waitForTouch();
-void toHex(uint32_t num);
 void startup();
 void showNumI(char *msg, uint32_t val, int x, int y);
 void done();

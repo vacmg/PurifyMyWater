@@ -27,7 +27,7 @@
 
 //Main Functions
 
-void setup()
+  void setup()
 {
     Serial.begin(9600);
     delay(200);
