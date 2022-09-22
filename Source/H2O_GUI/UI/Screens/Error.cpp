@@ -28,6 +28,19 @@ void drawError()
 
             break;
 
+        case LowValueRange:
+        {
+
+        }
+            break;
+
+        case UpValueRange:
+        {
+
+        }
+            break;
+
+
         default:
             my_lcd.Fill_Screen(0xFFFF);
             char str[9] = "Error ";
@@ -47,4 +60,13 @@ void clickError()
         changeError(NoError);
         changeScreenStatus(LOADMENU);
     }
+    else if(btn1.isPressed() && currentError == LowValueRange)
+    {
+
+    }
+    else if(btn1.isPressed() && currentError == UpValueRange)
+    {
+
+    }
+
 }

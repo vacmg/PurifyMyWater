@@ -35,7 +35,7 @@ enum Errors {
     UVLightNotWorkingError, ScreenNotConnectedError, TempSensorsAmountError,
     HotTempError,
     HandshakeError, MCUsIncompatibleVersionError, DestinationMCUNotRespondingError, GUICannotSafelyShutdownError,
-    ScreenNotImplementedError
+    ScreenNotImplementedError, UpValueRange, LowValueRange,
     }; // Used to process different errors
 
 enum SystemStatus {SYSTEM_OFF = 0, SYSTEM_ON = 1}; // This struct stores if the system is working or not (think about it like a master switch)

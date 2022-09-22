@@ -25,6 +25,18 @@ void clickElectricity()
                         configStorage.config.STARTCHARGINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
+                    else if(tempVal <= configStorage.config.STOPWORKINGVOLTAGE )
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
+                    else if(tempVal >= configStorage.config.STOPCHARGINGVOLTAGE)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(UpValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
@@ -40,6 +52,20 @@ void clickElectricity()
                         configStorage.config.STARTWORKINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
+
+                    else if(tempVal <=  configStorage.config.STARTCHARGINGVOLTAGE)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
+                    else if(tempVal >= configStorage.config.STOPCHARGINGVOLTAGE)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(UpValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
+
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
@@ -85,6 +111,18 @@ void clickElectricity()
                         configStorage.config.STOPCHARGINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
                     }
+                    else if(tempVal <=  configStorage.config.STARTCHARGINGVOLTAGE + 1)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
+                    else if(tempVal >= MAXCAPACITORSALLOWEDVOLTAGE)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(UpValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
@@ -99,6 +137,18 @@ void clickElectricity()
                         debug(F("STOPWORKINGVOLTAGE UPDATED: "));debug(configStorage.config.STOPWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.STOPWORKINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
+                    }
+                    else if(tempVal <=  MINSYSTEMALLOWEDVOLTAGE)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
+                    else if(tempVal >= configStorage.config.STARTCHARGINGVOLTAGE - 1)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(UpValueRange);
+                        changeScreenStatus(LOADERROR);
                     }
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
@@ -132,6 +182,18 @@ void clickElectricity()
                         configStorage.config.ESTIMATEDUVAMPERAGE = (float)tempVal;
                         // TODO send new setting
                     }
+                    else if(tempVal <=  0)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
+                    else if(tempVal >= MAXUVAMPERAGE)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(UpValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
@@ -146,6 +208,18 @@ void clickElectricity()
                         debug(F("ACFREQUENCY UPDATED: "));debug(configStorage.config.ACFREQUENCY);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.ACFREQUENCY = (byte)tempVal;
                         // TODO send new setting
+                    }
+                    else if(tempVal <=  50)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
+                    else if(tempVal >= 60)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(UpValueRange);
+                        changeScreenStatus(LOADERROR);
                     }
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value

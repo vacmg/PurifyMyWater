@@ -47,6 +47,12 @@ void clickTemperature()
                         configStorage.config.TEMPCHECKTIME = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
+                    else if(tempVal <=  0)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
                 }
                 changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
@@ -61,6 +67,18 @@ void clickTemperature()
                         debug(F("STOPPSUTEMP UPDATED: "));debug(configStorage.config.STOPPSUTEMP);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.STOPPSUTEMP = (byte) tempVal;
                         // TODO send new setting
+                    }
+                    else if(tempVal <=  0)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
+                    else if(tempVal >= configStorage.config.STARTPSUTEMP)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(UpValueRange);
+                        changeScreenStatus(LOADERROR);
                     }
                 }
                 changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
@@ -82,6 +100,12 @@ void clickTemperature()
                         configStorage.config.STOPWORKINGTEMP = (byte) tempVal;
                         // TODO send new setting
                     }
+                    else if(tempVal <=  0 || tempVal <= configStorage.config.STARTPSUTEMP || tempVal <= configStorage.config.STARTCASETEMP)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
                 }
                 changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
@@ -96,6 +120,18 @@ void clickTemperature()
                         debug(F("STARTCASETEMP UPDATED: "));debug(configStorage.config.STARTCASETEMP);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.STARTCASETEMP = (byte) tempVal;
                         // TODO send new setting
+                    }
+                    else if(tempVal <=  0 || tempVal <= configStorage.config.STOPCASETEMP)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
+                    else if( tempVal >= configStorage.config.STOPWORKINGTEMP)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(UpValueRange);
+                        changeScreenStatus(LOADERROR);
                     }
                 }
                 changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
@@ -117,6 +153,18 @@ void clickTemperature()
                         configStorage.config.STARTPSUTEMP = (byte) tempVal;
                         // TODO send new setting
                     }
+                    else if(tempVal <=  0 || tempVal <= configStorage.config.STOPPSUTEMP)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
+                    else if( tempVal >= configStorage.config.STOPWORKINGTEMP)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(UpValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
                 }
                 changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
@@ -131,6 +179,18 @@ void clickTemperature()
                         debug(F("STOPPSUTEMP UPDATED: "));debug(configStorage.config.STOPCASETEMP);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.STOPCASETEMP = (byte) tempVal;
                         // TODO send new setting
+                    }
+                    else if(tempVal <=  0 )
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
+                    else if( tempVal >= configStorage.config.STARTCASETEMP)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(UpValueRange);
+                        changeScreenStatus(LOADERROR);
                     }
                 }
                 changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value

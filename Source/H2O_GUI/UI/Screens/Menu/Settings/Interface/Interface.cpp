@@ -47,6 +47,12 @@ void clickInterface()
                         debug(F("DATAREFRESHPERIOD UPDATED: "));debug(configStorage.config.DATAREFRESHPERIOD);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.DATAREFRESHPERIOD = (unsigned long)(tempVal * 1000);
                     }
+                    else if (tempVal <= 0)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
+                    }
                 }
                 changeScreenStatus(LOADPAGEINTERFACE); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too

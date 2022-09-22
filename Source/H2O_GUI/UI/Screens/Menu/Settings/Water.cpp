@@ -25,6 +25,10 @@ void clickWater()
                         configStorage.config.WELLPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
+                    else if(0 >= configStorage.config.WELLPUMPTIMEOUT)
+                    {
+                        //TODO
+                    }
                 }
                 changeScreenStatus(LOADPAGEWATER); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
@@ -38,6 +42,10 @@ void clickWater()
                         debug(F("FILTERTIMEOUT UPDATED: "));debug(configStorage.config.FILTERTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.FILTERTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
+                    }
+                    else if(0 >= configStorage.config.FILTERTIMEOUT)
+                    {
+                        //TODO
                     }
                 }
                 changeScreenStatus(LOADPAGEWATER); // reload page with new config value
@@ -59,6 +67,10 @@ void clickWater()
                         configStorage.config.UVPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
                     }
+                    else if(0 >= configStorage.config.UVPUMPTIMEOUT)
+                    {
+                        //TODO
+                    }
                 }
                 changeScreenStatus(LOADPAGEWATER); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
@@ -73,6 +85,12 @@ void clickWater()
                         debug(F("UVPUMPFLOW UPDATED: "));debug(configStorage.config.UVPUMPFLOW);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.UVPUMPFLOW = (float) tempVal;
                         // TODO send new setting
+                    }
+                    else if( tempVal < 0)
+                    {
+                        prevScreen = ScreenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
                     }
 
                 }
@@ -94,6 +112,10 @@ void clickWater()
                         debug(F("ENDPUMPTIMEOUT UPDATED: "));debug(configStorage.config.ENDPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.ENDPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
+                    }
+                    else if(0 >= configStorage.config.ENDPUMPTIMEOUT)
+                    {
+
                     }
                 }
                 changeScreenStatus(LOADPAGEWATER); // reload page with new config value
