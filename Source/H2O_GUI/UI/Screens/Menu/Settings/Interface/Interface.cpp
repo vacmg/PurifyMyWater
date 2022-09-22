@@ -59,7 +59,8 @@ void clickInterface()
         {
             case 1: // Rotation
                 screenConfig.ROTATION = (screenConfig.ROTATION==LANDSCAPE?INVERTED_LANDSCAPE:LANDSCAPE); // Change rotation variable
-                updateScreenConfig();
+                saveScreenConfigMillis = millis();
+                saveScreenConfigTimerEnabled = true;
                 setRotation(screenConfig.ROTATION); // Set the rotation in the screen & touch module
                 changeScreenStatus(LOADINTERFACE); // Reload interface menu to repaint the screen
                 break;

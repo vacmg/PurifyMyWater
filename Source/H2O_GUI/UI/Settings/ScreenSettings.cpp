@@ -55,6 +55,17 @@ void updateScreenConfig()
 #if !USEVOLATILECONFIG
     EEPROM.put(4, screenConfig); // save screenConfig at position 4
     unsigned long crc = screenConfigCRC32();
+    debug(F("Configuration saved to EEPROM\n"));
     EEPROM.put(0, crc);
 #endif
+}
+
+// This
+void updateConfigLoop()
+{
+    if(saveScreenConfigTimerEnabled && saveScreenConfigMillis+SAVESCREENCONFIGDELAY<millis())
+    {
+        saveScreenConfigTimerEnabled = false;
+        updateScreenConfig();
+    }
 }

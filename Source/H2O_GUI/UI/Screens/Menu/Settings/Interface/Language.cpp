@@ -32,7 +32,8 @@ void clickLanguage()
             case 1: // English
                 debug(F("LANGUAGE UPDATED: "));debug(getString(Lang_STR));debug(F(" --> "));debug(getString(Lang_STR, ENGLISH));debug('\n');
                 screenConfig.LANGUAGE = ENGLISH;
-                updateScreenConfig();
+                saveScreenConfigMillis = millis();
+                saveScreenConfigTimerEnabled = true;
                 changeScreenStatus(LOADINTERFACE); // reload page with new config value
                 break;
         }
@@ -44,7 +45,8 @@ void clickLanguage()
             case 1: // French
                 debug(F("LANGUAGE UPDATED: "));debug(getString(Lang_STR));debug(F(" --> "));debug(getString(Lang_STR, FRENCH));debug('\n');
                 screenConfig.LANGUAGE = FRENCH;
-                updateScreenConfig();
+                saveScreenConfigMillis = millis();
+                saveScreenConfigTimerEnabled = true;
                 changeScreenStatus(LOADINTERFACE); // reload page with new config value
                 break;
         }
@@ -56,7 +58,8 @@ void clickLanguage()
             case 1: // French
                 debug(F("LANGUAGE UPDATED: "));debug(getString(Lang_STR));debug(F(" --> "));debug(getString(Lang_STR, SPANISH));debug('\n');
                 screenConfig.LANGUAGE = SPANISH;
-                updateScreenConfig();
+                saveScreenConfigMillis = millis();
+                saveScreenConfigTimerEnabled = true;
                 changeScreenStatus(LOADINTERFACE); // reload page with new config value
                 break;
         }
