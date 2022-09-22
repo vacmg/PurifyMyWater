@@ -69,4 +69,13 @@ void clickInterface()
 
         }
     }
+    else if (btn6.isPressed())
+    {
+        switch (page)
+        {
+            case 1: // Calibrate
+                changeScreenStatus(SCREENCALIBRATION); // ScreenCalibration page
+                break;
+        }
+    }
 }
