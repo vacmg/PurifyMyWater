@@ -60,20 +60,24 @@ bool Communications::createRequestAnswerMessage(char* payload, enum VariableIDs 
     payload[1] = variableID;
     payload[2] = functionID;
     payload[3] = step;
-    payload[4] = '\0'; // ensure strcat works (it will be replaced by strcat)
-    memcpy(payload, value, valueSize);
+    //payload[4] = '\0'; // ensure strcat works (it will be replaced by strcat)
+    memcpy(&payload[4], value, valueSize);
     return true;
 }
 
 // This function extracts information from a requestAnswerMessage payload
 bool Communications::extractRequestAnswerMessage(const char* payload, enum VariableIDs* variableID, char* value, enum FunctionIDs* functionID, byte* step)
 {
+    return extractRequestAnswerMessage(payload, variableID, value, functionID, step, strlen(value));
+}
+bool Communications::extractRequestAnswerMessage(const char* payload, enum VariableIDs* variableID, char* value, enum FunctionIDs* functionID, byte* step, byte valueSize)
+{
     if (payload == nullptr || value == nullptr || variableID == nullptr || functionID == nullptr)
         return false;
     *variableID = (VariableIDs)payload[1];
     *functionID = (FunctionIDs)payload[2];
     *step = payload[3];
-    strcpy(value, &payload[4]);
+    memcpy(value, &payload[4], valueSize);
     return true;
 }
 
@@ -123,17 +127,34 @@ bool Communications::sendBlobMessage(char *payload, enum VariableIDs variableID,
     while (actual_byte < size)
     {
         payload[3] = actual_byte;
-        memcpy(&blob[actual_byte], &payload[4], 56*sizeof(char));
+        memcpy(&payload[4], &blob[actual_byte], MAXBLOBSIZE*sizeof(char));
         if(!sendMessage(payload, strlen(payload), serial))
             return false;
-        actual_byte += 56; // TODO crear una constante para esto
+        actual_byte += MAXBLOBSIZE; // TODO crear una constante para esto
     }
     return true;
 }
 
-bool Communications::extractBlobMessage()
+bool Communications::extractSendBlobMessage(char *value, enum VariableIDs *variableID, byte *blobSize, byte *currentByte)
 {
+    if (variableID == nullptr)
+        return false;
+    if(value[2] == 0) // current byte == first byte
+        blobPtr = (byte *)malloc((byte)value[2]);
 
+    memcpy(&blobPtr[value[2]], &value[3], MAXBLOBSIZE * sizeof(char)); // blob
+    *variableID = (enum VariableIDs)value[0]; // variableID
+    *blobSize = value[1]; // blobSize
+    *currentByte = value[2]; // currentByte
+    return true;
+}
+
+bool Communications::extractBlobMessage(char *value, enum VariableIDs *variableID)
+{
+    byte *blobSize;
+    byte *currentByte;
+    
+    while ()
 }
 
 //-----------------------------------------------------------------------
@@ -214,7 +235,7 @@ bool Communications::sendQuickMessage(const char* payload, HardwareSerial* seria
     char message[MAXMSGSIZE];
     message[0] = 1; // This avoids strcat placing the '\n' in message[0] (this will only happen if message[0] is 0 (memory is not automatically cleared))
     message[1] = payloadLength+1; // size of [size]+[message]
-    strcpy(&message[2],payload); // copy payload to message
+    memcpy(&message[2],payload, strlen(payload)); // copy payload to message
     message[0] = CRC8((byte*)&message[1],message[1]); // set CRC of the message
 
     serial->write(message,payloadLength+3); //[CRC][size][payload]\n

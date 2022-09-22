@@ -11,6 +11,7 @@
 
 #define MAXMSGSIZE MAXPAYLOADSIZE + 3 // payload+1(size)+1(crc)+1(NULL) // Arduino Serial buffers have 64 bytes by default, to use more space (up to 256B), use #define SERIAL_TX_BUFFER_SIZE xx & SERIAL_RX_BUFFER_SIZE
 #define MAXVALUESIZE MAXPAYLOADSIZE - 5 // payloadsize - 1(MessageType)-1(variableID)-1(functionID)-1(step)-1(NULL)
+#define MAXBLOBSIZE MAXVALUESIZE - 3
 
 #define ACK 6
 
@@ -32,6 +33,8 @@
 class Communications
 {
 public:
+    static byte* blobPtr;
+
     // Application layer
 
     // This function puts information together to create a sendMessage payload
@@ -48,6 +51,7 @@ public:
 
     // This function extracts information from a requestAnswerMessage payload
     static bool extractRequestAnswerMessage(const char* payload, enum VariableIDs* variableID, char* value, enum FunctionIDs* functionID, byte* step);
+    static bool extractRequestAnswerMessage(const char* payload, enum VariableIDs* variableID, char* value, enum FunctionIDs* functionID, byte* step, byte valueSize);
 
     // This function puts information together to create a requestMessage payload
     static bool createRequestMessage(char* payload, enum VariableIDs variableID, enum FunctionIDs functionID, byte step);
@@ -62,6 +66,9 @@ public:
     static bool extractSendBlobMessage(char *payload, enum VariableIDs *variableID, char *blobSize, unsigned char *blob);
 
     static bool sendBlobMessage(char *payload, enum VariableIDs variableID, byte size, byte* value, HardwareSerial* serial);
+
+    static bool extractSendBlobMessage(char *value, enum VariableIDs *variableID, byte *blobSize, byte *currentByte);
+    static bool extractBlobMessage(char *value, enum VariableIDs *variableID);
 
     // Link layer
 
