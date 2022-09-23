@@ -27,7 +27,9 @@ void clickWater()
                     }
                     else if(0 >= configStorage.config.WELLPUMPTIMEOUT)
                     {
-                        //TODO
+                        prevScreen = screenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
                     }
                 }
                 changeScreenStatus(LOADPAGEWATER); // reload page with new config value
@@ -45,7 +47,9 @@ void clickWater()
                     }
                     else if(0 >= configStorage.config.FILTERTIMEOUT)
                     {
-                        //TODO
+                        prevScreen = screenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
                     }
                 }
                 changeScreenStatus(LOADPAGEWATER); // reload page with new config value
@@ -69,7 +73,9 @@ void clickWater()
                     }
                     else if(0 >= configStorage.config.UVPUMPTIMEOUT)
                     {
-                        //TODO
+                        prevScreen = screenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
                     }
                 }
                 changeScreenStatus(LOADPAGEWATER); // reload page with new config value
@@ -88,7 +94,7 @@ void clickWater()
                     }
                     else if( tempVal < 0)
                     {
-                        prevScreen = ScreenStatus;
+                        prevScreen = screenStatus;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
@@ -115,7 +121,9 @@ void clickWater()
                     }
                     else if(0 >= configStorage.config.ENDPUMPTIMEOUT)
                     {
-
+                        prevScreen = screenStatus;
+                        changeError(LowValueRange);
+                        changeScreenStatus(LOADERROR);
                     }
                 }
                 changeScreenStatus(LOADPAGEWATER); // reload page with new config value

@@ -27,13 +27,13 @@ void clickElectricity()
                     }
                     else if(tempVal <= configStorage.config.STOPWORKINGVOLTAGE )
                     {
-                        prevScreen = ScreenStatus;
+                        prevScreen = screenStatus;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= configStorage.config.STOPCHARGINGVOLTAGE)
                     {
-                        prevScreen = ScreenStatus;
+                        prevScreen = screenStatus;
                         changeError(UpValueRange);
                         changeScreenStatus(LOADERROR);
                     }
@@ -55,13 +55,13 @@ void clickElectricity()
 
                     else if(tempVal <=  configStorage.config.STARTCHARGINGVOLTAGE)
                     {
-                        prevScreen = ScreenStatus;
+                        prevScreen = screenStatus;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= configStorage.config.STOPCHARGINGVOLTAGE)
                     {
-                        prevScreen = ScreenStatus;
+                        prevScreen = screenStatus;
                         changeError(UpValueRange);
                         changeScreenStatus(LOADERROR);
                     }
@@ -113,13 +113,13 @@ void clickElectricity()
                     }
                     else if(tempVal <=  configStorage.config.STARTCHARGINGVOLTAGE + 1)
                     {
-                        prevScreen = ScreenStatus;
+                        prevScreen = screenStatus;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= MAXCAPACITORSALLOWEDVOLTAGE)
                     {
-                        prevScreen = ScreenStatus;
+                        prevScreen = screenStatus;
                         changeError(UpValueRange);
                         changeScreenStatus(LOADERROR);
                     }
@@ -140,13 +140,13 @@ void clickElectricity()
                     }
                     else if(tempVal <=  MINSYSTEMALLOWEDVOLTAGE)
                     {
-                        prevScreen = ScreenStatus;
+                        prevScreen = screenStatus;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= configStorage.config.STARTCHARGINGVOLTAGE - 1)
                     {
-                        prevScreen = ScreenStatus;
+                        prevScreen = screenStatus;
                         changeError(UpValueRange);
                         changeScreenStatus(LOADERROR);
                     }
@@ -184,13 +184,13 @@ void clickElectricity()
                     }
                     else if(tempVal <=  0)
                     {
-                        prevScreen = ScreenStatus;
+                        prevScreen = screenStatus;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= MAXUVAMPERAGE)
                     {
-                        prevScreen = ScreenStatus;
+                        prevScreen = screenStatus;
                         changeError(UpValueRange);
                         changeScreenStatus(LOADERROR);
                     }
@@ -211,13 +211,13 @@ void clickElectricity()
                     }
                     else if(tempVal <=  50)
                     {
-                        prevScreen = ScreenStatus;
+                        prevScreen = screenStatus;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= 60)
                     {
-                        prevScreen = ScreenStatus;
+                        prevScreen = screenStatus;
                         changeError(UpValueRange);
                         changeScreenStatus(LOADERROR);
                     }

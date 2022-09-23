@@ -49,7 +49,7 @@ void clickInterface()
                     }
                     else if (tempVal <= 0)
                     {
-                        prevScreen = ScreenStatus;
+                        prevScreen = screenStatus;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
