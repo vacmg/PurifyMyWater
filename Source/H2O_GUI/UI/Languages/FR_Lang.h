@@ -93,7 +93,8 @@ const char FR_Language_Title_STR[] PROGMEM = "Select a language";
 
 // Error
 const char FR_ScreenNotImplementedError_STR[] PROGMEM = "This option is not implemented yet";
-
+const char FR_UpRangeValue_STR[] PROGMEM = "Value out of range above";
+const char FR_LowRangeValue_STR[] PROGMEM = "Value out of range bellow";
 
 const char *const langFR[] PROGMEM = {FR_LANG_STR,FR_YES_STR,FR_NO_STR,FR_ON_STR, FR_OFF_STR, FR_Previous_STR, FR_Next_STR, FR_Delete_STR,FR_OK_STR, // Utils
                                       FR_Status_Title_STR, FR_StatusBtn_Error_STR, FR_MenuBtn_STR, // Status
@@ -105,7 +106,7 @@ const char *const langFR[] PROGMEM = {FR_LANG_STR,FR_YES_STR,FR_NO_STR,FR_ON_STR
                                       FR_Interface_Title_STR, FR_Interface_RefreshInterval_STR, FR_Interface_LanguageTitle_STR, FR_Interface_RotationTitle_STR, FR_Interface_RotationLandscape_STR, FR_Interface_RotationInvertedLandscape_STR, FR_Interface_CalibrationTitle_STR, FR_Interface_CalibrationStart_STR, FR_Interface_ResetTitle_STR, FR_Interface_ResetStart_STR, // Interface
                                       FR_Electricity_Title_STR, FR_Electricity_UVCurrent_STR, FR_Electricity_StartChargingVoltage_STR, FR_Electricity_StopChargingVoltage_STR, FR_Electricity_StartWorkingVoltage_STR, FR_Electricity_StopWorkingVoltage_STR, FR_Electricity_ACInverterFrequency_STR, FR_Electricity_ACAmmeterSensitivity_STR, FR_Electricity_ACAmmeterZero_STR, FR_Electricity_DCAmmeterSensitivity_STR, FR_Electricity_DCAmmeterZero_STR, // Electricity
                                       FR_Language_Title_STR, // Language
-                                      FR_ScreenNotImplementedError_STR // Error
+                                      FR_ScreenNotImplementedError_STR,FR_UpRangeValue_STR,FR_LowRangeValue_STR // Error
 
 }; // Follow the same order as enum StringIDs (Languages.h)
 
@@ -113,8 +114,10 @@ const char *const langFR[] PROGMEM = {FR_LANG_STR,FR_YES_STR,FR_NO_STR,FR_ON_STR
 // const char FR_XXX_PATH[] PROGMEM = "xxxx";
 
 const char FR_ResetPopUp_PATH[] PROGMEM = "/FR/Reset/PopUp.txt";
+const char FR_UpRange_PATH[] PROGMEM = "/FR/LowRange/Low.txt";
+const char FR_LowRange_PATH[] PROGMEM = "/FR/UpRange/Up.txt";
 
-const char *const pathFR[] PROGMEM = {FR_ResetPopUp_PATH}; // Follow the same order as enum PathIDs (Languages.h)
+const char *const pathFR[] PROGMEM = {FR_ResetPopUp_PATH,FR_UpRange_PATH,FR_LowRange_PATH}; // Follow the same order as enum PathIDs (Languages.h)
 
 
 #endif //H2O_GUI_FR_LANG_H

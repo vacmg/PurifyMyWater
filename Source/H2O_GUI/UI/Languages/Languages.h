@@ -17,7 +17,7 @@ enum StringIDs{Lang_STR = 0, YES_STR, NO_STR, ON_STR, OFF_STR, Previous_STR, Nex
     Interface_Title_STR, Interface_RefreshInterval_STR, Interface_LanguageTitle_STR, Interface_RotationTitle_STR, Interface_RotationLandscape_STR, Interface_RotationInvertedLandscape_STR, Interface_CalibrationTitle_STR, Interface_CalibrationStart_STR, Interface_ResetTitle_STR, Interface_ResetStart_STR, // Interface
     Electricity_Title_STR, Electricity_UVCurrent_STR, Electricity_StartChargingVoltage_STR, Electricity_StopChargingVoltage_STR, Electricity_StartWorkingVoltage_STR, Electricity_StopWorkingVoltage_STR, Electricity_ACInverterFrequency_STR, Electricity_ACAmmeterSensitivity_STR, Electricity_ACAmmeterZero_STR, Electricity_DCAmmeterSensitivity_STR, Electricity_DCAmmeterZero_STR, // Electricity
     Language_Title_STR, // Language
-    ScreenNotImplementedError_STR // Error
+    ScreenNotImplementedError_STR, UpRangeValue_STR,LowRangeValue_STR // Error
 };
 
 #include "EN_Lang.h"
@@ -34,7 +34,7 @@ char* getString(enum StringIDs stringId);
 // Returns the string identified by the id in the language selected by the specified language
 char* getString(enum StringIDs stringId, Languages language);
 
-enum PathIDs{ResetPopup_PATH};
+enum PathIDs{ResetPopup_PATH, UpRange_PATH, LowRange_PATH};
 
 const char* const* const paths[] PROGMEM = {pathEN, pathES, pathFR}; // Follow the same order as enum Languages (UI.h)
 

@@ -30,13 +30,13 @@ void drawError()
 
         case LowValueRange:
         {
-
+            drawOkPopup(getString(LowRangeValue_STR), getPath(LowRange_PATH), getString(OK_STR));
         }
             break;
 
         case UpValueRange:
         {
-
+            drawOkPopup(getString(UpRangeValue_STR), getPath(UpRange_PATH), getString(OK_STR));
         }
             break;
 
@@ -62,11 +62,13 @@ void clickError()
     }
     else if(btn1.isPressed() && currentError == LowValueRange)
     {
-
+        changeError(NoError);
+        changeScreenStatus(prevScreen);
     }
     else if(btn1.isPressed() && currentError == UpValueRange)
     {
-
+        changeError(NoError);
+        changeScreenStatus(prevScreen);
     }
 
 }
