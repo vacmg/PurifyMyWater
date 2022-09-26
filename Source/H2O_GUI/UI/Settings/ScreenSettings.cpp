@@ -56,6 +56,7 @@ void updateScreenConfig()
     EEPROM.put(4, screenConfig); // save screenConfig at position 4
     unsigned long crc = screenConfigCRC32();
     debug(F("Configuration saved to EEPROM\n"));
+    debugConfig();
     EEPROM.put(0, crc);
 #endif
 }
