@@ -14,7 +14,7 @@
 #include "../Shared/SharedData.h"
 #include "Settings/ScreenSettings.h"
 
-#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
+#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 #if SCREENHW == 35
 #define SCREEN35ROTATIONOFFSET 2
@@ -58,7 +58,7 @@
         LOADRESET,
         RESET,
     };
-enum ScreenStatus screenStatus = LOADSTATUS; // Must be initialized to BOOTING in order to show the splash screen
+enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show the splash screen
 
 
 #include "Languages/Languages.h"
@@ -132,7 +132,7 @@ char* rotationToString(enum Rotation rotation)
 
 #ifdef debugConfig()
 #undef debugConfig()
-#define debugConfig() printConfiguration(); debug(F("Rotation: ")); debug(rotationToString(screenConfig.ROTATION)); debug(F("\nLanguage: ")); debug(getString(Lang_STR)); debug('\n')
+#define debugConfig() printConfiguration(); debug(F("Rotation: ")); debug(rotationToString(screenConfig.ROTATION)); debug(F("\nLanguage: ")); debug(getString(Lang_STR)); debug(F("\n\n"))
 #endif
 #else
 
@@ -592,6 +592,7 @@ void UILoop()
 
         //case ENGINEERINGMODE:
     }
+    updateConfigLoop();
 }
 
 #endif //H2O_GUI_UI_H

@@ -6,18 +6,23 @@
 #define H2O_GUI_SCREENSETTINGS_H
 #include <EEPROM.h>
 
+#define SAVESCREENCONFIGDELAY 300000 // 5 min
+
 
 
 enum Rotation {LANDSCAPE = 1, INVERTED_LANDSCAPE = 3};
 enum Languages {ENGLISH = 0, SPANISH = 1, FRENCH = 2};
 
-typedef struct ScreenConfiguration {
+typedef struct ScreenConfiguration
+{
     enum Rotation ROTATION; // Current screen rotation
     enum Languages LANGUAGE; // current UI language
 } ScreenConfig;
 
 ScreenConfig screenConfig = {}; // ScreenConfiguration structure used to store current UI related config
 
+unsigned long saveScreenConfigMillis = 0;
+bool saveScreenConfigTimerEnabled = false;
 
 // This function set default screenConfig parameters
 void setDefaultScreenConfig();
@@ -32,6 +37,8 @@ bool readScreenConfig();
 // This function saves the current config to EEPROM with its respective CRC32 code to verify it later
 void updateScreenConfig();
 
+// This
+void updateConfigLoop();
 #include "ScreenSettings.cpp"
 
 #endif //H2O_GUI_SCREENSETTINGS_H

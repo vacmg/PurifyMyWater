@@ -13,7 +13,7 @@
 #define DISABLEHARDWARECHECKS true // Used to disable check routines to detect faulty hardware
 #define DISABLEPURIFICATION !true // Used to disable purification control systems
 #define DISABLETEMPERATURE true // Used to disable temperature control systems
-#define DISABLECOMM false // Used to disable GUI management & Communications
+#define DISABLECOMM true // Used to disable GUI management & Communications
 
 #define OVERRRIDEMAXVOLTAGE true // Used to check some functions without powering all the system
 #define SCREENALWAYSON true // Used to bypass screen sensor (screen sensor always report active (1))
