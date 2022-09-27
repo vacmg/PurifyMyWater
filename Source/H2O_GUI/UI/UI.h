@@ -132,7 +132,7 @@ char* rotationToString(enum Rotation rotation)
 
 #ifdef debugConfig()
 #undef debugConfig()
-#define debugConfig() printConfiguration(); debug(F("Rotation: ")); debug(rotationToString(screenConfig.ROTATION)); debug(F("\nLanguage: ")); debug(getString(Lang_STR)); debug('\n')
+#define debugConfig() printConfiguration(); debug(F("Rotation: ")); debug(rotationToString(screenConfig.ROTATION)); debug(F("\nLanguage: ")); debug(getString(Lang_STR)); debug(F("\n\n"))
 #endif
 #else
 

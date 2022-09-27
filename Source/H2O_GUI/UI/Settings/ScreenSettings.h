@@ -13,7 +13,8 @@
 enum Rotation {LANDSCAPE = 1, INVERTED_LANDSCAPE = 3};
 enum Languages {ENGLISH = 0, SPANISH = 1, FRENCH = 2};
 
-typedef struct ScreenConfiguration {
+typedef struct ScreenConfiguration
+{
     enum Rotation ROTATION; // Current screen rotation
     enum Languages LANGUAGE; // current UI language
 } ScreenConfig;
