@@ -180,11 +180,12 @@ RectangleButton signBtn(5, 95, 55, 145, Color(0, 0, 0), Color(255, 255, 255), &l
 //Global Variables End
 
 #include "Core/Core.h"
-#include "Screens/Screens.h"
 
 #if !DISABLECOMM
 #include "../MasterComHandlers/MasterComHandlers.h"
 #endif
+
+#include "Screens/Screens.h"
 
 
 void UISetup()
