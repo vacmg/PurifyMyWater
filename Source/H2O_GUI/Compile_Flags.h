@@ -8,10 +8,10 @@
 #define DEBUG true // Used to display debug information messages through Serial port
 
 #define DISABLEUI false  // Used to disable the UI screen module
-#define DISABLECOMM false // Used to disable communications module
+#define DISABLECOMM true // Used to disable communications module
 
-#define SETDEFAULTSCREENCONFIG false // Used to set the screenConfig to the default screenConfig
-#define USEVOLATILECONFIG true // Used to disable EEPROM writes due to saving configuration in the persistent storage
+#define SETDEFAULTSCREENCONFIG true // Used to set the screenConfig to the default screenConfig
+#define USEVOLATILECONFIG false // Used to disable EEPROM writes due to saving configuration in the persistent storage
 
 #if !DEBUG && (USEVOLATILECONFIG || SETDEFAULTSCREENCONFIG || DISABLEUI || DISABLECOMM)
 #undef DEBUG

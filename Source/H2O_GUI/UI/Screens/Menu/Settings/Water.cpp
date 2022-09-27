@@ -24,16 +24,17 @@ void clickWater()
                         debug(F("WELLPUMPTIMEOUT UPDATED: "));debug(configStorage.config.WELLPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.WELLPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
+                        changeScreenStatus(LOADPAGEWATER); // reload page with new config value
+                        drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+
                     }
                     else if(0 >= configStorage.config.WELLPUMPTIMEOUT)
                     {
-                        prevScreen = screenStatus;
+                        prevScreen = LOADPAGEWATER;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                 }
-                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
-                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
             case 2:
                 tempVal = getNumInput(getString(Water_FilterMaxTimeON_STR), F("s"), (double)configStorage.config.FILTERTIMEOUT/1000.0);
@@ -44,16 +45,17 @@ void clickWater()
                         debug(F("FILTERTIMEOUT UPDATED: "));debug(configStorage.config.FILTERTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.FILTERTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
+                        changeScreenStatus(LOADPAGEWATER); // reload page with new config value
+                        drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+
                     }
                     else if(0 >= configStorage.config.FILTERTIMEOUT)
                     {
-                        prevScreen = screenStatus;
+                        prevScreen = LOADPAGEWATER;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                 }
-                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
-                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
     }
@@ -70,16 +72,17 @@ void clickWater()
                         debug(F("UVPUMPTIMEOUT UPDATED: "));debug(configStorage.config.UVPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.UVPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
+                        changeScreenStatus(LOADPAGEWATER); // reload page with new config value
+                        drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+
                     }
                     else if(0 >= configStorage.config.UVPUMPTIMEOUT)
                     {
-                        prevScreen = screenStatus;
+                        prevScreen = LOADPAGEWATER;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                 }
-                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
-                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 2:
@@ -91,17 +94,17 @@ void clickWater()
                         debug(F("UVPUMPFLOW UPDATED: "));debug(configStorage.config.UVPUMPFLOW);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.UVPUMPFLOW = (float) tempVal;
                         // TODO send new setting
+                        changeScreenStatus(LOADPAGEWATER); // reload page with new config value
+                        drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                     }
                     else if( tempVal < 0)
                     {
-                        prevScreen = screenStatus;
+                        prevScreen = LOADPAGEWATER;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
 
                 }
-                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
-                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
     }
@@ -118,16 +121,16 @@ void clickWater()
                         debug(F("ENDPUMPTIMEOUT UPDATED: "));debug(configStorage.config.ENDPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.ENDPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
+                        changeScreenStatus(LOADPAGEWATER); // reload page with new config value
+                        drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                     }
                     else if(0 >= configStorage.config.ENDPUMPTIMEOUT)
                     {
-                        prevScreen = screenStatus;
+                        prevScreen = LOADPAGEWATER;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                 }
-                changeScreenStatus(LOADPAGEWATER); // reload page with new config value
-                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
         }
     }

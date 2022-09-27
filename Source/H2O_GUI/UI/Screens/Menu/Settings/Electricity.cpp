@@ -16,6 +16,7 @@ void clickElectricity()
         switch (page)
         {
             case 1: // Start charging voltage
+                debug(F("STOPWORKINGVOLTAGE: "));debug(configStorage.config.STOPWORKINGVOLTAGE);debug(F("--> STOPCHARGINGVOLTAGE: "));debug(configStorage.config.STOPCHARGINGVOLTAGE);
                 tempVal = getNumInput(getString(Electricity_StartChargingVoltage_STR), F("V"), configStorage.config.STARTCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
@@ -24,51 +25,59 @@ void clickElectricity()
                         debug(F("STARTCHARGINGVOLTAGE UPDATED: "));debug(configStorage.config.STARTCHARGINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.STARTCHARGINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
+                        changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                        drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                     }
                     else if(tempVal <= configStorage.config.STOPWORKINGVOLTAGE )
                     {
-                        prevScreen = screenStatus;
+                        debug(F("Low Value error Start Charging Voltage"));
+                        prevScreen = LOADPAGEELECTRICITY;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
+
                     }
                     else if(tempVal >= configStorage.config.STOPCHARGINGVOLTAGE)
                     {
-                        prevScreen = screenStatus;
+                        debug(F("Up Value error Start Charging Voltage"));
+                        prevScreen = LOADPAGEELECTRICITY;
                         changeError(UpValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                 }
-                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
-                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 2: //page 2
+                debug(F("STARTCHARGINGVOLTAGE: "));debug(configStorage.config.STARTCHARGINGVOLTAGE);debug(F("--> STOPCHARGINGVOLTAGE: "));debug(configStorage.config.STOPCHARGINGVOLTAGE);
                 tempVal = getNumInput(getString(Electricity_StartWorkingVoltage_STR), F("V"), configStorage.config.STARTWORKINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                     if (configStorage.config.STARTCHARGINGVOLTAGE < tempVal && tempVal < configStorage.config.STOPCHARGINGVOLTAGE)// STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
                     {
+                        debug(F("STOPCHARGINGVOLTAGE: ")); debug(configStorage.config.STOPCHARGINGVOLTAGE);
                         debug(F("STARTWORKINGVOLTAGE UPDATED: "));debug(configStorage.config.STARTWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.STARTWORKINGVOLTAGE = (float)tempVal;
+
                         // TODO send new setting
+                        changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                        drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                     }
 
                     else if(tempVal <=  configStorage.config.STARTCHARGINGVOLTAGE)
                     {
-                        prevScreen = screenStatus;
+                        debug(F("Low Value error Start Charging Voltage"));
+                        prevScreen = LOADPAGEELECTRICITY;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= configStorage.config.STOPCHARGINGVOLTAGE)
                     {
-                        prevScreen = screenStatus;
+                        debug(F("Up Value error Start Charging Voltage"));
+                        prevScreen = LOADPAGEELECTRICITY;
                         changeError(UpValueRange);
                         changeScreenStatus(LOADERROR);
                     }
 
                 }
-                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
-                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 3:
@@ -102,6 +111,7 @@ void clickElectricity()
         switch (page)
         {
             case 1:
+                debug(F("STARTCHARGINGVOLTAGE+1: "));debug(configStorage.config.STARTCHARGINGVOLTAGE +1);debug(F("--> MAXCAPACITORSALLOWEDVOLTAGE: "));debug(MAXCAPACITORSALLOWEDVOLTAGE);
                 tempVal = getNumInput(getString(Electricity_StopChargingVoltage_STR), F("V"), configStorage.config.STOPCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
@@ -110,25 +120,29 @@ void clickElectricity()
                         debug(F("STOPCHARGINGVOLTAGE UPDATED: "));debug(configStorage.config.STOPCHARGINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.STOPCHARGINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
+                        changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                        drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+
                     }
                     else if(tempVal <=  configStorage.config.STARTCHARGINGVOLTAGE + 1)
                     {
-                        prevScreen = screenStatus;
+                        debug(F("Low Value error Start Charging Voltage"));
+                        prevScreen = LOADPAGEELECTRICITY;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= MAXCAPACITORSALLOWEDVOLTAGE)
                     {
-                        prevScreen = screenStatus;
+                        debug(F("Up Value error Start Charging Voltage"));
+                        prevScreen = LOADPAGEELECTRICITY;
                         changeError(UpValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                 }
-                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
-                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 2:
+                debug(F("MINSYSTEMALLOWEDVOLTAGE: "));debug(MINSYSTEMALLOWEDVOLTAGE);debug(F("--> STARTCHARGINGVOLTAGE -1: "));debug(configStorage.config.STARTCHARGINGVOLTAGE -1);
                 tempVal = getNumInput(getString(Electricity_StopWorkingVoltage_STR), F("V"), configStorage.config.STOPWORKINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
@@ -137,22 +151,25 @@ void clickElectricity()
                         debug(F("STOPWORKINGVOLTAGE UPDATED: "));debug(configStorage.config.STOPWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.STOPWORKINGVOLTAGE = (float)tempVal;
                         // TODO send new setting
+                        changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                        drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+
                     }
                     else if(tempVal <=  MINSYSTEMALLOWEDVOLTAGE)
                     {
-                        prevScreen = screenStatus;
+                        debug(F("Low Value error Start Charging Voltage"));
+                        prevScreen = LOADPAGEELECTRICITY;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= configStorage.config.STARTCHARGINGVOLTAGE - 1)
                     {
-                        prevScreen = screenStatus;
+                        debug(F("Up Value error Start Charging Voltage"));
+                        prevScreen = LOADPAGEELECTRICITY;
                         changeError(UpValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                 }
-                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
-                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 3:
@@ -173,6 +190,7 @@ void clickElectricity()
         switch (page)
         {
             case 1:
+                debug(F("-->"));debug(F("MAXUVAMPERAGE: "));debug(MAXUVAMPERAGE);
                 tempVal = getNumInput(getString(Electricity_UVCurrent_STR), F("A"), configStorage.config.ESTIMATEDUVAMPERAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
@@ -181,25 +199,28 @@ void clickElectricity()
                         debug(F("ESTIMATEDUVAMPERAGE UPDATED: "));debug(configStorage.config.ESTIMATEDUVAMPERAGE);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.ESTIMATEDUVAMPERAGE = (float)tempVal;
                         // TODO send new setting
+                        changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                        drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                     }
                     else if(tempVal <=  0)
                     {
-                        prevScreen = screenStatus;
+                        debug(F("Low Value error Start Charging Voltage"));
+                        prevScreen = LOADPAGEELECTRICITY;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= MAXUVAMPERAGE)
                     {
-                        prevScreen = screenStatus;
+                        debug(F("Up Value error Start Charging Voltage"));
+                        prevScreen = LOADPAGEELECTRICITY;
                         changeError(UpValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                 }
-                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
-                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 2:
+                debug(F("50: "));debug(F("--> 60: "));
                 tempVal = getNumInput(getString(Electricity_ACInverterFrequency_STR), F("Hz"), configStorage.config.ACFREQUENCY);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
@@ -208,22 +229,25 @@ void clickElectricity()
                         debug(F("ACFREQUENCY UPDATED: "));debug(configStorage.config.ACFREQUENCY);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.ACFREQUENCY = (byte)tempVal;
                         // TODO send new setting
+                        changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
+                        drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
+
                     }
                     else if(tempVal <=  50)
                     {
-                        prevScreen = screenStatus;
+                        debug(F("Low Value error Start Charging Voltage"));
+                        prevScreen = LOADPAGEELECTRICITY;
                         changeError(LowValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= 60)
                     {
-                        prevScreen = screenStatus;
+                        debug(F("Up Value error Start Charging Voltage"));
+                        prevScreen = LOADPAGEELECTRICITY;
                         changeError(UpValueRange);
                         changeScreenStatus(LOADERROR);
                     }
                 }
-                changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
-                drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                 break;
 
             case 3:

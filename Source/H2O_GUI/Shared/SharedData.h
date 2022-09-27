@@ -254,8 +254,10 @@ void setDefaultConfig()
     const char errorDestinationMCUNotRespondingError_STR[] PROGMEM = "DestinationMCUNotRespondingError";
     const char errorGUICannotSafelyShutdownError_STR[] PROGMEM = "GUICannotSafelyShutdownError";
     const char errorScreenNotImplementedError_STR[] PROGMEM = "ScreenNotImplementedError";
+    const char errorUpValueRange_STR[] PROGMEM = "UpValueRange";
+    const char errorLowValueRange_STR[] PROGMEM = "LowValueRange";
 
-    const char *const debugErrorsTable[] PROGMEM = {errorNoError_STR, errorBuoyIncongruenceError_STR, errorPumpTimeoutError_STR, errorUVLightNotWorkingError_STR, errorScreenNotConnectedError_STR, errorTempSensorsAmountError_STR, errorHotTempError_STR, errorHandshakeError_STR, errorMCUsIncompatibleVersionError_STR, errorDestinationMCUNotRespondingError_STR, errorGUICannotSafelyShutdownError_STR, errorScreenNotImplementedError_STR};
+    const char *const debugErrorsTable[] PROGMEM = {errorNoError_STR, errorBuoyIncongruenceError_STR, errorPumpTimeoutError_STR, errorUVLightNotWorkingError_STR, errorScreenNotConnectedError_STR, errorTempSensorsAmountError_STR, errorHotTempError_STR, errorHandshakeError_STR, errorMCUsIncompatibleVersionError_STR, errorDestinationMCUNotRespondingError_STR, errorGUICannotSafelyShutdownError_STR, errorScreenNotImplementedError_STR,errorUpValueRange_STR,errorLowValueRange_STR};
 
     char* errorToString(enum Errors error)
     {

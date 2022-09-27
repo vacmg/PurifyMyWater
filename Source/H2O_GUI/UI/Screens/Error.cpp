@@ -64,11 +64,13 @@ void clickError()
     {
         changeError(NoError);
         changeScreenStatus(prevScreen);
+        drawBackground();
     }
     else if(btn1.isPressed() && currentError == UpValueRange)
     {
         changeError(NoError);
         changeScreenStatus(prevScreen);
+        drawBackground();
     }
 
 }
