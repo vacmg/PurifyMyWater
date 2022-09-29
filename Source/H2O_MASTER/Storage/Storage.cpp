@@ -48,6 +48,18 @@ void updateConfig()
 #if !USEVOLATILECONFIG
     EEPROM.put(4, configStorage.config);
     unsigned long crc = configCRC32();
+    debug(F("Configuration saved to EEPROM\n"));
+    debugConfig();
     EEPROM.put(0, crc);
 #endif
+}
+
+// This function checks if enough time has passed since last time config was changed
+void updateConfigLoop()
+{
+    if(saveConfigTimerEnabled && saveConfigMillis+SAVECONFIGDELAY<millis())
+    {
+        saveConfigTimerEnabled = false;
+        updateConfig();
+    }
 }

@@ -37,7 +37,7 @@ bool readScreenConfig();
 // This function saves the current config to EEPROM with its respective CRC32 code to verify it later
 void updateScreenConfig();
 
-// This
+// This function checks if enough time has passed since last time config was changed
 void updateConfigLoop();
 #include "ScreenSettings.cpp"
 

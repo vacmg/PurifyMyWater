@@ -61,7 +61,7 @@ void updateScreenConfig()
 #endif
 }
 
-// This
+// This function checks if enough time has passed since last time config was changed
 void updateConfigLoop()
 {
     if(saveScreenConfigTimerEnabled && saveScreenConfigMillis+SAVESCREENCONFIGDELAY<millis())
