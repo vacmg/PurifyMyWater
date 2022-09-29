@@ -14,6 +14,7 @@
 #define DISABLEPURIFICATION true // Used to disable purification control systems
 #define DISABLETEMPERATURE true // Used to disable temperature control systems
 #define DISABLECOMM false // Used to disable GUI management & Communications
+#define DISABLESENDVOLTAGE true // Used to disable sending the current voltage to the GUI
 
 #define OVERRRIDEMAXVOLTAGE true // Used to check some functions without powering all the system
 #define SCREENALWAYSON true // Used to bypass screen sensor (screen sensor always report active (1))

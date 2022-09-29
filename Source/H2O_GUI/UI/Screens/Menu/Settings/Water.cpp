@@ -19,6 +19,7 @@ void clickWater()
                 tempVal = getNumInput(getString(Water_WellPumpMaxTimeON_STR), F("s"), (double)configStorage.config.WELLPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
+                    tempVal = (tempVal * 1000);
                     if (0 < configStorage.config.WELLPUMPTIMEOUT)// 0 < WELLPUMPTIMEOUT
                     {
                     #if !DISABLECOMM
@@ -28,7 +29,7 @@ void clickWater()
                         {
                     #endif
                             debug(F("WELLPUMPTIMEOUT UPDATED: "));debug(configStorage.config.WELLPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
-                            configStorage.config.WELLPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
+                            configStorage.config.WELLPUMPTIMEOUT = (unsigned long)tempVal;
                     #if !DISABLECOMM
                         }
                         else
@@ -45,6 +46,7 @@ void clickWater()
                 tempVal = getNumInput(getString(Water_FilterMaxTimeON_STR), F("s"), (double)configStorage.config.FILTERTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
+                    tempVal = (tempVal * 1000);
                     if (0 < configStorage.config.FILTERTIMEOUT)// 0 < FILTERTIMEOUT
                     {
                     #if !DISABLECOMM
@@ -54,7 +56,7 @@ void clickWater()
                         {
                     #endif
                             debug(F("FILTERTIMEOUT UPDATED: "));debug(configStorage.config.FILTERTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
-                            configStorage.config.FILTERTIMEOUT = (unsigned long)(tempVal * 1000);
+                            configStorage.config.FILTERTIMEOUT = (unsigned long)tempVal;
                     #if !DISABLECOMM
                         }
                         else
@@ -77,6 +79,7 @@ void clickWater()
                 tempVal = getNumInput(getString(Water_UVPumpMaxTimeON_STR), F("s"), (double)configStorage.config.UVPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
+                    tempVal = (tempVal * 1000);
                     if (0 < configStorage.config.UVPUMPTIMEOUT)// 0 < UVPUMPTIMEOUT
                     {
                     #if !DISABLECOMM
@@ -86,7 +89,7 @@ void clickWater()
                         {
                     #endif
                             debug(F("UVPUMPTIMEOUT UPDATED: "));debug(configStorage.config.UVPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
-                            configStorage.config.UVPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
+                            configStorage.config.UVPUMPTIMEOUT = (unsigned long)tempVal;
                     #if !DISABLECOMM
                         }
                         else
@@ -137,6 +140,7 @@ void clickWater()
                 tempVal = getNumInput(getString(Water_EndPumpMaxTimeON_STR), F("s"), (double)configStorage.config.ENDPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
+                    tempVal = (tempVal * 1000);
                     if (0 < configStorage.config.ENDPUMPTIMEOUT)// 0 < ENDPUMPTIMEOUT
                     {
                     #if !DISABLECOMM
@@ -146,7 +150,7 @@ void clickWater()
                         {
                     #endif
                             debug(F("ENDPUMPTIMEOUT UPDATED: "));debug(configStorage.config.ENDPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
-                            configStorage.config.ENDPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
+                            configStorage.config.ENDPUMPTIMEOUT = (unsigned long)tempVal;
                     #if !DISABLECOMM
                         }
                         else

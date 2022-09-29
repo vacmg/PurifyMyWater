@@ -174,7 +174,7 @@ void coreSetup()
     debug(F("Setup - Core - I/O ready\n"));
 }
 
-#if !DISABLECOMM
+#if !DISABLECOMM && !DISABLESENDVOLTAGE
 void sendVoltage()
 {
     if (sendVoltageMillis + configStorage.config.DATAREFRESHPERIOD < millis())
@@ -197,7 +197,7 @@ void coreLoop()
 #if !DISABLEHARDWARECHECKS
     errorCheck();
 #endif
-#if !DISABLECOMM
+#if !DISABLECOMM && !DISABLESENDVOLTAGE
     sendVoltage();
 #endif
     updateAnimation();
