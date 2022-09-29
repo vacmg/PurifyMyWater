@@ -14,7 +14,7 @@
 #include "../Shared/SharedData.h"
 #include "Settings/ScreenSettings.h"
 
-#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
+#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 #if SCREENHW == 35
 #define SCREEN35ROTATIONOFFSET 2
@@ -65,8 +65,7 @@ enum ScreenStatus screenStatus = LOADSTATUS; // Must be initialized to BOOTING i
 #include "Languages/Languages.h"
 
 #if SCREENHW == 35
-TouchScreenObject ts(9, A2, A3, 8, 300, 320, 480, (screenConfig.ROTATION + SCREEN35ROTATIONOFFSET) % 4, 177, 900, 157,
-                     958); // for 3.5inch
+TouchScreenObject ts(9, A2, A3, 8, 300, 320, 480, (screenConfig.ROTATION + SCREEN35ROTATIONOFFSET) % 4, 177, 900, 157,958); // for 3.5inch
 #elif SCREENHW == 39
 TouchScreenObject ts(8,A3,A2,9,300,320,480,screenConfig.ROTATION,924,111,58,935); // rx is the resistance between X+ and X- Use any multimeter to read it or leave it blanc
 #endif
@@ -594,6 +593,7 @@ void UILoop()
 
         case SCREENCALIBRATION:
             loopCalibration();
+            changeScreenStatus(LOADINTERFACE);
         break;
 
         //case ENGINEERINGMODE:

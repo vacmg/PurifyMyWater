@@ -9,7 +9,7 @@
 #include <LCDWIKI_GUI.h> //Core graphics library
 #include <LCDWIKI_KBV.h> //Hardware-specific library
 
-#define TOUCH_ORIENTATION  3
+#define TOUCH_ORIENTATION  screenConfig.ROTATION
 #define TITLE "TouchScreen.h Calibration"
 #define MEGA true
 
@@ -71,18 +71,14 @@ char buf[13];
 
 void calibrationSetup()
 {
-    Serial.begin(9600);
-    Serial.println(TITLE);
     digitalWrite(A0, HIGH);
     pinMode(A0, OUTPUT);
 #if MEGA
-    pinMode(13,INPUT);
+    pinMode(13,INPUT); // TODO revertir pinout
     pinMode(12,INPUT);
     pinMode(11,INPUT);
     pinMode(10,INPUT);
 #endif
-    my_lcd.Init_LCD();
-    my_lcd.Set_Rotation(TOUCH_ORIENTATION);
     my_lcd.Fill_Screen(BLACK);
     dispx = my_lcd.Get_Display_Width();
     dispy = my_lcd.Get_Display_Height();
@@ -159,8 +155,8 @@ void calibrate(int x, int y, int i)
     drawCrossHair(x, y,0x528A);
     rx[i] = cx;
     ry[i] = cy;
-    //Serial.print("\r\ncx="); Serial.print(cx);
-    //Serial.print(" cy="); Serial.print(cy);
+    Serial.print("\r\ncx="); Serial.print(cx);
+    Serial.print(" cy="); Serial.print(cy);
     while (is_pressed() == true) {}
 }
 
@@ -214,7 +210,7 @@ void done()
     show_string(TITLE,CENTER,1,1,WHITE, BLACK,1);
     my_lcd.Print_String("To use the new calibration", LEFT, 30);
     my_lcd.Print_String("settings you must map the values", LEFT, 42);
-    my_lcd.Print_String("from Point p = ts.getPoint() e.g. ", LEFT, 54);
+    my_lcd.Print_String("from Point p = mytouch.getPoint() e.g. ", LEFT, 54);
     my_lcd.Print_String("x = map(p.x, LEFT, RT, 0, lcd.width());", LEFT, 66);
     my_lcd.Print_String("y = map(p.y, TOP, BOT, 0, lcd.height());", LEFT, 78);
     my_lcd.Print_String("swap p.x and p.y if diff ORIENTATION", LEFT, 90);
@@ -256,6 +252,21 @@ void done()
     my_lcd.Print_String("Touch Pin Wiring is ", 0, 222);
     my_lcd.Print_String((cals >> 31) ? "SWAPXY" : "PORTRAIT", 170, 222);
 
+#if SCREENHW == 39
+    ts.setCalibration(TS_LEFT,TS_RT, TS_BOT,TS_TOP);
+#elif SCREENHW == 35
+    ts.setCalibration(TS_RT,TS_LEFT, TS_BOT,TS_TOP);
+#endif
+
+    debug('\n');
+    debugStatement(TS_LEFT);
+    debug('\n');
+    debugStatement(TS_RT);
+    debug('\n');
+    debugStatement(TS_TOP);
+    debug('\n');
+    debugStatement(TS_BOT);
+    debug('\n');
 }
 
 void fail() {
@@ -275,7 +286,6 @@ void fail() {
     my_lcd.Print_String("check YP, YM pins with a multimeter", LEFT, 114);
     my_lcd.Print_String("should be about 300 ohms", LEFT, 126);
 
-    while (true) {};
 }
 
 void loopCalibration()

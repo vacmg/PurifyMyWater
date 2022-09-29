@@ -136,3 +136,11 @@ bool TouchScreenObject::isXAxisInverted()
 {
     return xAxisInverted;
 }
+
+void TouchScreenObject::setCalibration(int CAL_LEFT, int CAL_RIGHT, int CAL_TOP, int CAL_BOT)
+{
+    this->CAL_LEFT = CAL_LEFT;
+    this->CAL_RIGHT = CAL_RIGHT;
+    this->CAL_TOP = CAL_TOP;
+    this->CAL_BOT = CAL_BOT;
+}

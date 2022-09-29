@@ -19,6 +19,7 @@ public:
     bool isXAxisInverted();
     int getRotation();
     void setRotation(int rotation);
+    void setCalibration(int CAL_LEFT, int CAL_RIGHT, int CAL_TOP, int CAL_BOT);
 
 private:
     int CAL_LEFT;
