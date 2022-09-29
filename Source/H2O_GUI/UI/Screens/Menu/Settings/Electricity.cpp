@@ -21,9 +21,21 @@ void clickElectricity()
                 {
                     if (configStorage.config.STOPWORKINGVOLTAGE < tempVal && tempVal < configStorage.config.STOPCHARGINGVOLTAGE)
                     {
-                        debug(F("STARTCHARGINGVOLTAGE UPDATED: "));debug(configStorage.config.STARTCHARGINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
-                        configStorage.config.STARTCHARGINGVOLTAGE = (float)tempVal;
-                        // TODO send new setting
+                    #if !DISABLECOMM
+                        char payload[10];
+                        Communications::createSendMessage(payload, STARTCHARGINGVOLTAGE_ID, String(tempVal).c_str());
+                        if (masterComManager.sendMessage(payload))
+                        {
+                    #endif
+                            debug(F("STARTCHARGINGVOLTAGE UPDATED: "));debug(configStorage.config.STARTCHARGINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                            configStorage.config.STARTCHARGINGVOLTAGE = (float) tempVal;
+                    #if !DISABLECOMM
+                        }
+                        else
+                        {
+                            debug(F("ERROR: Could not send the STARTCHARGINGVOLTAGE update")); // TODO: error message
+                        }
+                    #endif
                     }
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
@@ -36,9 +48,21 @@ void clickElectricity()
                 {
                     if (configStorage.config.STARTCHARGINGVOLTAGE < tempVal && tempVal < configStorage.config.STOPCHARGINGVOLTAGE)// STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
                     {
-                        debug(F("STARTWORKINGVOLTAGE UPDATED: "));debug(configStorage.config.STARTWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
-                        configStorage.config.STARTWORKINGVOLTAGE = (float)tempVal;
-                        // TODO send new setting
+                    #if !DISABLECOMM
+                        char payload[10];
+                        Communications::createSendMessage(payload, STARTWORKINGVOLTAGE_ID, String(tempVal).c_str());
+                        if (masterComManager.sendMessage(payload))
+                        {
+                    #endif
+                            debug(F("STARTWORKINGVOLTAGE UPDATED: "));debug(configStorage.config.STARTWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                            configStorage.config.STARTWORKINGVOLTAGE = (float)tempVal;
+                    #if !DISABLECOMM
+                        }
+                        else
+                        {
+                            debug(F("ERROR: Could not send the STARTWORKINGVOLTAGE update")); // TODO: error message
+                        }
+                    #endif
                     }
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
@@ -49,9 +73,21 @@ void clickElectricity()
                 tempVal = getNumInput(getString(Electricity_ACAmmeterSensitivity_STR), F(""), configStorage.config.ACAMMSENSITIVITY,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(F("ACAMMSENSITIVITY UPDATED: "));debug(configStorage.config.ACAMMSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
-                    configStorage.config.ACAMMSENSITIVITY = tempVal;
-                    // TODO send new setting
+                #if !DISABLECOMM
+                    char payload[10];
+                    Communications::createSendMessage(payload, ACAMMSENSITIVITY_ID, String(tempVal).c_str());
+                    if (masterComManager.sendMessage(payload))
+                    {
+                #endif
+                        debug(F("ACAMMSENSITIVITY UPDATED: "));debug(configStorage.config.ACAMMSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
+                        configStorage.config.ACAMMSENSITIVITY = tempVal;
+                #if !DISABLECOMM
+                    }
+                    else
+                    {
+                        debug(F("ERROR: Could not send the ACAMMSENSITIVITY update")); // TODO: error message
+                    }
+                #endif
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
@@ -61,9 +97,21 @@ void clickElectricity()
                 tempVal = getNumInput(getString(Electricity_DCAmmeterZero_STR), F(""), configStorage.config.DCAMMZERO,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(F(" UPDATED: DCAMMZERO"));debug(configStorage.config.DCAMMZERO);debug(F(" --> "));debug(tempVal);debug('\n');
-                    configStorage.config.DCAMMZERO = tempVal;
-                    // TODO send new setting
+                #if !DISABLECOMM
+                    char payload[10];
+                    Communications::createSendMessage(payload, DCAMMZERO_ID, String(tempVal).c_str());
+                    if (masterComManager.sendMessage(payload))
+                    {
+                #endif
+                        debug(F(" UPDATED: DCAMMZERO"));debug(configStorage.config.DCAMMZERO);debug(F(" --> "));debug(tempVal);debug('\n');
+                        configStorage.config.DCAMMZERO = tempVal;
+                #if !DISABLECOMM
+                    }
+                    else
+                    {
+                        debug(F("ERROR: Could not send the DCAMMZERO update")); // TODO: error message
+                    }
+                #endif
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
@@ -81,9 +129,21 @@ void clickElectricity()
                 {
                     if (configStorage.config.STARTCHARGINGVOLTAGE + 1 < tempVal && tempVal <MAXCAPACITORSALLOWEDVOLTAGE)// STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE
                     {
-                        debug(F("STOPCHARGINGVOLTAGE UPDATED: "));debug(configStorage.config.STOPCHARGINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
-                        configStorage.config.STOPCHARGINGVOLTAGE = (float)tempVal;
-                        // TODO send new setting
+                    #if !DISABLECOMM
+                        char payload[10];
+                        Communications::createSendMessage(payload, STOPCHARGINGVOLTAGE_ID, String(tempVal).c_str());
+                        if (masterComManager.sendMessage(payload))
+                        {
+                    #endif
+                            debug(F("STOPCHARGINGVOLTAGE UPDATED: "));debug(configStorage.config.STOPCHARGINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                            configStorage.config.STOPCHARGINGVOLTAGE = (float)tempVal;
+                    #if !DISABLECOMM
+                        }
+                        else
+                        {
+                            debug(F("ERROR: Could not send the STOPCHARGINGVOLTAGE update")); // TODO: error message
+                        }
+                    #endif
                     }
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
@@ -96,9 +156,21 @@ void clickElectricity()
                 {
                     if (MINSYSTEMALLOWEDVOLTAGE < tempVal && tempVal < configStorage.config.STARTCHARGINGVOLTAGE - 1)// MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1
                     {
-                        debug(F("STOPWORKINGVOLTAGE UPDATED: "));debug(configStorage.config.STOPWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
-                        configStorage.config.STOPWORKINGVOLTAGE = (float)tempVal;
-                        // TODO send new setting
+                    #if !DISABLECOMM
+                        char payload[10];
+                        Communications::createSendMessage(payload, STOPWORKINGVOLTAGE_ID, String(tempVal).c_str());
+                        if (masterComManager.sendMessage(payload))
+                        {
+                    #endif
+                            debug(F("STOPWORKINGVOLTAGE UPDATED: "));debug(configStorage.config.STOPWORKINGVOLTAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                            configStorage.config.STOPWORKINGVOLTAGE = (float)tempVal;
+                    #if !DISABLECOMM
+                        }
+                        else
+                        {
+                            debug(F("ERROR: Could not send the STOPWORKINGVOLTAGE update")); // TODO: error message
+                        }
+                    #endif
                     }
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
@@ -109,9 +181,21 @@ void clickElectricity()
                 tempVal = getNumInput(getString(Electricity_ACAmmeterZero_STR), F(""), configStorage.config.ACAMMZERO,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(F("ACAMMZERO UPDATED: "));debug(configStorage.config.ACAMMZERO);debug(F(" --> "));debug(tempVal);debug('\n');
-                    configStorage.config.ACAMMZERO = tempVal;
-                    // TODO send new setting
+                #if !DISABLECOMM
+                    char payload[10];
+                    Communications::createSendMessage(payload, ACAMMZERO_ID, String(tempVal).c_str());
+                    if (masterComManager.sendMessage(payload))
+                    {
+                #endif
+                        debug(F("ACAMMZERO UPDATED: "));debug(configStorage.config.ACAMMZERO);debug(F(" --> "));debug(tempVal);debug('\n');
+                        configStorage.config.ACAMMZERO = tempVal;
+                #if !DISABLECOMM
+                    }
+                    else
+                    {
+                        debug(F("ERROR: Could not send the ACAMMZERO update")); // TODO: error message
+                    }
+                #endif
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
@@ -128,9 +212,21 @@ void clickElectricity()
                 {
                     if (0 < tempVal && tempVal < MAXUVAMPERAGE)//0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE
                     {
-                        debug(F("ESTIMATEDUVAMPERAGE UPDATED: "));debug(configStorage.config.ESTIMATEDUVAMPERAGE);debug(F(" --> "));debug(tempVal);debug('\n');
-                        configStorage.config.ESTIMATEDUVAMPERAGE = (float)tempVal;
-                        // TODO send new setting
+                    #if !DISABLECOMM
+                        char payload[10];
+                        Communications::createSendMessage(payload, ESTIMATEDUVAMPERAGE_ID, String(tempVal).c_str());
+                        if (masterComManager.sendMessage(payload))
+                        {
+                    #endif
+                            debug(F("ESTIMATEDUVAMPERAGE UPDATED: "));debug(configStorage.config.ESTIMATEDUVAMPERAGE);debug(F(" --> "));debug(tempVal);debug('\n');
+                            configStorage.config.ESTIMATEDUVAMPERAGE = (float)tempVal;
+                    #if !DISABLECOMM
+                        }
+                        else
+                        {
+                            debug(F("ERROR: Could not send the ESTIMATEDUVAMPERAGE update")); // TODO: error message
+                        }
+                    #endif
                     }
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
@@ -143,9 +239,21 @@ void clickElectricity()
                 {
                     if (50 < tempVal && tempVal < 60)// 50 <= ACFREQUENCY <= 60
                     {
-                        debug(F("ACFREQUENCY UPDATED: "));debug(configStorage.config.ACFREQUENCY);debug(F(" --> "));debug(tempVal);debug('\n');
-                        configStorage.config.ACFREQUENCY = (byte)tempVal;
-                        // TODO send new setting
+                    #if !DISABLECOMM
+                        char payload[10];
+                        Communications::createSendMessage(payload, ACFREQUENCY_ID, String(tempVal).c_str());
+                        if (masterComManager.sendMessage(payload))
+                        {
+                    #endif
+                            debug(F("ACFREQUENCY UPDATED: "));debug(configStorage.config.ACFREQUENCY);debug(F(" --> "));debug(tempVal);debug('\n');
+                            configStorage.config.ACFREQUENCY = (byte)tempVal;
+                    #if !DISABLECOMM
+                        }
+                        else
+                        {
+                            debug(F("ERROR: Could not send the ACFREQUENCY update")); // TODO: error message
+                        }
+                    #endif
                     }
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
@@ -156,9 +264,21 @@ void clickElectricity()
                 tempVal = getNumInput(getString(Electricity_DCAmmeterSensitivity_STR), F(""), configStorage.config.DCAMMSENSITIVITY,4);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    debug(F("DCAMMSENSITIVITY UPDATED: "));debug(configStorage.config.DCAMMSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
-                    configStorage.config.DCAMMSENSITIVITY = tempVal;
-                    // TODO send new setting
+                #if !DISABLECOMM
+                    char payload[10];
+                    Communications::createSendMessage(payload, DCAMMSENSITIVITY_ID, String(tempVal).c_str());
+                    if (masterComManager.sendMessage(payload))
+                    {
+                #endif
+                        debug(F("DCAMMSENSITIVITY UPDATED: "));debug(configStorage.config.DCAMMSENSITIVITY);debug(F(" --> "));debug(tempVal);debug('\n');
+                        configStorage.config.DCAMMSENSITIVITY = tempVal;
+                #if !DISABLECOMM
+                    }
+                    else
+                    {
+                        debug(F("ERROR: Could not send the DCAMMSENSITIVITY update")); // TODO: error message
+                    }
+                #endif
                 }
                 changeScreenStatus(LOADPAGEELECTRICITY); // reload page with new config value
                 drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
