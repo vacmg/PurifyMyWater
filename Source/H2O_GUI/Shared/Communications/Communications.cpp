@@ -130,8 +130,9 @@ bool Communications::sendBlobMessage(char *payload, enum VariableIDs variableID,
         memcpy(&payload[4], &blob[actual_byte], MAXBLOBSIZE*sizeof(char));
         if(!sendMessage(payload, strlen(payload), serial))
             return false;
-        actual_byte += MAXBLOBSIZE; // TODO crear una constante para esto
+        actual_byte += MAXBLOBSIZE;
     }
+    debug(F("payload sent: "));debug(payload);debug('\n');
     return true;
 }
 
@@ -146,15 +147,11 @@ bool Communications::extractSendBlobMessage(char *value, enum VariableIDs *varia
     *variableID = (enum VariableIDs)value[0]; // variableID
     *blobSize = value[1]; // blobSize
     *currentByte = value[2]; // currentByte
+    debug(F("variables extracted:")); debug('\n');
+    debug(F("variableID -> ")); debug(*variableID); debug('\n');
+    debug(F("blobSize -> ")); debug(*blobSize); debug('\n');
+    debug(F("currentByte -> ")); debug(*currentByte); debug('\n');
     return true;
-}
-
-bool Communications::extractBlobMessage(char *value, enum VariableIDs *variableID)
-{
-    byte *blobSize;
-    byte *currentByte;
-    
-    while ()
 }
 
 //-----------------------------------------------------------------------
