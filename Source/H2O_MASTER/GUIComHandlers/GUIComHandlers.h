@@ -59,6 +59,7 @@ ComManager guiComManager(&Serial1, nullptr, nullptr, nullptr);
 #define sendGUIMessage(payload) (guiStatus == GUI_CONNECTED_ST) && guiComManager.sendMessage(payload)
 
 #include "../SystemControl/Core/Core.h"
+#include "../Storage/Storage.h"
 
 #include "Handlers/sendMessageHandler.h"
 #include "Handlers/requestMessageHandler.h"

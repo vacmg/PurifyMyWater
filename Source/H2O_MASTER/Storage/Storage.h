@@ -8,6 +8,11 @@
 #include "../Shared/SharedData.h"
 #include <EEPROM.h>
 
+#define SAVECONFIGDELAY 300000 // 5 min
+
+unsigned long saveConfigMillis = 0;
+bool saveConfigTimerEnabled = false;
+
 // This function returns the crc32 value of the config structure stored in EEPROM
 unsigned long configCRC32();
 
@@ -17,6 +22,9 @@ bool readConfig();
 
 // This function saves the current config to EEPROM with its respective CRC32 code to verify it later
 void updateConfig();
+
+// This function checks if enough time has passed since last time config was changed
+void updateConfigLoop();
 
 #include "Storage.cpp"
 

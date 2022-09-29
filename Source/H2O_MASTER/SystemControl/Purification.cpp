@@ -117,7 +117,7 @@ void purificationLoop()
 
             if (!dataStorage.data.endPumpSt && !dataStorage.data.endBuoySt && dataStorage.data.lowPurifiedBuoySt)
             {
-                debug(F("XD\n"));
+                //debug(F("XD\n")); //TODO ver por que hay un xd
                 output(endPump, 1);
                 endPumpPrevMillis = millis();
             }

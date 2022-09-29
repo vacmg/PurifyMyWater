@@ -123,6 +123,7 @@ void setup()
     debug(F("Setup - Starting Test phase\n")); //todo delete Test code after this line
 
     //while (true); // TODO delete or comment this
+    sendMessageHandler(STARTCHARGINGVOLTAGE_ID, "13.5");
 
     debug(F("Setup - Test phase finished\n")); //todo delete Test code before this line
 
@@ -143,8 +144,8 @@ void loop()
     #if DEBUG
         prevmillis = millis();
     #endif // DEBUG
-
     coreLoop();
+    updateConfigLoop();
 #if !DISABLETEMPERATURE
     tempLoop();
 #endif
