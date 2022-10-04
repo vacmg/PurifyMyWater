@@ -232,6 +232,10 @@ void sendMessageHandler(enum VariableIDs variableID, char* value)
             changeVariable(dataStorage.data.endBuoySt,atoi(value));
             break;
 
+        case DATAREFRESHPERIOD_ID:
+            changeVariable(configStorage.config.DATAREFRESHPERIOD, atol(value));
+            break;
+
         default:
             debug(F("sendMessageHandler: Unknown variableID: "));debug(variableID);debug('\n');
     }
