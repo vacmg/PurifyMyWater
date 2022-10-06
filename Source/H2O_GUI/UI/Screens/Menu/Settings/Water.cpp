@@ -23,7 +23,7 @@ void clickWater()
                     if (0 < configStorage.config.WELLPUMPTIMEOUT)// 0 < WELLPUMPTIMEOUT
                     {
                     #if !DISABLECOMM
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, WELLPUMPTIMEOUT_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
@@ -50,7 +50,7 @@ void clickWater()
                     if (0 < configStorage.config.FILTERTIMEOUT)// 0 < FILTERTIMEOUT
                     {
                     #if !DISABLECOMM
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, FILTERTIMEOUT_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
@@ -83,7 +83,7 @@ void clickWater()
                     if (0 < configStorage.config.UVPUMPTIMEOUT)// 0 < UVPUMPTIMEOUT
                     {
                     #if !DISABLECOMM
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, UVPUMPTIMEOUT_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
@@ -110,7 +110,7 @@ void clickWater()
                     if(tempVal>=0) // 0 < UVPUMPFLOW
                     {
                     #if !DISABLECOMM
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, UVPUMPFLOW_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
@@ -144,7 +144,7 @@ void clickWater()
                     if (0 < configStorage.config.ENDPUMPTIMEOUT)// 0 < ENDPUMPTIMEOUT
                     {
                     #if !DISABLECOMM
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, ENDPUMPTIMEOUT_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {

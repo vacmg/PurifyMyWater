@@ -46,7 +46,7 @@ void clickInterface()
                     if (tempVal > 0)
                     {
                     #if !DISABLECOMM
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, DATAREFRESHPERIOD_ID, String((unsigned long)(tempVal)).c_str());
                         if (masterComManager.sendMessage(payload))
                         {

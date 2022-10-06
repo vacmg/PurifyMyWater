@@ -22,7 +22,7 @@ void clickElectricity()
                     if (configStorage.config.STOPWORKINGVOLTAGE < tempVal && tempVal < configStorage.config.STOPCHARGINGVOLTAGE)
                     {
                     #if !DISABLECOMM
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, STARTCHARGINGVOLTAGE_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
@@ -49,7 +49,7 @@ void clickElectricity()
                     if (configStorage.config.STARTCHARGINGVOLTAGE < tempVal && tempVal < configStorage.config.STOPCHARGINGVOLTAGE)// STARTCHARGINGVOLTAGE < STARTWORKINGVOLTAGE < STOPCHARGINGVOLTAGE
                     {
                     #if !DISABLECOMM
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, STARTWORKINGVOLTAGE_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
@@ -74,7 +74,7 @@ void clickElectricity()
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                 #if !DISABLECOMM
-                    char payload[10];
+                    char payload[20];
                     Communications::createSendMessage(payload, ACAMMSENSITIVITY_ID, String(tempVal).c_str());
                     if (masterComManager.sendMessage(payload))
                     {
@@ -98,7 +98,7 @@ void clickElectricity()
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                 #if !DISABLECOMM
-                    char payload[10];
+                    char payload[20];
                     Communications::createSendMessage(payload, DCAMMZERO_ID, String(tempVal).c_str());
                     if (masterComManager.sendMessage(payload))
                     {
@@ -130,7 +130,7 @@ void clickElectricity()
                     if (configStorage.config.STARTCHARGINGVOLTAGE + 1 < tempVal && tempVal <MAXCAPACITORSALLOWEDVOLTAGE)// STARTCHARGINGVOLTAGE+1 < STOPCHARGINGVOLTAGE < MAXCAPACITORSALLOWEDVOLTAGE
                     {
                     #if !DISABLECOMM
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, STOPCHARGINGVOLTAGE_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
@@ -157,7 +157,7 @@ void clickElectricity()
                     if (MINSYSTEMALLOWEDVOLTAGE < tempVal && tempVal < configStorage.config.STARTCHARGINGVOLTAGE - 1)// MINSYSTEMALLOWEDVOLTAGE < STOPWORKINGVOLTAGE < STARTCHARGINGVOLTAGE-1
                     {
                     #if !DISABLECOMM
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, STOPWORKINGVOLTAGE_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
@@ -182,7 +182,7 @@ void clickElectricity()
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                 #if !DISABLECOMM
-                    char payload[10];
+                    char payload[20];
                     Communications::createSendMessage(payload, ACAMMZERO_ID, String(tempVal).c_str());
                     if (masterComManager.sendMessage(payload))
                     {
@@ -213,7 +213,7 @@ void clickElectricity()
                     if (0 < tempVal && tempVal < MAXUVAMPERAGE)//0 < ESTIMATEDUVAMPERAGE < MAXUVAMPERAGE
                     {
                     #if !DISABLECOMM
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, ESTIMATEDUVAMPERAGE_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
@@ -240,7 +240,7 @@ void clickElectricity()
                     if (50 < tempVal && tempVal < 60)// 50 <= ACFREQUENCY <= 60
                     {
                     #if !DISABLECOMM
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, ACFREQUENCY_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
@@ -265,7 +265,7 @@ void clickElectricity()
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
                 #if !DISABLECOMM
-                    char payload[10];
+                    char payload[20];
                     Communications::createSendMessage(payload, DCAMMSENSITIVITY_ID, String(tempVal).c_str());
                     if (masterComManager.sendMessage(payload))
                     {
