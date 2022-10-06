@@ -32,6 +32,7 @@ void sendMessageHandler(enum VariableIDs variableID, char* value)
                     break;
                 case ACPSU_Mode:
                     output(ACInverter, 1);
+                    delay(500);
                     output(UVRelay, 1);
                     break;
                 case Purification_On_Mode:

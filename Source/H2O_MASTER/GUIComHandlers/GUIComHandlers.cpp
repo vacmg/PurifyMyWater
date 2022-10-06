@@ -120,8 +120,10 @@ void GUILoop() // TODO guard sendmessages from a guistatus different from GUI_CO
             if(guiMillis+GUICOOLDOWNTIME<millis())
             {
                 if(currentError == DestinationMCUNotRespondingError || currentError == HandshakeError || currentError == GUICannotSafelyShutdownError)
-                changeError(NoError);
-                changeGUIStatus(GUI_OFF_ST);
+                {
+                    changeError(NoError);
+                    changeGUIStatus(GUI_OFF_ST);
+                }
             }
             break;
 
