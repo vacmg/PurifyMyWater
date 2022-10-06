@@ -14,7 +14,7 @@
 #include "../Shared/SharedData.h"
 #include "Settings/ScreenSettings.h"
 
-#define SCREENHW 35 // 35 --> 3.5INCH / 39 --> 3.95INCH
+#define SCREENHW 39 // 35 --> 3.5INCH / 39 --> 3.95INCH
 
 #if SCREENHW == 35
 #define SCREEN35ROTATIONOFFSET 2
@@ -57,9 +57,11 @@
         HELPTOPIC,
         LOADRESET,
         RESET,
-        SCREENCALIBRATION
+        LOADSCREENCALIBRATION,
+        SCREENCALIBRATION,
+        LOOPCALIBRATION
     };
-enum ScreenStatus screenStatus = LOADSTATUS; // Must be initialized to BOOTING in order to show the splash screen
+enum ScreenStatus screenStatus = LOADINTERFACE; // Must be initialized to BOOTING in order to show the splash screen
 
 
 #include "Languages/Languages.h"
@@ -110,9 +112,11 @@ const char mode32[] PROGMEM = "LOADPAGEHELPTOPIC";
 const char mode33[] PROGMEM = "HELPTOPIC";
 const char mode34[] PROGMEM = "LOADRESET";
 const char mode35[] PROGMEM = "RESET";
-const char mode36[] PROGMEM = "SCREENCALIBRATION";
+const char mode36[] PROGMEM = "LOADSCREENCALIBRATION";
+const char mode37[] PROGMEM = "SCREENCALIBRATION";
+const char mode38[] PROGMEM = "LOOPCLAIBRATION";
 
-const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27, mode28, mode29, mode30, mode31, mode32, mode33, mode34, mode35,mode36};
+const char *const modeTable[] PROGMEM = {mode0, mode1, mode2, mode3, mode4, mode5, mode6, mode7, mode8, mode9, mode10, mode11, mode12, mode13, mode14, mode15, mode16, mode17, mode18, mode19, mode20, mode21, mode22, mode23, mode24, mode25, mode26, mode27, mode28, mode29, mode30, mode31, mode32, mode33, mode34, mode35,mode36,mode37, mode38};
 
 char* modeToString(ScreenStatus status)
 {
@@ -591,10 +595,30 @@ void UILoop()
             changeScreenStatus(LOADERROR);
         break;
 
+        case LOADSCREENCALIBRATION:
+            loadScreenCalibration();
+            changeScreenStatus(SCREENCALIBRATION);
+            break;
+
         case SCREENCALIBRATION:
+
+            if(backBtn.isPressed())
+            {
+                debug(F("Back Page button pressed\n"));
+                changeScreenStatus(LOADINTERFACE);
+            }
+            else if (btn11.isPressed())
+            {
+                debug(F("Press to Start button pressed\n"));
+                changeScreenStatus(LOOPCALIBRATION);
+            }
+            break;
+
+        case LOOPCALIBRATION:
+            debug("LOOPCALIBRATION");
             loopCalibration();
             changeScreenStatus(LOADINTERFACE);
-        break;
+            break;
 
         //case ENGINEERINGMODE:
     }

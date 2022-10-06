@@ -74,7 +74,7 @@ void clickInterface()
         switch (page)
         {
             case 1: // Calibrate
-                changeScreenStatus(SCREENCALIBRATION); // ScreenCalibration page
+                changeScreenStatus(LOADSCREENCALIBRATION); // ScreenCalibration page
                 break;
         }
     }

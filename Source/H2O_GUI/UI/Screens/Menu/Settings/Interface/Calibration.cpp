@@ -10,7 +10,7 @@
 #include <LCDWIKI_KBV.h> //Hardware-specific library
 
 #define TOUCH_ORIENTATION  screenConfig.ROTATION
-#define TITLE "TouchScreen.h Calibration"
+#define TITLE "Screen Calibration"
 #define MEGA true
 
 //if the IC model is known or the modules is unreadable,you can use this constructed function
@@ -32,8 +32,30 @@
 #define XP 8   // can be a digital pin
 
 TouchScreen mytouch(XP, YP, XM, YM, 300);
-TSPoint tp;                      //Touchscreen_due branch uses Point
+TSPoint tp;//Touchscreen_due branch uses Point
 
+void loadScreenCalibration()
+{
+    drawBackground();
+
+    //PAGE TITLE
+    titleLabel.setString(TITLE);
+    title.setLabel(&titleLabel);
+    title.enableAutoSize(true);
+    my_lcd.draw(&title);
+    title.enableAutoSize(false);
+
+    //TODO insert txt with the text "#define NUMSAMPLES 3 in Library. Use a stylus or something similar to touch as close to the center of the highlighted crosshair as possible. Keep as still as possible and keep holding until the highlight is until the highlight is removed. Repeat for all crosshairs in sequence."
+    TextBox screenCalibrationTxt(25,90,455,160,"textPath",&label);
+    my_lcd.draw(&screenCalibrationTxt);
+
+    //PUSH TO START BUTTON
+    btn11.ScreenObject::setCoords(180,280);
+    btn11.setCoords1(300,310);
+    label.setString("PRESS TO START"); //TODO use languajes
+    btn11.setLabel(&label);
+    my_lcd.draw(&btn11);
+}
 
 void show_string(uint8_t *str,int16_t x,int16_t y,uint8_t csize,uint16_t fc, uint16_t bc,boolean mode)
 {
@@ -68,22 +90,6 @@ float px, py;
 int dispx, dispy, text_y_center, swapxy;
 uint32_t calx, caly, cals;
 char buf[13];
-
-void calibrationSetup()
-{
-    digitalWrite(A0, HIGH);
-    pinMode(A0, OUTPUT);
-#if MEGA
-    pinMode(13,INPUT); // TODO revertir pinout
-    pinMode(12,INPUT);
-    pinMode(11,INPUT);
-    pinMode(10,INPUT);
-#endif
-    my_lcd.Fill_Screen(BLACK);
-    dispx = my_lcd.Get_Display_Width();
-    dispy = my_lcd.Get_Display_Height();
-    text_y_center = (dispy / 2) - 6;
-}
 
 void drawCrossHair(int x, int y, unsigned int color)
 {
@@ -160,36 +166,7 @@ void calibrate(int x, int y, int i)
     while (is_pressed() == true) {}
 }
 
-void waitForTouch()
-{
-    while (is_pressed() == true) {}
-    while (is_pressed() == false) {}
-    while (is_pressed() == true) {}
-}
 
-void startup()
-{
-    my_lcd.Set_Draw_color(255, 0, 0);
-    my_lcd.Fill_Rectangle(0, 0, dispx - 1, 13);
-    my_lcd.Set_Draw_color(255, 255, 255);
-    my_lcd.Draw_Line(0, 14, dispx - 1, 14);
-    show_string(TITLE,CENTER,1,1,WHITE, BLACK,1);
-
-    my_lcd.Print_String("#define NUMSAMPLES 3 in Library", LEFT, 18);
-    my_lcd.Print_String("Use a stylus or something", LEFT, 30);
-    my_lcd.Print_String("similar to touch as close", LEFT, 42);
-    my_lcd.Print_String("to the center of the", LEFT, 54);
-    my_lcd.Print_String("highlighted crosshair as", LEFT, 66);
-    my_lcd.Print_String("possible. Keep as still as", LEFT, 78);
-    my_lcd.Print_String("possible and keep holding", LEFT, 90);
-    my_lcd.Print_String("until the highlight is", LEFT, 102);
-    my_lcd.Print_String("removed. Repeat for all", LEFT, 114);
-    my_lcd.Print_String("crosshairs in sequence.", LEFT, 126);
-    my_lcd.Print_String("Touch screen to continue", CENTER, 162);
-
-    waitForTouch();
-    my_lcd.Fill_Screen(BLACK);
-}
 
 void showNumI(char *msg, uint32_t val, int x, int y)
 {
@@ -290,8 +267,19 @@ void fail() {
 
 void loopCalibration()
 {
-    calibrationSetup();
-    startup();
+    //SETUP
+    digitalWrite(A0, HIGH);
+    pinMode(A0, OUTPUT);
+#if MEGA
+    pinMode(13,INPUT); // TODO revertir pinout
+    pinMode(12,INPUT);
+    pinMode(11,INPUT);
+    pinMode(10,INPUT);
+#endif
+    my_lcd.Fill_Screen(BLACK);
+    dispx = my_lcd.Get_Display_Width();
+    dispy = my_lcd.Get_Display_Height();
+    text_y_center = (dispy / 2) - 6;
 
     drawCrossHair(dispx - 11, 10,0x528A); //TODO AQUI
     drawCrossHair(dispx / 2, 10,0x528A);
