@@ -54,7 +54,7 @@
         ERROR,
         LOADHELPTOPIC,
         LOADPAGEHELPTOPIC,
-        HELPTOPIC
+        HELPTOPIC,
         LOADRESET,
         RESET,
     };

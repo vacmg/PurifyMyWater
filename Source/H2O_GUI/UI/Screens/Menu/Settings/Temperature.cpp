@@ -41,14 +41,15 @@ void clickTemperature()
                 tempVal = getNumInput(getString(Temp_RefreshInterval_STR), F("s"), (double)configStorage.config.TEMPCHECKTIME/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
+                    tempVal = (tempVal * 1000);
                     if (tempVal > 0)
                     {
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, TEMPCHECKTIME_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
                             debug(F("TEMPCHECKTIME UPDATED: "));debug(configStorage.config.TEMPCHECKTIME);debug(F(" --> "));debug(tempVal);debug('\n');
-                            configStorage.config.TEMPCHECKTIME = (unsigned long)(tempVal * 1000);
+                            configStorage.config.TEMPCHECKTIME = (unsigned long)tempVal;
                         }
                         else
                         {
@@ -66,7 +67,7 @@ void clickTemperature()
                 {
                     if (tempVal > 0 && tempVal < configStorage.config.STARTPSUTEMP)
                     {
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, STOPPSUTEMP_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
@@ -95,7 +96,7 @@ void clickTemperature()
                 {
                     if (tempVal > 0 && tempVal > configStorage.config.STARTPSUTEMP && tempVal > configStorage.config.STARTCASETEMP)
                     {
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, STOPWORKINGTEMP_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
@@ -119,7 +120,7 @@ void clickTemperature()
                 {
                     if (tempVal > 0 && tempVal > configStorage.config.STOPCASETEMP && tempVal < configStorage.config.STOPWORKINGTEMP)
                     {
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, STARTCASETEMP_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
@@ -148,7 +149,7 @@ void clickTemperature()
                 {
                     if (tempVal > 0 && tempVal > configStorage.config.STOPPSUTEMP && tempVal < configStorage.config.STOPWORKINGTEMP)
                     {
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, STARTPSUTEMP_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
@@ -172,7 +173,7 @@ void clickTemperature()
                 {
                     if (tempVal > 0 && tempVal < configStorage.config.STARTCASETEMP)
                     {
-                        char payload[10];
+                        char payload[20];
                         Communications::createSendMessage(payload, STOPCASETEMP_ID, String(tempVal).c_str());
                         if (masterComManager.sendMessage(payload))
                         {
