@@ -55,7 +55,7 @@
         RESET,
     };
 enum ScreenStatus screenStatus = SETTINGS; // Must be initialized to BOOTING in order to show the splash screen
-enum ScreenStatus prevScreen;
+enum ScreenStatus prevScreenStatus = LOADMENU;
 
 
 #include "Languages/Languages.h"
