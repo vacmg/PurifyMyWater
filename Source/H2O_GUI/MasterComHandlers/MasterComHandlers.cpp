@@ -48,7 +48,7 @@ void masterComLoop()
             break;
 
         case GUI_SHUTTING_DOWN_ST:
-
+            updateScreenConfig();
             // place all pre-shutdown instructions before this line // todo draw shutdown message (using error?) & DISABLE SD card
             char message[3];
             Communications::createSendMessage(message,SHUTDOWN_OK_CMD,"");
