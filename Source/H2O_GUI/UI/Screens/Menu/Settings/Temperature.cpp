@@ -44,17 +44,21 @@ void clickTemperature()
                     tempVal = (tempVal * 1000);
                     if (tempVal > 0)
                     {
-                        char payload[20];
-                        Communications::createSendMessage(payload, TEMPCHECKTIME_ID, String(tempVal).c_str());
-                        if (masterComManager.sendMessage(payload))
-                        {
-                            debug(F("TEMPCHECKTIME UPDATED: "));debug(configStorage.config.TEMPCHECKTIME);debug(F(" --> "));debug(tempVal);debug('\n');
-                            configStorage.config.TEMPCHECKTIME = (unsigned long)tempVal;
-                        }
+                        #if !DISABLECOMM
+                            char payload[20];
+                            Communications::createSendMessage(payload, TEMPCHECKTIME_ID, String(tempVal).c_str());
+                            if (masterComManager.sendMessage(payload))
+                            {
+                        #endif
+                                debug(F("TEMPCHECKTIME UPDATED: "));debug(configStorage.config.TEMPCHECKTIME);debug(F(" --> "));debug(tempVal);debug('\n');
+                                configStorage.config.TEMPCHECKTIME = (unsigned long)tempVal;
+                        #if !DISABLECOMM
+                            }
                         else
-                        {
-                            debug(F("Error al enviar el mensaje")); //TODO error message
-                        }
+                            {
+                                debug(F("ERROR: Could not send the TEMPCHECKTIME update")); //TODO error message
+                            }
+                        #endif
                     }
                 }
                 changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
@@ -67,18 +71,21 @@ void clickTemperature()
                 {
                     if (tempVal > 0 && tempVal < configStorage.config.STARTPSUTEMP)
                     {
-                        char payload[20];
-                        Communications::createSendMessage(payload, STOPPSUTEMP_ID, String(tempVal).c_str());
-                        if (masterComManager.sendMessage(payload))
-                        {
-                            debug(F("STOPPSUTEMP UPDATED: "));debug(configStorage.config.STOPPSUTEMP);debug(F(" --> "));debug(tempVal);debug('\n');
-                            configStorage.config.STOPPSUTEMP = (byte) tempVal;
-                        }
-                        else
-                        {
-                            debug(F("Error al enviar el mensaje")); //TODO error message
-                        }
-                        // TODO send new setting
+                        #if !DISABLECOMM
+                            char payload[20];
+                            Communications::createSendMessage(payload, STOPPSUTEMP_ID, String(tempVal).c_str());
+                            if (masterComManager.sendMessage(payload))
+                            {
+                        #endif
+                                debug(F("STOPPSUTEMP UPDATED: "));debug(configStorage.config.STOPPSUTEMP);debug(F(" --> "));debug(tempVal);debug('\n');
+                                configStorage.config.STOPPSUTEMP = (byte) tempVal;
+                        #if !DISABLECOMM
+                            }
+                            else
+                            {
+                                debug(F("ERROR: Could not send the STOPPSUTEMP update")); //TODO error message
+                            }
+                        #endif
                     }
                 }
                 changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
@@ -96,17 +103,21 @@ void clickTemperature()
                 {
                     if (tempVal > 0 && tempVal > configStorage.config.STARTPSUTEMP && tempVal > configStorage.config.STARTCASETEMP)
                     {
-                        char payload[20];
-                        Communications::createSendMessage(payload, STOPWORKINGTEMP_ID, String(tempVal).c_str());
-                        if (masterComManager.sendMessage(payload))
-                        {
-                            debug(F("STOPWORKINGTEMP UPDATED: "));debug(configStorage.config.STOPWORKINGTEMP);debug(F(" --> "));debug(tempVal);debug('\n');
-                            configStorage.config.STOPWORKINGTEMP = (byte) tempVal;
-                        }
-                        else
-                        {
-                            debug(F("Error al enviar el mensaje")); //TODO message error
-                        }
+                        #if !DISABLECOMM
+                            char payload[20];
+                            Communications::createSendMessage(payload, STOPWORKINGTEMP_ID, String(tempVal).c_str());
+                            if (masterComManager.sendMessage(payload))
+                            {
+                        #endif
+                                debug(F("STOPWORKINGTEMP UPDATED: "));debug(configStorage.config.STOPWORKINGTEMP);debug(F(" --> "));debug(tempVal);debug('\n');
+                                configStorage.config.STOPWORKINGTEMP = (byte) tempVal;
+                        #if !DISABLECOMM
+                            }
+                            else
+                            {
+                                debug(F("ERROR: Could not send the STOPWORKINGTEMP update")); //TODO message error
+                            }
+                        #endif
                         // TODO send new setting
                     }
                 }
@@ -120,18 +131,22 @@ void clickTemperature()
                 {
                     if (tempVal > 0 && tempVal > configStorage.config.STOPCASETEMP && tempVal < configStorage.config.STOPWORKINGTEMP)
                     {
-                        char payload[20];
-                        Communications::createSendMessage(payload, STARTCASETEMP_ID, String(tempVal).c_str());
-                        if (masterComManager.sendMessage(payload))
-                        {
-                            debug(F("STARTCASETEMP UPDATED: "));debug(configStorage.config.STARTCASETEMP);debug(F(" --> "));debug(tempVal);debug('\n');
-                            configStorage.config.STARTCASETEMP = (byte) tempVal;
-                        }
-                        else
-                        {
-                            debug(F("Error al enviar el mensaje")); //TODO error message
-                        }
-                        // TODO send new setting
+                        #if !DISABLECOMM
+                            char payload[20];
+                            Communications::createSendMessage(payload, STARTCASETEMP_ID, String(tempVal).c_str());
+                            if (masterComManager.sendMessage(payload))
+                            {
+                        #endif
+                                debug(F("STARTCASETEMP UPDATED: "));debug(configStorage.config.STARTCASETEMP);debug(F(" --> "));debug(tempVal);debug('\n');
+                                configStorage.config.STARTCASETEMP = (byte) tempVal;
+                        #if !DISABLECOMM
+                            }
+                            else
+                            {
+                            debug(F("ERROR: Could not send the STARTCASETEMP update")); //TODO error message
+                            }
+                        #endif
+
                     }
                 }
                 changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
@@ -149,18 +164,22 @@ void clickTemperature()
                 {
                     if (tempVal > 0 && tempVal > configStorage.config.STOPPSUTEMP && tempVal < configStorage.config.STOPWORKINGTEMP)
                     {
-                        char payload[20];
-                        Communications::createSendMessage(payload, STARTPSUTEMP_ID, String(tempVal).c_str());
-                        if (masterComManager.sendMessage(payload))
-                        {
-                            debug(F("STARTPSUTEMP UPDATED: "));debug(configStorage.config.STARTPSUTEMP);debug(F(" --> "));debug(tempVal);debug('\n');
-                            configStorage.config.STARTPSUTEMP = (byte) tempVal;
-                        }
-                        else
-                        {
-                            debug(F("Error al enviar el mensaje")); //TODO error message
-                        }
-                        // TODO send new setting
+                        #if !DISABLECOMM
+                            char payload[20];
+                            Communications::createSendMessage(payload, STARTPSUTEMP_ID, String(tempVal).c_str());
+                            if (masterComManager.sendMessage(payload))
+                            {
+                        #endif
+                                debug(F("STARTPSUTEMP UPDATED: "));debug(configStorage.config.STARTPSUTEMP);debug(F(" --> "));debug(tempVal);debug('\n');
+                                configStorage.config.STARTPSUTEMP = (byte) tempVal;
+                        #if !DISABLECOMM
+                            }
+                            else
+                            {
+                                debug(F("ERROR: Could not send the STARTPSUTEMP update")); //TODO error message
+                            }
+                        #endif
+
                     }
                 }
                 changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
@@ -173,18 +192,22 @@ void clickTemperature()
                 {
                     if (tempVal > 0 && tempVal < configStorage.config.STARTCASETEMP)
                     {
-                        char payload[20];
-                        Communications::createSendMessage(payload, STOPCASETEMP_ID, String(tempVal).c_str());
-                        if (masterComManager.sendMessage(payload))
-                        {
-                            debug(F("STOPPSUTEMP UPDATED: "));debug(configStorage.config.STOPCASETEMP);debug(F(" --> "));debug(tempVal);debug('\n');
-                            configStorage.config.STOPCASETEMP = (byte) tempVal;
-                        }
-                        else
-                        {
-                            debug(F("Error al enviar el mensaje")); //TODO error message
-                        }
-                        // TODO send new setting
+                        #if !DISABLECOMM
+                            char payload[20];
+                            Communications::createSendMessage(payload, STOPCASETEMP_ID, String(tempVal).c_str());
+                            if (masterComManager.sendMessage(payload))
+                            {
+                        #endif
+                                debug(F("STOPPSUTEMP UPDATED: "));debug(configStorage.config.STOPCASETEMP);debug(F(" --> "));debug(tempVal);debug('\n');
+                                configStorage.config.STOPCASETEMP = (byte) tempVal;
+                        #if !DISABLECOMM
+                            }
+                            else
+                            {
+                                debug(F("ERROR: Could not send the STOPPSUTEMP update")); //TODO error message
+                            }
+                        #endif
+                        
                     }
                 }
                 changeScreenStatus(LOADPAGETEMPERATURE); // reload page with new config value
