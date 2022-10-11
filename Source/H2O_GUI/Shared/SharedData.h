@@ -35,7 +35,7 @@ enum Errors {
     UVLightNotWorkingError, ScreenNotConnectedError, TempSensorsAmountError,
     HotTempError,
     HandshakeError, MCUsIncompatibleVersionError, DestinationMCUNotRespondingError, GUICannotSafelyShutdownError,
-    ScreenNotImplementedError
+    ScreenNotImplementedError, UpperBoundError, InnerBoundError
     }; // Used to process different errors
 
 enum WorkingMode {Purification_Off_Mode, Purification_On_Mode, DCPSU_Mode, ACPSU_Mode}; // This struct stores the system working mode which can be the default purification mode and some alternative uses of the system
@@ -241,8 +241,10 @@ void setDefaultConfig()
     const char errorDestinationMCUNotRespondingError_STR[] PROGMEM = "DestinationMCUNotRespondingError";
     const char errorGUICannotSafelyShutdownError_STR[] PROGMEM = "GUICannotSafelyShutdownError";
     const char errorScreenNotImplementedError_STR[] PROGMEM = "ScreenNotImplementedError";
+    const char upperBoundError_STR[] PROGMEM = "UpperBoundError";
+    const char innerBoundError_STR[] PROGMEM = "UpperBoundError";
 
-    const char *const debugErrorsTable[] PROGMEM = {errorNoError_STR, errorBuoyIncongruenceError_STR, errorPumpTimeoutError_STR, errorUVLightNotWorkingError_STR, errorScreenNotConnectedError_STR, errorTempSensorsAmountError_STR, errorHotTempError_STR, errorHandshakeError_STR, errorMCUsIncompatibleVersionError_STR, errorDestinationMCUNotRespondingError_STR, errorGUICannotSafelyShutdownError_STR, errorScreenNotImplementedError_STR};
+    const char *const debugErrorsTable[] PROGMEM = {errorNoError_STR, errorBuoyIncongruenceError_STR, errorPumpTimeoutError_STR, errorUVLightNotWorkingError_STR, errorScreenNotConnectedError_STR, errorTempSensorsAmountError_STR, errorHotTempError_STR, errorHandshakeError_STR, errorMCUsIncompatibleVersionError_STR, errorDestinationMCUNotRespondingError_STR, errorGUICannotSafelyShutdownError_STR, errorScreenNotImplementedError_STR, upperBoundError_STR,innerBoundError_STR};
 
     char* errorToString(enum Errors error)
     {

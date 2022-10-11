@@ -22,7 +22,7 @@ void setFontSizeArray(byte *fontSizeArray, byte tl, byte tr, byte bl, byte br)
     fontSizeArray[3] = br;
 }
 
-double getNumInput(const String& titleNumInput, const String& unit, double value, byte decimalPlaces, double upperBound, double innerBound, enum ScreenStatus returnTo)
+double getNumInput(const String& titleNumInput, const String& unit, double value, byte decimalPlaces, double upperBound, double innerBound)
 {
     debug(F("getNumInput: "));debug(titleNumInput);debug(F(": "));debug(value);debug(unit);debug('\n');
     drawNumInput(titleNumInput, unit);
@@ -182,7 +182,20 @@ double getNumInput(const String& titleNumInput, const String& unit, double value
     if (exit == 1)
     {
         debug(F("getNumInput returned: "));debug(atof(string));debug('\n');
-        return atof(string);
+        double res = atof(string);
+        if (upperBound < res)
+        {
+            changeError(UpperBoundError); //TODO implementar error
+            changeScreenStatus(LOADERROR);
+            return NAN;
+        }
+        if (innerBound > res)
+        {
+            changeError(InnerBoundError); //TODO implementar error
+            changeScreenStatus(LOADERROR);
+            return NAN;
+        }
+        return res;
     }
 
     debug(F("getNumInput was cancelled\n"));
@@ -191,7 +204,7 @@ double getNumInput(const String& titleNumInput, const String& unit, double value
 
 double getNumInput(const String& titleNumInput, const String& unit, double value, byte decimalPlaces)
 {
-    return getNumInput(titleNumInput,unit,value,decimalPlaces,__DBL_MAX__,__DBL_MIN__,LOADMENU); // TODO asegurarse de que NUNCA se llame a LOADMENU
+    return getNumInput(titleNumInput,unit,value,decimalPlaces,__DBL_MAX__,__DBL_MIN__);
 }
 
 double getNumInput(const String& titleNumInput, const String& unit, double value)
@@ -199,9 +212,9 @@ double getNumInput(const String& titleNumInput, const String& unit, double value
     return getNumInput(titleNumInput,unit,value,2);
 }
 
-double getNumInput(const String& titleNumInput, const String& unit, double value, double upperBound, double innerBound, enum ScreenStatus returnTo)
+double getNumInput(const String& titleNumInput, const String& unit, double value, double upperBound, double innerBound)
 {
-    return getNumInput(titleNumInput,unit,value,2,upperBound,innerBound,returnTo);
+    return getNumInput(titleNumInput,unit,value,2,upperBound,innerBound);
 }
 
 void okPopup(const String& headerText, const String& messagePath, const String& btn1Text)
