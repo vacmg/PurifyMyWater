@@ -46,11 +46,15 @@ bool readConfig()
 void updateConfig()
 {
 #if !USEVOLATILECONFIG
-    EEPROM.put(4, configStorage.config);
-    unsigned long crc = configCRC32();
-    debug(F("Configuration saved to EEPROM\n"));
-    debugConfig();
-    EEPROM.put(0, crc);
+    if(configChanged)
+    {
+        EEPROM.put(4, configStorage.config);
+        unsigned long crc = configCRC32();
+        debug(F("Configuration saved to EEPROM\n"));
+        debugConfig();
+        EEPROM.put(0, crc);
+        configChanged = false;
+    }
 #endif
 }
 

@@ -12,6 +12,7 @@
 
 unsigned long saveConfigMillis = 0;
 bool saveConfigTimerEnabled = false;
+bool configChanged = false;
 
 // This function returns the crc32 value of the config structure stored in EEPROM
 unsigned long configCRC32();

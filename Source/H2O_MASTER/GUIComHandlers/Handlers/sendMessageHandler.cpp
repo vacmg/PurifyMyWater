@@ -19,11 +19,16 @@ void sendMessageHandler(enum VariableIDs variableID, char* value)
             debug(F("GUI is READY\n"));
             break;
 
+        case systemStatus_ID:
+            configChanged = true; // TODO hacer con todas
+            changeVariable(configStorage.config.systemStatus,(SystemStatus)atoi(value));
+            break;
+
         case workingMode_ID:
             changeVariable(configStorage.config.workingMode,(WorkingMode)atoi(value));
 
             disconnectEverything();
-            switch (configStorage.config.workingMode) // TODO trabajo aqui
+            switch (configStorage.config.workingMode)
             {
                 case Purification_Off_Mode:
                     break;

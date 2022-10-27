@@ -6,6 +6,7 @@
 #define H2O_MASTER_CORE_H
 
 #include "../../Shared/SharedData.h"
+#include "../../Storage/Storage.h"
 
 #if !DISABLECOMM
 #include "../../GUIComHandlers/GUIComHandlers.h"

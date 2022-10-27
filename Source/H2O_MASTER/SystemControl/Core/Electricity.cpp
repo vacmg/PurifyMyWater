@@ -51,6 +51,10 @@ void voltControl()
     {
         output(voltSSRelay, 0);
     }
+    if (dataStorage.data.voltage < MINMCUVOLTAGE)
+    {
+        updateConfig();
+    }
 }
 
 // This functions blocks the code execution until a certain voltage is reached inside the super-capacitors

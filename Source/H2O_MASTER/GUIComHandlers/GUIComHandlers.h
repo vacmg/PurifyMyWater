@@ -7,6 +7,7 @@
 
 #include "../Shared/SharedData.h"
 #include "../Shared/Communications/ComManager.h"
+#include "../Storage/Storage.h"
 
 enum GUIStatus{
     GUI_ERROR_ST = 0,
