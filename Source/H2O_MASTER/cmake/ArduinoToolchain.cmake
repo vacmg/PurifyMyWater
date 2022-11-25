@@ -60,7 +60,7 @@ if(NOT ARDUINO_SDK_PATH)
     elseif(WIN32)
         set(SDK_PATH_HINTS "C:\\Program Files\\Arduino"
             "C:\\Program Files (x86)\\Arduino"
-                # C:\Users\Victor\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6
+                "C:\\Users\\Victor\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6"
             )
     endif()
     list(SORT SDK_PATH_HINTS)
