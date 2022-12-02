@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.0)
 
-project(H2O_MASTER)
+#[[ project(H2O_MASTER)
 
 # CONFIG
 
@@ -28,7 +28,7 @@ endif ()
 list (APPEND CMAKE_MODULE_PATH "${CMAW_RUNDIR}")
 list (REMOVE_DUPLICATES CMAKE_MODULE_PATH)
 
-include(CMAW)
+include(CMAW) #]]
 
 # END INSTALL CMAW IF REQUIRED
 
@@ -45,7 +45,7 @@ cmaw_upgrade_cores (ALL)
 # END INSTALL/UPDATE ARDUINO_CORE #]]
 
 # DEFINE INCLUDE MACROS
-
+#[[
 MACRO(SOURCE_FILES sources_dir_list sources_return_list)
     MESSAGE("Processing Source Files")
     SET(sources_list "")
@@ -99,8 +99,22 @@ if(${arduino_board_arch} STREQUAL avr)
     message("include_files_dir_list: ${include_files_dir_list}")
 elseif(TRUE)
     message(FATAL_ERROR "ARCH '${arduino_board_arch}' NOT SUPPORTED YET")
-endif()
+endif() #]]
 
 # END SET SDK PATH
+
+# Define CMake's minimum version (must-do) and the project's name and supported languages
+cmake_minimum_required(VERSION 3.8.2)
+set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/cmake/ArduinoToolchain.cmake)
+include(cmake/Arduino-Toolchain.cmake)
+project(H2O_MASTER)
+
+# Call a framework utility function, passing it information about the hardware board that will be used - This function returns a structure known only to the framework
+get_board_id(board_id mega atmega2560)
+
+# Create an executable suitable for Arduino using CMake-style target-creation
+add_arduino_executable(Hello_World ${board_id} helloWorld.cpp)
+# Upload the created target through a connected Serial Port (Where your board is connected to)
+# upload_arduino_target(Hello_World "${board_id}" COM3)
 
 #TODO mirar aqui: ./cmake/Platform/Other/ArduinoSDKSeeker.cmake

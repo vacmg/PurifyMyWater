@@ -15,15 +15,14 @@ function(find_arduino_sdk _return_var)
                     /sw /opt/local)
             set(path_suffixes Arduino.app/Contents/Java/ Arduino.app/Contents/Resources/Java/)
         else () # Probably Linux
-            file(GLOB platform_search_paths /usr/share/arduino* /opt/local/arduino* /opt/arduino*
-                    /usr/local/share/arduino*)
+            file(GLOB platform_search_paths "/$ENV{HOME}/.arduino*")
         endif ()
     elseif (${CMAKE_HOST_WIN32})
-        set(platform_search_paths "C:/Program Files (x86)/Arduino" "C:/Program Files/Arduino")
+        set(platform_search_paths "$ENV{LOCALAPPDATA}\\Arduino*")
     endif ()
 
-    find_path(ARDUINO_SDK_PATH
-            NAMES lib/version.txt
+    find_path(ARDUINO_SDK_PATH # TODO fix find path
+            NAMES preferences.txt
             PATH_SUFFIXES ${path_suffixes}
             HINTS ${platform_search_paths}
             NO_DEFAULT_PATH
