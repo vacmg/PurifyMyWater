@@ -1,5 +1,6 @@
 # PurifyMyWater
 An Open source Hardware &amp; Software design for places where there isn't clean water for drinking purposes.
-Currently this repository is under construction, hope it can be ready in a few weeks and sorry for the inconvenience
 
-Meanwhile, check our project's [web](https://vacmg.github.io/PurifyMyWater)
+Currently we are developing a brand new prototype which has an improved eficiency, a more usable & intuitive design and some extras...
+
+If you want to know more about it, check our project's [web](https://vacmg.github.io/PurifyMyWater)
