@@ -4,7 +4,7 @@ Here you can read about the hardware & software being used to bring to the world
 ![LOGO](https://github.com/vacmg/PurifyMyWater/raw/master/docs/media/PMWBigLogoRaw.bmp)
 
 ## About us
-This project is being developed by [**@vacmg**](https://github.com/vacmg) & [**@Javisantir**](https://github.com/Javisantir) with the support of the [**ALUMNOS SOLIDARIOS**](https://www.joyfe.es/gente-joyfe/alumnos-solidarios/) initiative of JOYFE's school in Madrid.
+This project is being developed by [**@vacmg**](https://github.com/vacmg) & [**@Javisantir**](https://github.com/Javisantir) with the support of [**DLSIIS ETSIINF UPM**](https://www.dlsiis.fi.upm.es/) and the [**ALUMNOS SOLIDARIOS**](https://www.joyfe.es/gente-joyfe/alumnos-solidarios/) initiative of JOYFE's school in Madrid.
 
 Currently, we are developing and testing a prototype which will be deployed in the Kanhakro school and will supply around **1500L** of clean water per day to the school and the surrounding area.
 
