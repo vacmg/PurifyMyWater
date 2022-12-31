@@ -105,7 +105,7 @@ endif() #]]
 
 # Define CMake's minimum version (must-do) and the project's name and supported languages
 cmake_minimum_required(VERSION 3.8.2)
-set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/cmake/ArduinoToolchain.cmake)
+set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/cmake/Arduino-Toolchain.cmake)
 include(cmake/Arduino-Toolchain.cmake)
 project(H2O_MASTER)
 
