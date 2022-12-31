@@ -15,13 +15,13 @@ function(find_arduino_sdk _return_var)
                     /sw /opt/local)
             set(path_suffixes Arduino.app/Contents/Java/ Arduino.app/Contents/Resources/Java/)
         else () # Probably Linux
-            file(GLOB platform_search_paths "/$ENV{HOME}/.arduino*")
+            file(GLOB platform_search_paths "/$ENV{HOME}/.arduino*/") # TODO check if that works in linux
         endif ()
     elseif (${CMAKE_HOST_WIN32})
-        set(platform_search_paths "$ENV{LOCALAPPDATA}\\Arduino*")
+        file(GLOB platform_search_paths "$ENV{LOCALAPPDATA}/Arduino*/")
     endif ()
 
-    find_path(ARDUINO_SDK_PATH # TODO fix find path
+    find_path(ARDUINO_SDK_PATH
             NAMES preferences.txt
             PATH_SUFFIXES ${path_suffixes}
             HINTS ${platform_search_paths}
@@ -52,8 +52,9 @@ function(find_arduino_sdk_bin _return_var)
     if (DEFINED ENV{ARDUINO_SDK_BIN_PATH})
         string(REPLACE "\\" "/" unix_style_sdk_bin_path $ENV{ARDUINO_SDK_BIN_PATH})
         set(${_return_var} "${unix_style_sdk_bin_path}" PARENT_SCOPE)
-    elseif (IS_DIRECTORY "${ARDUINO_SDK_PATH}/hardware/tools/avr/bin")
-        set(${_return_var} "${ARDUINO_SDK_PATH}/hardware/tools/avr/bin" PARENT_SCOPE)
+    elseif (IS_DIRECTORY "${ARDUINO_SDK_PATH}/packages/arduino/tools/avr-gcc")
+        file(GLOB avr-gcc_path ${ARDUINO_SDK_PATH}/packages/arduino/tools/avr-gcc/*/bin/)
+        set(${_return_var} "${avr-gcc_path}" PARENT_SCOPE)
     else ()
         # Some systems like the Arch Linux arduino package install binaries to /usr/bin
         # But gcc can be found first in ccache folder so let's search ar instead
@@ -80,13 +81,13 @@ endfunction()
 #       Returns - Path to the directory containing etc/avrdude.conf
 #=============================================================================#
 function(find_arduino_sdk_root _return_var)
-
+    file(GLOB arduino_sdk_root "${ARDUINO_SDK_PATH}/packages/arduino/tools/avr-gcc/*/")
     if (DEFINED ENV{ARDUINO_SDK_ROOT_PATH})
         string(REPLACE "\\" "/" unix_style_sdk_root_path $ENV{ARDUINO_SDK_ROOT_PATH})
         set(${_return_var} "${unix_style_sdk_root_path}" PARENT_SCOPE)
-    elseif (EXISTS "${ARDUINO_SDK_PATH}/hardware/tools/avr/etc/avrdude.conf")
-        set(${_return_var} "${ARDUINO_SDK_PATH}/hardware/tools/avr" PARENT_SCOPE)
-    elseif (EXISTS "/etc/avrdude.conf" OR EXISTS "/etc/avrdude/avrdude.conf")
+    elseif (EXISTS ${arduino_sdk_root})
+        set(${_return_var} "${ARDUINO_SDK_PATH}/packages/arduino/tools/avr-gcc/*/" PARENT_SCOPE)
+    elseif (EXISTS "/etc/avrdude.conf" OR EXISTS "/etc/avrdude/avrdude.conf") # TODO CHECK LINUX PATHS
         set(${_return_var} "/" PARENT_SCOPE)
     else ()
         string(CONCAT error_message
