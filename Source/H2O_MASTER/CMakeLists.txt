@@ -116,5 +116,3 @@ get_board_id(board_id mega atmega2560)
 add_arduino_executable(Hello_World ${board_id} helloWorld.cpp)
 # Upload the created target through a connected Serial Port (Where your board is connected to)
 # upload_arduino_target(Hello_World "${board_id}" COM3)
-
-#TODO mirar aqui: ./cmake/Platform/Other/ArduinoSDKSeeker.cmake

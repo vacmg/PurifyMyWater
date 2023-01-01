@@ -21,10 +21,10 @@ function(find_tool_avrdude)
 
     find_program(ARDUINO_CMAKE_AVRDUDE_PROGRAM
             NAMES avrdude
-            PATHS ${ARDUINO_SDK_BIN_PATH}
+            PATHS ${ARDUINO_AVRDUDE_BIN_PATH}
             DOC "Path to avrdude program (Code Uploader)")
     if (NOT ARDUINO_CMAKE_AVRDUDE_PROGRAM OR ${ARDUINO_CMAKE_AVRDUDE_PROGRAM} STREQUAL "")
-        message(FATAL_ERROR "avrdude program is required by the toolchain but can't be found")
+        message(FATAL_ERROR "avrdude program is required by the toolchain but can't be found") # TODO avrdude esta en otra carpeta, hacer funciones para buscarla y guardarla en cache
     endif ()
 
 endfunction()
@@ -34,13 +34,10 @@ endfunction()
 #=============================================================================#
 function(find_tool_avrdude_configuration)
 
-    find_file(ARDUINO_CMAKE_AVRDUDE_CONFIG_PATH
-            NAMES avrdude.conf
-            PATHS ${ARDUINO_SDK_ROOT_PATH}
-            PATH_SUFFIXES /etc /etc/avrdude
-            DOC "Path to avrdude's programmer configuration file")
+    set(ARDUINO_CMAKE_AVRDUDE_CONFIG_PATH ${ARDUINO_AVRDUDE_CONFIG_PATH})
+    message(${ARDUINO_CMAKE_AVRDUDE_CONFIG_PATH})
     if (NOT ARDUINO_CMAKE_AVRDUDE_CONFIG_PATH OR ${ARDUINO_CMAKE_AVRDUDE_CONFIG_PATH} STREQUAL "")
-        message(FATAL_ERROR "avrdude program is required by the toolchain but can't be found")
+        message(FATAL_ERROR "avrdude config is required by the toolchain but can't be found")
     endif ()
 
 endfunction()

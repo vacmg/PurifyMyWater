@@ -40,6 +40,12 @@ function(_setup_sdk_internal_paths)
     find_arduino_sdk_bin(arduino_bin_path)
     set(ARDUINO_SDK_BIN_PATH "${arduino_bin_path}" CACHE PATH
             "Path to Arduino SDK's binaries folder")
+    find_arduino_avrdude_bin(arduino_avrdude_path)
+    set(ARDUINO_AVRDUDE_BIN_PATH "${arduino_avrdude_path}" CACHE PATH
+            "Path to Arduino avrdude binaries folder")
+    find_arduino_avrdude_config(arduino_avrdude_conf_path)
+    set(ARDUINO_AVRDUDE_CONFIG_PATH "${arduino_avrdude_conf_path}" CACHE PATH
+            "Path to Arduino avrdude config folder")
     find_arduino_sdk_root(arduino_root_path)
     set(ARDUINO_SDK_ROOT_PATH "${arduino_root_path}" CACHE PATH
             "Path to Arduino SDK's sys-root folder")

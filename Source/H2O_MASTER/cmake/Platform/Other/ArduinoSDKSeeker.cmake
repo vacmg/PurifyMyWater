@@ -72,6 +72,55 @@ function(find_arduino_sdk_bin _return_var)
 
 endfunction()
 
+function(find_arduino_avrdude_bin _return_var)
+    if (DEFINED ENV{ARDUINO_AVRDUDE_BIN_PATH})
+        string(REPLACE "\\" "/" unix_style_avrdude_bin_path $ENV{ARDUINO_AVRDUDE_BIN_PATH})
+        set(${_return_var} "${unix_style_avrdude_bin_path}" PARENT_SCOPE)
+    elseif (IS_DIRECTORY "${ARDUINO_SDK_PATH}/packages/arduino/tools/avrdude")
+        file(GLOB avrdude_path ${ARDUINO_SDK_PATH}/packages/arduino/tools/avrdude/*/bin/)
+        set(${_return_var} "${avrdude_path}" PARENT_SCOPE)
+    else ()
+        # Some systems like the Arch Linux arduino package install binaries to /usr/bin
+        # But gcc can be found first in ccache folder so let's search ar instead
+        find_program(avrdude_location avrdude)
+        if ("${avrdude_location}" MATCHES "NOTFOUND")
+            string(CONCAT error_message
+                    "Couldn't find Arduino avrdude path - Is it in a non-standard location?" "\n"
+                    "If so, please set the ARDUINO_AVRDUDE_BIN_PATH CMake-Variable")
+            message(FATAL_ERROR ${error_message})
+        else ()
+            get_filename_component(avrdude_parent ${avrdude_location} DIRECTORY)
+            set(${_return_var} "${avrdude_parent}" PARENT_SCOPE)
+        endif ()
+    endif ()
+
+endfunction()
+
+function(find_arduino_avrdude_config _return_var)
+    if (DEFINED ENV{ARDUINO_AVRDUDE_CONFIG_PATH})
+        string(REPLACE "\\" "/" unix_style_avrdude_config_path $ENV{ARDUINO_AVRDUDE_CONFIG_PATH})
+        set(${_return_var} "${unix_style_avrdude_config_path}" PARENT_SCOPE)
+    elseif (IS_DIRECTORY "${ARDUINO_SDK_PATH}/packages/arduino/tools/avrdude")
+        file(GLOB avrdude_path ${ARDUINO_SDK_PATH}/packages/arduino/tools/avrdude/*/etc/avrdude.conf)
+        set(${_return_var} "${avrdude_path}" PARENT_SCOPE)
+    else ()
+        # Some systems like the Arch Linux arduino package install binaries to /usr/bin
+        # But gcc can be found first in ccache folder so let's search ar instead
+        find_file(avrdude_location avrdude.conf)
+        if ("${avrdude_location}" MATCHES "NOTFOUND")
+            string(CONCAT error_message
+                    "Couldn't find Arduino avrdude.conf path - Is it in a non-standard location?" "\n"
+                    "If so, please set the ARDUINO_AVRDUDE_BIN_PATH CMake-Variable")
+            message(FATAL_ERROR ${error_message})
+        else ()
+            get_filename_component(avrdude_parent ${avrdude_location} DIRECTORY)
+            set(${_return_var} "${avrdude_parent}" PARENT_SCOPE)
+        endif ()
+    endif ()
+
+endfunction()
+
+
 #=============================================================================#
 # Attempts to find the Arduino SDK's root folder in the host system, searching at known locations.
 # Most installs will have it at SDK/hardware/tools/avr/ but if nothing is there, it will 
