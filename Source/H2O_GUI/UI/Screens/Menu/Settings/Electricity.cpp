@@ -16,6 +16,7 @@ void clickElectricity()
         switch (page)
         {
             case 1: // Start charging voltage
+            prevScreenStatus = LOADPAGEELECTRICITY;
                 tempVal = getNumInput(getString(Electricity_StartChargingVoltage_STR), F("V"), configStorage.config.STARTCHARGINGVOLTAGE);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {

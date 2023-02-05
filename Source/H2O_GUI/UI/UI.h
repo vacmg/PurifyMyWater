@@ -56,7 +56,7 @@
         LOADPAGEHELPTOPIC,
         HELPTOPIC,
         LOADRESET,
-        RESET,
+        RESET
     };
 
 enum ScreenStatus screenStatus = BOOTING; // Must be initialized to BOOTING in order to show the splash screen
