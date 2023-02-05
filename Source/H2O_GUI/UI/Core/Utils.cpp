@@ -25,10 +25,12 @@ void setFontSizeArray(byte *fontSizeArray, byte tl, byte tr, byte bl, byte br)
 
 double getNumInput(const String& titleNumInput, const String& unit, double value, byte decimalPlaces, double upperBound, double innerBound)
 {
+    debug(F("getNumInput: "));debug(titleNumInput);debug(F(": "));debug(value);debug(unit);debug('\n');
+
     #if !DISABLECOMM
         sendBusyCommand();
     #endif
-    debug(F("getNumInput: "));debug(titleNumInput);debug(F(": "));debug(value);debug(unit);debug('\n');
+
     drawNumInput(titleNumInput, unit);
     char string[15];
     bool negative; // sign switch
@@ -183,11 +185,12 @@ double getNumInput(const String& titleNumInput, const String& unit, double value
         }
     }
 
+    #if !DISABLECOMM
+        sendAvailableCommand();
+    #endif
+
     if (exit == 1)
     {
-        #if !DISABLECOMM
-            sendAvailableCommand();
-        #endif
         debug(F("getNumInput returned: "));debug(atof(string));debug('\n');
         double res = atof(string);
         if (upperBound < res)
@@ -204,9 +207,6 @@ double getNumInput(const String& titleNumInput, const String& unit, double value
         }
         return res;
     }
-    #if !DISABLECOMM
-        sendAvailableCommand();
-    #endif
     debug(F("getNumInput was cancelled\n"));
     return NAN;
 }
