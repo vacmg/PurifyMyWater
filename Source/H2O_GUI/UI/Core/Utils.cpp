@@ -3,6 +3,7 @@
 //
 
 #include "Core.h"
+#include "../../MasterComHandlers/MasterComHandlers.h"
 
 void setFontSizeArray(byte *fontSizeArray, byte tl, byte cl, byte bl, byte tr, byte cr, byte br)
 {
@@ -24,6 +25,9 @@ void setFontSizeArray(byte *fontSizeArray, byte tl, byte tr, byte bl, byte br)
 
 double getNumInput(const String& titleNumInput, const String& unit, double value, byte decimalPlaces, double upperBound, double innerBound)
 {
+    #if !DISABLECOMM
+        sendBusyCommand();
+    #endif
     debug(F("getNumInput: "));debug(titleNumInput);debug(F(": "));debug(value);debug(unit);debug('\n');
     drawNumInput(titleNumInput, unit);
     char string[15];
@@ -181,6 +185,9 @@ double getNumInput(const String& titleNumInput, const String& unit, double value
 
     if (exit == 1)
     {
+        #if !DISABLECOMM
+            sendAvailableCommand();
+        #endif
         debug(F("getNumInput returned: "));debug(atof(string));debug('\n');
         double res = atof(string);
         if (upperBound < res)
@@ -197,7 +204,9 @@ double getNumInput(const String& titleNumInput, const String& unit, double value
         }
         return res;
     }
-
+    #if !DISABLECOMM
+        sendAvailableCommand();
+    #endif
     debug(F("getNumInput was cancelled\n"));
     return NAN;
 }
