@@ -3,6 +3,7 @@
 //
 
 #include "Core.h"
+#include "../../MasterComHandlers/MasterComHandlers.h"
 
 void setFontSizeArray(byte *fontSizeArray, byte tl, byte cl, byte bl, byte tr, byte cr, byte br)
 {
@@ -22,8 +23,11 @@ void setFontSizeArray(byte *fontSizeArray, byte tl, byte tr, byte bl, byte br)
     fontSizeArray[3] = br;
 }
 
-double getNumInput(const String& titleNumInput, const String& unit, double value, byte decimalPlaces)
+double getNumInput(const String& titleNumInput, const String& unit, double value, byte decimalPlaces, double upperBound, double innerBound)
 {
+    #if !DISABLECOMM
+        sendBusyCommand();
+    #endif
     debug(F("getNumInput: "));debug(titleNumInput);debug(F(": "));debug(value);debug(unit);debug('\n');
     drawNumInput(titleNumInput, unit);
     char string[15];
@@ -181,17 +185,45 @@ double getNumInput(const String& titleNumInput, const String& unit, double value
 
     if (exit == 1)
     {
+        #if !DISABLECOMM
+            sendAvailableCommand();
+        #endif
         debug(F("getNumInput returned: "));debug(atof(string));debug('\n');
-        return atof(string);
+        double res = atof(string);
+        if (upperBound < res)
+        {
+            changeError(UpperBoundError); //TODO implementar error
+            changeScreenStatus(LOADERROR);
+            return NAN;
+        }
+        if (innerBound > res)
+        {
+            changeError(InnerBoundError); //TODO implementar error
+            changeScreenStatus(LOADERROR);
+            return NAN;
+        }
+        return res;
     }
-
+    #if !DISABLECOMM
+        sendAvailableCommand();
+    #endif
     debug(F("getNumInput was cancelled\n"));
     return NAN;
+}
+
+double getNumInput(const String& titleNumInput, const String& unit, double value, byte decimalPlaces)
+{
+    return getNumInput(titleNumInput,unit,value,decimalPlaces,__DBL_MAX__,__DBL_MIN__);
 }
 
 double getNumInput(const String& titleNumInput, const String& unit, double value)
 {
     return getNumInput(titleNumInput,unit,value,2);
+}
+
+double getNumInput(const String& titleNumInput, const String& unit, double value, double upperBound, double innerBound)
+{
+    return getNumInput(titleNumInput,unit,value,2,upperBound,innerBound);
 }
 
 void okPopup(const String& headerText, const String& messagePath, const String& btn1Text)
