@@ -28,16 +28,6 @@ void drawError()
 
             break;
 
-        case UpperBoundError:
-        {
-            drawOkPopup(getString(UpperBoundError_STR), getPath(UpperBoundError_PATH), getString(OK_STR));
-        }
-
-        case InnerBoundError:
-        {
-            drawOkPopup(getString(InnerBoundError_STR), getPath(InnerBoundError_PATH), getString(OK_STR));
-        }
-
         default:
             my_lcd.Fill_Screen(0xFFFF);
             char str[9] = "Error ";
@@ -56,15 +46,5 @@ void clickError()
     {
         changeError(NoError);
         changeScreenStatus(LOADMENU);
-    }
-    else if(btn1.isPressed() && currentError == UpperBoundError)
-    {
-        changeError(NoError);
-        changeScreenStatus(prevScreenStatus);
-    }
-    else if(btn1.isPressed() && currentError == InnerBoundError)
-    {
-        changeError(NoError);
-        changeScreenStatus(prevScreenStatus);
     }
 }
