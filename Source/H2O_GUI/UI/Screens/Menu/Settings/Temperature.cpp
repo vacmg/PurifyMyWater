@@ -52,8 +52,8 @@ void clickTemperature()
                     }
                     else if(tempVal <=  0)
                     {
-                        prevScreen = LOADPAGETEMPERATURE;
-                        changeError(LowValueRange);
+                        prevScreenStatus = LOADPAGETEMPERATURE;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }
@@ -74,14 +74,14 @@ void clickTemperature()
                     }
                     else if(tempVal <=  0)
                     {
-                        prevScreen = LOADPAGETEMPERATURE;
-                        changeError(LowValueRange);
+                        prevScreenStatus = LOADPAGETEMPERATURE;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= configStorage.config.STARTPSUTEMP)
                     {
-                        prevScreen = LOADPAGETEMPERATURE;
-                        changeError(UpValueRange);
+                        prevScreenStatus = LOADPAGETEMPERATURE;
+                        changeError(UpperLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }
@@ -107,8 +107,8 @@ void clickTemperature()
                     }
                     else if(tempVal <=  0 || tempVal <= configStorage.config.STARTPSUTEMP || tempVal <= configStorage.config.STARTCASETEMP)
                     {
-                        prevScreen = LOADPAGETEMPERATURE;
-                        changeError(LowValueRange);
+                        prevScreenStatus = LOADPAGETEMPERATURE;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }
@@ -128,14 +128,14 @@ void clickTemperature()
                     }
                     else if(tempVal <=  0 || tempVal <= configStorage.config.STOPCASETEMP)
                     {
-                        prevScreen = LOADPAGETEMPERATURE;
-                        changeError(LowValueRange);
+                        prevScreenStatus = LOADPAGETEMPERATURE;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                     else if( tempVal >= configStorage.config.STOPWORKINGTEMP)
                     {
-                        prevScreen = LOADPAGETEMPERATURE;
-                        changeError(UpValueRange);
+                        prevScreenStatus = LOADPAGETEMPERATURE;
+                        changeError(UpperLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }
@@ -160,14 +160,14 @@ void clickTemperature()
                     }
                     else if(tempVal <=  0 || tempVal <= configStorage.config.STOPPSUTEMP)
                     {
-                        prevScreen = LOADPAGETEMPERATURE;
-                        changeError(LowValueRange);
+                        prevScreenStatus = LOADPAGETEMPERATURE;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                     else if( tempVal >= configStorage.config.STOPWORKINGTEMP)
                     {
-                        prevScreen = LOADPAGETEMPERATURE;
-                        changeError(UpValueRange);
+                        prevScreenStatus = LOADPAGETEMPERATURE;
+                        changeError(UpperLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }
@@ -187,14 +187,14 @@ void clickTemperature()
                     }
                     else if(tempVal <=  0 )
                     {
-                        prevScreen = LOADPAGETEMPERATURE;
-                        changeError(LowValueRange);
+                        prevScreenStatus = LOADPAGETEMPERATURE;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                     else if( tempVal >= configStorage.config.STARTCASETEMP)
                     {
-                        prevScreen = LOADPAGETEMPERATURE;
-                        changeError(UpValueRange);
+                        prevScreenStatus = LOADPAGETEMPERATURE;
+                        changeError(UpperLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }

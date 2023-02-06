@@ -28,13 +28,13 @@ void drawError()
 
             break;
 
-        case LowValueRange:
+        case InnerLimitReachedError:
         {
             drawOkPopup(getString(LowRangeValue_STR), getPath(LowRange_PATH), getString(OK_STR));
         }
             break;
 
-        case UpValueRange:
+        case UpperLimitReachedError:
         {
             drawOkPopup(getString(UpRangeValue_STR), getPath(UpRange_PATH), getString(OK_STR));
         }
@@ -60,16 +60,16 @@ void clickError()
         changeError(NoError);
         changeScreenStatus(LOADMENU);
     }
-    else if(btn1.isPressed() && currentError == LowValueRange)
+    else if(btn1.isPressed() && currentError == InnerLimitReachedError)
     {
         changeError(NoError);
-        changeScreenStatus(prevScreen);
+        changeScreenStatus(prevScreenStatus);
         drawBackground();
     }
-    else if(btn1.isPressed() && currentError == UpValueRange)
+    else if(btn1.isPressed() && currentError == UpperLimitReachedError)
     {
         changeError(NoError);
-        changeScreenStatus(prevScreen);
+        changeScreenStatus(prevScreenStatus);
         drawBackground();
     }
 

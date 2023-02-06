@@ -30,8 +30,8 @@ void clickWater()
                     }
                     else if(0 >= configStorage.config.WELLPUMPTIMEOUT)
                     {
-                        prevScreen = LOADPAGEWATER;
-                        changeError(LowValueRange);
+                        prevScreenStatus = LOADPAGEWATER;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }
@@ -51,8 +51,8 @@ void clickWater()
                     }
                     else if(0 >= configStorage.config.FILTERTIMEOUT)
                     {
-                        prevScreen = LOADPAGEWATER;
-                        changeError(LowValueRange);
+                        prevScreenStatus = LOADPAGEWATER;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }
@@ -78,8 +78,8 @@ void clickWater()
                     }
                     else if(0 >= configStorage.config.UVPUMPTIMEOUT)
                     {
-                        prevScreen = LOADPAGEWATER;
-                        changeError(LowValueRange);
+                        prevScreenStatus = LOADPAGEWATER;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }
@@ -99,8 +99,8 @@ void clickWater()
                     }
                     else if( tempVal < 0)
                     {
-                        prevScreen = LOADPAGEWATER;
-                        changeError(LowValueRange);
+                        prevScreenStatus = LOADPAGEWATER;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
 
@@ -126,8 +126,8 @@ void clickWater()
                     }
                     else if(0 >= configStorage.config.ENDPUMPTIMEOUT)
                     {
-                        prevScreen = LOADPAGEWATER;
-                        changeError(LowValueRange);
+                        prevScreenStatus = LOADPAGEWATER;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }

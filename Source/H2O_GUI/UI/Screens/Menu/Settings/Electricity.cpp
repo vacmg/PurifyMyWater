@@ -31,16 +31,16 @@ void clickElectricity()
                     else if(tempVal <= configStorage.config.STOPWORKINGVOLTAGE )
                     {
                         debug(F("Low Value error Start Charging Voltage"));
-                        prevScreen = LOADPAGEELECTRICITY;
-                        changeError(LowValueRange);
+                        prevScreenStatus  = LOADPAGEELECTRICITY;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
 
                     }
                     else if(tempVal >= configStorage.config.STOPCHARGINGVOLTAGE)
                     {
                         debug(F("Up Value error Start Charging Voltage"));
-                        prevScreen = LOADPAGEELECTRICITY;
-                        changeError(UpValueRange);
+                        prevScreenStatus = LOADPAGEELECTRICITY;
+                        changeError(UpperLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }
@@ -65,15 +65,15 @@ void clickElectricity()
                     else if(tempVal <=  configStorage.config.STARTCHARGINGVOLTAGE)
                     {
                         debug(F("Low Value error Start Charging Voltage"));
-                        prevScreen = LOADPAGEELECTRICITY;
-                        changeError(LowValueRange);
+                        prevScreenStatus = LOADPAGEELECTRICITY;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= configStorage.config.STOPCHARGINGVOLTAGE)
                     {
                         debug(F("Up Value error Start Charging Voltage"));
-                        prevScreen = LOADPAGEELECTRICITY;
-                        changeError(UpValueRange);
+                        prevScreenStatus = LOADPAGEELECTRICITY;
+                        changeError(UpperLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
 
@@ -127,15 +127,15 @@ void clickElectricity()
                     else if(tempVal <=  configStorage.config.STARTCHARGINGVOLTAGE + 1)
                     {
                         debug(F("Low Value error Start Charging Voltage"));
-                        prevScreen = LOADPAGEELECTRICITY;
-                        changeError(LowValueRange);
+                        prevScreenStatus  = LOADPAGEELECTRICITY;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= MAXCAPACITORSALLOWEDVOLTAGE)
                     {
                         debug(F("Up Value error Start Charging Voltage"));
-                        prevScreen = LOADPAGEELECTRICITY;
-                        changeError(UpValueRange);
+                        prevScreenStatus  = LOADPAGEELECTRICITY;
+                        changeError(UpperLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }
@@ -158,15 +158,15 @@ void clickElectricity()
                     else if(tempVal <=  MINSYSTEMALLOWEDVOLTAGE)
                     {
                         debug(F("Low Value error Start Charging Voltage"));
-                        prevScreen = LOADPAGEELECTRICITY;
-                        changeError(LowValueRange);
+                        prevScreenStatus  = LOADPAGEELECTRICITY;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= configStorage.config.STARTCHARGINGVOLTAGE - 1)
                     {
                         debug(F("Up Value error Start Charging Voltage"));
-                        prevScreen = LOADPAGEELECTRICITY;
-                        changeError(UpValueRange);
+                        prevScreenStatus  = LOADPAGEELECTRICITY;
+                        changeError(UpperLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }
@@ -205,15 +205,15 @@ void clickElectricity()
                     else if(tempVal <=  0)
                     {
                         debug(F("Low Value error Start Charging Voltage"));
-                        prevScreen = LOADPAGEELECTRICITY;
-                        changeError(LowValueRange);
+                        prevScreenStatus  = LOADPAGEELECTRICITY;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= MAXUVAMPERAGE)
                     {
                         debug(F("Up Value error Start Charging Voltage"));
-                        prevScreen = LOADPAGEELECTRICITY;
-                        changeError(UpValueRange);
+                        prevScreenStatus  = LOADPAGEELECTRICITY;
+                        changeError(UpperLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }
@@ -236,15 +236,15 @@ void clickElectricity()
                     else if(tempVal <=  50)
                     {
                         debug(F("Low Value error Start Charging Voltage"));
-                        prevScreen = LOADPAGEELECTRICITY;
-                        changeError(LowValueRange);
+                        prevScreenStatus  = LOADPAGEELECTRICITY;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                     else if(tempVal >= 60)
                     {
                         debug(F("Up Value error Start Charging Voltage"));
-                        prevScreen = LOADPAGEELECTRICITY;
-                        changeError(UpValueRange);
+                        prevScreenStatus  = LOADPAGEELECTRICITY;
+                        changeError(UpperLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }

@@ -51,8 +51,8 @@ void clickInterface()
                     }
                     else if (tempVal <= 0)
                     {
-                        prevScreen = LOADPAGEINTERFACE;
-                        changeError(LowValueRange);
+                        prevScreenStatus = LOADPAGEINTERFACE;
+                        changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
                     }
                 }
