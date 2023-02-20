@@ -19,8 +19,9 @@ void clickWater()
                 tempVal = getNumInput(getString(Water_WellPumpMaxTimeON_STR), F("s"), (double)configStorage.config.WELLPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (0 < configStorage.config.WELLPUMPTIMEOUT)// 0 < WELLPUMPTIMEOUT
+                    if (0 < tempVal)// 0 < WELLPUMPTIMEOUT
                     {
+                        //TODO: Cambiar el momento en que cambias el valor de WELLP
                         debug(F("WELLPUMPTIMEOUT UPDATED: "));debug(configStorage.config.WELLPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.WELLPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
                         // TODO send new setting
@@ -28,8 +29,9 @@ void clickWater()
                         drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
 
                     }
-                    else if(0 >= configStorage.config.WELLPUMPTIMEOUT)
+                    else if(0 >= tempVal)
                     {
+                        debug(F("WELLPUMPTIMEOUT UPDATED: VALUE NOT VALIDED"));debug('\n');
                         prevScreenStatus = LOADPAGEWATER;
                         changeError(InnerLimitReachedError);
                         changeScreenStatus(LOADERROR);
@@ -40,7 +42,7 @@ void clickWater()
                 tempVal = getNumInput(getString(Water_FilterMaxTimeON_STR), F("s"), (double)configStorage.config.FILTERTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (0 < configStorage.config.FILTERTIMEOUT)// 0 < FILTERTIMEOUT
+                    if (0 < tempVal)// 0 < FILTERTIMEOUT
                     {
                         debug(F("FILTERTIMEOUT UPDATED: "));debug(configStorage.config.FILTERTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.FILTERTIMEOUT = (unsigned long)(tempVal * 1000);
@@ -49,7 +51,7 @@ void clickWater()
                         drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
 
                     }
-                    else if(0 >= configStorage.config.FILTERTIMEOUT)
+                    else if(0 >= tempVal)
                     {
                         prevScreenStatus = LOADPAGEWATER;
                         changeError(InnerLimitReachedError);
@@ -67,7 +69,7 @@ void clickWater()
                 tempVal = getNumInput(getString(Water_UVPumpMaxTimeON_STR), F("s"), (double)configStorage.config.UVPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (0 < configStorage.config.UVPUMPTIMEOUT)// 0 < UVPUMPTIMEOUT
+                    if (0 < tempVal)// 0 < UVPUMPTIMEOUT
                     {
                         debug(F("UVPUMPTIMEOUT UPDATED: "));debug(configStorage.config.UVPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.UVPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
@@ -76,7 +78,7 @@ void clickWater()
                         drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
 
                     }
-                    else if(0 >= configStorage.config.UVPUMPTIMEOUT)
+                    else if(0 >= tempVal)
                     {
                         prevScreenStatus = LOADPAGEWATER;
                         changeError(InnerLimitReachedError);
@@ -89,7 +91,7 @@ void clickWater()
                 tempVal = getNumInput(getString(Water_UVPumpFlow_STR), F("L/H"), configStorage.config.UVPUMPFLOW);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if(tempVal>=0) // 0 < UVPUMPFLOW
+                    if(0 < tempVal) // 0 < UVPUMPFLOW
                     {
                         debug(F("UVPUMPFLOW UPDATED: "));debug(configStorage.config.UVPUMPFLOW);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.UVPUMPFLOW = (float) tempVal;
@@ -97,7 +99,7 @@ void clickWater()
                         changeScreenStatus(LOADPAGEWATER); // reload page with new config value
                         drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                     }
-                    else if( tempVal < 0)
+                    else if(0 >= tempVal )
                     {
                         prevScreenStatus = LOADPAGEWATER;
                         changeError(InnerLimitReachedError);
@@ -116,7 +118,7 @@ void clickWater()
                 tempVal = getNumInput(getString(Water_EndPumpMaxTimeON_STR), F("s"), (double)configStorage.config.ENDPUMPTIMEOUT/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (0 < configStorage.config.ENDPUMPTIMEOUT)// 0 < ENDPUMPTIMEOUT
+                    if (0 < tempVal)// 0 < ENDPUMPTIMEOUT
                     {
                         debug(F("ENDPUMPTIMEOUT UPDATED: "));debug(configStorage.config.ENDPUMPTIMEOUT);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.ENDPUMPTIMEOUT = (unsigned long)(tempVal * 1000);
@@ -124,7 +126,7 @@ void clickWater()
                         changeScreenStatus(LOADPAGEWATER); // reload page with new config value
                         drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
                     }
-                    else if(0 >= configStorage.config.ENDPUMPTIMEOUT)
+                    else if(0 >= tempVal)
                     {
                         prevScreenStatus = LOADPAGEWATER;
                         changeError(InnerLimitReachedError);

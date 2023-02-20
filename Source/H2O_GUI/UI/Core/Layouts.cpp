@@ -314,6 +314,9 @@ void drawPopup(const String& headerText, const String& messagePath)
     Label messageLabel(0,0,"",5,Color(0,0,0)); // Change here message text color
     TextBox message(61,136, 419,280,messagePath.c_str(),&messageLabel);
 
+    debug(F("Message \n"));debug(messagePath);debug(F("\n"));
+    message.printAsDrawn(&Serial);
+
     my_lcd.draw(&popupFrame);
     label.setString(headerText.c_str());
     my_lcd.draw(&header);

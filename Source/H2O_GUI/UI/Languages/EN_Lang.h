@@ -113,8 +113,8 @@ const char *const langEN[] PROGMEM = {EN_LANG_STR, EN_YES_STR,EN_NO_STR,EN_ON_ST
 // const char EN_XXX_PATH[] PROGMEM = "xxxx";
 
 const char EN_ResetPopUp_PATH[] PROGMEM = "/EN/Reset/PopUp.txt";
-const char EN_UpRange_PATH[] PROGMEM = "/EN/LowRange/Low.txt";
-const char EN_LowRange_PATH[] PROGMEM = "/EN/UpRange/Up.txt";
+const char EN_UpRange_PATH[] PROGMEM = "/EN/UpRange/Up.txt";
+const char EN_LowRange_PATH[] PROGMEM = "/EN/LowRange/Low.txt";
 
 const char *const pathEN[] PROGMEM = {EN_ResetPopUp_PATH,EN_UpRange_PATH,EN_LowRange_PATH}; // Follow the same order as enum PathIDs (Languages.h)
 

@@ -11,7 +11,7 @@
 #define DISABLECOMM true // Used to disable communications module
 
 #define SETDEFAULTSCREENCONFIG true // Used to set the screenConfig to the default screenConfig
-#define USEVOLATILECONFIG false // Used to disable EEPROM writes due to saving configuration in the persistent storage
+#define USEVOLATILECONFIG true // Used to disable EEPROM writes due to saving configuration in the persistent storage
 
 #if !DEBUG && (USEVOLATILECONFIG || SETDEFAULTSCREENCONFIG || DISABLEUI || DISABLECOMM)
 #undef DEBUG

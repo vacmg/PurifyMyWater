@@ -6,6 +6,7 @@
 
 void drawReset()
 {
+    debug(F("getPath: "));debug(getPath(ResetPopup_PATH));debug('\n');
     drawBoolPopup(getString(Interface_ResetStart_STR), getPath(ResetPopup_PATH), getString(YES_STR),getString(NO_STR));
 }
 
@@ -24,5 +25,5 @@ void clickReset()
 
 void performReset() //TODO perform reset
 {
-
+    debug(F("Se acaba de hacer el reset(TODO)\n"));
 }

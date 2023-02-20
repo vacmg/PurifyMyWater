@@ -41,7 +41,7 @@ void clickTemperature()
                 tempVal = getNumInput(getString(Temp_RefreshInterval_STR), F("s"), (double)configStorage.config.TEMPCHECKTIME/1000.0);
                 if (!isnan(tempVal)) // if getNumInput was not cancelled
                 {
-                    if (tempVal > 0)
+                    if (0 < tempVal)
                     {
                         debug(F("TEMPCHECKTIME UPDATED: "));debug(configStorage.config.TEMPCHECKTIME);debug(F(" --> "));debug(tempVal);debug('\n');
                         configStorage.config.TEMPCHECKTIME = (unsigned long)(tempVal * 1000);
@@ -50,7 +50,7 @@ void clickTemperature()
                         drawBackground(); // to print again the page after calling getNumInput, we need to draw the background too
 
                     }
-                    else if(tempVal <=  0)
+                    else if(0 >= tempVal)
                     {
                         prevScreenStatus = LOADPAGETEMPERATURE;
                         changeError(InnerLimitReachedError);

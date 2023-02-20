@@ -75,4 +75,5 @@ void clickInterface()
 
         }
     }
+    //TODO: Btn6 case 1 calibrate the screen
 }

@@ -68,12 +68,12 @@ struct Configuration // TODO create a toStr & toStruct functions to send the who
     float UVPUMPFLOW; // Stored in ms, input in s (1s = 1000ms) // 0 < UVPUMPTIMEOUT
 
     // Temperature settings
-    unsigned long TEMPCHECKTIME; // Stored in ms, input in s (1s = 1000ms) // 0 < TEMPCHECKTIME
-    byte STOPWORKINGTEMP; // in Cº // 0 < STARTCASETEMP, STARTPSUTEMP < STOPWORKINGTEMP
-    byte STARTCASETEMP; // in Cº // 0 < STOPCASETEMP < STARTCASETEMP
-    byte STOPCASETEMP; // in Cº // 0 < STOPCASETEMP < STARTCASETEMP
-    byte STARTPSUTEMP; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
-    byte STOPPSUTEMP; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP
+    unsigned long TEMPCHECKTIME; // Stored in ms, input in s (1s = 1000ms) // 0 < TEMPCHECKTIME //Pag1btn4
+    byte STOPWORKINGTEMP; // in Cº // 0 < STARTCASETEMP ^ STARTPSUTEMP < STOPWORKINGTEMP //Pag1btn5
+    byte STARTCASETEMP; // in Cº // 0 < STOPCASETEMP < STARTCASETEMP //Pag2btn5
+    byte STOPCASETEMP; // in Cº // 0 < STOPCASETEMP < STARTCASETEMP //Pag2btn6
+    byte STARTPSUTEMP; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP //Pag1btn6
+    byte STOPPSUTEMP; // in Cº // 0 < STOPPSUTEMP < STARTPSUTEMP //Pag2btn4
     unsigned long DATAREFRESHPERIOD; // in ms // Time between data refreshes
 };
 
