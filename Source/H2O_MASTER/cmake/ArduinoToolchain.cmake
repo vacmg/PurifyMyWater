@@ -20,7 +20,6 @@ endif()
 #                         System Paths                                        #
 #=============================================================================#
 if(UNIX)
-    include(Platform/UnixPaths)
     if(APPLE)
         list(APPEND CMAKE_SYSTEM_PREFIX_PATH ~/Applications
                                              /Applications
@@ -28,8 +27,6 @@ if(UNIX)
                                              /sw        # Fink
                                              /opt/local) # MacPorts
     endif()
-elseif(WIN32)
-    include(Platform/WindowsPaths)
 endif()
 
 

@@ -9,10 +9,10 @@
 
 void setFontSizeArray(byte* fontSizeArray, byte tl, byte cl, byte bl, byte tr, byte cr, byte br);
 void setFontSizeArray(byte* fontSizeArray, byte tl, byte tr, byte bl, byte br);
-double getNumInput(const String& titleNumInput, const String& unit, double value, byte decimalPlaces, double upperBound, double innerBound);
+double getNumInput(const String& titleNumInput, const String& unit, double value, byte decimalPlaces, double upperBound, double innerBound, enum ScreenStatus returnTo);
 double getNumInput(const String& titleNumInput, const String& unit, double value, byte decimalPlaces);
 double getNumInput(const String& titleNumInput, const String& unit, double value);
-double getNumInput(const String& titleNumInput, const String& unit, double value, double upperBound, double innerBound);
+double getNumInput(const String& titleNumInput, const String& unit, double value, double upperBound, double innerBound, enum ScreenStatus returnTo);
 
 
 void okPopup(const String& headerText, const String& messagePath, const String& btn1Text);
