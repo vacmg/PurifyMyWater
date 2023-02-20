@@ -29,7 +29,7 @@ if(UNIX)
                                              /opt/local) # MacPorts
     endif()
 elseif(WIN32)
-    include(Platform/WindowsPaths)
+#    include(Platform/WindowsPaths)
 endif()
 
 
