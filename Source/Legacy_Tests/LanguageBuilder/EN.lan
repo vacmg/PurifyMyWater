@@ -1,0 +1,90 @@
+{
+  "Utils": {
+    "memoryUsage": 2336,
+    "SwitchStatus": {
+      "ON": "ON",
+      "OFF": "OFF"
+    }
+  },
+  "Status": {
+    "Title": "Status",
+    "ErrorStatusBtn": {
+      "FAILURE": "FAILURE"
+    },
+    "MenuBtn": "Menu"
+  },
+  "Menu": {
+    "Title": "Menu",
+    "HelpBtn": "Help",
+    "EngineeringBtn": "Engineering Mode",
+    "SettingsBtn": "Settings",
+    "ExtraFunctionsBtn": "Extra Functions",
+    "Settings": {
+      "Title": "Settings",
+      "ElectricityBtn": "Electricity",
+      "WaterBtn": "Water",
+      "InterfaceBtn": "Interface",
+      "TemperatureBtn": "Temperature",
+      "Water": {
+        "Title": "Water",
+        "WellPumpMaxTimeON": "Well Pump max time ON",
+        "UVPumpMaxTimeON": "UV Pump max time ON",
+        "EndPumpMaxTimeON": "End Pump max time ON",
+        "FilterMaxTimeON": "Filter max time ON",
+        "UVPumpFlow": "UV Pump flow"
+      },
+      "Temperature": {
+        "Title": "Temperature",
+        "RefreshRate": "Temp. Refresh Rate",
+        "SystemStopTemp": "System Stop Temp.",
+        "PSUFanStartTemp": "PSU Fan Start Temp.",
+        "PSUFanStopTemp": "PSU Fan Stop Temp.",
+        "CaseFanStartTemp": "Case Fan Start Temp.",
+        "CaseFanStopTemp": "Case Fan Stop Temp."
+      },
+      "Interface": {
+        "Title": "Interface",
+        "Language": {
+          "Title": "Language",
+          "English": "English",
+          "Spanish": "Spanish",
+          "French": "French"
+        },
+        "ScreenRotation": {
+          "Title": "Screen Rotation",
+          "InvertedLandscape": "Inverted Landscape",
+          "Landscape": "Landscape"
+        },
+        "ScreenCalibration": {
+          "Title": "Screen Calibration",
+          "StartScreenCalibration": "Calibrate"
+        },
+        "RefreshPeriod": "Refresh Period",
+        "Reset": {
+          "Title": "Reset",
+          "StartReset": "Perform Reset"
+        }
+      },
+      "Electricity": {
+        "Title": "Electricity",
+        "StartChargingVoltage": "Start Charging Voltage",
+        "StopChargingVoltage": "Stop Charging Voltage",
+        "UVCurrent": "UV light est. Current",
+        "StartWorkingVoltage": "Start Working Voltage",
+        "StopWorkingVoltage": "Stop Working Voltage",
+        "ACInverterFrequency": "AC Inverter Frequency",
+        "ACAmmeterSensitivity": "AC Ammeter Sensitivity",
+        "ACAmmeterZero": "AC Ammeter Zero",
+        "DCAmmeterSensitivity": "DC Ammeter Sensitivity",
+        "DCAmmeterZero": "DC Ammeter Zero"
+      }
+    },
+    "ExtraFunctions": {
+      "Title": "Extra Functions",
+      "InstallWizard": "Install Wizard",
+      "StartInstallWizard": "Start",
+      "ACPSU": "AC Power Supply",
+      "DCPSU": "DC Power Supply"
+    }
+  }
+}

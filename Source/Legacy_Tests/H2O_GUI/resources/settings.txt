@@ -1,0 +1,27 @@
+Electrical Systems
+	UVExpectedCurrent (ESTIMATEDUVAMPERAGE)
+	ACFreq
+	ACAmpSensitivity
+	ACAmpZero
+	DCAmpSensitivity
+	DCAmpZero
+	StartChargingVoltage
+	StopChargingVoltage
+	StartWorkingVoltage
+	StopWorkingVoltage
+Water Pumps
+	UVPumpFlow
+	WellPumpTimeout
+	UVPumpTimeout
+	ENDPumpTimeout
+	FilterTimeout
+Temperature
+	TempCheckTime
+	StopWorkingTemp
+	MAXPSUTemp
+	MINPSUTemp
+	MAXCaseTemp
+	MinCaseTemp
+GUI
+	refreshtime
+	language
