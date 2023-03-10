@@ -1,0 +1,9 @@
+build-esp32/
+build-esp32s3/
+build/
+sdkconfig
+sdkconfig.old
+.vs/
+managed_components/
+cp-deploy.cmd
+.idea
