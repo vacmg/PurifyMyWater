@@ -1,7 +1,7 @@
 ---
 name: ESP32_BUILD_CI_(Ubuntu)
 
-on: [push, pull_request] # Remove this comment to enable action
+on: [push, pull_request]
 
 
 jobs:
