@@ -1,9 +1,11 @@
-Despues de ejecutar installToolchain.sh, debe configurar clion para poder compilar correctamente:
+After using installToolchain.sh, you must configure clion to build the project. If you want to use idf.py as your build tool, run this line everytime you open a new termianl to use idf.py: . ./esp-idf/export.sh
+
+To configure clion, follow this steps:
 
 1: Go to Settings | Build, Execution, Deployment | CMake and use the Environment field to add a new variable called IDF_PATH.
 Set the value to the esp-idf folder path
 
-2: run export.sh
+2: run this line: . ./esp-idf/export.sh
 run echo %PATH%.
 Copy everything that contains the .espressif folder.
 Navigate to CMake settings again, open the Environment field, and find PATH in the list of system variables.
@@ -19,3 +21,4 @@ Prepend the value with what you have just copied. Make sure there is a semicolon
 If build fails, Go to Settings | Build, Execution, Deployment | CMake and use the Environment field to add a new variable called ESPPORT with the ESP detected port as value
 
 More information available at: https://www.jetbrains.com/help/clion/esp-idf.html#cmake-setup
+
