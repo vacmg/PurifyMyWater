@@ -1,0 +1,22 @@
+---
+name: ESP32_BUILD_CI_(Ubuntu)
+
+on: [push, pull_request]
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+    - name: esp-idf build
+      uses: espressif/esp-idf-ci-action@v1.1.0
+      with:
+        esp_idf_version: latest
+        target: esp32
+        path: 'Source/PurifyMyWater'

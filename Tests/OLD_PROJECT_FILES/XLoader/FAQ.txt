@@ -1,5 +1,0 @@
-Para crear el archivo ".hex", en el IDE de arduino, se debe ir a preferencias y hacer click en el link de mas ajustes.
-Acto seguido, se abrirá un archivo ".txt" en el que se debe pegar lo siguiente: "build.path=C:\Users\Víctor\Desktop\Arduino\__hex" sin comillas
-siendo "C:\xxxxxx" la ruta donde se generaran los archivos.
-El ".hex" que se debe escoger es el que no pone "with_bootloader".
-Para quemar el ".hex" se abre el programa XLoader y se selecciona la ruta del ".hex" para despues presionar el boton "Upload"
