@@ -1,7 +1,7 @@
-# Welcome to PurifyMyWater
+# Welcome to PurifyMyWater [![Latest Build](https://github.com/vacmg/PurifyMyWater/actions/workflows/ESP32_BUILD.yaml/badge.svg)](https://github.com/vacmg/PurifyMyWater/actions/workflows/ESP32_BUILD.yaml)
 Here you can read about the hardware & software being used to bring to the world with a cheap DIY water purification system which can be assembled without great expenditures in expensive components. Our goal is to make purified water more accessible to those in dire need of it.
 
-![LOGO](https://github.com/vacmg/PurifyMyWater/raw/master/docs/media/PMWBigLogoRaw.bmp)
+![LOGO](./media/PMWBigLogoRaw.bmp)
 
 ## About us
 This project is being developed by a group of [students](https://github.com/vacmg/PurifyMyWater/graphs/contributors) of the UPM with the support of [**DLSIIS ETSIINF UPM**](https://www.dlsiis.fi.upm.es/) and [**ALUMNOS SOLIDARIOS**](https://www.joyfe.es/gente-joyfe/alumnos-solidarios/) initiative of JOYFE's school in Madrid.
@@ -12,7 +12,7 @@ Our project was included in a [**UNICEF video**](http://www.youtube.com/watch?v=
 
 Deprecated documentation of the first **prototype** (currently we are developing the second hardware revision) including the manual can be found [**HERE**](https://drive.google.com/drive/u/1/folders/1oBQqVKW_CtPYmneLX6VQYX_fBKi4t3Yf)
 
-![Prototype](https://github.com/vacmg/PurifyMyWater/raw/master/docs/media/20180611_103633_HDR.jpg) | ![Control Unit](https://github.com/vacmg/PurifyMyWater/raw/master/docs/media/20180802_202004.jpg)
+![Prototype](./media/20180611_103633_HDR.jpg) | ![Control Unit](./media/20180802_202004.jpg)
 ------------ | -------------
 This is an image of the protoytpe | This is the inside of the control unit
 
@@ -22,7 +22,7 @@ The main idea of this project is to use inexpensive parts to create a robust mac
 Currently, we are working on a new and revised version of the water purifying system in aims of further increasing efficiency. As mentioned before, all the information of the first version is stored [**HERE**](https://drive.google.com/drive/u/1/folders/1oBQqVKW_CtPYmneLX6VQYX_fBKi4t3Yf)
 - #### How it works?
 
-![System scheme](https://raw.githubusercontent.com/vacmg/PurifyMyWater/master/Schematics/Scan.jpg)
+![System scheme](./media/Scan.jpg)
 
 Firstly, a pump gets water from the well and puts it in a surface tank. Then, the sand filter separates the clean water from the soil, and sends it to a UV tank.
 The next step is to destroy any organism using a UV radiation light and then pump the water to a tank at a higher elevation than the rest of the installation.
@@ -38,13 +38,7 @@ Our components use direct current but also alternative current, so we need to ha
 
 - #### Control unit
 
-Our control unit packages all the electronics needed to control and supply energy to all the pumps and components used in the system. It has an arduino MEGA 2560 inside which is the main controller. In adition, we are developing 2 versions of the control unit: one with a touchscreen module and another without.
-
-The touchscreen can be used to monitor the system, check for errors and tune its parameters to adapt to your necesities. Moreover, it can be used to toggle additional features such as an AC power supply, an USB phone charger and more!
-
-The version without the touchscreen will also be capable of toggling the additional features, though it will require some additional steps. In this case it will have to be the features will have to be configured by editing the configuration file of the system. The configuration file will be available inside a microSD card in JSON format.
+Our control unit packages all the electronics needed to control and supply energy to all the pumps and components used in the system.
 
 ## Software
-Currently, our development team is developing and testing a rework of the code which will work with the hardware revision that is also being developed now. This rework will include the support of the touchscreen and lots of extra functionalities.
-
-The code is being developed in Arduino language, a slightly modified version of C++ which emulates processing main methods: setup and loop.
+Currently, our team is developing and testing a brand new prototype which will use better algorythms to get a huge improvement in efficiency.
