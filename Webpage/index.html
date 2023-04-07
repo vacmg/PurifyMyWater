@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Welcome to PurifyMyWater | PurifyMyWater</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Welcome to PurifyMyWater" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="An Open Source Hardware &amp; Software design for places where there isn’t clean water for drinking purposes" />
+<meta property="og:description" content="An Open Source Hardware &amp; Software design for places where there isn’t clean water for drinking purposes" />
+<link rel="canonical" href="https://vacmg.github.io/PurifyMyWater/" />
+<meta property="og:url" content="https://vacmg.github.io/PurifyMyWater/" />
+<meta property="og:site_name" content="PurifyMyWater" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Welcome to PurifyMyWater" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","description":"An Open Source Hardware &amp; Software design for places where there isn’t clean water for drinking purposes","headline":"Welcome to PurifyMyWater","name":"PurifyMyWater","url":"https://vacmg.github.io/PurifyMyWater/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/PurifyMyWater/assets/css/style.css">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/PurifyMyWater/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Welcome to PurifyMyWater</h1>
+      <h2 class="project-tagline">An Open Source Hardware & Software design for places where there isn't clean water for drinking purposes</h2>
+      
+        <a href="https://github.com/vacmg/PurifyMyWater" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="welcome-to-purifymywater-">Welcome to PurifyMyWater <a href="https://github.com/vacmg/PurifyMyWater/actions/workflows/ESP32_BUILD.yaml"><img src="https://github.com/vacmg/PurifyMyWater/actions/workflows/ESP32_BUILD.yaml/badge.svg" alt="Latest Build" /></a></h1>
+<p>Here you can read about the hardware &amp; software being used to bring to the world with a cheap DIY water purification system which can be assembled without great expenditures in expensive components. Our goal is to make purified water more accessible to those in dire need of it.</p>
+
+<p><img width=30% height=30% src="./media/PMWNewLogo.png"  alt="LOGO"/></p>
+
+<h2 id="about-us">About us</h2>
+<p>This project is being developed by a group of <a href="https://github.com/vacmg/PurifyMyWater/graphs/contributors">students</a> of the UPM with the support of <a href="https://www.dlsiis.fi.upm.es/"><strong>DLSIIS ETSIINF UPM</strong></a> and <a href="https://www.joyfe.es/gente-joyfe/alumnos-solidarios/"><strong>ALUMNOS SOLIDARIOS</strong></a> initiative of JOYFE’s school in Madrid.</p>
+
+<p>Currently, we are developing and testing a prototype which will be deployed in the Kanhakro school and will supply around <strong>1500L</strong> of clean water per day to the school and the surrounding area.</p>
+
+<p>Our project was included in a <a href="http://www.youtube.com/watch?v=UPMDZqc1k5A&amp;t=4m5s"><strong>UNICEF video</strong></a> about solidarity and was selected by the <a href="https://fundacionjjmarquez.org/"><strong>Juan José Marquez foundation</strong></a> to bring water to a school located in Kanhakro, in Ivory Coast.</p>
+
+<p>Deprecated documentation of the first <strong>prototype</strong> (currently we are developing the second hardware revision) including the manual can be found <a href="https://drive.google.com/drive/u/1/folders/1oBQqVKW_CtPYmneLX6VQYX_fBKi4t3Yf"><strong>HERE</strong></a></p>
+
+<table>
+  <thead>
+    <tr>
+      <th><img src="./media/20180611_103633_HDR.jpg" alt="Prototype" /></th>
+      <th><img src="./media/20180802_202004.jpg" alt="Control Unit" /></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>This is an image of the protoytpe</td>
+      <td>This is the inside of the control unit</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="hardware">Hardware</h2>
+<p>The main idea of this project is to use inexpensive parts to create a robust machine that is mostly self-sustainable and easily scalable. To achieve that, we have split the system into the control unit, and some peripherals. With little to no change to the control unit and the code, the water purification components can be expanded on to purify more water based on necessity.</p>
+
+<p>Currently, we are working on a new and revised version of the water purifying system in aims of further increasing efficiency. As mentioned before, all the information of the first version is stored <a href="https://drive.google.com/drive/u/1/folders/1oBQqVKW_CtPYmneLX6VQYX_fBKi4t3Yf"><strong>HERE</strong></a></p>
+<ul>
+  <li>
+    <h4 id="how-it-works">How it works?</h4>
+  </li>
+</ul>
+
+<p><img src="./media/Scan.jpg" alt="System scheme" /></p>
+
+<p>Firstly, a pump gets water from the well and puts it in a surface tank. Then, the sand filter separates the clean water from the soil, and sends it to a UV tank.
+The next step is to destroy any organism using a UV radiation light and then pump the water to a tank at a higher elevation than the rest of the installation.
+From that tank, the water can be distributed as necessary.</p>
+
+<ul>
+  <li>
+    <h4 id="energy-management">Energy management</h4>
+  </li>
+</ul>
+
+<p>This system gets all its energy from a <strong>solar panel</strong>. For better performance, its rated power should be at least 50% higher than the peripheral, as it needs more power. This is to ensure that it is capable of continuing to operate even in unfavorable weather conditions, such as rain or cloudy weather.</p>
+
+<p>Instead of accumulating the energy in a battery, the lifespan of which is usually around 2 years, we use supercapacitors, which accumulate less energy (still enough to drive high loads for a short period of time), but last millions of charge and discharge cycles, thereby prolonging the amount of time the machine can be used without requiring the replacement of components. With the hardware configuration as it is, the system will not be in operation at night, however, as demonstrated though our reference design it will most certainly be capable of fulfilling the daily water needs of the populace. The reference design in question is capable of purifying 180L per hour, and as such it is capable of purifying 1500L in a day, in 8-9 hours of daily operation.</p>
+
+<p>Our components use direct current but also alternative current, so we need to have a transformer to give the correct DC voltage (12V) and an inverter to provide us AC energy at the european standard voltage (230V). To carefully manage the electricity used in the system, we have an overvoltage control board for the capacitors and a few voltage and ampere meters in addition to a solid state relay that manages the energy input.</p>
+
+<ul>
+  <li>
+    <h4 id="control-unit">Control unit</h4>
+  </li>
+</ul>
+
+<p>Our control unit packages all the electronics needed to control and supply energy to all the pumps and components used in the system.</p>
+
+<h2 id="software">Software</h2>
+<p>Currently, our team is developing and testing a brand new prototype which will use better algorythms to get a huge improvement in efficiency.</p>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/vacmg/PurifyMyWaterTests">PurifyMyWaterTests</a> is maintained by <a href="https://github.com/vacmg">vacmg</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>
