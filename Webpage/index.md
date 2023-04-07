@@ -1,7 +1,7 @@
 # Welcome to PurifyMyWater [![Latest Build](https://github.com/vacmg/PurifyMyWater/actions/workflows/ESP32_BUILD.yaml/badge.svg)](https://github.com/vacmg/PurifyMyWater/actions/workflows/ESP32_BUILD.yaml)
 Here you can read about the hardware & software being used to bring to the world with a cheap DIY water purification system which can be assembled without great expenditures in expensive components. Our goal is to make purified water more accessible to those in dire need of it.
 
-![LOGO](./media/PMWNewLogo.png)
+<img src="./media/PMWNewLogo.png"  width=30% height=30%>
 
 ## About us
 This project is being developed by a group of [students](https://github.com/vacmg/PurifyMyWater/graphs/contributors) of the UPM with the support of [**DLSIIS ETSIINF UPM**](https://www.dlsiis.fi.upm.es/) and [**ALUMNOS SOLIDARIOS**](https://www.joyfe.es/gente-joyfe/alumnos-solidarios/) initiative of JOYFE's school in Madrid.
