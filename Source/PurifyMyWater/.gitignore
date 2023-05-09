@@ -1,9 +1,11 @@
 build-esp32/
 build-esp32s3/
 build/
+cmake-build-debug/
 sdkconfig
 sdkconfig.old
 .vs/
 managed_components/
 cp-deploy.cmd
 .idea
+
