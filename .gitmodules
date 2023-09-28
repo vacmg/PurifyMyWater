@@ -1,0 +1,7 @@
+[submodule "Source/PurifyMyWater/components/lvgl"]
+	path = Source/PurifyMyWater/components/lvgl
+	url = https://github.com/lvgl/lvgl.git
+	branch = release/v8.3
+[submodule "Source/PurifyMyWater/components/LovyanGFX"]
+	path = Source/PurifyMyWater/components/LovyanGFX
+	url = https://github.com/lovyan03/LovyanGFX.git

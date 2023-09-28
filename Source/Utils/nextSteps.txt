@@ -11,13 +11,15 @@ Copy everything that contains the .espressif folder.
 Navigate to CMake settings again, open the Environment field, and find PATH in the list of system variables.
 Prepend the value with what you have just copied. Make sure there is a semicolon at the end of the paste.
 
-3: Reload cmake
+3: Go to Settings | Build, Execution, Deployment | CMake and change the build directory to build & generator to ninja
 
-4: To build the app: select the app configuration on the build profile & click on the build icon (hammer)
+4: Reload cmake
 
-5: To flash the mcu: select the flash configuration on the build profile & click on the build icon (hammer)
+5: To build the app: select the app configuration on the build profile & click on the build icon (hammer)
 
-6: To open the monitor on the mcu: select the monitor configuration on the build profile & click on the build icon (hammer)
+6: To flash the mcu: select the flash configuration on the build profile & click on the build icon (hammer)
+
+7: To open the monitor on the mcu: select the monitor configuration on the build profile & click on the build icon (hammer)
 If build fails, Go to Settings | Build, Execution, Deployment | CMake and use the Environment field to add a new variable called ESPPORT with the ESP detected port as value
 
 More information available at: https://www.jetbrains.com/help/clion/esp-idf.html#cmake-setup
