@@ -2,7 +2,7 @@ menu "PurifyMyWater Configuration"
     menu "Device Config"
 
     choice DEVICE_SELECTED
-		default DEVICE_NONE
+		default DEVICE_WT32_SC01
         prompt "Select the device"
 		config TUX_DEVICE_NONE
 			bool "Select a supported device"
@@ -25,7 +25,8 @@ menu "PurifyMyWater Configuration"
     endchoice
         
     config PARTITION_TABLE_CUSTOM_FILENAME 
-        string "Custom Partition CSV filename"    
+        string "Custom Partition CSV filename"
+        default "partition-4MB.csv"
     
     choice ESPTOOLPY_FLASHSIZE
         prompt "Flash size"
