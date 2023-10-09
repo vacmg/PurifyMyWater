@@ -11,12 +11,13 @@ jobs:
 
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         submodules: 'recursive'
     - name: esp-idf build
-      uses: espressif/esp-idf-ci-action@v1.1.0
+      uses: espressif/esp-idf-ci-action@v1
       with:
         esp_idf_version: v5.1.1
         target: esp32
         path: 'Source/PurifyMyWater'
+        command: 'idf.py build'
