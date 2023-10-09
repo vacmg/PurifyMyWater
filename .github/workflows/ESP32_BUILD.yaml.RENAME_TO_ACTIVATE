@@ -1,5 +1,5 @@
 ---
-name: ESP32_BUILD_CI_(Ubuntu)
+name: ESP32_BUILD
 
 on: [push, pull_request]
 
@@ -17,6 +17,6 @@ jobs:
     - name: esp-idf build
       uses: espressif/esp-idf-ci-action@v1.1.0
       with:
-        esp_idf_version: latest
+        esp_idf_version: v5.1.1
         target: esp32
         path: 'Source/PurifyMyWater'
