@@ -1,46 +1,46 @@
 #!/bin/bash
 
-# Lista de paquetes a comprobar
+# List of packages to check
 oldDir=$PWD
 packages=("git" "wget" "unzip" "flex" "bison" "gperf" "python3" "python3-pip" "python3-venv" "python3-setuptools" "cmake" "ninja-build" "ccache" "libffi-dev" "libssl-dev" "dfu-util" "libusb-1.0-0")
 
 if [ $# -eq 0 ]; then
-  echo "Este script instala o desinstala la toolchain de esp-idf y sus dependencias en el directorio especificado."
-  echo "Uso para instalación:"
-  echo "   ./installToolchain.sh install /ruta/al/directorio/de/instalacion [version] [keep]"
-  echo "Uso para desinstalación:"
-  echo "   ./installToolchain.sh uninstall /ruta/al/directorio/de/instalacion"
-  echo "Uso para descarga del archivo ZIP:"
-  echo "   ./installToolchain.sh download /ruta/de/descarga [version]"
+  echo "This script installs or uninstalls the esp-idf toolchain and its dependencies in the specified directory."
+  echo "Usage for installation:"
+  echo "   ./installToolchain.sh install /path/to/installation/directory [version] [keep]"
+  echo "Usage for uninstallation:"
+  echo "   ./installToolchain.sh uninstall /path/to/installation/directory"
+  echo "Usage for downloading the ZIP file:"
+  echo "   ./installToolchain.sh download /download/path [version]"
 else
   if [ "$1" == "install" ]; then
     if [ $# -eq 1 ]; then
-      echo "Uso para instalación:"
-      echo "   ./installToolchain.sh install /ruta/al/directorio/de/instalacion [version] [keep]"
+      echo "Usage for installation:"
+      echo "   ./installToolchain.sh install /path/to/installation/directory [version] [keep]"
       exit 1
     fi
 
-    # Comprobar si cada paquete está instalado, e instalarlo si no lo está
+    # Check if each package is installed and install it if not
     for package in "${packages[@]}"; do
       if ! dpkg -s "$package" &> /dev/null; then
-        echo "$package no está instalado. Instalando $package..."
+        echo "$package is not installed. Installing $package..."
         sudo apt-get install -y "$package"
       fi
     done
 
-    # Si se han comprobado todos los paquetes, continuar con la instalación
-    directorio="$2"
-    if [ ! -d "$directorio" ]; then
-      mkdir -p "$directorio"
-      echo "El directorio $directorio se ha creado exitosamente."
+    # If all packages have been checked, continue with the installation
+    directory="$2"
+    if [ ! -d "$directory" ]; then
+      mkdir -p "$directory"
+      echo "Directory $directory has been created successfully."
     else
-      echo "El directorio $directorio ya existe."
+      echo "Directory $directory already exists."
     fi
 
-    # Ir al directorio de instalación
-    cd "$directorio"
+    # Change to the installation directory
+    cd "$directory" || exit
 
-    # Comprobar si se especificó una versión personalizada, de lo contrario, utilizar la versión 5.1.1
+    # Check if a custom version is specified, otherwise use version 5.1.1
     if [ $# -ge 3 ]; then
       if [ "$3" == "keep" ]; then
         keep=true
@@ -58,97 +58,113 @@ else
       keep=false
     fi
 
-    # Generar el enlace de descarga de esp-idf
+    # Generate the esp-idf download link
     download_link="https://github.com/espressif/esp-idf/releases/download/v$version/esp-idf-v$version.zip"
 
-    # Comprobar si el archivo ZIP de esp-idf ya está descargado
+    # Check if the esp-idf ZIP file is already downloaded
     if [ ! -d "esp-idf" ]; then
       if [ ! -f "esp-idf-v$version.zip" ]; then
         wget "$download_link" -O "esp-idf-v$version.zip"
       fi
-      unzip "esp-idf-v$version.zip"
-      mv "esp-idf-v$version" esp-idf
-      if [ "$keep" = false ]; then
-        rm "esp-idf-v$version.zip"
+
+      # Verify if the downloaded ZIP file is valid using the "zip" command
+      if zip -T "esp-idf-v$version.zip" >/dev/null; then
+        unzip "esp-idf-v$version.zip"
+        mv "esp-idf-v$version" esp-idf
+        if [ "$keep" = false ]; then
+          rm "esp-idf-v$version.zip"
+        fi
+      else
+        echo "The downloaded ZIP file is not valid. Downloading again."
+        rm -f "esp-idf-v$version.zip"
+        wget "$download_link" -O "esp-idf-v$version.zip"
+        unzip "esp-idf-v$version.zip"
+        mv "esp-idf-v$version" esp-idf
+        if [ "$keep" = false ]; then
+          rm "esp-idf-v$version.zip"
+        fi
       fi
     else
-      echo "El archivo esp-idf ya está descargado."
+      echo "The esp-idf file is already downloaded."
     fi
 
-    # Ir al directorio de esp-idf
-    cd "esp-idf"
+    # Change to the esp-idf directory
+    cd "esp-idf" || exit
 
-    # Instalar la toolchain
+    # Install the toolchain
     ./install.sh esp32
 
-    cd "$oldDir"
+    cd "$oldDir" || exit
     pwd
-    echo "Presione Enter para continuar"
+    echo "Press Enter to continue"
+    read
+    . $directory/esp-idf/export.sh
+    echo "Copy the modified PATH now and press Enter to continue"
+    echo $PATH
     read
     clear
     less nextSteps.txt
   elif [ "$1" == "uninstall" ]; then
     if [ $# -eq 1 ]; then
-      echo "Este comando desinstalará la toolchain esp-idf y eliminará la carpeta '.espressif' en el directorio home del usuario."
-      echo "Uso para desinstalación:"
-      echo "   ./installToolchain.sh uninstall /ruta/al/directorio/de/instalacion"
+      echo "This command will uninstall the esp-idf toolchain and remove the '.espressif' folder in the user's home directory."
+      echo "Usage for uninstallation:"
+      echo "   ./installToolchain.sh uninstall /path/to/installation/directory"
     else
-      directorio="$2"
-      # Eliminar la carpeta "esp-idf" en el directorio de instalación
-      if [ -d "$directorio/esp-idf" ]; then
-        echo "Desinstalando las librerías de esp-idf..."
-        rm -rf "$directorio/esp-idf"
-        echo "Las librerías de esp-idf en el directorio $directorio han sido eliminadas."
+      directory="$2"
+      # Remove the "esp-idf" folder in the installation directory
+      if [ -d "$directory/esp-idf" ]; then
+        echo "Uninstalling esp-idf libraries..."
+        rm -rf "$directory/esp-idf"
+        echo "The esp-idf libraries in the directory $directory have been removed."
       else
-        echo "No se encontraron librerías de esp-idf en $directorio."
+        echo "No esp-idf libraries found in $directory."
       fi
 
-      # Eliminar la carpeta ".espressif" en el directorio home del usuario
+      # Remove the ".espressif" folder in the user's home directory
       if [ -d "$HOME/.espressif" ]; then
-        echo "Eliminando la instalación de la toolchain esp-idf en la carpeta '.espressif' del directorio home del usuario..."
+        echo "Removing the esp-idf toolchain installation in the '.espressif' folder in the user's home directory..."
         rm -rf "$HOME/.espressif"
-        echo "La instalación de la toolchain esp-idf en la carpeta '.espressif' ha sido eliminada."
+        echo "The esp-idf toolchain installation in the '.espressif' folder has been removed."
       else
-        echo "No se encontró una instalación de la toolchain esp-idf en la carpeta '.espressif' del directorio home del usuario."
+        echo "No esp-idf toolchain installation found in the '.espressif' folder in the user's home directory."
       fi
     fi
   elif [ "$1" == "download" ]; then
     if [ $# -lt 3 ]; then
-      echo "Uso para descarga del archivo ZIP:"
-      echo "   ./installToolchain.sh download /ruta/de/descarga [version]"
+      echo "Usage for downloading the ZIP file:"
+      echo "   ./installToolchain.sh download /download/path [version]"
       exit 1
     fi
 
-    # Comprobar si se especificó una versión personalizada, de lo contrario, utilizar la versión 5.1.1
+    # Check if a custom version is specified, otherwise use version 5.1.1
     if [ $# -ge 3 ]; then
       version="$3"
     else
       version="5.1.1"
     fi
 
-    # Ruta de descarga personalizada
+    # Custom download path
     download_dir="$2"
 
-    # Comprobar si la ruta de descarga existe, de lo contrario, crearla
+    # Check if the download path exists, otherwise create it
     if [ ! -d "$download_dir" ]; then
       mkdir -p "$download_dir"
-      echo "El directorio de descarga $download_dir se ha creado exitosamente."
+      echo "Download directory $download_dir has been created successfully."
     fi
 
-    # Ir al directorio de descarga
-    cd "$download_dir"
+    # Change to the download directory
+    cd "$download_dir" || exit
 
-    # Generar el enlace de descarga de esp-idf
+    # Generate the esp-idf download link
     download_link="https://github.com/espressif/esp-idf/releases/download/v$version/esp-idf-v$version.zip"
 
-    # Comprobar si el archivo ZIP de esp-idf ya está descargado
+    # Check if the esp-idf ZIP file is already downloaded
     if [ ! -f "esp-idf-v$version.zip" ]; then
       wget "$download_link" -O "esp-idf-v$version.zip"
     else
-      echo "El archivo esp-idf ya está descargado."
+      echo "The esp-idf file is already downloaded."
     fi
   else
-    echo "Opción no válida. Utilice 'install' para instalar esp-idf, 'uninstall' para desinstalar o 'download' para descargar el archivo ZIP."
+    echo "Invalid option. Use 'install' to install esp-idf, 'uninstall' to uninstall, or 'download' to download the ZIP file."
   fi
 fi
-
