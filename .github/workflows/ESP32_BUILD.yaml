@@ -4,10 +4,10 @@ name: ESP32_BUILD
 on: 
   push:
     branches-ignore:
-      - web-main
+      - 'web-*'
   pull_request:
     branches-ignore:
-      - web-main
+      - 'web*'
 
 jobs:
   build:
