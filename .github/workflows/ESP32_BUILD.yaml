@@ -1,19 +1,24 @@
 ---
 name: ESP32_BUILD
 
-on: [push, pull_request]
-
+on: 
+  push:
+    branches-ignore:
+      - web-main
+  pull_request:
+    branches-ignore:
+      - web-main
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout repo
       uses: actions/checkout@v4
       with:
         submodules: 'recursive'
+        
     - name: esp-idf build
       uses: espressif/esp-idf-ci-action@v1
       with:
