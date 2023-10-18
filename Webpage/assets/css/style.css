@@ -3,14 +3,106 @@ body{
     /*Margins for all the page*/
     margin-left: 8%;
     margin-right: 8%;
-    margin-top: 2%;
 
     /*Font for all the page*/
     font-family: inter;
 }
 
 /*-----HEADER-----*/
+#Header
+{
+    /*Margins for the Header*/
+    margin-top: -10px;
 
+    /*Size for the header*/
+    height: 5%;
+    width: 100%;
+}
+
+#HeaderVideo{
+    /*Establish postion*/
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+
+    clip-path: polygon(0 0, 100% 0, 100% 25%, 0 25%);
+
+    /*Size for the video*/
+    width: 100%;
+}
+
+#HeaderNavTitleContainer ul {
+    /*Margins*/
+    margin-top: 0;
+    
+    /*Display*/
+    display: flex;
+}
+#HeaderNavTitleContainer ul li:nth-child(1) {
+    width: 30%;
+}
+#HeaderNavTitleContainer ul li:nth-child(2) {
+    width: 70%;
+}
+
+
+#HeaderTitleContainer {
+    /*Padding*/
+    padding-top: 2%;
+    padding-bottom: 0;
+    padding-left: 2%;
+    padding-right: 2%;
+
+    /*Size for the title container*/
+    display: inline-block;
+
+    background-color: black;
+
+    border-radius: 0px 0px 20px 20px;
+
+    box-shadow: 0px 0px 10px 0px rgba(5, 90, 189, 0.75);  
+}
+
+#HeaderTitle{
+    /*Margins for the title*/
+    margin-top: 1%;
+    margin-left: 1%;
+
+    /*Size for the title*/
+    font-size: 2.5em;
+    font-weight: bold;
+    color: white;
+}
+
+#HeaderNav ul{
+    /*Display*/
+    display: flex;
+}
+
+.headerNavTitles{
+    /*Margins for the titles*/
+    margin-top: 0;
+
+    /*Padding*/
+    padding-bottom: 1%;
+    padding-left: 1%;
+    padding-right: 1%;
+
+
+    /*Size for the nav*/
+    font-weight: bold;
+    color: white;
+
+    /*Size for the title container*/
+    display: inline-block;
+
+    background-color: black;
+
+    border-radius: 0px 0px 20px 20px;
+
+    box-shadow: 0px 0px 10px 0px rgba(5, 90, 189, 0.75); 
+}
 
 /*-----SECTIONS-----*/
 
