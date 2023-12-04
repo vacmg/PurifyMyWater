@@ -4,3 +4,10 @@ An Open source Hardware &amp; Software design for places where there isn't clean
 Currently we are developing a brand new prototype which has an improved eficiency, a more usable & intuitive design and some extras...
 
 If you want to know more about it, check our project's [web](https://purifymywater.odoo.com/)  <!-- [web](https://vacmg.github.io/PurifyMyWater) -->
+
+To prepare the environment:
+1. `git clone`
+2. `cd Source/Utils`
+3. `./installToolchain.sh install /path/to/installation/directory`
+4. Read next steps (`cat nextSteps.txt`)
+
