@@ -1,28 +1,4 @@
-menu "PurifyMyWater Configuration"
-    menu "Device Config"
-
-    choice DEVICE_SELECTED
-		default DEVICE_WT32_SC01
-        prompt "Select the device"
-		config TUX_DEVICE_NONE
-			bool "Select a supported device"
-
-        config DEVICE_WT32_SC01
-            bool "Wireless-Tag WT32-SC01 - SPI - 4MB Flash"
-            help
-                This is the device with 4MB Flash on a WT32-SC01 device.
-
-                The corresponding CSV file in the partition directory is
-                partitions/partition-4MB.csv
-
-        config DEVICE_WT32_SC01_PLUS
-            bool "Wireless-Tag WT32-SC01-Plus - 8Bit Parallel - 8MB Flash"
-            help
-                This is the device with 8MB Flash on a WT32-SC01-Plus device.
-
-                The corresponding CSV file in the partition directory is
-                partitions/partition-8MB.csv
-    endchoice
+menu "PurifyMyWater Device Configuration"
         
     config PARTITION_TABLE_CUSTOM_FILENAME 
         string "Custom Partition CSV filename"
@@ -34,7 +10,5 @@ menu "PurifyMyWater Configuration"
         help
             SPI flash size, in megabytes
     endchoice
-
-    endmenu
 
 endmenu

@@ -22,6 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#ifndef CONF_WT32SCO1_H
+#define CONF_WT32SCO1_H
+
 //#define LGFX_WT32_SC01 // Wireless Tag / Seeed WT32-SC01
 
 #define LGFX_USE_V1
@@ -162,3 +165,5 @@ public:
     setPanel(&_panel_instance); // Set the panel to be used.
   }
 };
+
+#endif

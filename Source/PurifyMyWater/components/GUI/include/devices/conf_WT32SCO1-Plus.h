@@ -22,6 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#ifndef CONF_WT32SC01_PLUS
+#define CONF_WT32SC01_PLUS
+
 // SD card Working / enable it below
 #define WT32_SC01_PLUS
 #define SD_SUPPORTED 
@@ -130,3 +133,5 @@ public:
     setPanel(&_panel_instance); 
   }
 };
+
+#endif
