@@ -6,7 +6,7 @@ Currently we are developing a brand new prototype which has an improved eficienc
 If you want to know more about it, check our project's [web](https://purifymywater.odoo.com/)  <!-- [web](https://vacmg.github.io/PurifyMyWater) -->
 
 To prepare the environment:
-1. `git clone`
+1. `git clone --recurse-submodules https://github.com/vacmg/PurifyMyWater.git`
 2. `cd Source/Utils`
 3. `./installToolchain.sh install /path/to/installation/directory`
 4. Read next steps (`cat nextSteps.txt`)
