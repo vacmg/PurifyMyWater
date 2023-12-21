@@ -7,7 +7,9 @@ If you want to know more about it, check our project's [web](https://purifymywat
 
 To prepare the environment:
 1. `git clone --recurse-submodules https://github.com/vacmg/PurifyMyWater.git`
-2. `cd Source/Utils`
-3. `./installToolchain.sh install /path/to/installation/directory`
+2. `cd Resources/Utils`
+3. `./installToolchain.sh install /path/to/installation/directory` (only compatible with debian based distros (apt))
 4. Read next steps (`cat nextSteps.txt`)
+
+To manually install the toolchain (step 3), check Resources/Utils/configure.txt for detailed steps
 

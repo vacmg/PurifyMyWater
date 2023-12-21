@@ -93,6 +93,9 @@ else
 
     # Install the toolchain
     ./install.sh esp32
+    
+    # Give Serial port access to the user
+    sudo usermod -a -G dialout $USER || exit
 
     cd "$oldDir" || exit
     pwd
@@ -130,7 +133,7 @@ else
       fi
     fi
   elif [ "$1" == "download" ]; then
-    if [ $# -lt 3 ]; then
+    if [ $# -lt 2 ]; then
       echo "Usage for downloading the ZIP file:"
       echo "   ./installToolchain.sh download /download/path [version]"
       exit 1
@@ -157,6 +160,8 @@ else
 
     # Generate the esp-idf download link
     download_link="https://github.com/espressif/esp-idf/releases/download/v$version/esp-idf-v$version.zip"
+    
+    echo Downloading toolchain from $download_link
 
     # Check if the esp-idf ZIP file is already downloaded
     if [ ! -f "esp-idf-v$version.zip" ]; then

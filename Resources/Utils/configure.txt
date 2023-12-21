@@ -1,0 +1,15 @@
+# Install necesary packages
+sudo apt install -y git wget flex bison gperf python3 python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0
+
+# Download toolchain from github, decompress & install:
+wget "https://github.com/espressif/esp-idf/releases/download/v5.1.1/esp-idf-v5.1.1.zip" -O "esp-idf-v5.1.1.zip"
+unzip "esp-idf-v5.1.1.zip"
+mv -r esp-idf-v5.1.1.zip esp-idf
+cd esp-idf
+./install.sh esp32
+
+# Allow access to serial peripherals from your current user (you may need to logout to apply this configuration)
+sudo usermod -a -G dialout $USER
+
+Read nextSteps.txt for the guide to configure the toolchain in CMake based IDEs
+
