@@ -1,3 +1,24 @@
 menu "PurifyMyWater Settings Configuration"
-    
+
+config SETTINGS_DISABLE_WRITE_TO_FLASH
+    bool "Disable Writing to Flash"
+    default n
+    help
+      Set this option to true to disable writing configuration to flash.
+      This can be useful to preserve flash life in testing scenarios.
+
+config SETTINGS_DISABLE_DELAYED_WRITE
+    bool "Disable Delayed Write"
+    default n
+    help
+      Set this option to true to disable delayed writing of the configuration.
+      It will instead apply a write-through policy when changing settings
+
+config SETTINGS_RETARDED_SAVE_TIME_MS
+    int "Retarded Save Time (in milliseconds)"
+    default 300000
+    depends on !SETTINGS_DISABLE_DELAYED_WRITE
+    help
+      Set the time delay (in milliseconds) for delayed configuration saves.
+
 endmenu
