@@ -1,4 +1,4 @@
-# PurifyMyWater [![BUILD](https://github.com/vacmg/PurifyMyWater/actions/workflows/ESP32_BUILD.yaml/badge.svg)](https://github.com/vacmg/PurifyMyWater/actions/workflows/ESP32_BUILD.yaml)
+# PurifyMyWater [![ESP32_BUILD](https://github.com/vacmg/PurifyMyWater/actions/workflows/ESP32_BUILD.yaml/badge.svg)](https://github.com/vacmg/PurifyMyWater/actions/workflows/ESP32_BUILD.yaml)
 An Open source Hardware &amp; Software design for places where there isn't clean water for drinking purposes.
 
 Currently we are developing a brand new prototype which has an improved eficiency, a more usable & intuitive design and some extras...
