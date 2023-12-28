@@ -1,4 +1,4 @@
-#include "GUI.h"
+#include "PrivGUI.h"
 
 void GUI_INIT()
 {

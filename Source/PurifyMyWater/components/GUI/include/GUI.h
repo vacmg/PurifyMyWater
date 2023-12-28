@@ -1,16 +1,5 @@
-//
-// Created by victor on 25/09/23.
-//
-
 #ifndef PURIFYMYWATER_GUI_H
 #define PURIFYMYWATER_GUI_H
-
-/******************* GUI TAGS ***************************/
-
-static const char* BOOT_GUI_COMPONENT_TAG = "PurifyMyWater - Boot_GUI";
-static const char* GUI_COMPONENT_TAG = "PurifyMyWater - GUI";
-
-/******************* GUI TAGS ***************************/
 
 /******************** CORE LIBRARIES ********************/
 

@@ -1,0 +1,1 @@
+Place here all the files stored in the "storage" spiffs partition

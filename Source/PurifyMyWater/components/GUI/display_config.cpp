@@ -1,8 +1,4 @@
-//
-// Created by victor on 17/12/23.
-//
-
-#include "GUI.h"
+#include "PrivGUI.h"
 #include "display_config.hpp"
 
 esp_err_t lv_display_init()
