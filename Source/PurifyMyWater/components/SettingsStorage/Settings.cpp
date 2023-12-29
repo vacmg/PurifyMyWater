@@ -2,9 +2,16 @@
 #include "SettingsParser.h"
 #include "StoragePartitionManager.h"
 
+#if CONFIG_SETTINGS_DISABLE_WRITE_TO_FLASH
+#define DISABLE_PERSISTENT_STORAGE_DEFAULT true
+#else
+#define DISABLE_PERSISTENT_STORAGE_DEFAULT false
+#endif
+
 bool Settings::initialized = false;
-bool Settings::disablePersistentStorage = false;
+bool Settings::disablePersistentStorage = DISABLE_PERSISTENT_STORAGE_DEFAULT;
 Settings::SettingsMap_t* Settings::settingsMap = nullptr;
+
 
 Settings::SettingError_t Settings::initialize()
 {
@@ -87,6 +94,7 @@ Settings::SettingError_t Settings::initialize()
     return CORRUPTED_SETTINGS_FILE_ERROR;
 }
 
+
 Settings::SettingError_t Settings::initWithoutReadFromPersistentStorage()
 {
     settingsMap = new SettingsMap_t();
@@ -94,15 +102,49 @@ Settings::SettingError_t Settings::initWithoutReadFromPersistentStorage()
     return CORRUPTED_SETTINGS_FILE_ERROR;
 }
 
+
 void Settings::finalize()
 {
-
+    writeSettingsToPersistentStorage();
+    freeSettingsMap(settingsMap);
+    initialized = false;
+    disablePersistentStorage = DISABLE_PERSISTENT_STORAGE_DEFAULT;
 }
+
+
+void Settings::freeSettingsMap(Settings::SettingsMap_t* map)
+{
+    ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing settings map");
+    for(const auto& entry: *map)
+    {
+        switch (entry.second.settingValueType)
+        {
+            case SETTING_LIST:
+                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting list %s", entry.first.c_str());
+                freeSettingsMap(entry.second.settingValueData.SETTING_MAP);
+            case STRING:
+                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting string %s -> %s", entry.first.c_str(), entry.second.settingValueData.STRING->c_str());
+                delete entry.second.settingValueData.STRING;
+            case FLOAT:
+                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting %s -> %f", entry.first.c_str(), entry.second.settingValueData.FLOAT);
+                break;
+            case INT:
+                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting %s -> %d", entry.first.c_str(), entry.second.settingValueData.INT);
+                break;
+            case VOID:
+                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting %s", entry.first.c_str());
+        }
+    }
+    delete map;
+    ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Settings map freed");
+}
+
 
 Settings::SettingValue_t Settings::getSetting(const std::string& key)
 {
     return VOID_VALUE;
 }
+
 
 Settings::SettingError_t Settings::putSetting(const std::string& key, int value)
 {
@@ -113,6 +155,7 @@ Settings::SettingError_t Settings::putSetting(const std::string& key, int value)
     return NO_ERROR;
 }
 
+
 Settings::SettingError_t Settings::putSetting(const std::string& key, float value)
 {
     if(disablePersistentStorage)
@@ -121,6 +164,7 @@ Settings::SettingError_t Settings::putSetting(const std::string& key, float valu
     }
     return NO_ERROR;
 }
+
 
 Settings::SettingError_t Settings::putSetting(const std::string& key, const char* value)
 {
@@ -131,6 +175,7 @@ Settings::SettingError_t Settings::putSetting(const std::string& key, const char
     return NO_ERROR;
 }
 
+
 Settings::SettingError_t Settings::addSetting(const std::string& key)
 {
     if(disablePersistentStorage)
@@ -140,10 +185,12 @@ Settings::SettingError_t Settings::addSetting(const std::string& key)
     return NO_ERROR;
 }
 
+
 const char* Settings::getSettingsTree(const std::string& key)
 {
     return nullptr;
 }
+
 
 bool Settings::writeSettingsToPersistentStorage()
 {
@@ -153,6 +200,7 @@ bool Settings::writeSettingsToPersistentStorage()
     }
     return false;
 }
+
 
 void Settings::test()
 {
