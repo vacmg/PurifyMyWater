@@ -16,9 +16,11 @@ class Settings
         // Enum with the types of data that can be saved
         typedef enum {VOID = 0, SETTING_LIST, FLOAT, INT, STRING} SettingValueType_t;
 
+        struct SettingValue_t;
+
         // Union with the types of data that can be saved
         typedef union {float FLOAT; int INT; std::string* STRING; 
-                        std::unordered_map<std::string, struct SettingValue_t>* SETTING_MAP;} SettingValueData_t;
+                        std::unordered_map<std::string, SettingValue_t>* SETTING_MAP;} SettingValueData_t;
 
         // The value of each map element SettingsMap_t
         typedef struct SettingValue_t { SettingValueType_t settingValueType; SettingValueData_t settingValueData; } SettingValue_t;
@@ -36,6 +38,11 @@ class Settings
          * CORRUPTED_SETTINGS_FILE_ERROR if the settings file is corrupted.
          */
         static SettingError_t initialize();
+
+        /**
+         * This function frees the memory used by the settings map and writes the settings to the persistent storage.
+         * All the memory allocated by the settings map is freed, including the memory allocated for the strings or other values stored.
+         */
         static void finalize();
         static SettingValue_t getSetting(const std::string& key);
         static SettingError_t putSetting(const std::string& key, int value);
@@ -46,6 +53,7 @@ class Settings
         static bool writeSettingsToPersistentStorage();
 
     private:
+        static void freeSettingsMap(Settings::SettingsMap_t* map);
         static SettingError_t initWithoutReadFromPersistentStorage();
         static SettingsMap_t* settingsMap;
         static bool initialized;
