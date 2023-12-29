@@ -12,17 +12,17 @@ const char* SettingsParser::getErrorMessage()
     return nullptr;
 }
 
-bool SettingsParser::writeToFile(Settings::SettingsMap_t* map, char* path)
+bool SettingsParser::writeToFile(Settings::SettingsMap_t* map, const char* path)
 {
     return false;
 }
 
-Settings::SettingsMap_t* SettingsParser::readFromFile(char* path)
+Settings::SettingsMap_t* SettingsParser::readFromFile(const char* path)
 {
     return nullptr;
 }
 
-int SettingsParser::checksum(char* data, size_t size)
+int SettingsParser::checksum(const char* data, size_t size)
 {
     return 0;
 }
