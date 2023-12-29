@@ -7,7 +7,7 @@ esp_err_t StoragePartitionManager::unmount()
     esp_err_t ret = esp_vfs_spiffs_unregister(conf.partition_label);
     if (ret != ESP_OK)
     {
-        ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, "Failed to unmount " CONFIG_STORAGE_PARTITION_LABEL " partition: %s", esp_err_to_name(ret));
+        ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, AT"Failed to unmount " CONFIG_STORAGE_PARTITION_LABEL " partition: %s", esp_err_to_name(ret));
     }
     return ret;
 }
@@ -23,7 +23,7 @@ esp_err_t StoragePartitionManager::format()
     esp_err_t ret = esp_spiffs_format(conf.partition_label);
     if (ret != ESP_OK)
     {
-        ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, "Failed to format " CONFIG_STORAGE_PARTITION_LABEL " partition: %s", esp_err_to_name(ret));
+        ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, AT"Failed to format " CONFIG_STORAGE_PARTITION_LABEL " partition: %s", esp_err_to_name(ret));
         return ret;
     }
     return ret;
@@ -42,15 +42,15 @@ esp_err_t StoragePartitionManager::mount()
     {
         if (ret == ESP_FAIL)
         {
-            ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, "Failed to mount or format " CONFIG_STORAGE_PARTITION_LABEL " filesystem");
+            ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, AT"Failed to mount or format " CONFIG_STORAGE_PARTITION_LABEL " filesystem");
         }
         else if (ret == ESP_ERR_NOT_FOUND)
         {
-            ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, "Failed to find " CONFIG_STORAGE_PARTITION_LABEL " SPIFFS partition");
+            ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, AT"Failed to find " CONFIG_STORAGE_PARTITION_LABEL " SPIFFS partition");
         }
         else
         {
-            ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, "Failed to initialize " CONFIG_STORAGE_PARTITION_LABEL " SPIFFS partition: %s", esp_err_to_name(ret));
+            ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, AT"Failed to initialize " CONFIG_STORAGE_PARTITION_LABEL " SPIFFS partition: %s", esp_err_to_name(ret));
         }
         return ret;
     }
@@ -59,7 +59,7 @@ esp_err_t StoragePartitionManager::mount()
     ret = esp_spiffs_info(conf.partition_label, &total, &used);
     if (ret != ESP_OK)
     {
-        ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, "Failed to get " CONFIG_STORAGE_PARTITION_LABEL " partition information: %s", esp_err_to_name(ret));
+        ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, AT"Failed to get " CONFIG_STORAGE_PARTITION_LABEL " partition information: %s", esp_err_to_name(ret));
         return ret;
     }
     else
@@ -82,7 +82,7 @@ esp_err_t StoragePartitionManager::check()
 {
     if(!esp_spiffs_mounted(CONFIG_STORAGE_PARTITION_LABEL))
     {
-        ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, CONFIG_STORAGE_PARTITION_LABEL " SPIFFS partition not mounted");
+        ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, AT CONFIG_STORAGE_PARTITION_LABEL " SPIFFS partition not mounted");
         return false;
     }
 
@@ -90,7 +90,7 @@ esp_err_t StoragePartitionManager::check()
     esp_err_t ret = esp_spiffs_check(conf.partition_label);
     if (ret != ESP_OK)
     {
-        ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, "SPIFFS_check() failed (%s)", esp_err_to_name(ret));
+        ESP_LOGE(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, AT "SPIFFS_check() failed (%s)", esp_err_to_name(ret));
     } else
     {
         ESP_LOGI(STORAGE_PARTITION_MANAGER_COMPONENT_TAG, "SPIFFS_check() successful");
