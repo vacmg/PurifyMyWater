@@ -4,12 +4,12 @@ SettingsParser::ParserError_t SettingsParser::Errno = SettingsParser::NO_ERROR;
 
 SettingsParser::ParserError_t SettingsParser::getErrorCode()
 {
-    return NO_ERROR;
+    return FILESYSTEM_ERROR;
 }
 
 const char* SettingsParser::getErrorMessage()
 {
-    return nullptr;
+    return "";
 }
 
 bool SettingsParser::writeToFile(Settings::SettingsMap_t* map, const char* path)

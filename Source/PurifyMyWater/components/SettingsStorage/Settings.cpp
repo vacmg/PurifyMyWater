@@ -17,12 +17,21 @@ Settings::SettingError_t Settings::initialize()
 {
     if(!initialized)
     {
+        ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Initializing settings module...");
         settingsMap = SettingsParser::readFromFile(SETTINGS_FILE_NAME);
         if(settingsMap != nullptr)
         {
             const char* buff = getSettingsTree("");
-            ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Settings map retrieved. Loaded config:\n----------\n%s\n----------",buff);
-            free((void*) buff);
+            if(buff == nullptr)
+            {
+                ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG, "There is not enough memory to print the settings map");
+            }
+            else
+            {
+                ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Settings map retrieved. Loaded config:\n----------\n%s\n----------",buff);
+                free((void*) buff);
+            }
+
             initialized = true;
             return NO_ERROR;
         }
@@ -86,12 +95,12 @@ Settings::SettingError_t Settings::initialize()
                             disablePersistentStorage = true;
                             return initWithoutReadFromPersistentStorage();
                         case SettingsParser::NO_ERROR:
-                            ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, AT "This code should not be reached");
+                            assert(false); // This code should not be reached if SettingsParser::readFromFile() works fine
                     }
                 }
                 break;
-            default:
-                ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, AT "This code should not be reached");
+            case SettingsParser::NO_ERROR:
+                assert(false); // This code should not be reached if SettingsParser::readFromFile() works fine
         }
         return CORRUPTED_SETTINGS_FILE_ERROR;
     }
@@ -115,8 +124,9 @@ void Settings::finalize()
 {
     if(initialized)
     {
+        ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Finalizing settings module...");
         writeSettingsToPersistentStorage();
-        freeSettingsMap(settingsMap);
+        freeSettingsMap(settingsMap, "");
         initialized = false;
         disablePersistentStorage = DISABLE_PERSISTENT_STORAGE_DEFAULT;
     }
@@ -127,31 +137,34 @@ void Settings::finalize()
 }
 
 
-void Settings::freeSettingsMap(Settings::SettingsMap_t* map)
+void Settings::freeSettingsMap(Settings::SettingsMap_t* map, const char* mapName)
 {
-    ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing settings map");
+    ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing settings map '%s'", mapName);
     for(const auto& entry: *map)
     {
         switch (entry.second.settingValueType)
         {
             case SETTING_LIST:
-                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting list %s", entry.first.c_str());
-                freeSettingsMap(entry.second.settingValueData.SETTING_MAP);
+                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting '%s' (MAP)", entry.first.c_str());
+                freeSettingsMap(entry.second.settingValueData.SETTING_MAP, fmt::format("{}/{}", mapName, entry.first).c_str());
+                break;
             case STRING:
-                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting string %s -> %s", entry.first.c_str(), entry.second.settingValueData.STRING->c_str());
+                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting '%s' (STRING) -> %s", entry.first.c_str(), entry.second.settingValueData.STRING->c_str());
                 delete entry.second.settingValueData.STRING;
+                break;
             case FLOAT:
-                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting %s -> %f", entry.first.c_str(), entry.second.settingValueData.FLOAT);
+                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting '%s' (FLOAT) -> %f", entry.first.c_str(), entry.second.settingValueData.FLOAT);
                 break;
             case INT:
-                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting %s -> %d", entry.first.c_str(), entry.second.settingValueData.INT);
+                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting '%s' (INT) -> %d", entry.first.c_str(), entry.second.settingValueData.INT);
                 break;
             case VOID:
-                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting %s", entry.first.c_str());
+                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting '%s' (VOID)", entry.first.c_str());
+                break;
         }
     }
     delete map;
-    ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Settings map freed");
+    ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Settings map '%s' freed", mapName);
 }
 
 
@@ -219,11 +232,27 @@ bool Settings::writeSettingsToPersistentStorage()
 
 void Settings::test()
 {
-    ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG,"Test begin");
+    ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG,"Test begin");
 
     // Place test code here
 
 
+//    initialize();
+//
+//    (*settingsMap)["key1"] = {.settingValueType = INT, .settingValueData = {.INT = 1}};
+//    (*settingsMap)["key2"] = {.settingValueType = FLOAT, .settingValueData = {.FLOAT = 2.0}};
+//    (*settingsMap)["key3"] = {.settingValueType = STRING, .settingValueData = {.STRING = new std::string("3")}};
+//    (*settingsMap)["key4"] = {.settingValueType = SETTING_LIST, .settingValueData = {.SETTING_MAP = new SettingsMap_t()}};
+//    (*settingsMap)["key5"] = VOID_VALUE;
+//    (*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.1"] = {.settingValueType = INT, .settingValueData = {.INT = 4}};
+//    (*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.2"] = {.settingValueType = FLOAT, .settingValueData = {.FLOAT = 4.2}};
+//    (*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.3"] = {.settingValueType = STRING, .settingValueData = {.STRING = new std::string("4.3")}};
+//    (*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.4"] = {.settingValueType = SETTING_LIST, .settingValueData = {.SETTING_MAP = new SettingsMap_t()}};
+//    (*(*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.4"].settingValueData.SETTING_MAP)["key4.4.1"] = {.settingValueType = INT, .settingValueData = {.INT = 4}};
+//    (*(*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.4"].settingValueData.SETTING_MAP)["key4.4.2"] = {.settingValueType = FLOAT, .settingValueData = {.FLOAT = 4.42}};
+//    (*(*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.4"].settingValueData.SETTING_MAP)["key4.4.3"] = {.settingValueType = STRING, .settingValueData = {.STRING = new std::string("4.4.3")}};
+//
+//    finalize();
 
-    ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG,"Test end");
+    ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG,"Test end");
 }

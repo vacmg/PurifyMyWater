@@ -53,7 +53,7 @@ class Settings
         static bool writeSettingsToPersistentStorage();
 
     private:
-        static void freeSettingsMap(Settings::SettingsMap_t* map);
+        static void freeSettingsMap(Settings::SettingsMap_t* map, const char* mapName);
         static SettingError_t initWithoutReadFromPersistentStorage();
         static SettingsMap_t* settingsMap;
         static bool initialized;
