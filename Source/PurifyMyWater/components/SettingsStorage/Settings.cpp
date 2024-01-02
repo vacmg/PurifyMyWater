@@ -15,83 +15,91 @@ Settings::SettingsMap_t* Settings::settingsMap = nullptr;
 
 Settings::SettingError_t Settings::initialize()
 {
-    settingsMap = SettingsParser::readFromFile(SETTINGS_FILE_NAME);
-    if(settingsMap != nullptr)
+    if(!initialized)
     {
-        const char* buff = getSettingsTree("");
-        ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Settings map retrieved. Loaded config:\n----------\n%s\n----------",buff);
-        free((void*) buff);
-        initialized = true;
-        return NO_ERROR;
-    }
-    ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG, "Unable to parse settings from file " SETTINGS_FILE_NAME ". Reason: %s", SettingsParser::getErrorMessage());
+        settingsMap = SettingsParser::readFromFile(SETTINGS_FILE_NAME);
+        if(settingsMap != nullptr)
+        {
+            const char* buff = getSettingsTree("");
+            ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Settings map retrieved. Loaded config:\n----------\n%s\n----------",buff);
+            free((void*) buff);
+            initialized = true;
+            return NO_ERROR;
+        }
+        ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG, "Unable to parse settings from file " SETTINGS_FILE_NAME ". Reason: %s", SettingsParser::getErrorMessage());
 
-    esp_err_t ret;
-    switch (SettingsParser::getErrorCode())
-    {
-        case SettingsParser::INVALID_MAP_ERROR:
-        case SettingsParser::INVALID_PATH_ERROR:
-            ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Initializing new settings map...");
-            return initWithoutReadFromPersistentStorage();
-
-        case SettingsParser::FILESYSTEM_ERROR:
-            StoragePartitionManager::unmount();
-            ret = StoragePartitionManager::mount();
-            if(ret == ESP_ERR_NOT_FOUND || ret == ESP_ERR_INVALID_STATE || ret == ESP_ERR_NO_MEM)
-            {
-                ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, AT "Irrecoverable error: %s. " CONFIG_STORAGE_PARTITION_LABEL
-                " partition is unusable: Falling back to volatile settings mode", esp_err_to_name(ret));
-                disablePersistentStorage = true;
+        esp_err_t ret;
+        switch (SettingsParser::getErrorCode())
+        {
+            case SettingsParser::INVALID_MAP_ERROR:
+            case SettingsParser::INVALID_PATH_ERROR:
+                ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Initializing new settings map...");
                 return initWithoutReadFromPersistentStorage();
-            }
-            else if (ret == ESP_FAIL)
-            {
-                ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG, "Unable to mount filesystem. Formatting partition...");
-                if(StoragePartitionManager::format() == ESP_OK)
-                {
-                    ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Formatting successful. Initializing new settings map...");
-                    return initWithoutReadFromPersistentStorage();
-                }
-                else
+
+            case SettingsParser::FILESYSTEM_ERROR:
+                StoragePartitionManager::unmount();
+                ret = StoragePartitionManager::mount();
+                if(ret == ESP_ERR_NOT_FOUND || ret == ESP_ERR_INVALID_STATE || ret == ESP_ERR_NO_MEM)
                 {
                     ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, AT "Irrecoverable error: %s. " CONFIG_STORAGE_PARTITION_LABEL
                             " partition is unusable: Falling back to volatile settings mode", esp_err_to_name(ret));
                     disablePersistentStorage = true;
                     return initWithoutReadFromPersistentStorage();
                 }
-            }
-            else // ESP_OK
-            {
-                ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Filesystem mounted. Initializing settings map...");
-                if(settingsMap != nullptr)
+                else if (ret == ESP_FAIL)
                 {
-                    const char* buff = getSettingsTree("");
-                    ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Settings map retrieved. Loaded config:\n----------\n%s\n----------",buff);
-                    free((void*) buff);
-                    initialized = true;
-                    return NO_ERROR;
-                }
-                ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG, "Unable to parse settings from file " SETTINGS_FILE_NAME ". Reason: %s", SettingsParser::getErrorMessage());
-                switch (SettingsParser::getErrorCode())
-                {
-                    case SettingsParser::INVALID_MAP_ERROR:
-                    case SettingsParser::INVALID_PATH_ERROR:
-                        ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Initializing new settings map...");
+                    ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG, "Unable to mount filesystem. Formatting partition...");
+                    if(StoragePartitionManager::format() == ESP_OK)
+                    {
+                        ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Formatting successful. Initializing new settings map...");
                         return initWithoutReadFromPersistentStorage();
-                    case SettingsParser::FILESYSTEM_ERROR:
+                    }
+                    else
+                    {
                         ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, AT "Irrecoverable error: %s. " CONFIG_STORAGE_PARTITION_LABEL
                                 " partition is unusable: Falling back to volatile settings mode", esp_err_to_name(ret));
                         disablePersistentStorage = true;
                         return initWithoutReadFromPersistentStorage();
-                    case SettingsParser::NO_ERROR:
-                        ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, AT "This code should not be reached");
+                    }
                 }
-            }
-            break;
-        default:
-            ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, AT "This code should not be reached");
+                else // ESP_OK
+                {
+                    ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Filesystem mounted. Initializing settings map...");
+                    if(settingsMap != nullptr)
+                    {
+                        const char* buff = getSettingsTree("");
+                        ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Settings map retrieved. Loaded config:\n----------\n%s\n----------",buff);
+                        free((void*) buff);
+                        initialized = true;
+                        return NO_ERROR;
+                    }
+                    ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG, "Unable to parse settings from file " SETTINGS_FILE_NAME ". Reason: %s", SettingsParser::getErrorMessage());
+                    switch (SettingsParser::getErrorCode())
+                    {
+                        case SettingsParser::INVALID_MAP_ERROR:
+                        case SettingsParser::INVALID_PATH_ERROR:
+                            ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Initializing new settings map...");
+                            return initWithoutReadFromPersistentStorage();
+                        case SettingsParser::FILESYSTEM_ERROR:
+                            ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, AT "Irrecoverable error: %s. " CONFIG_STORAGE_PARTITION_LABEL
+                                    " partition is unusable: Falling back to volatile settings mode", esp_err_to_name(ret));
+                            disablePersistentStorage = true;
+                            return initWithoutReadFromPersistentStorage();
+                        case SettingsParser::NO_ERROR:
+                            ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, AT "This code should not be reached");
+                    }
+                }
+                break;
+            default:
+                ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, AT "This code should not be reached");
+        }
+        return CORRUPTED_SETTINGS_FILE_ERROR;
     }
-    return CORRUPTED_SETTINGS_FILE_ERROR;
+    else
+    {
+        ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, "Settings module is already initialized");
+        return NO_ERROR;
+    }
 }
 
 
@@ -105,10 +113,17 @@ Settings::SettingError_t Settings::initWithoutReadFromPersistentStorage()
 
 void Settings::finalize()
 {
-    writeSettingsToPersistentStorage();
-    freeSettingsMap(settingsMap);
-    initialized = false;
-    disablePersistentStorage = DISABLE_PERSISTENT_STORAGE_DEFAULT;
+    if(initialized)
+    {
+        writeSettingsToPersistentStorage();
+        freeSettingsMap(settingsMap);
+        initialized = false;
+        disablePersistentStorage = DISABLE_PERSISTENT_STORAGE_DEFAULT;
+    }
+    else
+    {
+        ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, "Settings module is not initialized");
+    }
 }
 
 
@@ -207,6 +222,8 @@ void Settings::test()
     ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG,"Test begin");
 
     // Place test code here
+
+
 
     ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG,"Test end");
 }
