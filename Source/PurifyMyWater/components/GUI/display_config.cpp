@@ -1,4 +1,4 @@
-#include "PrivGUI.h"
+#include "GUI.h"
 #include "display_config.hpp"
 
 esp_err_t lv_display_init()
@@ -68,7 +68,7 @@ esp_err_t lv_display_init()
     xGuiSemaphore = xSemaphoreCreateMutex();
     if (!xGuiSemaphore)
     {
-        ESP_LOGE(BOOT_GUI_COMPONENT_TAG, "Create mutex for LVGL failed");
+        ESP_LOGE(COMPONENT_TAG_BOOT_GUI, "Create mutex for LVGL failed");
         if (lv_periodic_timer) esp_timer_delete(lv_periodic_timer);
         return ESP_FAIL;
     }
@@ -80,7 +80,7 @@ esp_err_t lv_display_init()
 #endif
     if (!err)
     {
-        ESP_LOGE(BOOT_GUI_COMPONENT_TAG, "Create task for LVGL failed");
+        ESP_LOGE(COMPONENT_TAG_BOOT_GUI, "Create task for LVGL failed");
         if (lv_periodic_timer) esp_timer_delete(lv_periodic_timer);
         return ESP_FAIL;
     }
@@ -119,7 +119,7 @@ static void lv_tick_task(void *arg)
 
 static void lvgl_task(void *args)
 {
-    ESP_LOGI(BOOT_GUI_COMPONENT_TAG, "Start to run LVGL");
+    ESP_LOGI(COMPONENT_TAG_BOOT_GUI, "Start to run LVGL");
     while (1)
     {
         vTaskDelay(pdMS_TO_TICKS(10));

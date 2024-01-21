@@ -1,1 +1,1 @@
-idf_component_register(INCLUDE_DIRS "include" REQUIRES fmt)
+idf_component_register(SRCS "LogUtils.cpp" INCLUDE_DIRS "include")

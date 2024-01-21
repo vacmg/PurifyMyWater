@@ -3,6 +3,7 @@
 
 /******************** CORE LIBRARIES ********************/
 
+#include "LogUtils.h"
 #include "esp_log.h"
 
 #include "freertos/FreeRTOS.h"

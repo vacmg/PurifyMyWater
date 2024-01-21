@@ -5,6 +5,7 @@
 #include "esp_err.h"
 #include "esp_log.h"
 #include "esp_spiffs.h"
+#include "LogUtils.h"
 
 
 /**
@@ -15,7 +16,7 @@ class StoragePartitionManager
     public:
 
     /**
-     * This function mounts the storage filesystem.
+     * This function mounts the storage filesystem and if some inconsistencies are found, it calls StoragePartitionManager::check().
      *
      * @return ESP_OK if success; ESP_ERR_NO_MEM if objects could not be allocated;
      * ESP_ERR_INVALID_STATE if already mounted or partition is encrypted;

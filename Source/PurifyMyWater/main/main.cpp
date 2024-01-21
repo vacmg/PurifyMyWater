@@ -1,8 +1,8 @@
 /**
  *
  */
-#include "main.h"
 
+#include "LogUtils.h"
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -12,15 +12,14 @@
 #include "Settings.h"
 #include "StoragePartitionManager.h"
 
-
 /**
  * App entry point
  */
 extern "C" void app_main(void)
 {
-    esp_log_level_set(MAIN_COMPONENT_TAG,ESP_LOG_DEBUG);
+    setComponentsDefaultLogLevel();
 
-    ESP_LOGE(MAIN_COMPONENT_TAG,"\n%s",device_info().c_str());
+    ESP_LOGE(COMPONENT_TAG_BOOT,"\n%s",device_info().c_str());
 
     if(StoragePartitionManager::mount() != ESP_OK)
     {

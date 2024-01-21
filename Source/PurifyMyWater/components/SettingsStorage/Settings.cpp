@@ -1,3 +1,4 @@
+#include "fmt/core.h"
 #include "PrivSettings.h"
 #include "SettingsParser.h"
 #include "StoragePartitionManager.h"
@@ -17,32 +18,32 @@ Settings::SettingError_t Settings::initialize()
 {
     if(!initialized)
     {
-        ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Initializing settings module...");
+        ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Initializing settings module...");
         settingsMap = SettingsParser::readFromFile(SETTINGS_FILE_NAME);
         if(settingsMap != nullptr)
         {
             const char* buff = getSettingsTree("");
             if(buff == nullptr)
             {
-                ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG, "There is not enough memory to print the settings map");
+                ESP_LOGW(COMPONENT_TAG_SETTINGS_STORAGE, "There is not enough memory to print the settings map");
             }
             else
             {
-                ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Settings map retrieved. Loaded config:\n----------\n%s\n----------",buff);
+                ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Settings map retrieved. Loaded config:\n----------\n%s\n----------",buff);
                 free((void*) buff);
             }
 
             initialized = true;
             return NO_ERROR;
         }
-        ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG, "Unable to parse settings from file " SETTINGS_FILE_NAME ". Reason: %s", SettingsParser::getErrorMessage());
+        ESP_LOGW(COMPONENT_TAG_SETTINGS_STORAGE, "Unable to parse settings from file " SETTINGS_FILE_NAME ". Reason: %s", SettingsParser::getErrorMessage());
 
         esp_err_t ret;
         switch (SettingsParser::getErrorCode())
         {
             case SettingsParser::INVALID_MAP_ERROR:
             case SettingsParser::INVALID_PATH_ERROR:
-                ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Initializing new settings map...");
+                ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Initializing new settings map...");
                 return initWithoutReadFromPersistentStorage();
 
             case SettingsParser::FILESYSTEM_ERROR:
@@ -50,22 +51,22 @@ Settings::SettingError_t Settings::initialize()
                 ret = StoragePartitionManager::mount();
                 if(ret == ESP_ERR_NOT_FOUND || ret == ESP_ERR_INVALID_STATE || ret == ESP_ERR_NO_MEM)
                 {
-                    ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, AT "Irrecoverable error: %s. " CONFIG_STORAGE_PARTITION_LABEL
+                    ESP_LOGE(COMPONENT_TAG_SETTINGS_STORAGE, AT "Irrecoverable error: %s. " CONFIG_STORAGE_PARTITION_LABEL
                             " partition is unusable: Falling back to volatile settings mode", esp_err_to_name(ret));
                     disablePersistentStorage = true;
                     return initWithoutReadFromPersistentStorage();
                 }
                 else if (ret == ESP_FAIL)
                 {
-                    ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG, "Unable to mount filesystem. Formatting partition...");
+                    ESP_LOGW(COMPONENT_TAG_SETTINGS_STORAGE, "Unable to mount filesystem. Formatting partition...");
                     if(StoragePartitionManager::format() == ESP_OK)
                     {
-                        ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Formatting successful. Initializing new settings map...");
+                        ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Formatting successful. Initializing new settings map...");
                         return initWithoutReadFromPersistentStorage();
                     }
                     else
                     {
-                        ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, AT "Irrecoverable error: %s. " CONFIG_STORAGE_PARTITION_LABEL
+                        ESP_LOGE(COMPONENT_TAG_SETTINGS_STORAGE, AT "Irrecoverable error: %s. " CONFIG_STORAGE_PARTITION_LABEL
                                 " partition is unusable: Falling back to volatile settings mode", esp_err_to_name(ret));
                         disablePersistentStorage = true;
                         return initWithoutReadFromPersistentStorage();
@@ -73,24 +74,24 @@ Settings::SettingError_t Settings::initialize()
                 }
                 else // ESP_OK
                 {
-                    ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Filesystem mounted. Initializing settings map...");
+                    ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Filesystem mounted. Initializing settings map...");
                     if(settingsMap != nullptr)
                     {
                         const char* buff = getSettingsTree("");
-                        ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Settings map retrieved. Loaded config:\n----------\n%s\n----------",buff);
+                        ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Settings map retrieved. Loaded config:\n----------\n%s\n----------",buff);
                         free((void*) buff);
                         initialized = true;
                         return NO_ERROR;
                     }
-                    ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG, "Unable to parse settings from file " SETTINGS_FILE_NAME ". Reason: %s", SettingsParser::getErrorMessage());
+                    ESP_LOGW(COMPONENT_TAG_SETTINGS_STORAGE, "Unable to parse settings from file " SETTINGS_FILE_NAME ". Reason: %s", SettingsParser::getErrorMessage());
                     switch (SettingsParser::getErrorCode())
                     {
                         case SettingsParser::INVALID_MAP_ERROR:
                         case SettingsParser::INVALID_PATH_ERROR:
-                            ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Initializing new settings map...");
+                            ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Initializing new settings map...");
                             return initWithoutReadFromPersistentStorage();
                         case SettingsParser::FILESYSTEM_ERROR:
-                            ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, AT "Irrecoverable error: %s. " CONFIG_STORAGE_PARTITION_LABEL
+                            ESP_LOGE(COMPONENT_TAG_SETTINGS_STORAGE, AT "Irrecoverable error: %s. " CONFIG_STORAGE_PARTITION_LABEL
                                     " partition is unusable: Falling back to volatile settings mode", esp_err_to_name(ret));
                             disablePersistentStorage = true;
                             return initWithoutReadFromPersistentStorage();
@@ -106,7 +107,7 @@ Settings::SettingError_t Settings::initialize()
     }
     else
     {
-        ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, "Settings module is already initialized");
+        ESP_LOGE(COMPONENT_TAG_SETTINGS_STORAGE, "Settings module is already initialized");
         return NO_ERROR;
     }
 }
@@ -124,7 +125,7 @@ void Settings::finalize()
 {
     if(initialized)
     {
-        ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Finalizing settings module...");
+        ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Finalizing settings module...");
         writeSettingsToPersistentStorage();
         freeSettingsMap(settingsMap, "");
         initialized = false;
@@ -132,39 +133,39 @@ void Settings::finalize()
     }
     else
     {
-        ESP_LOGE(SETTINGS_STORAGE_COMPONENT_TAG, "Settings module is not initialized");
+        ESP_LOGE(COMPONENT_TAG_SETTINGS_STORAGE, "Settings module is not initialized");
     }
 }
 
 
 void Settings::freeSettingsMap(Settings::SettingsMap_t* map, const char* mapName)
 {
-    ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing settings map '%s'", mapName);
+    ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Freeing settings map '%s'", mapName);
     for(const auto& entry: *map)
     {
         switch (entry.second.settingValueType)
         {
             case SETTING_LIST:
-                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting '%s' (MAP)", entry.first.c_str());
+                ESP_LOGD(COMPONENT_TAG_SETTINGS_STORAGE, "Freeing setting '%s' (MAP)", entry.first.c_str());
                 freeSettingsMap(entry.second.settingValueData.SETTING_MAP, fmt::format("{}/{}", mapName, entry.first).c_str());
                 break;
             case STRING:
-                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting '%s' (STRING) -> %s", entry.first.c_str(), entry.second.settingValueData.STRING->c_str());
+                ESP_LOGD(COMPONENT_TAG_SETTINGS_STORAGE, "Freeing setting '%s' (STRING) -> %s", entry.first.c_str(), entry.second.settingValueData.STRING->c_str());
                 delete entry.second.settingValueData.STRING;
                 break;
             case FLOAT:
-                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting '%s' (FLOAT) -> %f", entry.first.c_str(), entry.second.settingValueData.FLOAT);
+                ESP_LOGD(COMPONENT_TAG_SETTINGS_STORAGE, "Freeing setting '%s' (FLOAT) -> %f", entry.first.c_str(), entry.second.settingValueData.FLOAT);
                 break;
             case INT:
-                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting '%s' (INT) -> %d", entry.first.c_str(), entry.second.settingValueData.INT);
+                ESP_LOGD(COMPONENT_TAG_SETTINGS_STORAGE, "Freeing setting '%s' (INT) -> %d", entry.first.c_str(), entry.second.settingValueData.INT);
                 break;
             case VOID:
-                ESP_LOGD(SETTINGS_STORAGE_COMPONENT_TAG, "Freeing setting '%s' (VOID)", entry.first.c_str());
+                ESP_LOGD(COMPONENT_TAG_SETTINGS_STORAGE, "Freeing setting '%s' (VOID)", entry.first.c_str());
                 break;
         }
     }
     delete map;
-    ESP_LOGI(SETTINGS_STORAGE_COMPONENT_TAG, "Settings map '%s' freed", mapName);
+    ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Settings map '%s' freed", mapName);
 }
 
 
@@ -232,7 +233,7 @@ bool Settings::writeSettingsToPersistentStorage()
 
 void Settings::test()
 {
-    ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG,"Test begin");
+    ESP_LOGE(COMPONENT_TAG_SETTINGS_STORAGE,"Test begin");
 
     // Place test code here
 
@@ -254,5 +255,5 @@ void Settings::test()
 //
 //    finalize();
 
-    ESP_LOGW(SETTINGS_STORAGE_COMPONENT_TAG,"Test end");
+    ESP_LOGE(COMPONENT_TAG_SETTINGS_STORAGE,"Test end");
 }
