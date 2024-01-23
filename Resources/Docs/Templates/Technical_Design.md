@@ -1,5 +1,8 @@
 # (MX.TDY) Technical Design: TD_NAME
 
+## Changelog
+- Date - Time - Commit_Author - Changes
+
 ## Description
 
 This standard provides all the information delivered by the design team to the codification team, that is needed to develop a piece of code
@@ -8,20 +11,21 @@ This standard provides all the information delivered by the design team to the c
 
 Name of the module that is affected by the information of this standard.
 - Action
-    - [ ] Create
-    - [ ] Modify
-    - [ ] Delete
+  - [ ] Create
+  - [ ] Modify
+  - [ ] Delete
 
 ## Interface
 - Type
-    - [ ] Class
-    - [ ] Test
-    - [ ] Config
+  - [ ] Class
+  - [ ] Test
+  - [ ] Config
 
 ## Function (Optional)
+What is the functionality added/modified/deleted by this technical design document.
 
 ## Dependencies (Optional)
-What this change will affect on or what needs to be used to perform this change
+What this change will affect on or what needs to be used to perform this change.
 
 ## Test Cases (Optional)
     - Test case 1
@@ -30,4 +34,3 @@ What this change will affect on or what needs to be used to perform this change
 
 ## Attachments
 Extra information needed
-
