@@ -14,8 +14,8 @@ config SETTINGS_DISABLE_DELAYED_WRITE
       Set this option to true to disable delayed writing of the configuration.
       It will instead apply a write-through policy when changing settings
 
-config SETTINGS_RETARDED_SAVE_TIME_MS
-    int "Retarded Save Time (in milliseconds)"
+config SETTINGS_DELAYED_SAVE_TIME_MS
+    int "Delayed Save Time (in milliseconds)"
     default 300000
     depends on !SETTINGS_DISABLE_DELAYED_WRITE
     help
