@@ -49,28 +49,12 @@ Settings::SettingError_t Settings::initialize()
             case SettingsParser::FILESYSTEM_ERROR:
                 StoragePartitionManager::unmount();
                 ret = StoragePartitionManager::mount();
-                if(ret == ESP_ERR_NOT_FOUND || ret == ESP_ERR_INVALID_STATE || ret == ESP_ERR_NO_MEM)
+                if(ret == ESP_ERR_NOT_FOUND || ret == ESP_ERR_INVALID_STATE || ret == ESP_ERR_NO_MEM || ret == ESP_FAIL)
                 {
                     ESP_LOGE(COMPONENT_TAG_SETTINGS_STORAGE, AT "Irrecoverable error: %s. " CONFIG_STORAGE_PARTITION_LABEL
                             " partition is unusable: Falling back to volatile settings mode", esp_err_to_name(ret));
                     disablePersistentStorage = true;
                     return initWithoutReadFromPersistentStorage();
-                }
-                else if (ret == ESP_FAIL)
-                {
-                    ESP_LOGW(COMPONENT_TAG_SETTINGS_STORAGE, "Unable to mount filesystem. Formatting partition...");
-                    if(StoragePartitionManager::format() == ESP_OK)
-                    {
-                        ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Formatting successful. Initializing new settings map...");
-                        return initWithoutReadFromPersistentStorage();
-                    }
-                    else
-                    {
-                        ESP_LOGE(COMPONENT_TAG_SETTINGS_STORAGE, AT "Irrecoverable error: %s. " CONFIG_STORAGE_PARTITION_LABEL
-                                " partition is unusable: Falling back to volatile settings mode", esp_err_to_name(ret));
-                        disablePersistentStorage = true;
-                        return initWithoutReadFromPersistentStorage();
-                    }
                 }
                 else // ESP_OK
                 {
