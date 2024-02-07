@@ -42,7 +42,7 @@ esp_err_t StoragePartitionManager::mount()
     {
         if (ret == ESP_FAIL)
         {
-            ESP_LOGE(COMPONENT_TAG_STORAGE_PARTITION_MANAGER, AT"Failed to mount or format '" CONFIG_STORAGE_PARTITION_LABEL "' filesystem");
+            ESP_LOGE(COMPONENT_TAG_STORAGE_PARTITION_MANAGER, AT"Failed to mount '" CONFIG_STORAGE_PARTITION_LABEL "' filesystem");
         }
         else if (ret == ESP_ERR_NOT_FOUND)
         {
