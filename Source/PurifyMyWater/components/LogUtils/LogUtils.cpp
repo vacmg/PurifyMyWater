@@ -26,4 +26,8 @@ const char* COMPONENT_TAG_STORAGE_PARTITION_MANAGER = PMW_TAG_PREFIX PMW_CN_STOR
 void setComponentsDefaultLogLevel()
 {
     esp_log_level_set(COMPONENT_TAG_BOOT, static_cast<esp_log_level_t>(CONFIG_LOG_DEFAULT_LEVEL_BOOT));
+    esp_log_level_set(COMPONENT_TAG_BOOT_GUI, static_cast<esp_log_level_t>(CONFIG_LOG_DEFAULT_LEVEL_BOOT_GUI));
+    esp_log_level_set(COMPONENT_TAG_GUI, static_cast<esp_log_level_t>(CONFIG_LOG_DEFAULT_LEVEL_GUI));
+    esp_log_level_set(COMPONENT_TAG_SETTINGS_STORAGE, static_cast<esp_log_level_t>(CONFIG_LOG_DEFAULT_LEVEL_SETTINGS_STORAGE));
+    esp_log_level_set(COMPONENT_TAG_STORAGE_PARTITION_MANAGER, static_cast<esp_log_level_t>(CONFIG_LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER));
 }
