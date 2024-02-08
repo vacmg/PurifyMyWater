@@ -19,7 +19,8 @@ extern "C" void app_main(void)
 {
     setComponentsDefaultLogLevel();
 
-    ESP_LOGE(COMPONENT_TAG_BOOT,"\n%s",device_info().c_str());
+    ESP_LOGE(COMPONENT_TAG_BOOT,"Starting PurifyMyWater Modules");
+    ESP_LOGI(COMPONENT_TAG_BOOT,"\n%s",device_info().c_str());
 
     if(StoragePartitionManager::mount() != ESP_OK)
     {
@@ -37,6 +38,8 @@ extern "C" void app_main(void)
 
         Settings::test(); // Continue boot sequence from here
     }
+
+    ESP_LOGE(COMPONENT_TAG_BOOT,"PurifyMyWater Modules Successfully Started");
 
 
     StoragePartitionManager::unmount();

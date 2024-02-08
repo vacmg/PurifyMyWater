@@ -84,43 +84,233 @@ menu "PurifyMyWater Logging Configuration"
         default 4 if LOG_MAXIMUM_LEVEL_DEBUG
         default 5 if LOG_MAXIMUM_LEVEL_VERBOSE
 
-    choice LOG_DEFAULT_LEVEL_BOOT
-        bool "Boot module log verbosity"
-        default LOG_DEFAULT_LEVEL_BOOT_EQUALS_DEFAULT
+    choice LOG_DEFAULT_LEVEL_PMW
+        bool "PurifyMyWater modules default log verbosity"
+        default LOG_DEFAULT_LEVEL_PMW_EQUALS_DEFAULT
         help
-            Specify how much output to see in logs by default in the boot module.
+            Specify how much output to see in logs by default in all the PurifyMyWater modules.
 
-        config LOG_DEFAULT_LEVEL_BOOT_EQUALS_DEFAULT
+        config LOG_DEFAULT_LEVEL_PMW_EQUALS_DEFAULT
             bool "Same as default"
-        config LOG_DEFAULT_LEVEL_BOOT_NONE
+        config LOG_DEFAULT_LEVEL_PMW_NONE
             bool "No output"
-        config LOG_DEFAULT_LEVEL_BOOT_ERROR
+        config LOG_DEFAULT_LEVEL_PMW_ERROR
             bool "Error"
             depends on LOG_MAXIMUM_LEVEL >= 1
-        config LOG_DEFAULT_LEVEL_BOOT_WARN
+        config LOG_DEFAULT_LEVEL_PMW_WARN
             bool "Warning"
             depends on LOG_MAXIMUM_LEVEL >= 2
-        config LOG_DEFAULT_LEVEL_BOOT_INFO
+        config LOG_DEFAULT_LEVEL_PMW_INFO
             bool "Info"
             depends on LOG_MAXIMUM_LEVEL >= 3
-        config LOG_DEFAULT_LEVEL_BOOT_DEBUG
+        config LOG_DEFAULT_LEVEL_PMW_DEBUG
             bool "Debug"
             depends on LOG_MAXIMUM_LEVEL >= 4
-        config LOG_DEFAULT_LEVEL_BOOT_VERBOSE
+        config LOG_DEFAULT_LEVEL_PMW_VERBOSE
             bool "Verbose"
             depends on LOG_MAXIMUM_LEVEL >= 5
 
     endchoice
 
-    config LOG_DEFAULT_LEVEL_BOOT
+    config LOG_DEFAULT_LEVEL_PMW
             int
-            default LOG_DEFAULT_LEVEL if LOG_DEFAULT_LEVEL_BOOT_EQUALS_DEFAULT
-            default 0 if LOG_DEFAULT_LEVEL_BOOT_NONE
-            default 1 if LOG_DEFAULT_LEVEL_BOOT_ERROR
-            default 2 if LOG_DEFAULT_LEVEL_BOOT_WARN
-            default 3 if LOG_DEFAULT_LEVEL_BOOT_INFO
-            default 4 if LOG_DEFAULT_LEVEL_BOOT_DEBUG
-            default 5 if LOG_DEFAULT_LEVEL_BOOT_VERBOSE
+            default LOG_DEFAULT_LEVEL if LOG_DEFAULT_LEVEL_PMW_EQUALS_DEFAULT
+            default 0 if LOG_DEFAULT_LEVEL_PMW_NONE
+            default 1 if LOG_DEFAULT_LEVEL_PMW_ERROR
+            default 2 if LOG_DEFAULT_LEVEL_PMW_WARN
+            default 3 if LOG_DEFAULT_LEVEL_PMW_INFO
+            default 4 if LOG_DEFAULT_LEVEL_PMW_DEBUG
+            default 5 if LOG_DEFAULT_LEVEL_PMW_VERBOSE
+
+    choice LOG_DEFAULT_LEVEL_BOOT
+            bool "Boot module log verbosity"
+            default LOG_DEFAULT_LEVEL_BOOT_EQUALS_DEFAULT
+            help
+                Specify how much output to see in logs by default in the boot module.
+
+            config LOG_DEFAULT_LEVEL_BOOT_EQUALS_DEFAULT
+                bool "Same as PurifyMyWater default"
+            config LOG_DEFAULT_LEVEL_BOOT_NONE
+                bool "No output"
+            config LOG_DEFAULT_LEVEL_BOOT_ERROR
+                bool "Error"
+                depends on LOG_MAXIMUM_LEVEL >= 1
+            config LOG_DEFAULT_LEVEL_BOOT_WARN
+                bool "Warning"
+                depends on LOG_MAXIMUM_LEVEL >= 2
+            config LOG_DEFAULT_LEVEL_BOOT_INFO
+                bool "Info"
+                depends on LOG_MAXIMUM_LEVEL >= 3
+            config LOG_DEFAULT_LEVEL_BOOT_DEBUG
+                bool "Debug"
+                depends on LOG_MAXIMUM_LEVEL >= 4
+            config LOG_DEFAULT_LEVEL_BOOT_VERBOSE
+                bool "Verbose"
+                depends on LOG_MAXIMUM_LEVEL >= 5
+
+        endchoice
+
+        config LOG_DEFAULT_LEVEL_BOOT
+                int
+                default LOG_DEFAULT_LEVEL_PMW if LOG_DEFAULT_LEVEL_BOOT_EQUALS_DEFAULT
+                default 0 if LOG_DEFAULT_LEVEL_BOOT_NONE
+                default 1 if LOG_DEFAULT_LEVEL_BOOT_ERROR
+                default 2 if LOG_DEFAULT_LEVEL_BOOT_WARN
+                default 3 if LOG_DEFAULT_LEVEL_BOOT_INFO
+                default 4 if LOG_DEFAULT_LEVEL_BOOT_DEBUG
+                default 5 if LOG_DEFAULT_LEVEL_BOOT_VERBOSE
+
+    choice LOG_DEFAULT_LEVEL_BOOT_GUI
+            bool "Boot GUI module log verbosity"
+            default LOG_DEFAULT_LEVEL_BOOT_GUI_EQUALS_DEFAULT
+            help
+                Specify how much output to see in logs by default in the boot GUI module.
+
+            config LOG_DEFAULT_LEVEL_BOOT_GUI_EQUALS_DEFAULT
+                bool "Same as PurifyMyWater default"
+            config LOG_DEFAULT_LEVEL_BOOT_GUI_NONE
+                bool "No output"
+            config LOG_DEFAULT_LEVEL_BOOT_GUI_ERROR
+                bool "Error"
+                depends on LOG_MAXIMUM_LEVEL >= 1
+            config LOG_DEFAULT_LEVEL_BOOT_GUI_WARN
+                bool "Warning"
+                depends on LOG_MAXIMUM_LEVEL >= 2
+            config LOG_DEFAULT_LEVEL_BOOT_GUI_INFO
+                bool "Info"
+                depends on LOG_MAXIMUM_LEVEL >= 3
+            config LOG_DEFAULT_LEVEL_BOOT_GUI_DEBUG
+                bool "Debug"
+                depends on LOG_MAXIMUM_LEVEL >= 4
+            config LOG_DEFAULT_LEVEL_BOOT_GUI_VERBOSE
+                bool "Verbose"
+                depends on LOG_MAXIMUM_LEVEL >= 5
+
+        endchoice
+
+        config LOG_DEFAULT_LEVEL_BOOT_GUI
+                int
+                default LOG_DEFAULT_LEVEL_PMW if LOG_DEFAULT_LEVEL_BOOT_GUI_EQUALS_DEFAULT
+                default 0 if LOG_DEFAULT_LEVEL_BOOT_GUI_NONE
+                default 1 if LOG_DEFAULT_LEVEL_BOOT_GUI_ERROR
+                default 2 if LOG_DEFAULT_LEVEL_BOOT_GUI_WARN
+                default 3 if LOG_DEFAULT_LEVEL_BOOT_GUI_INFO
+                default 4 if LOG_DEFAULT_LEVEL_BOOT_GUI_DEBUG
+                default 5 if LOG_DEFAULT_LEVEL_BOOT_GUI_VERBOSE
+
+        choice LOG_DEFAULT_LEVEL_GUI
+                bool "GUI module log verbosity"
+                default LOG_DEFAULT_LEVEL_GUI_EQUALS_DEFAULT
+                help
+                    Specify how much output to see in logs by default in the GUI module.
+
+                config LOG_DEFAULT_LEVEL_GUI_EQUALS_DEFAULT
+                    bool "Same as PurifyMyWater default"
+                config LOG_DEFAULT_LEVEL_GUI_NONE
+                    bool "No output"
+                config LOG_DEFAULT_LEVEL_GUI_ERROR
+                    bool "Error"
+                    depends on LOG_MAXIMUM_LEVEL >= 1
+                config LOG_DEFAULT_LEVEL_GUI_WARN
+                    bool "Warning"
+                    depends on LOG_MAXIMUM_LEVEL >= 2
+                config LOG_DEFAULT_LEVEL_GUI_INFO
+                    bool "Info"
+                    depends on LOG_MAXIMUM_LEVEL >= 3
+                config LOG_DEFAULT_LEVEL_GUI_DEBUG
+                    bool "Debug"
+                    depends on LOG_MAXIMUM_LEVEL >= 4
+                config LOG_DEFAULT_LEVEL_GUI_VERBOSE
+                    bool "Verbose"
+                    depends on LOG_MAXIMUM_LEVEL >= 5
+
+            endchoice
+
+            config LOG_DEFAULT_LEVEL_GUI
+                    int
+                    default LOG_DEFAULT_LEVEL_PMW if LOG_DEFAULT_LEVEL_GUI_EQUALS_DEFAULT
+                    default 0 if LOG_DEFAULT_LEVEL_GUI_NONE
+                    default 1 if LOG_DEFAULT_LEVEL_GUI_ERROR
+                    default 2 if LOG_DEFAULT_LEVEL_GUI_WARN
+                    default 3 if LOG_DEFAULT_LEVEL_GUI_INFO
+                    default 4 if LOG_DEFAULT_LEVEL_GUI_DEBUG
+                    default 5 if LOG_DEFAULT_LEVEL_GUI_VERBOSE
+
+        choice LOG_DEFAULT_LEVEL_SETTINGS_STORAGE
+                bool "Settings Storage module log verbosity"
+                default LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_EQUALS_DEFAULT
+                help
+                    Specify how much output to see in logs by default in the Settings Storage module.
+
+                config LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_EQUALS_DEFAULT
+                    bool "Same as PurifyMyWater default"
+                config LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_NONE
+                    bool "No output"
+                config LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_ERROR
+                    bool "Error"
+                    depends on LOG_MAXIMUM_LEVEL >= 1
+                config LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_WARN
+                    bool "Warning"
+                    depends on LOG_MAXIMUM_LEVEL >= 2
+                config LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_INFO
+                    bool "Info"
+                    depends on LOG_MAXIMUM_LEVEL >= 3
+                config LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_DEBUG
+                    bool "Debug"
+                    depends on LOG_MAXIMUM_LEVEL >= 4
+                config LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_VERBOSE
+                    bool "Verbose"
+                    depends on LOG_MAXIMUM_LEVEL >= 5
+
+            endchoice
+
+            config LOG_DEFAULT_LEVEL_SETTINGS_STORAGE
+                    int
+                    default LOG_DEFAULT_LEVEL_PMW if LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_EQUALS_DEFAULT
+                    default 0 if LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_NONE
+                    default 1 if LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_ERROR
+                    default 2 if LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_WARN
+                    default 3 if LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_INFO
+                    default 4 if LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_DEBUG
+                    default 5 if LOG_DEFAULT_LEVEL_SETTINGS_STORAGE_VERBOSE
+
+            choice LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER
+                    bool "Storage partition manager module log verbosity"
+                    default LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_EQUALS_DEFAULT
+                    help
+                        Specify how much output to see in logs by default in the Storage partition manager module.
+
+                    config LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_EQUALS_DEFAULT
+                        bool "Same as PurifyMyWater default"
+                    config LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_NONE
+                        bool "No output"
+                    config LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_ERROR
+                        bool "Error"
+                        depends on LOG_MAXIMUM_LEVEL >= 1
+                    config LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_WARN
+                        bool "Warning"
+                        depends on LOG_MAXIMUM_LEVEL >= 2
+                    config LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_INFO
+                        bool "Info"
+                        depends on LOG_MAXIMUM_LEVEL >= 3
+                    config LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_DEBUG
+                        bool "Debug"
+                        depends on LOG_MAXIMUM_LEVEL >= 4
+                    config LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_VERBOSE
+                        bool "Verbose"
+                        depends on LOG_MAXIMUM_LEVEL >= 5
+
+                endchoice
+
+                config LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER
+                        int
+                        default LOG_DEFAULT_LEVEL_PMW if LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_EQUALS_DEFAULT
+                        default 0 if LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_NONE
+                        default 1 if LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_ERROR
+                        default 2 if LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_WARN
+                        default 3 if LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_INFO
+                        default 4 if LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_DEBUG
+                        default 5 if LOG_DEFAULT_LEVEL_STORAGE_PARTITION_MANAGER_VERBOSE
 
     config LOG_COLORS
         bool "Use ANSI terminal colors in log output"
