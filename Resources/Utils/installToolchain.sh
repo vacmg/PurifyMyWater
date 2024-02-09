@@ -21,10 +21,15 @@ else
     fi
 
     # Check if each package is installed and install it if not
+    sudo apt update
     for package in "${packages[@]}"; do
       if ! dpkg -s "$package" &> /dev/null; then
         echo "$package is not installed. Installing $package..."
         sudo apt-get install -y "$package"
+        if [ $? -ne 0 ]; then
+          echo "Failed to install $package. Aborting..."
+          exit 1
+        fi
       fi
     done
 
