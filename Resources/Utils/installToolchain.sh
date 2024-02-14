@@ -103,7 +103,6 @@ else
     sudo usermod -a -G dialout $USER || exit
 
     cd "$oldDir" || exit
-    pwd
     echo "Press Enter to continue"
     read
     . $directory/esp-idf/export.sh
