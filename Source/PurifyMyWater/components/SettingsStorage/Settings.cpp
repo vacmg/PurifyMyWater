@@ -129,7 +129,7 @@ void Settings::freeSettingsMap(Settings::SettingsMap_t* map, const char* mapName
     {
         switch (entry.second.settingValueType)
         {
-            case SETTING_LIST:
+            case SETTINGS_MAP:
                 ESP_LOGD(COMPONENT_TAG_SETTINGS_STORAGE, "Freeing setting '%s' (MAP)", entry.first.c_str());
                 freeSettingsMap(entry.second.settingValueData.SETTING_MAP, fmt::format("{}/{}", mapName, entry.first).c_str());
                 break;
@@ -239,12 +239,12 @@ void Settings::test()
 //    (*settingsMap)["key1"] = {.settingValueType = INT, .settingValueData = {.INT = 1}};
 //    (*settingsMap)["key2"] = {.settingValueType = FLOAT, .settingValueData = {.FLOAT = 2.0}};
 //    (*settingsMap)["key3"] = {.settingValueType = STRING, .settingValueData = {.STRING = new std::string("3")}};
-//    (*settingsMap)["key4"] = {.settingValueType = SETTING_LIST, .settingValueData = {.SETTING_MAP = new SettingsMap_t()}};
+//    (*settingsMap)["key4"] = {.settingValueType = SETTINGS_MAP, .settingValueData = {.SETTING_MAP = new SettingsMap_t()}};
 //    (*settingsMap)["key5"] = VOID_VALUE;
 //    (*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.1"] = {.settingValueType = INT, .settingValueData = {.INT = 4}};
 //    (*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.2"] = {.settingValueType = FLOAT, .settingValueData = {.FLOAT = 4.2}};
 //    (*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.3"] = {.settingValueType = STRING, .settingValueData = {.STRING = new std::string("4.3")}};
-//    (*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.4"] = {.settingValueType = SETTING_LIST, .settingValueData = {.SETTING_MAP = new SettingsMap_t()}};
+//    (*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.4"] = {.settingValueType = SETTINGS_MAP, .settingValueData = {.SETTING_MAP = new SettingsMap_t()}};
 //    (*(*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.4"].settingValueData.SETTING_MAP)["key4.4.1"] = {.settingValueType = INT, .settingValueData = {.INT = 4}};
 //    (*(*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.4"].settingValueData.SETTING_MAP)["key4.4.2"] = {.settingValueType = FLOAT, .settingValueData = {.FLOAT = 4.42}};
 //    (*(*(*settingsMap)["key4"].settingValueData.SETTING_MAP)["key4.4"].settingValueData.SETTING_MAP)["key4.4.3"] = {.settingValueType = STRING, .settingValueData = {.STRING = new std::string("4.4.3")}};
