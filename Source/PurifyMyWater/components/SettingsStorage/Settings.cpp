@@ -4,13 +4,13 @@
 #include "StoragePartitionManager.h"
 
 #if CONFIG_SETTINGS_DISABLE_WRITE_TO_FLASH
-#define DISABLE_PERSISTENT_STORAGE_DEFAULT true
+#define ENABLE_PERSISTENT_STORAGE_DEFAULT false
 #else
-#define DISABLE_PERSISTENT_STORAGE_DEFAULT false
+#define ENABLE_PERSISTENT_STORAGE_DEFAULT true
 #endif
 
 bool Settings::initialized = false;
-bool Settings::disablePersistentStorage = DISABLE_PERSISTENT_STORAGE_DEFAULT;
+bool Settings::persistentStorageEnabled = ENABLE_PERSISTENT_STORAGE_DEFAULT;
 Settings::SettingsMap_t* Settings::settingsMap = nullptr;
 
 
@@ -53,7 +53,7 @@ Settings::SettingError_t Settings::initialize()
                 {
                     ESP_LOGE(COMPONENT_TAG_SETTINGS_STORAGE, AT "Irrecoverable error: %s. " CONFIG_STORAGE_PARTITION_LABEL
                             " partition is unusable: Falling back to volatile settings mode", esp_err_to_name(ret));
-                    disablePersistentStorage = true;
+                    persistentStorageEnabled = false;
                     return initWithoutReadFromPersistentStorage();
                 }
                 else // ESP_OK
@@ -77,7 +77,7 @@ Settings::SettingError_t Settings::initialize()
                         case SettingsParser::FILESYSTEM_ERROR:
                             ESP_LOGE(COMPONENT_TAG_SETTINGS_STORAGE, AT "Irrecoverable error: %s. " CONFIG_STORAGE_PARTITION_LABEL
                                     " partition is unusable: Falling back to volatile settings mode", esp_err_to_name(ret));
-                            disablePersistentStorage = true;
+                            persistentStorageEnabled = false;
                             return initWithoutReadFromPersistentStorage();
                         case SettingsParser::NO_ERROR:
                             assert(false); // This code should not be reached if SettingsParser::readFromFile() works fine
@@ -113,7 +113,7 @@ void Settings::finalize()
         writeSettingsToPersistentStorage();
         freeSettingsMap(settingsMap, "");
         initialized = false;
-        disablePersistentStorage = DISABLE_PERSISTENT_STORAGE_DEFAULT;
+        persistentStorageEnabled = ENABLE_PERSISTENT_STORAGE_DEFAULT;
     }
     else
     {
@@ -161,9 +161,9 @@ Settings::SettingValue_t Settings::getSetting(const std::string& key)
 
 Settings::SettingError_t Settings::putSetting(const std::string& key, int value)
 {
-    if(disablePersistentStorage)
+    if(persistentStorageEnabled)
     {
-        // TODO tener en cuenta que si ese atributo es true, no se puede guardar en la particion de almacenamiento
+        // TODO tener en cuenta que si ese atributo es false, no se puede guardar en la particion de almacenamiento
     }
     return NO_ERROR;
 }
@@ -171,9 +171,9 @@ Settings::SettingError_t Settings::putSetting(const std::string& key, int value)
 
 Settings::SettingError_t Settings::putSetting(const std::string& key, float value)
 {
-    if(disablePersistentStorage)
+    if(persistentStorageEnabled)
     {
-        // TODO tener en cuenta que si ese atributo es true, no se puede guardar en la particion de almacenamiento
+        // TODO tener en cuenta que si ese atributo es false, no se puede guardar en la particion de almacenamiento
     }
     return NO_ERROR;
 }
@@ -181,9 +181,9 @@ Settings::SettingError_t Settings::putSetting(const std::string& key, float valu
 
 Settings::SettingError_t Settings::putSetting(const std::string& key, const char* value)
 {
-    if(disablePersistentStorage)
+    if(persistentStorageEnabled)
     {
-        // TODO tener en cuenta que si ese atributo es true, no se puede guardar en la particion de almacenamiento
+        // TODO tener en cuenta que si ese atributo es false, no se puede guardar en la particion de almacenamiento
     }
     return NO_ERROR;
 }
@@ -191,9 +191,9 @@ Settings::SettingError_t Settings::putSetting(const std::string& key, const char
 
 Settings::SettingError_t Settings::addSetting(const std::string& key)
 {
-    if(disablePersistentStorage)
+    if(persistentStorageEnabled)
     {
-        // TODO tener en cuenta que si ese atributo es true, no se puede guardar en la particion de almacenamiento
+        // TODO tener en cuenta que si ese atributo es false, no se puede guardar en la particion de almacenamiento
     }
     return NO_ERROR;
 }
@@ -207,11 +207,23 @@ const char* Settings::getSettingsTree(const std::string& key)
 
 bool Settings::writeSettingsToPersistentStorage()
 {
-    if(disablePersistentStorage)
+    if(persistentStorageEnabled)
     {
-        // TODO tener en cuenta que si ese atributo es true, no se puede guardar en la particion de almacenamiento
+        // TODO tener en cuenta que si ese atributo es false, no se puede guardar en la particion de almacenamiento
     }
     return false;
+}
+
+
+bool Settings::isPersistentStorageEnabled()
+{
+    return persistentStorageEnabled;
+}
+
+
+void Settings::disablePersistentStorage()
+{
+    persistentStorageEnabled = false;
 }
 
 

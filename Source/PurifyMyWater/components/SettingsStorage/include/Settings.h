@@ -10,11 +10,12 @@ class Settings
 {
     public:
         // Enum that stores the possible errors returned by the API Settings
-        typedef enum {NO_ERROR = 0, KEY_NOT_FOUND_ERROR, TYPE_MISMATCH_ERROR, 
-                        KEY_EXISTS_ERROR, CORRUPTED_SETTINGS_FILE_ERROR} SettingError_t; 
+        typedef enum  {NO_ERROR = 0, KEY_NOT_FOUND_ERROR, TYPE_MISMATCH_ERROR, KEY_EXISTS_ERROR,
+                       CORRUPTED_SETTINGS_FILE_ERROR, MODULE_ALREADY_REGISTERED_ERROR, INVALID_INPUT_ERROR,
+                       SETTINGS_NOT_INITIALIZED_ERROR} SettingError_t;
 
         // Enum with the types of data that can be saved
-        typedef enum {VOID = 0, SETTING_LIST, FLOAT, INT, STRING} SettingValueType_t;
+        typedef enum {VOID = 0, SETTINGS_MAP, FLOAT, INT, STRING} SettingValueType_t;
 
         struct SettingValue_t;
 
@@ -51,6 +52,8 @@ class Settings
         static SettingError_t addSetting(const std::string& key);
         static const char* getSettingsTree(const std::string& key);
         static bool writeSettingsToPersistentStorage();
+        static bool isPersistentStorageEnabled();
+        static void disablePersistentStorage();
 
     private:
         static void freeSettingsMap(Settings::SettingsMap_t* map, const char* mapName);
@@ -61,7 +64,7 @@ class Settings
         /**
          * This attribute is used to disable the persistent settings storage in case of an irrecoverable error mounting or using the storage partition.
          */
-        static bool disablePersistentStorage;
+        static bool persistentStorageEnabled;
         static constexpr SettingValue_t VOID_VALUE = {.settingValueType = VOID, .settingValueData = {0}};
 };
 
