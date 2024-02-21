@@ -50,7 +50,7 @@ class Settings
         static SettingError_t putSetting(const std::string& key, float value);
         static SettingError_t putSetting(const std::string& key, const char* value);
         static SettingError_t addSetting(const std::string& key);
-        static const char* getSettingsTree(const std::string& key);
+        static SettingError_t printSettingsTree(FILE* fp, const std::string& key);
         static bool writeSettingsToPersistentStorage();
         static bool isPersistentStorageEnabled();
         static void disablePersistentStorage();

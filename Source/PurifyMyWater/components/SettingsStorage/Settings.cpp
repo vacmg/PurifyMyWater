@@ -22,15 +22,11 @@ Settings::SettingError_t Settings::initialize()
         settingsMap = SettingsParser::readFromFile(SETTINGS_FILE_NAME);
         if(settingsMap != nullptr)
         {
-            const char* buff = getSettingsTree("");
-            if(buff == nullptr)
+            if(esp_log_level_get(COMPONENT_TAG_SETTINGS_STORAGE) <= ESP_LOG_INFO)
             {
-                ESP_LOGW(COMPONENT_TAG_SETTINGS_STORAGE, "There is not enough memory to print the settings map");
-            }
-            else
-            {
-                ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Settings map retrieved. Loaded config:\n----------\n%s\n----------",buff);
-                free((void*) buff);
+                ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Settings map retrieved. Loaded config:\n----------\n");
+                printSettingsTree(stdout, "");
+                ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "\n----------\n");
             }
 
             initialized = true;
@@ -61,9 +57,12 @@ Settings::SettingError_t Settings::initialize()
                     ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Filesystem mounted. Initializing settings map...");
                     if(settingsMap != nullptr)
                     {
-                        const char* buff = getSettingsTree("");
-                        ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Settings map retrieved. Loaded config:\n----------\n%s\n----------",buff);
-                        free((void*) buff);
+                        if(esp_log_level_get(COMPONENT_TAG_SETTINGS_STORAGE) <= ESP_LOG_INFO)
+                        {
+                            ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "Settings map retrieved. Loaded config:\n----------\n");
+                            printSettingsTree(stdout, "");
+                            ESP_LOGI(COMPONENT_TAG_SETTINGS_STORAGE, "\n----------\n");
+                        }
                         initialized = true;
                         return NO_ERROR;
                     }
@@ -199,9 +198,9 @@ Settings::SettingError_t Settings::addSetting(const std::string& key)
 }
 
 
-const char* Settings::getSettingsTree(const std::string& key)
+Settings::SettingError_t Settings::printSettingsTree(FILE* fp, const std::string& key)
 {
-    return nullptr;
+    return NO_ERROR;
 }
 
 
